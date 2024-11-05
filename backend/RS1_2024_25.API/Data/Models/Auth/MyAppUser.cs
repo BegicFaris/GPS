@@ -21,6 +21,7 @@ public class MyAppUser
     public bool IsManager { get; set; }
 
     /*
+     
      Ako sistem nije zamišljen da podržava česte promjene rola i 
      ako se dodavanje novih rola svodi na manje promjene u kodu, 
     tada može biti dovoljno koristiti boolean polja kao što su IsAdmin, IsManager itd. 
