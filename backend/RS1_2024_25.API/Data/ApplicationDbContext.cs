@@ -11,6 +11,7 @@ namespace RS1_2024_25.API.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<MyAppUser> MyAppUsers { get; set; }
         public DbSet<MyAuthenticationToken> MyAuthenticationTokens { get; set; }
+        public DbSet<Bus> Buses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
