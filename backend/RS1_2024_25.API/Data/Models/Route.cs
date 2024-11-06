@@ -3,19 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_25.API.Data.Models
 {
-    public class Notification
+    public class Route
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey(nameof(no))]
-        public int NotificationType { get; set; }
-        //public NotificationType NotificationType { get; set; }
-        public TimeOnly Duration { get; set; }
-        public DateOnly Date { get; set; }
-        public bool IsActive { get; set; }
         [ForeignKey(nameof(Line))]
         public int LineId { get; set; }
         public Line Line { get; set; }
-
+        [ForeignKey(nameof(Station))]
+        public int StationId { get; set; }
+        public Station Station { get; set; }
+        public float DistanceFromTheNextStation { get; set; }
     }
 }

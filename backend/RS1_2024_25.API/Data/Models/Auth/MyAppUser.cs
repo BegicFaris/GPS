@@ -12,7 +12,7 @@ public class MyAppUser
     public string LastName { get; set; }
     public string Email { get; set; }
     [JsonIgnore]
-    public string Password { get; set; }
+    public byte[] PasswordHash { get; set; }
     public DateTime BirthDate { get; set; }
     public DateTime RegistrationDate{ get; set; }
     public byte[] Image { get; set; }
@@ -20,8 +20,8 @@ public class MyAppUser
     public bool Status { get; set; }
 
     //----------------
-    public bool IsAdmin { get; set; }
-    public bool IsManager { get; set; }
+    //public bool IsAdmin { get; set; }
+    //public bool IsManager { get; set; }
 
     /*
      
