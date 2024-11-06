@@ -7,16 +7,11 @@ namespace RS1_2024_25.API.Data
     public class ApplicationDbContext(
         DbContextOptions options) : DbContext(options)
     {
-       
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<MyAppUser> MyAppUsers { get; set; }
         public DbSet<MyAuthenticationToken> MyAuthenticationTokens { get; set; }
         public DbSet<Bus> Buses { get; set; }
-        public DbSet<Zone> Zones { get; set; }
-        public DbSet<Station> Stations { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
-        public DbSet<CreditCard> CreditCards { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
