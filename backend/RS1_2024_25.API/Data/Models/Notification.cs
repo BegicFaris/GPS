@@ -7,9 +7,7 @@ namespace RS1_2024_25.API.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey(nameof(no))]
-        public int NotificationType { get; set; }
-        //public NotificationType NotificationType { get; set; }
+        public string NotificationType { get; set; }
         public TimeOnly Duration { get; set; }
         public DateOnly Date { get; set; }
         public bool IsActive { get; set; }

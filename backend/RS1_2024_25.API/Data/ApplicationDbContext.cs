@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RS1_2024_25.API.Data.Models;
 using RS1_2024_25.API.Data.Models.Auth;
+using Route = RS1_2024_25.API.Data.Models.Route;
 
 namespace RS1_2024_25.API.Data
 {
@@ -19,6 +20,14 @@ namespace RS1_2024_25.API.Data
         public DbSet<Passenger> Passengers { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Line> Lines { get; set; }
+        public DbSet<PassengerCreditCard> PassengerCreditCards { get; set; }
+        public DbSet<Route> Routes { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketType> TicketTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
