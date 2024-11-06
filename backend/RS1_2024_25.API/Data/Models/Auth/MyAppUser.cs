@@ -1,20 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using System.Drawing;
 
 namespace RS1_2024_25.API.Data.Models.Auth;
 
 public class MyAppUser
 {
     [Key]
-    public int ID { get; set; }
-    public string Username { get; set; }
-    [JsonIgnore]
-    public string Password { get; set; }
-
-    // Additional properties
+    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-
+    public string Email { get; set; }
+    [JsonIgnore]
+    public string Password { get; set; }
+    public DateTime BirthDate { get; set; }
+    public DateTime RegistrationDate{ get; set; }
+    public byte[] Image { get; set; }
+    public string Address { get; set; }
+    public bool Status { get; set; }
 
     //----------------
     public bool IsAdmin { get; set; }
