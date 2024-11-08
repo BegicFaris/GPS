@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_25.API.Data.Models
 {
-    public class Bus
+    public class Bus 
     {
         [Key]
         public int Id { get; set; }
@@ -12,5 +12,6 @@ namespace RS1_2024_25.API.Data.Models
         public string Model { get; set; } 
         public string Capacity { get; set; }
         public string ManufactureYear { get; set; }
+        public string TenantId { get; set; }
     }
 }
