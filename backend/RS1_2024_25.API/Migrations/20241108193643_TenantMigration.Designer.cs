@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RS1_2024_25.API.Data;
 
@@ -11,9 +12,11 @@ using RS1_2024_25.API.Data;
 namespace RS1_2024_25.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241108193643_TenantMigration")]
+    partial class TenantMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,10 +134,6 @@ namespace RS1_2024_25.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegistrationNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -313,7 +312,7 @@ namespace RS1_2024_25.API.Migrations
                     b.ToTable("PassengerCreditCards");
                 });
 
-            modelBuilder.Entity("RS1_2024_25.API.Data.Models.Route", b =>
+            modelBuilder.Entity("RS1_2024_25.API.Data.Models.", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -434,18 +433,6 @@ namespace RS1_2024_25.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tenants");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "tenant1",
-                            Name = "Tenant1"
-                        },
-                        new
-                        {
-                            Id = "tenant2",
-                            Name = "Tenant2"
-                        });
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.TicketType", b =>
@@ -480,36 +467,9 @@ namespace RS1_2024_25.API.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Zones");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Zone one",
-                            Price = 1.5m,
-                            TenantId = "tenant1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Zone two",
-                            Price = 2.1m,
-                            TenantId = "tenant1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Zone three",
-                            Price = 2.7m,
-                            TenantId = "tenant2"
-                        });
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Ticket", b =>

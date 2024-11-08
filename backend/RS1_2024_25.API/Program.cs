@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using RS1_2024_25.API.Data;
 using RS1_2024_25.API.Helper.Auth;
+using RS1_2024_25.API.Middleware;
 using RS1_2024_25.API.Services;
+using RS1_2024_25.API.Services.TenantServices;
 
 
 var config = new ConfigurationBuilder()
@@ -14,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db1")));
+builder.Services.AddDbContext<TenantDbContext>(options =>
+    options.UseSqlServer(config.GetConnectionString("db1")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -22,7 +26,9 @@ builder.Services.AddSwaggerGen(x => x.OperationFilter<MyAuthorizationSwaggerHead
 builder.Services.AddHttpContextAccessor();
 
 //dodajte vaše servise
-builder.Services.AddTransient<MyAuthService>();
+//builder.Services.AddTransient<MyAuthService>();
+builder.Services.AddScoped<ICurrentTenantService,CurrentTenantService>();
+
 
 var app = builder.Build();
 
@@ -40,6 +46,7 @@ app.UseCors(
 
 
 app.UseAuthorization();
+app.UseMiddleware<TenantResolver>();
 
 app.MapControllers();
 
