@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db1")));
+//We add the new Db context
 builder.Services.AddDbContext<TenantDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db1")));
 
@@ -27,6 +28,8 @@ builder.Services.AddHttpContextAccessor();
 
 //dodajte vaše servise
 //builder.Services.AddTransient<MyAuthService>();
+
+// Adding the scpoped service CurrentTenantService
 builder.Services.AddScoped<ICurrentTenantService,CurrentTenantService>();
 
 
@@ -46,6 +49,8 @@ app.UseCors(
 
 
 app.UseAuthorization();
+
+// We are adding the Tenant middleware to the http requst pipeline, Middleware is located between Request and Response 
 app.UseMiddleware<TenantResolver>();
 
 app.MapControllers();

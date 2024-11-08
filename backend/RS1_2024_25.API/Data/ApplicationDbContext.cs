@@ -6,8 +6,10 @@ using Route = RS1_2024_25.API.Data.Models.Route;
 
 namespace RS1_2024_25.API.Data
 {
+
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentTenantService currentTenantService) : DbContext(options)
     {
+        //Implemenitg Multitenatcy into the AppDbContext
         public string CurrentTenantID = currentTenantService.TenantId;
         private readonly DbContextOptions<ApplicationDbContext> options = options;
         private readonly ICurrentTenantService currentTenantService = currentTenantService;
@@ -39,7 +41,7 @@ namespace RS1_2024_25.API.Data
             //modelBuilder.Entity<NekaKlasa>().HasQueryFilter(a => a.TenantId == CurrentTenantID);
             modelBuilder.Entity<Zone>().HasQueryFilter(a => a.TenantId == CurrentTenantID);
 
-            //
+            //Adding test data to the DB
             modelBuilder.Entity<Tenant>().HasData(
                 new Tenant { Id = "tenant1", Name = "Tenant1" },
                 new Tenant { Id = "tenant2", Name = "Tenant2" }

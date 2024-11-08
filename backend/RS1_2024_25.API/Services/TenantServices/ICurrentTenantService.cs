@@ -1,5 +1,7 @@
 namespace RS1_2024_25.API.Services.TenantServices
 {
+
+    //The interface used to implement the tenant service
     public interface ICurrentTenantService
     {
         string? TenantId { get; set; }
