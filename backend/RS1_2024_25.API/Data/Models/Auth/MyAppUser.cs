@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Drawing;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_25.API.Data.Models.Auth;
 
-public class MyAppUser
+[Table("MyAppUser")]
+public abstract class MyAppUser
 {
     [Key]
     public int Id { get; set; }

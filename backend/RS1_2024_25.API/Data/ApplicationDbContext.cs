@@ -37,6 +37,10 @@ namespace RS1_2024_25.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<MyAppUser>().ToTable("MyAppUsers");
+            modelBuilder.Entity<Passenger>().ToTable("Passengers");
+            modelBuilder.Entity<Driver>().ToTable("Drivers");
+            modelBuilder.Entity<Manager>().ToTable("Managers");
             //Ovo treba implementirati za svaku klasu koja koristi tenant
             //modelBuilder.Entity<NekaKlasa>().HasQueryFilter(a => a.TenantId == CurrentTenantID);
             modelBuilder.Entity<Zone>().HasQueryFilter(a => a.TenantId == CurrentTenantID);

@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_25.API.Data.Models
 {
-    public class Driver:MyAppUser
+    [Table("Driver")]
+    public class Driver : MyAppUser
     {
         public string License { get; set; }
         public string DriversLicenseNumber { get; set; }
