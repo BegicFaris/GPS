@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_25.API.Data.Models.Auth;
 
-[Table("MyAppUser")]
+[Table("MyAppUsers")]
 public abstract class MyAppUser
 {
     [Key]

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_25.API.Data.Models
 {
-    [Table("Passenger")]
+    [Table("Passengers")]
     public class Passenger: MyAppUser
     {
         [ForeignKey(nameof(Discount))]
