@@ -37,6 +37,7 @@ namespace RS1_2024_25.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<MyAppUser>().ToTable("MyAppUsers");
             modelBuilder.Entity<Passenger>().ToTable("Passengers");
             modelBuilder.Entity<Driver>().ToTable("Drivers");

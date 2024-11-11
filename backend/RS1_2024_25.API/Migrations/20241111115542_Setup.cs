@@ -3,115 +3,33 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace RS1_2024_25.API.Migrations
 {
     /// <inheritdoc />
-    public partial class TenantMigration : Migration
+    public partial class Setup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Cities");
-
-            migrationBuilder.DropTable(
-                name: "Countries");
-
-            migrationBuilder.DropColumn(
-                name: "IsAdmin",
-                table: "MyAppUsers");
-
-            migrationBuilder.RenameColumn(
-                name: "ID",
-                table: "MyAppUsers",
-                newName: "Id");
-
-            migrationBuilder.RenameColumn(
-                name: "Username",
-                table: "MyAppUsers",
-                newName: "Email");
-
-            migrationBuilder.RenameColumn(
-                name: "Password",
-                table: "MyAppUsers",
-                newName: "Address");
-
-            migrationBuilder.RenameColumn(
-                name: "IsManager",
-                table: "MyAppUsers",
-                newName: "Status");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "BirthDate",
-                table: "MyAppUsers",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<int>(
-                name: "DiscountID",
-                table: "MyAppUsers",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Discriminator",
-                table: "MyAppUsers",
-                type: "nvarchar(13)",
-                maxLength: 13,
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "DriversLicenseNumber",
-                table: "MyAppUsers",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "HireDate",
-                table: "MyAppUsers",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<byte[]>(
-                name: "Image",
-                table: "MyAppUsers",
-                type: "varbinary(max)",
-                nullable: false,
-                defaultValue: new byte[0]);
-
-            migrationBuilder.AddColumn<string>(
-                name: "License",
-                table: "MyAppUsers",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "Manager_HireDate",
-                table: "MyAppUsers",
-                type: "datetime2",
-                nullable: true);
-
-            migrationBuilder.AddColumn<byte[]>(
-                name: "PasswordHash",
-                table: "MyAppUsers",
-                type: "varbinary(max)",
-                nullable: false,
-                defaultValue: new byte[0]);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "RegistrationDate",
-                table: "MyAppUsers",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<float>(
-                name: "WorkingHoursInAWeek",
-                table: "MyAppUsers",
-                type: "real",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "Buses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegistrationNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Capacity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ManufactureYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Buses", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "CreditCards",
@@ -144,52 +62,24 @@ namespace RS1_2024_25.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Feedbacks",
+                name: "MyAppUsers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rating = table.Column<float>(type: "real", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_MyAppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "MyAppUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Shifts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BusId = table.Column<int>(type: "int", nullable: false),
-                    DriverId = table.Column<int>(type: "int", nullable: false),
-                    ShiftDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    ShiftStartingTime = table.Column<TimeOnly>(type: "time", nullable: false),
-                    ShiftEndingTime = table.Column<TimeOnly>(type: "time", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shifts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Shifts_Buses_BusId",
-                        column: x => x.BusId,
-                        principalTable: "Buses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Shifts_MyAppUsers_DriverId",
-                        column: x => x.DriverId,
-                        principalTable: "MyAppUsers",
-                        principalColumn: "Id");
+                    table.PrimaryKey("PK_MyAppUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,11 +114,165 @@ namespace RS1_2024_25.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Zones", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Drivers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    License = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DriversLicenseNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WorkingHoursInAWeek = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Drivers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Drivers_MyAppUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "MyAppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedbacks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<float>(type: "real", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Feedbacks_MyAppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "MyAppUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Managers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Managers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Managers_MyAppUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "MyAppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MyAuthenticationTokens",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecordedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MyAppUserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MyAuthenticationTokens", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_MyAuthenticationTokens_MyAppUsers_MyAppUserId",
+                        column: x => x.MyAppUserId,
+                        principalTable: "MyAppUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Passengers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    DiscountID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Passengers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Passengers_Discounts_DiscountID",
+                        column: x => x.DiscountID,
+                        principalTable: "Discounts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Passengers_MyAppUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "MyAppUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ZoneId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GPSCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stations_Zones_ZoneId",
+                        column: x => x.ZoneId,
+                        principalTable: "Zones",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BusId = table.Column<int>(type: "int", nullable: false),
+                    DriverId = table.Column<int>(type: "int", nullable: false),
+                    ShiftDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    ShiftStartingTime = table.Column<TimeOnly>(type: "time", nullable: false),
+                    ShiftEndingTime = table.Column<TimeOnly>(type: "time", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shifts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shifts_Buses_BusId",
+                        column: x => x.BusId,
+                        principalTable: "Buses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Shifts_Drivers_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "Drivers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -250,30 +294,9 @@ namespace RS1_2024_25.API.Migrations
                         principalTable: "CreditCards",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PassengerCreditCards_MyAppUsers_PassengerId",
+                        name: "FK_PassengerCreditCards_Passengers_PassengerId",
                         column: x => x.PassengerId,
-                        principalTable: "MyAppUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ZoneId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GPSCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stations_Zones_ZoneId",
-                        column: x => x.ZoneId,
-                        principalTable: "Zones",
+                        principalTable: "Passengers",
                         principalColumn: "Id");
                 });
 
@@ -409,10 +432,24 @@ namespace RS1_2024_25.API.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_MyAppUsers_DiscountID",
-                table: "MyAppUsers",
-                column: "DiscountID");
+            migrationBuilder.InsertData(
+                table: "Tenants",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { "tenant1", "Tenant1" },
+                    { "tenant2", "Tenant2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Zones",
+                columns: new[] { "Id", "Name", "Price", "TenantId" },
+                values: new object[,]
+                {
+                    { 1, "Zone one", 1.5m, "tenant1" },
+                    { 2, "Zone two", 2.1m, "tenant1" },
+                    { 3, "Zone three", 2.7m, "tenant2" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Feedbacks_UserId",
@@ -430,6 +467,11 @@ namespace RS1_2024_25.API.Migrations
                 column: "StartingStationID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MyAuthenticationTokens_MyAppUserId",
+                table: "MyAuthenticationTokens",
+                column: "MyAppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notifications_LineId",
                 table: "Notifications",
                 column: "LineId");
@@ -443,6 +485,11 @@ namespace RS1_2024_25.API.Migrations
                 name: "IX_PassengerCreditCards_PassengerId",
                 table: "PassengerCreditCards",
                 column: "PassengerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Passengers_DiscountID",
+                table: "Passengers",
+                column: "DiscountID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Routes_LineId",
@@ -493,27 +540,19 @@ namespace RS1_2024_25.API.Migrations
                 name: "IX_Tickets_ZoneId",
                 table: "Tickets",
                 column: "ZoneId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MyAppUsers_Discounts_DiscountID",
-                table: "MyAppUsers",
-                column: "DiscountID",
-                principalTable: "Discounts",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_MyAppUsers_Discounts_DiscountID",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropTable(
-                name: "Discounts");
-
             migrationBuilder.DropTable(
                 name: "Feedbacks");
+
+            migrationBuilder.DropTable(
+                name: "Managers");
+
+            migrationBuilder.DropTable(
+                name: "MyAuthenticationTokens");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -540,128 +579,31 @@ namespace RS1_2024_25.API.Migrations
                 name: "CreditCards");
 
             migrationBuilder.DropTable(
+                name: "Passengers");
+
+            migrationBuilder.DropTable(
+                name: "Buses");
+
+            migrationBuilder.DropTable(
+                name: "Drivers");
+
+            migrationBuilder.DropTable(
                 name: "Lines");
 
             migrationBuilder.DropTable(
                 name: "TicketTypes");
 
             migrationBuilder.DropTable(
+                name: "Discounts");
+
+            migrationBuilder.DropTable(
+                name: "MyAppUsers");
+
+            migrationBuilder.DropTable(
                 name: "Stations");
 
             migrationBuilder.DropTable(
                 name: "Zones");
-
-            migrationBuilder.DropIndex(
-                name: "IX_MyAppUsers_DiscountID",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "BirthDate",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "DiscountID",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Discriminator",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "DriversLicenseNumber",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "HireDate",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Image",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "License",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Manager_HireDate",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "PasswordHash",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "RegistrationDate",
-                table: "MyAppUsers");
-
-            migrationBuilder.DropColumn(
-                name: "WorkingHoursInAWeek",
-                table: "MyAppUsers");
-
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "MyAppUsers",
-                newName: "ID");
-
-            migrationBuilder.RenameColumn(
-                name: "Status",
-                table: "MyAppUsers",
-                newName: "IsManager");
-
-            migrationBuilder.RenameColumn(
-                name: "Email",
-                table: "MyAppUsers",
-                newName: "Username");
-
-            migrationBuilder.RenameColumn(
-                name: "Address",
-                table: "MyAppUsers",
-                newName: "Password");
-
-            migrationBuilder.AddColumn<bool>(
-                name: "IsAdmin",
-                table: "MyAppUsers",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.CreateTable(
-                name: "Countries",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Countries", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cities",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cities", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Cities_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
-                        principalColumn: "ID");
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cities_CountryId",
-                table: "Cities",
-                column: "CountryId");
         }
     }
 }

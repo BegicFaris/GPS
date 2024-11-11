@@ -12,8 +12,8 @@ using RS1_2024_25.API.Data;
 namespace RS1_2024_25.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241108195606_SeedData")]
-    partial class SeedData
+    [Migration("20241111115542_Setup")]
+    partial class Setup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,11 +39,6 @@ namespace RS1_2024_25.API.Migrations
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -73,11 +68,9 @@ namespace RS1_2024_25.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MyAppUsers");
+                    b.ToTable("MyAppUsers", (string)null);
 
-                    b.HasDiscriminator().HasValue("MyAppUser");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.Auth.MyAuthenticationToken", b =>
@@ -576,7 +569,7 @@ namespace RS1_2024_25.API.Migrations
                     b.Property<float>("WorkingHoursInAWeek")
                         .HasColumnType("real");
 
-                    b.HasDiscriminator().HasValue("Driver");
+                    b.ToTable("Drivers", (string)null);
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.Manager", b =>
@@ -586,13 +579,7 @@ namespace RS1_2024_25.API.Migrations
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
 
-                    b.ToTable("MyAppUsers", t =>
-                        {
-                            t.Property("HireDate")
-                                .HasColumnName("Manager_HireDate");
-                        });
-
-                    b.HasDiscriminator().HasValue("Manager");
+                    b.ToTable("Managers", (string)null);
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.Passenger", b =>
@@ -604,7 +591,7 @@ namespace RS1_2024_25.API.Migrations
 
                     b.HasIndex("DiscountID");
 
-                    b.HasDiscriminator().HasValue("Passenger");
+                    b.ToTable("Passengers", (string)null);
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.Auth.MyAuthenticationToken", b =>
@@ -773,12 +760,36 @@ namespace RS1_2024_25.API.Migrations
                     b.Navigation("Zone");
                 });
 
+            modelBuilder.Entity("RS1_2024_25.API.Data.Models.Driver", b =>
+                {
+                    b.HasOne("RS1_2024_25.API.Data.Models.Auth.MyAppUser", null)
+                        .WithOne()
+                        .HasForeignKey("RS1_2024_25.API.Data.Models.Driver", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RS1_2024_25.API.Data.Models.Manager", b =>
+                {
+                    b.HasOne("RS1_2024_25.API.Data.Models.Auth.MyAppUser", null)
+                        .WithOne()
+                        .HasForeignKey("RS1_2024_25.API.Data.Models.Manager", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.Passenger", b =>
                 {
                     b.HasOne("RS1_2024_25.API.Data.Models.Discount", "Discount")
                         .WithMany()
                         .HasForeignKey("DiscountID")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("RS1_2024_25.API.Data.Models.Auth.MyAppUser", null)
+                        .WithOne()
+                        .HasForeignKey("RS1_2024_25.API.Data.Models.Passenger", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Discount");
