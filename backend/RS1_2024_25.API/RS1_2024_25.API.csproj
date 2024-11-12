@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\TenantEndpoints\" />
-    <Folder Include="DTOs\" />
     <Folder Include="Services\TenantServices\" />
   </ItemGroup>
 
