@@ -4,6 +4,7 @@ using RS1_2024_25.API.Helper.Auth;
 using RS1_2024_25.API.Interfaces;
 using RS1_2024_25.API.Middleware;
 using RS1_2024_25.API.Services;
+using RS1_2024_25.API.Services.BusServices;
 using RS1_2024_25.API.Services.DriverServices;
 using RS1_2024_25.API.Services.ManagerServices;
 using RS1_2024_25.API.Services.PassengerServices;
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IMyAppUserService, MyAppUserService>();
 builder.Services.AddScoped<IDriverService, DriverService>();
 builder.Services.AddScoped<IPassengerService, PassengerService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
+builder.Services.AddScoped<IBusService, BusService>();
 // Adding the scpoped service CurrentTenantService
 builder.Services.AddScoped<ICurrentTenantService,CurrentTenantService>();
 

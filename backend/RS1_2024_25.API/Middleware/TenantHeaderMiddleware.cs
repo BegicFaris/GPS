@@ -14,7 +14,7 @@
             // Check if the header is already set; if not, add a default value
             if (!context.Request.Headers.ContainsKey("tenantID"))
             {
-                context.Request.Headers["tenantID"] = ""; // Use a default tenant ID
+                context.Request.Headers["tenantID"] = "tenant1"; // Use a default tenant ID
             }
 
             await _next(context);
