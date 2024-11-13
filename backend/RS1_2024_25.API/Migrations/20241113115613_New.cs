@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RS1_2024_25.API.Migrations
 {
     /// <inheritdoc />
-    public partial class Setup : Migration
+    public partial class New : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,7 @@ namespace RS1_2024_25.API.Migrations
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ManufactureYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -80,6 +80,20 @@ namespace RS1_2024_25.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MyAppUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NotificationTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,10 +164,10 @@ namespace RS1_2024_25.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -170,7 +184,9 @@ namespace RS1_2024_25.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ManagerLevel = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -225,6 +241,30 @@ namespace RS1_2024_25.API.Migrations
                         principalTable: "MyAppUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SystemActionsLog",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    QueryPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostData = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TimeOfAction = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IpAdress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExceptionMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsException = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SystemActionsLog", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SystemActionsLog_MyAppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "MyAppUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -333,7 +373,7 @@ namespace RS1_2024_25.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NotificationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NotificationTypeId = table.Column<int>(type: "int", nullable: false),
                     Duration = table.Column<TimeOnly>(type: "time", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -346,6 +386,11 @@ namespace RS1_2024_25.API.Migrations
                         name: "FK_Notifications_Lines_LineId",
                         column: x => x.LineId,
                         principalTable: "Lines",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Notifications_NotificationTypes_NotificationTypeId",
+                        column: x => x.NotificationTypeId,
+                        principalTable: "NotificationTypes",
                         principalColumn: "Id");
                 });
 
@@ -477,6 +522,11 @@ namespace RS1_2024_25.API.Migrations
                 column: "LineId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_NotificationTypeId",
+                table: "Notifications",
+                column: "NotificationTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PassengerCreditCards_CreditCardId",
                 table: "PassengerCreditCards",
                 column: "CreditCardId");
@@ -520,6 +570,11 @@ namespace RS1_2024_25.API.Migrations
                 name: "IX_Stations_ZoneId",
                 table: "Stations",
                 column: "ZoneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SystemActionsLog_UserId",
+                table: "SystemActionsLog",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_LineId",
@@ -570,10 +625,16 @@ namespace RS1_2024_25.API.Migrations
                 name: "Shifts");
 
             migrationBuilder.DropTable(
+                name: "SystemActionsLog");
+
+            migrationBuilder.DropTable(
                 name: "Tenants");
 
             migrationBuilder.DropTable(
                 name: "Tickets");
+
+            migrationBuilder.DropTable(
+                name: "NotificationTypes");
 
             migrationBuilder.DropTable(
                 name: "CreditCards");

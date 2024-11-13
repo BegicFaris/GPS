@@ -58,6 +58,7 @@ namespace RS1_2024_25.API.Services
             return new MyAuthInfo
             {
                 UserId = myAuthToken.MyAppUserId,
+                User=myAuthToken.MyAppUser!,
                 Username = myAuthToken.MyAppUser!.FirstName,
                 FirstName = myAuthToken.MyAppUser.LastName,
                 LastName = myAuthToken.MyAppUser.Email,
@@ -70,6 +71,7 @@ namespace RS1_2024_25.API.Services
     public class MyAuthInfo
     {
         public int UserId { get; set; }
+        public MyAppUser User { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

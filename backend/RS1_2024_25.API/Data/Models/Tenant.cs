@@ -10,9 +10,9 @@ namespace RS1_2024_25.API.Data.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
+        public required string Id { get; set; }
+        public required string Name { get; set; }
+    } 
 }
 
 // How it works

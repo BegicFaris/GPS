@@ -2,10 +2,10 @@
 {
     public class CreditCard
     {
-        public int Id { get; set; }
-        public int CardNumber { get; set; }
-        public int ExpirationDate { get; set; }
-        public string CardName { get; set; }
-        public int CCV { get; set; }
+        public required int Id { get; set; }
+        public required int CardNumber { get; set; }
+        public required int ExpirationDate { get; set; }
+        public required string CardName { get; set; }
+        public required int CCV { get; set; }
     }
 }

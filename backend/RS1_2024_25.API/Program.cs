@@ -62,6 +62,7 @@ app.UseAuthorization();
 // We are adding the Tenant middleware to the http requst pipeline, Middleware is located between Request and Response 
 app.UseMiddleware<TenantResolver>();
 
+
 app.MapControllers();
 
 app.Run();

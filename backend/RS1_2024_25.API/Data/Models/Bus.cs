@@ -12,6 +12,6 @@ namespace RS1_2024_25.API.Data.Models
         public required string Model { get; set; } 
         public required string Capacity { get; set; }
         public required string ManufactureYear { get; set; }
-        public required string TenantId { get; set; }
+        public string? TenantId { get; set; }
     }
 }

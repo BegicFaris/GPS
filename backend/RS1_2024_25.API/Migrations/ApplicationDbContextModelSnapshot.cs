@@ -128,7 +128,6 @@ namespace RS1_2024_25.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenantId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -192,14 +191,12 @@ namespace RS1_2024_25.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<byte[]>("Picture")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<float>("Rating")
@@ -269,15 +266,37 @@ namespace RS1_2024_25.API.Migrations
                     b.Property<int>("LineId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NotificationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("NotificationTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LineId");
 
+                    b.HasIndex("NotificationTypeId");
+
                     b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("RS1_2024_25.API.Data.Models.NotificationType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NotificationTypes");
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.PassengerCreditCard", b =>
@@ -413,6 +432,42 @@ namespace RS1_2024_25.API.Migrations
                     b.HasIndex("ZoneId");
 
                     b.ToTable("Stations");
+                });
+
+            modelBuilder.Entity("RS1_2024_25.API.Data.Models.SystemActionLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ExceptionMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IpAdress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsException")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PostData")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QueryPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeOfAction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SystemActionsLog");
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.Tenant", b =>
@@ -573,8 +628,16 @@ namespace RS1_2024_25.API.Migrations
                 {
                     b.HasBaseType("RS1_2024_25.API.Data.Models.Auth.MyAppUser");
 
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ManagerLevel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Managers", (string)null);
                 });
@@ -640,7 +703,15 @@ namespace RS1_2024_25.API.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("RS1_2024_25.API.Data.Models.NotificationType", "NotificationType")
+                        .WithMany()
+                        .HasForeignKey("NotificationTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Line");
+
+                    b.Navigation("NotificationType");
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.PassengerCreditCard", b =>
@@ -720,6 +791,17 @@ namespace RS1_2024_25.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("RS1_2024_25.API.Data.Models.SystemActionLog", b =>
+                {
+                    b.HasOne("RS1_2024_25.API.Data.Models.Auth.MyAppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Ticket", b =>

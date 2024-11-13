@@ -30,6 +30,7 @@ namespace RS1_2024_25.API.Services
     //        StreamReader reader = new StreamReader(request.Body);
     //        string bodyText = await reader.ReadToEndAsync();
 
+<<<<<<< HEAD
     //        var x = new SystemActionLog
     //        {
     //            User = authService.GetAuthInfo()!,
@@ -38,6 +39,16 @@ namespace RS1_2024_25.API.Services
     //            PostData = detalji + "" + bodyText,
     //            IpAdress = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
     //        };
+=======
+            var x = new SystemActionLog
+            {
+                User = authService.GetAuthInfo()!.User,
+                TimeOfAction = DateTime.Now,
+                QueryPath = request.GetEncodedPathAndQuery(),
+                PostData = detalji + "" + bodyText,
+                IpAdress = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
+            };
+>>>>>>> b7f0d26b2662e1b033860814a0b2e9d6123cdd6c
 
     //        /*
     //        if (exceptionMessage != null)
