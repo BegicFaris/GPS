@@ -7,7 +7,7 @@ namespace RS1_2024_25.API.Data.Models
     public class Manager:MyAppUser
     {
         public DateTime HireDate { get; set; }
-        
-        // ActionHistory ??
+        public string Department {  get; set; }
+        public string ManagerLevel { get; set; }
     }
 }

@@ -9,7 +9,5 @@ namespace RS1_2024_25.API.Data.Models
         [ForeignKey(nameof(Discount))]
         public int DiscountID { get; set; }
         public Discount Discount { get; set; }
-        
-        //CardHistory ??
     }
 }
