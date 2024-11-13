@@ -6,8 +6,10 @@ using RS1_2024_25.API.Middleware;
 using RS1_2024_25.API.Services;
 using RS1_2024_25.API.Services.BusServices;
 using RS1_2024_25.API.Services.DriverServices;
+using RS1_2024_25.API.Services.LineServices;
 using RS1_2024_25.API.Services.ManagerServices;
 using RS1_2024_25.API.Services.PassengerServices;
+using RS1_2024_25.API.Services.ScheduleServices;
 using RS1_2024_25.API.Services.TenantServices;
 using RS1_2024_25.API.Services.UserServices;
 
@@ -39,6 +41,9 @@ builder.Services.AddScoped<IMyAppUserService, MyAppUserService>();
 builder.Services.AddScoped<IDriverService, DriverService>();
 builder.Services.AddScoped<IPassengerService, PassengerService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
+// Adding the scpoped service LineService and ScheduleService
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddScoped<ILineService, LineService>();
 builder.Services.AddScoped<IBusService, BusService>();
 // Adding the scpoped service CurrentTenantService
 builder.Services.AddScoped<ICurrentTenantService,CurrentTenantService>();
