@@ -10,8 +10,9 @@
         body, h1, h2, h3, p {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
             background-color: #f4f4f9;
             color: #333;
@@ -19,86 +20,84 @@
             padding: 0;
             font-size: 16px;
         }
+
         .container {
             width: 90%;
             margin: 0 auto;
             max-width: 1200px;
         }
+
+        /* Header */
         header {
-            background-color: #1d3557;
+            background-color: rgb(22, 50, 91); /* Dark Blue */
             color: #fff;
-            padding: 20px 0;
+            padding: 40px 0;
             text-align: center;
+            border-bottom: 4px solid rgb(255, 220, 127); /* Warm Yellow */
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 10px;
         }
 
+        header p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* Hero Section */
         .hero {
-            background-color: #457b9d;
+            background-color: rgb(34, 123, 148); /* Secondary Blue */
             color: #fff;
-            padding: 60px 0;
+            padding: 80px 0;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 30px;
         }
 
         .hero h2 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 20px;
         }
 
         .cta-button {
-            padding: 10px 20px;
-            font-size: 1rem;
+            padding: 12px 30px;
+            font-size: 1.1rem;
             color: #fff;
-            background-color: #e63946;
+            background-color: rgb(255, 220, 127); /* Warm Yellow */
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .cta-button:hover {
-            background-color: #d32f2f;
+            background-color: rgb(234, 175, 27); /* Slightly darker yellow */
+            transform: scale(1.05);
         }
 
+        /* About Section */
         .section {
-            margin: 40px 0;
+            margin: 60px 0;
         }
 
         .section h3 {
             text-align: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 30px;
+            color: rgb(22, 50, 91); /* Dark Blue */
         }
 
-        .card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+        .section p {
             text-align: center;
-            margin: 15px;
-            flex: 1;
-            transition: transform 0.3s ease;
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h4 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: #777;
-        }
-
+        /* Routes Section */
         .card-container {
             display: flex;
             flex-wrap: wrap;
@@ -106,12 +105,41 @@
             gap: 20px;
         }
 
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+            margin: 15px;
+            flex: 1;
+            min-width: 250px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h4 {
+            font-size: 1.6rem;
+            color: rgb(34, 123, 148); /* Secondary Blue */
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
         footer {
-            background-color: #1d3557;
+            background-color: rgb(22, 50, 91); /* Dark Blue */
             color: #fff;
             text-align: center;
             padding: 20px;
-            margin-top: 50px;
+            margin-top: 60px;
         }
 
         footer p {
@@ -130,13 +158,13 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h2>Safe, Comfortable, and Reliable Bus Rides</h2>
-            <p>Explore our routes and timetables, and book your next trip today!</p>
-            <a href="#routes" class="cta-button">Explore Routes</a>
-        </div>
-    </section>
+<section class="hero">
+    <div class="container">
+        <h2>Safe, Comfortable, and Reliable Bus Rides</h2>
+        <p>Explore our routes and timetables, and book your next trip today!</p>
+        <a href="#routes" class="cta-button">Explore Routes</a>
+    </div>
+</section>
 
     <!-- About Section -->
     <section class="section" id="about">
@@ -205,4 +233,3 @@
 
 </body>
 </html>
-
