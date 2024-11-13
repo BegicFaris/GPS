@@ -6,9 +6,9 @@ namespace RS1_2024_25.API.Data.Models
     [Table("Drivers")]
     public class Driver : MyAppUser
     {
-        public string License { get; set; }
-        public string DriversLicenseNumber { get; set; }
-        public DateTime HireDate { get; set; }
+        public required string License { get; set; }
+        public required string DriversLicenseNumber { get; set; }
+        public required DateTime HireDate { get; set; }
         public float WorkingHoursInAWeek { get; set; }
     }
 }
