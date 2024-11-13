@@ -1,30 +1,19 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {MyAuthInterceptor} from './services/auth-services/my-auth-interceptor.service';
-import {MyAuthService} from './services/auth-services/my-auth.service';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module'; // Import AppRoutingModule
+import { LandingPageComponent } from './landing-page/landing-page.component'; // Import the landing page component
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LandingPageComponent, // Declare your landing page component
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    HttpClientModule // Replace provideHttpClient() with HttpClientModule
+    AppRoutingModule, // Add the routing module to imports
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MyAuthInterceptor,
-      multi: true // Ensures multiple interceptors can be used if needed
-    },
-    MyAuthService // Ensure MyAuthService is available for the interceptor
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

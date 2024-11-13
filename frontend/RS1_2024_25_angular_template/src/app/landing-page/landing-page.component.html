@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bus Application - Welcome</title>
+    <style>
+        /* General Reset and Layout */
+        body, h1, h2, h3, p {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            font-size: 16px;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        header {
+            background-color: #1d3557;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .hero {
+            background-color: #457b9d;
+            color: #fff;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #e63946;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .section {
+            margin: 40px 0;
+        }
+
+        .section h3 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            margin: 15px;
+            flex: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #777;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+
+        footer {
+            background-color: #1d3557;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>Welcome to Our Bus Service</h1>
+            <p>Your reliable partner in getting around the city</p>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Safe, Comfortable, and Reliable Bus Rides</h2>
+            <p>Explore our routes and timetables, and book your next trip today!</p>
+            <a href="#routes" class="cta-button">Explore Routes</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <h3>About Our Bus Service</h3>
+            <p>We provide a seamless and comfortable bus service to help you get around the city with ease. Our buses are modern, well-maintained, and follow a strict schedule to ensure punctuality. Whether you're commuting for work, school, or leisure, we've got you covered.</p>
+        </div>
+    </section>
+
+    <!-- Routes Section -->
+    <section class="section" id="routes">
+        <div class="container">
+            <h3>Our Bus Routes</h3>
+            <div class="card-container">
+                <div class="card">
+                    <h4>Route 1</h4>
+                    <p>Downtown ↔ North Station</p>
+                </div>
+                <div class="card">
+                    <h4>Route 2</h4>
+                    <p>West End ↔ South Terminal</p>
+                </div>
+                <div class="card">
+                    <h4>Route 3</h4>
+                    <p>East Village ↔ Central Park</p>
+                </div>
+            </div>
+            <a href="#timetable" class="cta-button">View Timetable</a>
+        </div>
+    </section>
+
+    <!-- Timetable Section -->
+    <section class="section" id="timetable">
+        <div class="container">
+            <h3>Timetable</h3>
+            <p>Our buses run at regular intervals. Please check below for the full timetable for each route.</p>
+            <div class="card-container">
+                <div class="card">
+                    <h4>Route 1 - Downtown to North Station</h4>
+                    <p>06:00 AM - 10:00 PM</p>
+                </div>
+                <div class="card">
+                    <h4>Route 2 - West End to South Terminal</h4>
+                    <p>06:30 AM - 09:30 PM</p>
+                </div>
+                <div class="card">
+                    <h4>Route 3 - East Village to Central Park</h4>
+                    <p>07:00 AM - 10:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="section" id="cta">
+        <div class="container" style="text-align: center;">
+            <h3>Ready to travel with us?</h3>
+            <a href="#booking" class="cta-button">Book Your Ride Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Bus Service Inc. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
+
