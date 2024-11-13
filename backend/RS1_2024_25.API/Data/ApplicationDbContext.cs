@@ -34,6 +34,7 @@ namespace RS1_2024_25.API.Data
         public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<SystemActionLog> SystemActionsLog { get; set; }
+        public DbSet<NotificationType> NotificationTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

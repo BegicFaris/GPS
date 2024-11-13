@@ -32,7 +32,7 @@ namespace RS1_2024_25.API.Services
 
             var x = new SystemActionLog
             {
-                User = authService.GetAuthInfo()!,
+                User = authService.GetAuthInfo()!.User,
                 TimeOfAction = DateTime.Now,
                 QueryPath = request.GetEncodedPathAndQuery(),
                 PostData = detalji + "" + bodyText,
