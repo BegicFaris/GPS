@@ -1,0 +1,52 @@
+/* Header */
+header {
+    background-color: rgb(22, 50, 91); /* Dark Blue */
+    color: #fff; /* White text for better contrast */
+    padding: 40px 0;
+    text-align: center;
+    border-bottom: 4px solid rgb(255, 220, 127); /* Warm Yellow */
+}
+
+header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #fff; /* Ensure the paragraph text is also white */
+}
+
+/* Hero Section */
+.hero {
+    background-color: rgb(34, 123, 148); /* Secondary Blue */
+    color: #fff;
+    padding: 80px 0;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.hero h2 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+}
+
+/* Button Styling */
+.cta-button {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    color: #fff;
+    background-color: rgb(255, 220, 127); /* Warm Yellow */
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 30px; /* Added margin to push the button down */
+}
+
+.cta-button:hover {
+    background-color: rgb(234, 175, 27); /* Slightly darker yellow */
+    transform: scale(1.05);
+}
