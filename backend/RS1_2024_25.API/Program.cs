@@ -5,10 +5,12 @@ using RS1_2024_25.API.Interfaces;
 using RS1_2024_25.API.Middleware;
 using RS1_2024_25.API.Services;
 using RS1_2024_25.API.Services.BusServices;
+using RS1_2024_25.API.Services.CreditCardServices;
 using RS1_2024_25.API.Services.DriverServices;
 using RS1_2024_25.API.Services.LineServices;
 using RS1_2024_25.API.Services.ManagerServices;
 using RS1_2024_25.API.Services.PassengerServices;
+using RS1_2024_25.API.Services.RouteServices;
 using RS1_2024_25.API.Services.ScheduleServices;
 using RS1_2024_25.API.Services.TenantServices;
 using RS1_2024_25.API.Services.UserServices;
@@ -44,7 +46,10 @@ builder.Services.AddScoped<IManagerService, ManagerService>();
 // Adding the scpoped service LineService and ScheduleService
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddScoped<ILineService, LineService>();
+// Adding the scpoped service BusService, RouteService and CreditCardService
 builder.Services.AddScoped<IBusService, BusService>();
+builder.Services.AddScoped<IRouteService, RouteService>();
+builder.Services.AddScoped<ICreditCardService, CreditCardService>();
 // Adding the scpoped service CurrentTenantService
 builder.Services.AddScoped<ICurrentTenantService,CurrentTenantService>();
 

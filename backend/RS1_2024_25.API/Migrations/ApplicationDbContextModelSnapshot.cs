@@ -127,12 +127,38 @@ namespace RS1_2024_25.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TenantId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Buses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Capacity = "Capacity one",
+                            ManufactureYear = "2010",
+                            Manufacturer = "Manufacturer one",
+                            Model = "Model one",
+                            RegistrationNumber = "Registration number one"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Capacity = "Capacity two",
+                            ManufactureYear = "2010",
+                            Manufacturer = "Manufacturer two",
+                            Model = "Model two",
+                            RegistrationNumber = "Registration number two"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Capacity = "Capacity three",
+                            ManufactureYear = "2010",
+                            Manufacturer = "Manufacturer three",
+                            Model = "Model three",
+                            RegistrationNumber = "Registration number three"
+                        });
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.CreditCard", b =>
@@ -159,6 +185,24 @@ namespace RS1_2024_25.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CreditCards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CCV = 123,
+                            CardName = "Test one",
+                            CardNumber = 1,
+                            ExpirationDate = 25
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CCV = 234,
+                            CardName = "Test two",
+                            CardNumber = 2,
+                            ExpirationDate = 26
+                        });
                 });
 
             modelBuilder.Entity("RS1_2024_25.API.Data.Models.Discount", b =>

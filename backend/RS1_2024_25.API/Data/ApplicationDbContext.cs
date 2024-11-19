@@ -60,6 +60,22 @@ namespace RS1_2024_25.API.Data
                   new Zone { Id = 3, Name = "Zone three", Price = 2.7M, TenantId = "tenant2" }
                 );
 
+            modelBuilder.Entity<Bus>().HasData(
+                    new Bus { Id = 1, RegistrationNumber = "Registration number one", Manufacturer = "Manufacturer one", Model = "Model one", Capacity = "Capacity one", ManufactureYear = "2010" },
+                    new Bus { Id = 2, RegistrationNumber = "Registration number two", Manufacturer = "Manufacturer two", Model = "Model two", Capacity = "Capacity two", ManufactureYear = "2010" },
+                    new Bus { Id = 3, RegistrationNumber = "Registration number three", Manufacturer = "Manufacturer three", Model = "Model three", Capacity = "Capacity three", ManufactureYear = "2010" }
+                );
+
+            /*modelBuilder.Entity<Route>().HasData(
+                    new Route { Id = 1, LineId = 0, StationId = 0, DistanceFromTheNextStation = 500},
+                    new Route { Id = 2, LineId = 0, StationId = 0, DistanceFromTheNextStation = 600 }
+                );
+            */
+            modelBuilder.Entity<CreditCard>().HasData(
+                    new CreditCard { Id = 1, CardNumber = 1, ExpirationDate = 25, CardName = "Test one", CCV = 123},
+                    new CreditCard { Id = 2, CardNumber = 2, ExpirationDate = 26, CardName = "Test two", CCV = 234 }
+                );
+            
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.NoAction;

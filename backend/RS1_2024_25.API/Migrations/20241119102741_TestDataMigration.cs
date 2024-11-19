@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RS1_2024_25.API.Migrations
 {
     /// <inheritdoc />
-    public partial class New : Migration
+    public partial class TestDataMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,8 +23,7 @@ namespace RS1_2024_25.API.Migrations
                     Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ManufactureYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ManufactureYear = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -475,6 +474,25 @@ namespace RS1_2024_25.API.Migrations
                         column: x => x.ZoneId,
                         principalTable: "Zones",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "Buses",
+                columns: new[] { "Id", "Capacity", "ManufactureYear", "Manufacturer", "Model", "RegistrationNumber" },
+                values: new object[,]
+                {
+                    { 1, "Capacity one", "2010", "Manufacturer one", "Model one", "Registration number one" },
+                    { 2, "Capacity two", "2010", "Manufacturer two", "Model two", "Registration number two" },
+                    { 3, "Capacity three", "2010", "Manufacturer three", "Model three", "Registration number three" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CreditCards",
+                columns: new[] { "Id", "CCV", "CardName", "CardNumber", "ExpirationDate" },
+                values: new object[,]
+                {
+                    { 1, 123, "Test one", 1, 25 },
+                    { 2, 234, "Test two", 2, 26 }
                 });
 
             migrationBuilder.InsertData(
