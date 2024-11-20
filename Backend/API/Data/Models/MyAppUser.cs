@@ -6,7 +6,7 @@ using GPS.API.Interfaces;
 namespace GPS.API.Data.Models
 {
     [Table("MyAppUsers")]
-    public abstract class MyAppUser : IMustHaveTenant
+    public abstract class MyAppUser 
     {
         [Key]
         public int Id { get; set; }
@@ -15,12 +15,11 @@ namespace GPS.API.Data.Models
         public required string Email { get; set; }
         [JsonIgnore]
         public byte[]? PasswordHash { get; set; }
-        public DateTime BirthDate { get; set; }
-        public DateTime RegistrationDate { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public DateTime? RegistrationDate { get; set; }
         public byte[]? Image { get; set; }
         public string? Address { get; set; }
-        public bool Status { get; set; }
-        public string TenantId { get; set; }
+        public bool? Status { get; set; }
 
         //----------------
         //public bool IsAdmin { get; set; }

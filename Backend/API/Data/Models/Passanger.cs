@@ -6,7 +6,7 @@ namespace GPS.API.Data.Models
     public class Passenger : MyAppUser
     {
         [ForeignKey(nameof(Discount))]
-        public int DiscountID { get; set; }
+        public int? DiscountID { get; set; }
         public Discount? Discount { get; set; }
     }
 }

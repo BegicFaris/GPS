@@ -53,10 +53,49 @@ namespace GPS.API.Data.DbContexts
 
             modelBuilder.Entity<Zone>().HasData(
 
-                  new Zone { Id = 1, Name = "Zone one", Price = 1.5M },
-                  new Zone { Id = 2, Name = "Zone two", Price = 2.1M },
-                  new Zone { Id = 3, Name = "Zone three", Price = 2.7M }
+                new Zone { Id = 1, Name = "Zone one", Price = 1.5M },
+                new Zone { Id = 2, Name = "Zone two", Price = 2.1M },
+                new Zone { Id = 3, Name = "Zone three", Price = 2.7M }
                 );
+            modelBuilder.Entity<Bus>().HasData(
+                new Bus { Id = 1, Capacity = "20", Manufacturer = "MAN", ManufactureYear = "2002", Model = "MK2", RegistrationNumber = "12345678" },
+                new Bus { Id = 2, Capacity = "21", Manufacturer = "MAN", ManufactureYear = "2003", Model = "MK3", RegistrationNumber = "asd5678" }
+                );
+            modelBuilder.Entity<CreditCard>().HasData(
+                new CreditCard { Id = 1, CardName = "Faris", CardNumber = "1234 5679 8791", CCV = 123, ExpirationDate = "7/28" },
+                new CreditCard { Id = 2, CardName = "Nedim", CardNumber = "2432 4454 4545", CCV = 254, ExpirationDate = "7/28" }
+                );
+            modelBuilder.Entity<Discount>().HasData(
+                new Discount { Id = 1, DiscountName = "Student", DiscountValue = 0.15f },
+                new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f }
+                );
+            modelBuilder.Entity<Driver>().HasData(
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123" },
+                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23" }
+                );
+            modelBuilder.Entity<Manager>().HasData(
+                new Manager { Id = 3, Email = "mail@mail.com", FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
+                new Manager { Id = 4, Email = "mail@mail2.com", FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2" }
+                );
+            modelBuilder.Entity<Passenger>().HasData(
+                new Passenger { Id = 5, Email = "mail@mail.com", FirstName = "Adil", LastName = "Joldic" },
+                new Passenger { Id = 6, Email = "mail@mail2.com", FirstName = "Denis", LastName = "Music" }
+                );
+            modelBuilder.Entity<Feedback>().HasData(
+                new Feedback { Id = 1, Date = DateTime.Now, UserId = 5, Rating = 5 },
+                new Feedback { Id = 2, Date = DateTime.Now, UserId = 6, Rating = 3 }
+                );
+
+
+
+
+
+
+
+
+
+
+
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
