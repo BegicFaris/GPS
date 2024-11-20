@@ -11,6 +11,9 @@ using GPS.API.Services.ScheduleServices;
 using GPS.API.Services.TenantServices;
 using Microsoft.EntityFrameworkCore;
 using RS1_2024_25.API.Services.UserServices;
+using GPS.API.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using GPS.API.Services.TokenServices;
 
 var config = new ConfigurationBuilder()
 .AddJsonFile("appsettings.json", false)
@@ -44,6 +47,8 @@ builder.Services.AddScoped<ILineService, LineService>();
 builder.Services.AddScoped<IBusService, BusService>();
 // Adding the scpoped service CurrentTenantService
 builder.Services.AddScoped<ICurrentTenantService, CurrentTenantService>();
+builder.Services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();
+builder.Services.AddScoped<ITokenService,TokenService>();
 
 
 var app = builder.Build();
@@ -53,13 +58,18 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors(
-    options => options
-        .SetIsOriginAllowed(x => _ = true)
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials()
-); //This needs to set everything allowed
+
+//app.UseCors(
+//    options => options
+//        .SetIsOriginAllowed(x => _ = true)
+//        .AllowAnyMethod()
+//        .AllowAnyHeader()
+//        .AllowCredentials()
+//); //This needs to set everything allowed //BEGINO
+
+//KURS
+app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod()
+            .WithOrigins("http://localhost:4200", "https://localhost:4200"));
 
 
 app.UseAuthorization();
