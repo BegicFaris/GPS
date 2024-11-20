@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using System.Text;
 
 namespace GPS.API.Data.DbContexts
 {
@@ -70,21 +71,21 @@ namespace GPS.API.Data.DbContexts
                 new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f }
                 );
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123" },
-                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23" }
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash= Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123" },
+                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"),Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23" }
                 );
             modelBuilder.Entity<Manager>().HasData(
-                new Manager { Id = 3, Email = "mail@mail.com", FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
-                new Manager { Id = 4, Email = "mail@mail2.com", FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2" }
+                new Manager { Id = 3, Email = "mail@mail.com", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"),FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
+                new Manager { Id = 4, Email = "mail@mail2.com", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"),FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2" }
                 );
             modelBuilder.Entity<Passenger>().HasData(
-                new Passenger { Id = 5, Email = "mail@mail.com", FirstName = "Adil", LastName = "Joldic" },
-                new Passenger { Id = 6, Email = "mail@mail2.com", FirstName = "Denis", LastName = "Music" }
+                new Passenger { Id = 5, Email = "mail@mail.com", FirstName = "Adil", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), LastName = "Joldic" },
+                new Passenger { Id = 6, Email = "mail@mail2.com", FirstName = "Denis", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), LastName = "Music" }
                 );
             modelBuilder.Entity<Feedback>().HasData(
                 new Feedback { Id = 1, Date = DateTime.Now, UserId = 5, Rating = 5 },
                 new Feedback { Id = 2, Date = DateTime.Now, UserId = 6, Rating = 3 }
-                );
+            );
 
 
 
