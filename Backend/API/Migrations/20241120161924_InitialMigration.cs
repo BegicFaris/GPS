@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GPS.API.Migrations
 {
     /// <inheritdoc />
-    public partial class Create : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,8 +36,8 @@ namespace GPS.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CardNumber = table.Column<int>(type: "int", nullable: false),
-                    ExpirationDate = table.Column<int>(type: "int", nullable: false),
+                    CardNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpirationDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CCV = table.Column<int>(type: "int", nullable: false)
                 },
@@ -53,7 +53,7 @@ namespace GPS.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DiscountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscountValue = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    DiscountValue = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,12 +70,11 @@ namespace GPS.API.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
-                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -143,7 +142,7 @@ namespace GPS.API.Migrations
                     License = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DriversLicenseNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WorkingHoursInAWeek = table.Column<float>(type: "real", nullable: false)
+                    WorkingHoursInAWeek = table.Column<float>(type: "real", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -203,7 +202,7 @@ namespace GPS.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    DiscountID = table.Column<int>(type: "int", nullable: false)
+                    DiscountID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -456,6 +455,46 @@ namespace GPS.API.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Buses",
+                columns: new[] { "Id", "Capacity", "ManufactureYear", "Manufacturer", "Model", "RegistrationNumber" },
+                values: new object[,]
+                {
+                    { 1, "20", "2002", "MAN", "MK2", "12345678" },
+                    { 2, "21", "2003", "MAN", "MK3", "asd5678" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CreditCards",
+                columns: new[] { "Id", "CCV", "CardName", "CardNumber", "ExpirationDate" },
+                values: new object[,]
+                {
+                    { 1, 123, "Faris", "1234 5679 8791", "7/28" },
+                    { 2, 254, "Nedim", "2432 4454 4545", "7/28" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Discounts",
+                columns: new[] { "Id", "DiscountName", "DiscountValue" },
+                values: new object[,]
+                {
+                    { 1, "Student", 0.15f },
+                    { 2, "Penzioner", 0.17f }
+                });
+
+            migrationBuilder.InsertData(
+                table: "MyAppUsers",
+                columns: new[] { "Id", "Address", "BirthDate", "Email", "FirstName", "Image", "LastName", "PasswordHash", "RegistrationDate", "Status" },
+                values: new object[,]
+                {
+                    { 1, null, null, "mail@mail.com", "Adi", null, "Gosto", null, null, null },
+                    { 2, null, null, "mail@mail2.com", "Nedim", null, "Jugo", null, null, null },
+                    { 3, null, null, "mail@mail.com", "Adil", null, "Joldic", null, null, null },
+                    { 4, null, null, "mail@mail2.com", "Denis", null, "Music", null, null, null },
+                    { 5, null, null, "mail@mail.com", "Adil", null, "Joldic", null, null, null },
+                    { 6, null, null, "mail@mail2.com", "Denis", null, "Music", null, null, null }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Tenants",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -472,6 +511,42 @@ namespace GPS.API.Migrations
                     { 1, "Zone one", 1.5m },
                     { 2, "Zone two", 2.1m },
                     { 3, "Zone three", 2.7m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Drivers",
+                columns: new[] { "Id", "DriversLicenseNumber", "HireDate", "License", "WorkingHoursInAWeek" },
+                values: new object[,]
+                {
+                    { 1, "a1435affaa", new DateTime(2024, 11, 20, 17, 19, 23, 744, DateTimeKind.Local).AddTicks(1019), "1123123", null },
+                    { 2, "adasd43aa", new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(4258), "11jdfghsdjg23", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Feedbacks",
+                columns: new[] { "Id", "Comment", "Date", "Picture", "Rating", "UserId" },
+                values: new object[,]
+                {
+                    { 1, null, new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(7277), null, 5f, 5 },
+                    { 2, null, new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(8134), null, 3f, 6 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Managers",
+                columns: new[] { "Id", "Department", "HireDate", "ManagerLevel" },
+                values: new object[,]
+                {
+                    { 3, "HR", new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(5053), "1" },
+                    { 4, "IT", new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(5821), "2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Passengers",
+                columns: new[] { "Id", "DiscountID" },
+                values: new object[,]
+                {
+                    { 5, null },
+                    { 6, null }
                 });
 
             migrationBuilder.CreateIndex(

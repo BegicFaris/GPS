@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GPS.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241119211210_Create")]
-    partial class Create
+    [Migration("20241120161924_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,26 @@ namespace GPS.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Buses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Capacity = "20",
+                            ManufactureYear = "2002",
+                            Manufacturer = "MAN",
+                            Model = "MK2",
+                            RegistrationNumber = "12345678"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Capacity = "21",
+                            ManufactureYear = "2003",
+                            Manufacturer = "MAN",
+                            Model = "MK3",
+                            RegistrationNumber = "asd5678"
+                        });
                 });
 
             modelBuilder.Entity("GPS.API.Data.Models.CreditCard", b =>
@@ -73,15 +93,35 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CardNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ExpirationDate")
-                        .HasColumnType("int");
+                    b.Property<string>("ExpirationDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("CreditCards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CCV = 123,
+                            CardName = "Faris",
+                            CardNumber = "1234 5679 8791",
+                            ExpirationDate = "7/28"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CCV = 254,
+                            CardName = "Nedim",
+                            CardNumber = "2432 4454 4545",
+                            ExpirationDate = "7/28"
+                        });
                 });
 
             modelBuilder.Entity("GPS.API.Data.Models.Discount", b =>
@@ -96,13 +136,26 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DiscountValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("DiscountValue")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
                     b.ToTable("Discounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DiscountName = "Student",
+                            DiscountValue = 0.15f
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DiscountName = "Penzioner",
+                            DiscountValue = 0.17f
+                        });
                 });
 
             modelBuilder.Entity("GPS.API.Data.Models.Feedback", b =>
@@ -133,6 +186,22 @@ namespace GPS.API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Date = new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(7277),
+                            Rating = 5f,
+                            UserId = 5
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Date = new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(8134),
+                            Rating = 3f,
+                            UserId = 6
+                        });
                 });
 
             modelBuilder.Entity("GPS.API.Data.Models.Line", b =>
@@ -180,7 +249,7 @@ namespace GPS.API.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -201,15 +270,11 @@ namespace GPS.API.Migrations
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<DateTime>("RegistrationDate")
+                    b.Property<DateTime?>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -583,10 +648,32 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("WorkingHoursInAWeek")
+                    b.Property<float?>("WorkingHoursInAWeek")
                         .HasColumnType("real");
 
                     b.ToTable("Drivers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "mail@mail.com",
+                            FirstName = "Adi",
+                            LastName = "Gosto",
+                            DriversLicenseNumber = "a1435affaa",
+                            HireDate = new DateTime(2024, 11, 20, 17, 19, 23, 744, DateTimeKind.Local).AddTicks(1019),
+                            License = "1123123"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "mail@mail2.com",
+                            FirstName = "Nedim",
+                            LastName = "Jugo",
+                            DriversLicenseNumber = "adasd43aa",
+                            HireDate = new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(4258),
+                            License = "11jdfghsdjg23"
+                        });
                 });
 
             modelBuilder.Entity("GPS.API.Data.Models.Manager", b =>
@@ -605,18 +692,56 @@ namespace GPS.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("Managers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 3,
+                            Email = "mail@mail.com",
+                            FirstName = "Adil",
+                            LastName = "Joldic",
+                            Department = "HR",
+                            HireDate = new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(5053),
+                            ManagerLevel = "1"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "mail@mail2.com",
+                            FirstName = "Denis",
+                            LastName = "Music",
+                            Department = "IT",
+                            HireDate = new DateTime(2024, 11, 20, 17, 19, 23, 746, DateTimeKind.Local).AddTicks(5821),
+                            ManagerLevel = "2"
+                        });
                 });
 
             modelBuilder.Entity("GPS.API.Data.Models.Passenger", b =>
                 {
                     b.HasBaseType("GPS.API.Data.Models.MyAppUser");
 
-                    b.Property<int>("DiscountID")
+                    b.Property<int?>("DiscountID")
                         .HasColumnType("int");
 
                     b.HasIndex("DiscountID");
 
                     b.ToTable("Passengers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 5,
+                            Email = "mail@mail.com",
+                            FirstName = "Adil",
+                            LastName = "Joldic"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Email = "mail@mail2.com",
+                            FirstName = "Denis",
+                            LastName = "Music"
+                        });
                 });
 
             modelBuilder.Entity("GPS.API.Data.Models.Feedback", b =>
@@ -816,8 +941,7 @@ namespace GPS.API.Migrations
                     b.HasOne("GPS.API.Data.Models.Discount", "Discount")
                         .WithMany()
                         .HasForeignKey("DiscountID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("GPS.API.Data.Models.MyAppUser", null)
                         .WithOne()

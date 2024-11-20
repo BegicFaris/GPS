@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace GPS.API.Data.DbContexts
 {
@@ -12,6 +13,8 @@ namespace GPS.API.Data.DbContexts
         public string CurrentTenantID = currentTenantService.TenantId;
         private readonly DbContextOptions<ApplicationDbContext> options = options;
         private readonly ICurrentTenantService currentTenantService = currentTenantService;
+
+
         public DbSet<MyAppUser> MyAppUsers { get; set; }
         public DbSet<Bus> Buses { get; set; }
         public DbSet<Zone> Zones { get; set; }
@@ -33,6 +36,15 @@ namespace GPS.API.Data.DbContexts
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<SystemActionLog> SystemActionsLog { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
+
+
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.ConfigureWarnings(warnings =>
+        //     warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -70,31 +82,25 @@ namespace GPS.API.Data.DbContexts
                 new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f }
                 );
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123" },
-                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23" }
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", Email = "mail@mail.com", FirstName = "Adi", HireDate = new DateTime(2024, 1, 1), LastName = "Gosto", License = "1123123" },
+                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", Email = "mail@mail2.com", FirstName = "Nedim", HireDate = new DateTime(2024, 1, 1), LastName = "Jugo", License = "11jdfghsdjg23" }
                 );
             modelBuilder.Entity<Manager>().HasData(
-                new Manager { Id = 3, Email = "mail@mail.com", FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
-                new Manager { Id = 4, Email = "mail@mail2.com", FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2" }
+                new Manager { Id = 3, Email = "mail@mail.com", FirstName = "Adil", HireDate = new DateTime(2024, 1, 1), LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
+                new Manager { Id = 4, Email = "mail@mail2.com", FirstName = "Denis", HireDate = new DateTime(2024, 1, 1), LastName = "Music", Department = "IT", ManagerLevel = "2" }
                 );
             modelBuilder.Entity<Passenger>().HasData(
                 new Passenger { Id = 5, Email = "mail@mail.com", FirstName = "Adil", LastName = "Joldic" },
                 new Passenger { Id = 6, Email = "mail@mail2.com", FirstName = "Denis", LastName = "Music" }
                 );
             modelBuilder.Entity<Feedback>().HasData(
-                new Feedback { Id = 1, Date = DateTime.Now, UserId = 5, Rating = 5 },
-                new Feedback { Id = 2, Date = DateTime.Now, UserId = 6, Rating = 3 }
+                new Feedback { Id = 1, Date = new DateTime(2024, 1, 1), UserId = 5, Rating = 5 },
+                new Feedback { Id = 2, Date = new DateTime(2024, 1, 1), UserId = 6, Rating = 3 }
                 );
-
-
-
-
-
-
-
-
-
-
+            modelBuilder.Entity<Station>().HasData(
+                new Station { Id = 1, GPSCode = "6.6.6", Location = "Bafo", Name = "Bafo", ZoneId = 1 },
+                new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2 }
+                );
 
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

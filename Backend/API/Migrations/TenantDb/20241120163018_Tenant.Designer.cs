@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GPS.API.Migrations.TenantDb
 {
     [DbContext(typeof(TenantDbContext))]
-    [Migration("20241119211620_Tenant")]
+    [Migration("20241120163018_Tenant")]
     partial class Tenant
     {
         /// <inheritdoc />
