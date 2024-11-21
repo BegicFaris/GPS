@@ -7,7 +7,7 @@ namespace GPS.API.Data.Models
     public class Route
     {
         [Key]
-        public required int Id { get; set; }
+        public int Id { get; set; }
         [ForeignKey(nameof(Line))]
         public required int LineId { get; set; }
         public Line? Line { get; set; }

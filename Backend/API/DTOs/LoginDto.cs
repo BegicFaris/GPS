@@ -1,4 +1,4 @@
-﻿namespace GPS.API.DTOs
+﻿namespace GPS.API.Dtos
 {
     public class LoginDto
     {

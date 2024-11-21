@@ -7,7 +7,7 @@ namespace GPS.API.Data.Models
     public class Line
     {
         [Key]
-        public required int Id { get; set; }
+        public int Id { get; set; }
         public required string Name { get; set; }
         [ForeignKey(nameof(Station))]
         public required int StartingStationID { get; set; }

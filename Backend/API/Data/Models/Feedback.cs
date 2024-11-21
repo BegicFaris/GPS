@@ -5,7 +5,7 @@ namespace GPS.API.Data.Models
     public class Feedback
     {
         [Key]
-        public required int Id { get; set; }
+        public int Id { get; set; }
         [ForeignKey(nameof(MyAppUser))]
         public required int UserId { get; set; }
         public MyAppUser? User { get; set; }

@@ -1,6 +1,8 @@
 ﻿using GPS.API.Data.Models;
+using GPS.API.Dtos.FeedbackDTOs;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.Xml;
 
 namespace GPS.API.Controllers
 {
@@ -26,17 +28,40 @@ namespace GPS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateFeedback(Feedback feedback)
+        public async Task<IActionResult> CreateFeedback(FeedbackCreateDto feedbackCreateDto)
         {
+            var feedback = new Feedback()
+            {
+                UserId = feedbackCreateDto.UserId,
+                Comment = feedbackCreateDto.Comment,
+                Rating = feedbackCreateDto.Rating,
+                Date = feedbackCreateDto.Date,
+                Picture = feedbackCreateDto.Picture,
+            };
             var createdFeedback = await _feedbackService.CreateFeedbackAsync(feedback);
             return CreatedAtAction(nameof(CreateFeedback), new { id = createdFeedback.Id }, createdFeedback);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFeedback(int id, Feedback feedback)
+        public async Task<IActionResult> UpdateFeedback(int id, FeedbackUpdateDto feedbackUpdateDto)
         {
-            if (id != feedback.Id) return BadRequest();
-            var updatedFeedback = await _feedbackService.UpdateFeedbackAsync(feedback);
+            if (id != feedbackUpdateDto.Id) return BadRequest();
+
+            var existingFeedback = await _feedbackService.GetFeedbackByIdAsync(id);
+            if (existingFeedback == null) return NotFound($"Feedback with Id:{id} not found!");
+
+            if (feedbackUpdateDto.UserId != null)
+                existingFeedback.UserId = feedbackUpdateDto.UserId.Value;
+            if(feedbackUpdateDto.Rating != null)
+                existingFeedback.Rating= feedbackUpdateDto.Rating.Value;
+            if (feedbackUpdateDto.Date != null)
+                existingFeedback.Date = feedbackUpdateDto.Date.Value;
+            
+            existingFeedback.Comment= feedbackUpdateDto.Comment;
+            existingFeedback.Picture= feedbackUpdateDto.Picture;
+
+
+            var updatedFeedback = await _feedbackService.UpdateFeedbackAsync(existingFeedback);
             return Ok(updatedFeedback);
         }
 

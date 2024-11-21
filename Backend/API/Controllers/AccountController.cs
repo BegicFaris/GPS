@@ -1,6 +1,6 @@
 ﻿using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
-using GPS.API.DTOs;
+using GPS.API.Dtos;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

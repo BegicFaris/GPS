@@ -6,7 +6,7 @@ namespace GPS.API.Data.Models
     public class Shift
     {
         [Key]
-        public required int Id { get; set; }
+        public int Id { get; set; }
         [ForeignKey(nameof(Bus))]
         public required int BusId { get; set; }
         public Bus? Bus { get; set; }

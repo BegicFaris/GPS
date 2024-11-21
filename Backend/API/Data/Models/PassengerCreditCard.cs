@@ -6,7 +6,7 @@ namespace GPS.API.Data.Models
     public class PassengerCreditCard
     {
         [Key]
-        public required int Id { get; set; }
+        public int Id { get; set; }
         [ForeignKey(nameof(Passenger))]
         public required int PassengerId { get; set; }
         public Passenger? Passenger { get; set; }
