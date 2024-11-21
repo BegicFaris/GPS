@@ -105,8 +105,8 @@ namespace GPS.API.Data.DbContexts
                 new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2 }
                 );
             modelBuilder.Entity<Line>().HasData(
-                new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationID = 1, StartingStationID = 2, Name = "21" },
-                 new Line { Id = 2, CompleteDistance = "10", IsActive = true, EndingStationID = 1, StartingStationID = 2, Name = "21" }
+                new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21" },
+                 new Line { Id = 2, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21" }
                 );
 
             modelBuilder.Entity<NotificationType>().HasData(

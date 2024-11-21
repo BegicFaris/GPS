@@ -1,7 +1,7 @@
 ﻿using GPS.API.Data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GPS.API.Dtos.FeedbackDTOs
+namespace GPS.API.Dtos.FeedbackDtos
 {
     public class FeedbackUpdateDto
     {

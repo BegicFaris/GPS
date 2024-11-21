@@ -10,10 +10,10 @@ namespace GPS.API.Data.Models
         public int Id { get; set; }
         public required string Name { get; set; }
         [ForeignKey(nameof(Station))]
-        public required int StartingStationID { get; set; }
+        public required int StartingStationId { get; set; }
         public Station? StartingStation { get; set; }
         [ForeignKey(nameof(Station))]
-        public required int EndingStationID { get; set; }
+        public required int EndingStationId { get; set; }
         public Station? EndingStation { get; set; }
         public required string CompleteDistance { get; set; }
         public required bool IsActive { get; set; }

@@ -1,5 +1,5 @@
 ﻿using GPS.API.Data.Models;
-using GPS.API.Dtos.FeedbackDTOs;
+using GPS.API.Dtos.FeedbackDtos;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.Xml;
