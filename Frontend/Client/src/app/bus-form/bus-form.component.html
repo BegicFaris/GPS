@@ -54,18 +54,18 @@
       <!-- Capacity -->
       <div class="mb-3">
         <label for="capacity" class="form-label">Capacity</label>
-        <input type="number" class="form-control" id="capacity" [(ngModel)]="bus.capacity" name="capacity" required>
+        <input type="text" class="form-control" id="capacity" [(ngModel)]="bus.capacity" name="capacity" required>
       </div>
 
       <!-- Manufacture Year -->
       <div class="mb-3">
         <label for="manufactureYear" class="form-label">Manufacture Year</label>
-        <input type="number" class="form-control" id="manufactureYear" [(ngModel)]="bus.manufactureYear" name="manufactureYear" required>
+        <input type="text" class="form-control" id="manufactureYear" [(ngModel)]="bus.manufactureYear" name="manufactureYear" required>
       </div>
 
       <!-- Submit Button -->
       <div class="text-center">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">{{ bus.id ? 'Update' : 'Add' }}</button>
+        <button class="btn btn-primary" type="submit">{{ bus.id ? 'Update' : 'Add' }}</button>
       </div>
     </form>
 
