@@ -3,7 +3,7 @@ using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace GPS.API.Services.NotificationService
+namespace GPS.API.Services.NotificationServices
 {
     public class NotificationService : INotificationService
     {

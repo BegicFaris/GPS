@@ -3,11 +3,16 @@ using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using GPS.API.Services.BusServices;
 using GPS.API.Services.DriverServices;
+using GPS.API.Services.FeedbackServices;
 using GPS.API.Services.LineServices;
 using GPS.API.Services.ManagerServices;
+using GPS.API.Services.NotificationServices;
 using GPS.API.Services.PassengerServices;
 using GPS.API.Services.ScheduleServices;
+using GPS.API.Services.ShiftServices;
+using GPS.API.Services.StationServices;
 using GPS.API.Services.TenantServices;
+using GPS.API.Services.TicketServices;
 using GPS.API.Services.TokenServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -38,12 +43,15 @@ namespace GPS.API.Extensions
 
             //dodajte vaše servise
             //builder.Services.AddTransient<MyAuthService>();
-            // Adding the scpoped service MyAppUserService, DriverService, PassengerService and ManagerService
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IShiftService, ShiftService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IStationService, StationService>();
             services.AddScoped<IMyAppUserService, MyAppUserService>();
             services.AddScoped<IDriverService, DriverService>();
             services.AddScoped<IPassengerService, PassengerService>();
             services.AddScoped<IManagerService, ManagerService>();
-            // Adding the scpoped service LineService and ScheduleService
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<ILineService, LineService>();
             services.AddScoped<IBusService, BusService>();
@@ -51,6 +59,7 @@ namespace GPS.API.Extensions
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();
             services.AddScoped<ITokenService, TokenService>();
+
 
             return services;
         }
