@@ -14,43 +14,20 @@ using RS1_2024_25.API.Services.UserServices;
 using GPS.API.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using GPS.API.Services.TokenServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using GPS.API.Extensions;
 
-var config = new ConfigurationBuilder()
-.AddJsonFile("appsettings.json", false)
-.Build();
+
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(config.GetConnectionString("db1")));
-
-builder.Services.AddDbContext<TenantDbContext>(options =>
-    options.UseSqlServer(config.GetConnectionString("db1")));
-
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddHttpContextAccessor();
-
-
-//dodajte vaše servise
-//builder.Services.AddTransient<MyAuthService>();
-// Adding the scpoped service MyAppUserService, DriverService, PassengerService and ManagerService
-builder.Services.AddScoped<IMyAppUserService, MyAppUserService>();
-builder.Services.AddScoped<IDriverService, DriverService>();
-builder.Services.AddScoped<IPassengerService, PassengerService>();
-builder.Services.AddScoped<IManagerService, ManagerService>();
-// Adding the scpoped service LineService and ScheduleService
-builder.Services.AddScoped<IScheduleService, ScheduleService>();
-builder.Services.AddScoped<ILineService, LineService>();
-builder.Services.AddScoped<IBusService, BusService>();
-// Adding the scpoped service CurrentTenantService
-builder.Services.AddScoped<ICurrentTenantService, CurrentTenantService>();
-builder.Services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();
-builder.Services.AddScoped<ITokenService,TokenService>();
-
+var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false)
+                .Build();
+//Servisi
+builder.Services.AddApplicationServices(config);
+//Identiteti
+builder.Services.AddIdentityServices(config);
 
 var app = builder.Build();
 
@@ -72,7 +49,7 @@ app.UseSwaggerUI();
 app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod()
             .WithOrigins("http://localhost:4200", "https://localhost:4200"));
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<TenantResolver>();
