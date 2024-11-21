@@ -7,6 +7,6 @@ namespace GPS.API.Data.Models
         [Key]
         public required int Id { get; set; }
         public required string DiscountName { get; set; }
-        public required string DiscountValue { get; set; }
+        public required float DiscountValue { get; set; }
     }
 }
