@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GPS.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class NewData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -496,12 +496,30 @@ namespace GPS.API.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "NotificationTypes",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "A warning notif", "Warning" },
+                    { 2, "A error notif", "Error" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Tenants",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { "tenant1", "Tenant1" },
                     { "tenant2", "Tenant2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TicketTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Basic" },
+                    { 2, "Advanced" }
                 });
 
             migrationBuilder.InsertData(
@@ -519,8 +537,8 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "DriversLicenseNumber", "HireDate", "License", "WorkingHoursInAWeek" },
                 values: new object[,]
                 {
-                    { 1, "a1435affaa", new DateTime(2024, 11, 20, 17, 42, 45, 104, DateTimeKind.Local).AddTicks(3553), "1123123", null },
-                    { 2, "adasd43aa", new DateTime(2024, 11, 20, 17, 42, 45, 106, DateTimeKind.Local).AddTicks(990), "11jdfghsdjg23", null }
+                    { 1, "a1435affaa", new DateTime(2024, 11, 21, 13, 41, 1, 278, DateTimeKind.Local).AddTicks(2945), "1123123", null },
+                    { 2, "adasd43aa", new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(5323), "11jdfghsdjg23", null }
                 });
 
             migrationBuilder.InsertData(
@@ -537,8 +555,8 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "Department", "HireDate", "ManagerLevel" },
                 values: new object[,]
                 {
-                    { 3, "HR", new DateTime(2024, 11, 20, 17, 42, 45, 106, DateTimeKind.Local).AddTicks(1444), "1" },
-                    { 4, "IT", new DateTime(2024, 11, 20, 17, 42, 45, 106, DateTimeKind.Local).AddTicks(1932), "2" }
+                    { 3, "HR", new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(6006), "1" },
+                    { 4, "IT", new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(6788), "2" }
                 });
 
             migrationBuilder.InsertData(
@@ -557,6 +575,60 @@ namespace GPS.API.Migrations
                 {
                     { 1, "6.6.6", "Bafo", "Bafo", 1 },
                     { 2, "13123", "Sutina", "Sutina1", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Lines",
+                columns: new[] { "Id", "CompleteDistance", "EndingStationID", "IsActive", "Name", "StartingStationID" },
+                values: new object[,]
+                {
+                    { 1, "10", 1, true, "21", 2 },
+                    { 2, "10", 1, true, "21", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PassengerCreditCards",
+                columns: new[] { "Id", "CreditCardId", "PassengerId", "SavingDate" },
+                values: new object[,]
+                {
+                    { 1, 1, 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 2, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Shifts",
+                columns: new[] { "Id", "BusId", "DriverId", "ShiftDate", "ShiftEndingTime", "ShiftStartingTime" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, new DateOnly(2024, 1, 1), new TimeOnly(16, 0, 0), new TimeOnly(8, 0, 0) },
+                    { 2, 2, 2, new DateOnly(2024, 1, 1), new TimeOnly(16, 0, 0), new TimeOnly(8, 0, 0) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Notifications",
+                columns: new[] { "Id", "Date", "Duration", "IsActive", "LineId", "NotificationTypeId" },
+                values: new object[,]
+                {
+                    { 1, new DateOnly(2024, 1, 1), new TimeOnly(1, 1, 1), true, 1, 1 },
+                    { 2, new DateOnly(2024, 1, 1), new TimeOnly(1, 1, 1), true, 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Routes",
+                columns: new[] { "Id", "DistanceFromTheNextStation", "LineId", "StationId" },
+                values: new object[,]
+                {
+                    { 1, 15.6f, 1, 1 },
+                    { 2, 15.6f, 2, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tickets",
+                columns: new[] { "Id", "CreatedDate", "ExpirationDate", "LineId", "QrCode", "TicketTypeId", "UserId", "ZoneId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new byte[0], 1, 2, 1 },
+                    { 2, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, new byte[0], 2, 1, 1 }
                 });
 
             migrationBuilder.CreateIndex(

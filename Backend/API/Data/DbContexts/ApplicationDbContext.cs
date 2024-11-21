@@ -41,13 +41,12 @@ namespace GPS.API.Data.DbContexts
         public DbSet<NotificationType> NotificationTypes { get; set; }
 
 
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //    optionsBuilder.ConfigureWarnings(warnings =>
-        //     warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.ConfigureWarnings(warnings =>
+             warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -85,12 +84,12 @@ namespace GPS.API.Data.DbContexts
                 new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f }
                 );
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash= Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123" },
-                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"),Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23" }
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123" },
+                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23" }
                 );
             modelBuilder.Entity<Manager>().HasData(
-                new Manager { Id = 3, Email = "mail@mail.com", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"),FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
-                new Manager { Id = 4, Email = "mail@mail2.com", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"),FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2" }
+                new Manager { Id = 3, Email = "mail@mail.com", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
+                new Manager { Id = 4, Email = "mail@mail2.com", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2" }
 
                 );
             modelBuilder.Entity<Passenger>().HasData(
@@ -105,17 +104,46 @@ namespace GPS.API.Data.DbContexts
                 new Station { Id = 1, GPSCode = "6.6.6", Location = "Bafo", Name = "Bafo", ZoneId = 1 },
                 new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2 }
                 );
+            modelBuilder.Entity<Line>().HasData(
+                new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationID = 1, StartingStationID = 2, Name = "21" },
+                 new Line { Id = 2, CompleteDistance = "10", IsActive = true, EndingStationID = 1, StartingStationID = 2, Name = "21" }
+                );
 
+            modelBuilder.Entity<NotificationType>().HasData(
+                new NotificationType { Id = 1, Description = "A warning notif", Name = "Warning" },
+                new NotificationType { Id = 2, Description = "A error notif", Name = "Error" }
+                );
 
+            modelBuilder.Entity<Notification>().HasData(
+                new Notification { Id = 1, Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 1, NotificationTypeId = 1 },
+                new Notification { Id = 2, Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 2, NotificationTypeId = 2 }
+                );
+            modelBuilder.Entity<PassengerCreditCard>().HasData(
+                new PassengerCreditCard { Id = 1, CreditCardId = 1, PassengerId = 5, SavingDate = new DateTime(2024, 1, 1) },
+                new PassengerCreditCard { Id = 2, CreditCardId = 2, PassengerId = 6, SavingDate = new DateTime(2024, 1, 1) }
+                );
+            modelBuilder.Entity<Models.Route>().HasData(
+               new Models.Route { Id = 1, LineId = 1, StationId = 1, DistanceFromTheNextStation = 15.6f },
+               new Models.Route { Id = 2, LineId = 2, StationId = 2, DistanceFromTheNextStation = 15.6f }
+               );
+            modelBuilder.Entity<Shift>().HasData(
+                new Shift { Id = 1, BusId = 1, DriverId = 1, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0) },
+                new Shift { Id = 2, BusId = 2, DriverId = 2, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0) }
+                );
+
+            modelBuilder.Entity<TicketType>().HasData(
+                new TicketType { Id = 1, Name = "Basic" },
+                new TicketType { Id = 2, Name = "Advanced" }
+                );
+            modelBuilder.Entity<Ticket>().HasData(
+                new Ticket { Id = 1, CreatedDate= new DateTime(2024, 1, 1), ExpirationDate= new DateTime(2024, 2, 2), LineId=1, QrCode=new byte[] { }, TicketTypeId=1, UserId=2, ZoneId=1 },
+               new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 2, QrCode = new byte[] { }, TicketTypeId = 2, UserId = 1, ZoneId = 1 }
+                );
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.NoAction;
             }
-
-
-
-
             // opcija kod nasljeđivanja
             // modelBuilder.Entity<NekaBaznaKlasa>().UseTpcMappingStrategy();
         }
