@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using GPS.API.Dtos.RouteDtos;
 
 namespace GPS.API.Controllers
 {
@@ -26,17 +27,35 @@ namespace GPS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBus(Data.Models.Route route)
+        public async Task<IActionResult> CreateBus(RouteCreateDto routeCreateDto)
         {
+            var route = new Data.Models.Route 
+            {
+            LineId=routeCreateDto.LineId,
+            StationId=routeCreateDto.StationId,
+            DistanceFromTheNextStation=routeCreateDto.DistanceFromTheNextStation
+            }; 
             var createdRoute = await _routeService.CreateRouteAsync(route);
             return CreatedAtAction(nameof(GetRoute), new { id = createdRoute.Id }, createdRoute);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRoute(int id, Data.Models.Route route)
+        public async Task<IActionResult> UpdateRoute(int id, RouteUpdateDto routeUpdateDto)
         {
-            if (id != route.Id) return BadRequest();
-            var updatedRoute = await _routeService.UpdateRouteAsync(route);
+            if (id != routeUpdateDto.Id) return BadRequest();
+            var existingRoute = await _routeService.GetRouteByIdAsync(id);
+            if (existingRoute == null) return NotFound();
+
+            if (routeUpdateDto.LineId != null)
+                existingRoute.LineId = routeUpdateDto.LineId.Value;
+
+            if (routeUpdateDto.StationId != null)
+                existingRoute.StationId = routeUpdateDto.StationId.Value;
+
+            if (routeUpdateDto.DistanceFromTheNextStation != null)
+                existingRoute.DistanceFromTheNextStation = routeUpdateDto.DistanceFromTheNextStation.Value;
+
+            var updatedRoute = await _routeService.UpdateRouteAsync(existingRoute);
             return Ok(updatedRoute);
         }
 

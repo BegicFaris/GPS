@@ -1,4 +1,5 @@
 ﻿using GPS.API.Data.Models;
+using GPS.API.Dtos.NotificationDtos;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,17 +27,41 @@ namespace GPS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNotification(Notification notification)
+        public async Task<IActionResult> CreateNotification(NotificationCreateDto notificationCreateDto)
         {
+            var notification = new Notification
+            {
+                NotificationTypeId = notificationCreateDto.NotificationTypeId,
+                Duration = notificationCreateDto.Duration,
+                IsActive = notificationCreateDto.IsActive,
+                Date = notificationCreateDto.Date,
+                LineId = notificationCreateDto.LineId
+            };
+
             var createdNotification = await _notificationService.CreateNotificationAsync(notification);
             return CreatedAtAction(nameof(CreateNotification), new { id = createdNotification.Id }, createdNotification);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateNotification(int id, Notification notification)
+        public async Task<IActionResult> UpdateNotification(int id, NotificationUpdateDto notificationUpdateDto)
         {
-            if (id != notification.Id) return BadRequest();
-            var updatedNotification = await _notificationService.UpdateNotificationAsync(notification);
+            if (id != notificationUpdateDto.Id) return BadRequest();
+
+            var existingNotification = await _notificationService.GetNotificationByIdAsync(id);
+            if (existingNotification == null) return NotFound();
+
+            if (notificationUpdateDto.NotificationTypeId != null)
+                existingNotification.NotificationTypeId = notificationUpdateDto.NotificationTypeId.Value;
+            if (notificationUpdateDto.Duration != null)
+                existingNotification.Duration = notificationUpdateDto.Duration.Value;
+            if (notificationUpdateDto.Date != null)
+                existingNotification.Date = notificationUpdateDto.Date.Value;
+            if (notificationUpdateDto.IsActive != null)
+                existingNotification.IsActive = notificationUpdateDto.IsActive.Value;
+            if (notificationUpdateDto.LineId != null)
+                existingNotification.LineId = notificationUpdateDto.LineId.Value;
+
+            var updatedNotification = await _notificationService.UpdateNotificationAsync(existingNotification);
             return Ok(updatedNotification);
         }
 
