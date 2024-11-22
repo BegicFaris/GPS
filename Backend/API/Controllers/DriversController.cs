@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GPS.API.Controllers
 {
@@ -13,10 +14,12 @@ namespace GPS.API.Controllers
             _driverService = driverService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAllDrivers() =>
             Ok(await _driverService.GetAllDriversAsync());
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDriver(int id)
         {

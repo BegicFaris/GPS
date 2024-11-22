@@ -15,6 +15,7 @@ namespace GPS.API.Data.Models
         public required string Email { get; set; }
         [JsonIgnore]
         public byte[]? PasswordHash { get; set; }
+        [JsonIgnore]
         public byte[]? PasswordSalt { get; set; }
         public DateTime? BirthDate { get; set; }
         public DateTime? RegistrationDate { get; set; }
