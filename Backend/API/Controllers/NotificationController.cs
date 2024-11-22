@@ -48,7 +48,7 @@ namespace GPS.API.Controllers
             if (id != notificationUpdateDto.Id) return BadRequest();
 
             var existingNotification = await _notificationService.GetNotificationByIdAsync(id);
-            if (existingNotification == null) return NotFound();
+            if (existingNotification == null) return NotFound($"Notification with Id:{id} not found!");
 
             if (notificationUpdateDto.NotificationTypeId != null)
                 existingNotification.NotificationTypeId = notificationUpdateDto.NotificationTypeId.Value;

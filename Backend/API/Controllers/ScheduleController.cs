@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using GPS.API.Dtos.ScheduleDtos;
 
 namespace GPS.API.Controllers
 {
-    public class ScheduleController: MyControllerBase
+    public class ScheduleController : MyControllerBase
     {
         private readonly IScheduleService _scheduleService;
 
@@ -26,17 +27,31 @@ namespace GPS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSchedule(Schedule schedule)
+        public async Task<IActionResult> CreateSchedule(ScheduleCreateDto scheduleCreateDto)
         {
+            var schedule = new Schedule
+            {
+                DepartureTime = scheduleCreateDto.DepartureTime,
+                LineId = scheduleCreateDto.LineId,
+            };
             var createdSchedule = await _scheduleService.CreateScheduleAsync(schedule);
             return CreatedAtAction(nameof(GetSchedule), new { id = createdSchedule.Id }, createdSchedule);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSchedule(int id, Schedule schedule)
+        public async Task<IActionResult> UpdateSchedule(int id, ScheduleUpdateDto scheduleUpdateDto)
         {
-            if (id != schedule.Id) return BadRequest();
-            var updatedSchedule = await _scheduleService.UpdateScheduleAsync(schedule);
+            if (id != scheduleUpdateDto.Id) return BadRequest();
+
+            var existingSchedule = await _scheduleService.GetScheduleByIdAsync(id);
+            if (existingSchedule == null) return BadRequest($"Schedule with Id:{id} not found!");
+
+            if (scheduleUpdateDto.LineId != null)
+                existingSchedule.LineId = scheduleUpdateDto.LineId.Value;
+            if (scheduleUpdateDto.DepartureTime != null)
+                existingSchedule.DepartureTime = scheduleUpdateDto.DepartureTime.Value;
+
+            var updatedSchedule = await _scheduleService.UpdateScheduleAsync(existingSchedule);
             return Ok(updatedSchedule);
         }
 

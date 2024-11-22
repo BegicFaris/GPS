@@ -44,7 +44,7 @@ namespace GPS.API.Controllers
         {
             if (id != routeUpdateDto.Id) return BadRequest();
             var existingRoute = await _routeService.GetRouteByIdAsync(id);
-            if (existingRoute == null) return NotFound();
+            if (existingRoute == null) return NotFound($"Route with Id:{id} not found!");
 
             if (routeUpdateDto.LineId != null)
                 existingRoute.LineId = routeUpdateDto.LineId.Value;
