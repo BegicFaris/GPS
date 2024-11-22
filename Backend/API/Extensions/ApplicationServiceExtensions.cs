@@ -8,6 +8,7 @@ using GPS.API.Services.LineServices;
 using GPS.API.Services.ManagerServices;
 using GPS.API.Services.NotificationServices;
 using GPS.API.Services.PassengerServices;
+using GPS.API.Services.RouteServices;
 using GPS.API.Services.ScheduleServices;
 using GPS.API.Services.ShiftServices;
 using GPS.API.Services.StationServices;
@@ -55,6 +56,7 @@ namespace GPS.API.Extensions
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<ILineService, LineService>();
             services.AddScoped<IBusService, BusService>();
+            services.AddScoped<IRouteService, RouteService>(); 
             // Adding the scpoped service CurrentTenantService
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();
