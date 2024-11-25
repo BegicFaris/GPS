@@ -13,7 +13,7 @@ using System.Text;
 namespace GPS.API.Controllers
 {
     
-    public class AccountController(ApplicationDbContext _context, ITokenService tokenService): MyControllerBase
+    public class AccountController(ApplicationDbContext _context, ITokenService tokenService,ICurrentTenantService currentTenantService): MyControllerBase
     {
         
         [HttpPost("register/driver")]
@@ -21,6 +21,8 @@ namespace GPS.API.Controllers
         {
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
+            var tenant = await _context.Tenants.Where(t => t.Id == dto.TenantId).FirstOrDefaultAsync();
+            currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Driver
             {
@@ -55,6 +57,8 @@ namespace GPS.API.Controllers
         {
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
+            var tenant = await _context.Tenants.Where(t => t.Id == dto.TenantId).FirstOrDefaultAsync();
+            currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Manager
             {
@@ -88,6 +92,8 @@ namespace GPS.API.Controllers
         {
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
+            var tenant= await _context.Tenants.Where(t=>t.Id==dto.TenantId).FirstOrDefaultAsync();
+            currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Passenger
             {
@@ -115,7 +121,7 @@ namespace GPS.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto dto, ICurrentTenantService currentTenantService)
+        public async Task<ActionResult<UserDto>> Login(LoginDto dto)
         {
 
             var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email.Equals(dto.Email)); //dodati provjeru
