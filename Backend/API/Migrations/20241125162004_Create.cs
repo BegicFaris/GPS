@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GPS.API.Migrations
 {
     /// <inheritdoc />
-    public partial class M : Migration
+    public partial class Create : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,7 +23,8 @@ namespace GPS.API.Migrations
                     Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ManufactureYear = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ManufactureYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,7 +40,8 @@ namespace GPS.API.Migrations
                     CardNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpirationDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CCV = table.Column<int>(type: "int", nullable: false)
+                    CCV = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,7 +55,8 @@ namespace GPS.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DiscountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscountValue = table.Column<float>(type: "real", nullable: false)
+                    DiscountValue = table.Column<float>(type: "real", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,7 +93,8 @@ namespace GPS.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -115,7 +119,8 @@ namespace GPS.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -129,7 +134,8 @@ namespace GPS.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -167,7 +173,8 @@ namespace GPS.API.Migrations
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<float>(type: "real", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -255,7 +262,8 @@ namespace GPS.API.Migrations
                     ZoneId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GPSCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    GPSCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -277,7 +285,8 @@ namespace GPS.API.Migrations
                     DriverId = table.Column<int>(type: "int", nullable: false),
                     ShiftDate = table.Column<DateOnly>(type: "date", nullable: false),
                     ShiftStartingTime = table.Column<TimeOnly>(type: "time", nullable: false),
-                    ShiftEndingTime = table.Column<TimeOnly>(type: "time", nullable: false)
+                    ShiftEndingTime = table.Column<TimeOnly>(type: "time", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -302,7 +311,8 @@ namespace GPS.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PassengerId = table.Column<int>(type: "int", nullable: false),
                     CreditCardId = table.Column<int>(type: "int", nullable: false),
-                    SavingDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    SavingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -329,7 +339,8 @@ namespace GPS.API.Migrations
                     StartingStationId = table.Column<int>(type: "int", nullable: false),
                     EndingStationId = table.Column<int>(type: "int", nullable: false),
                     CompleteDistance = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -356,7 +367,8 @@ namespace GPS.API.Migrations
                     Duration = table.Column<TimeOnly>(type: "time", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    LineId = table.Column<int>(type: "int", nullable: false)
+                    LineId = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -381,7 +393,8 @@ namespace GPS.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LineId = table.Column<int>(type: "int", nullable: false),
                     StationId = table.Column<int>(type: "int", nullable: false),
-                    DistanceFromTheNextStation = table.Column<float>(type: "real", nullable: false)
+                    DistanceFromTheNextStation = table.Column<float>(type: "real", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -405,7 +418,8 @@ namespace GPS.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LineId = table.Column<int>(type: "int", nullable: false),
-                    DepartureTime = table.Column<TimeOnly>(type: "time", nullable: false)
+                    DepartureTime = table.Column<TimeOnly>(type: "time", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -429,7 +443,8 @@ namespace GPS.API.Migrations
                     TicketTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    QrCode = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                    QrCode = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    TenantId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -458,29 +473,29 @@ namespace GPS.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Buses",
-                columns: new[] { "Id", "Capacity", "ManufactureYear", "Manufacturer", "Model", "RegistrationNumber" },
+                columns: new[] { "Id", "Capacity", "ManufactureYear", "Manufacturer", "Model", "RegistrationNumber", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "20", "2002", "MAN", "MK2", "12345678" },
-                    { 2, "21", "2003", "MAN", "MK3", "asd5678" }
+                    { 1, "20", "2002", "MAN", "MK2", "12345678", "mostar" },
+                    { 2, "21", "2003", "MAN", "MK3", "asd5678", "sarajevo" }
                 });
 
             migrationBuilder.InsertData(
                 table: "CreditCards",
-                columns: new[] { "Id", "CCV", "CardName", "CardNumber", "ExpirationDate" },
+                columns: new[] { "Id", "CCV", "CardName", "CardNumber", "ExpirationDate", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, 123, "Faris", "1234 5679 8791", "7/28" },
-                    { 2, 254, "Nedim", "2432 4454 4545", "7/28" }
+                    { 1, 123, "Faris", "1234 5679 8791", "7/28", "mostar" },
+                    { 2, 254, "Nedim", "2432 4454 4545", "7/28", "sarajevo" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Discounts",
-                columns: new[] { "Id", "DiscountName", "DiscountValue" },
+                columns: new[] { "Id", "DiscountName", "DiscountValue", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "Student", 0.15f },
-                    { 2, "Penzioner", 0.17f }
+                    { 1, "Student", 0.15f, "mostar" },
+                    { 2, "Penzioner", 0.17f, "sarajevo" }
                 });
 
             migrationBuilder.InsertData(
@@ -488,21 +503,21 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "Address", "BirthDate", "Email", "FirstName", "Image", "LastName", "PasswordHash", "PasswordSalt", "RegistrationDate", "Status", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, null, null, "mail@mail.com", "Adi", null, "Gosto", new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 }, null, null, null, "tenant1" },
-                    { 2, null, null, "mail@mail2.com", "Nedim", null, "Jugo", new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 }, null, null, null, "tenant1" },
-                    { 3, null, null, "mail@mail.com", "Adil", null, "Joldic", new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 }, null, null, null, "tenant1" },
-                    { 4, null, null, "mail@mail2.com", "Denis", null, "Music", new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 }, null, null, null, "tenant1" },
-                    { 5, null, null, "mail@mail.com", "Adil", null, "Joldic", new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 }, null, null, null, "tenant1" },
-                    { 6, null, null, "mail@mail2.com", "Denis", null, "Music", new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 }, null, null, null, "tenant2" }
+                    { 1, null, null, "1", "Adi", null, "Gosto", new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 }, new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 }, null, null, "mostar" },
+                    { 2, null, null, "2", "Nedim", null, "Jugo", new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 }, new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 }, null, null, "sarajevo" },
+                    { 3, null, null, "3", "Adil", null, "Joldic", new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 }, new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 }, null, null, "mostar" },
+                    { 4, null, null, "4", "Denis", null, "Music", new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 }, new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 }, null, null, "bugojno" },
+                    { 5, null, null, "5", "Adil", null, "Joldic", new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 }, new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 }, null, null, "mostar" },
+                    { 6, null, null, "6", "Denis", null, "Music", new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 }, new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 }, null, null, "sarajevo" }
                 });
 
             migrationBuilder.InsertData(
                 table: "NotificationTypes",
-                columns: new[] { "Id", "Description", "Name" },
+                columns: new[] { "Id", "Description", "Name", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "A warning notif", "Warning" },
-                    { 2, "A error notif", "Error" }
+                    { 1, "A warning notif", "Warning", "mostar" },
+                    { 2, "A error notif", "Error", "mostar" }
                 });
 
             migrationBuilder.InsertData(
@@ -510,27 +525,28 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { "tenant1", "Tenant1" },
-                    { "tenant2", "Tenant2" }
+                    { "bugojno", "Bugojno" },
+                    { "mostar", "MostarBus" },
+                    { "sarajevo", "Sarajevo" }
                 });
 
             migrationBuilder.InsertData(
                 table: "TicketTypes",
-                columns: new[] { "Id", "Name" },
+                columns: new[] { "Id", "Name", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "Basic" },
-                    { 2, "Advanced" }
+                    { 1, "Basic", "mostar" },
+                    { 2, "Advanced", "mostar" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Zones",
-                columns: new[] { "Id", "Name", "Price" },
+                columns: new[] { "Id", "Name", "Price", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "Zone one", 1.5m },
-                    { 2, "Zone two", 2.1m },
-                    { 3, "Zone three", 2.7m }
+                    { 1, "Zone one", 1.5m, null },
+                    { 2, "Zone two", 2.1m, null },
+                    { 3, "Zone three", 2.7m, null }
                 });
 
             migrationBuilder.InsertData(
@@ -538,17 +554,17 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "DriversLicenseNumber", "HireDate", "License", "WorkingHoursInAWeek" },
                 values: new object[,]
                 {
-                    { 1, "a1435affaa", new DateTime(2024, 11, 22, 20, 10, 26, 855, DateTimeKind.Local).AddTicks(7182), "1123123", null },
-                    { 2, "adasd43aa", new DateTime(2024, 11, 22, 20, 10, 26, 857, DateTimeKind.Local).AddTicks(9086), "11jdfghsdjg23", null }
+                    { 1, "a1435affaa", new DateTime(2024, 11, 25, 17, 20, 3, 443, DateTimeKind.Local).AddTicks(9597), "1123123", null },
+                    { 2, "adasd43aa", new DateTime(2024, 11, 25, 17, 20, 3, 446, DateTimeKind.Local).AddTicks(3299), "11jdfghsdjg23", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Feedbacks",
-                columns: new[] { "Id", "Comment", "Date", "Picture", "Rating", "UserId" },
+                columns: new[] { "Id", "Comment", "Date", "Picture", "Rating", "TenantId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, null, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 5f, 5 },
-                    { 2, null, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 3f, 6 }
+                    { 1, null, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 5f, "mostar", 5 },
+                    { 2, null, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 3f, "mostar", 6 }
                 });
 
             migrationBuilder.InsertData(
@@ -556,8 +572,8 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "Department", "HireDate", "ManagerLevel" },
                 values: new object[,]
                 {
-                    { 3, "HR", new DateTime(2024, 11, 22, 20, 10, 26, 857, DateTimeKind.Local).AddTicks(9759), "1" },
-                    { 4, "IT", new DateTime(2024, 11, 22, 20, 10, 26, 858, DateTimeKind.Local).AddTicks(537), "2" }
+                    { 3, "HR", new DateTime(2024, 11, 25, 17, 20, 3, 446, DateTimeKind.Local).AddTicks(4219), "1" },
+                    { 4, "IT", new DateTime(2024, 11, 25, 17, 20, 3, 446, DateTimeKind.Local).AddTicks(5749), "2" }
                 });
 
             migrationBuilder.InsertData(
@@ -571,65 +587,65 @@ namespace GPS.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Stations",
-                columns: new[] { "Id", "GPSCode", "Location", "Name", "ZoneId" },
+                columns: new[] { "Id", "GPSCode", "Location", "Name", "TenantId", "ZoneId" },
                 values: new object[,]
                 {
-                    { 1, "6.6.6", "Bafo", "Bafo", 1 },
-                    { 2, "13123", "Sutina", "Sutina1", 2 }
+                    { 1, "6.6.6", "Bafo", "Bafo", "mostar", 1 },
+                    { 2, "13123", "Sutina", "Sutina1", "sarajevo", 2 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Lines",
-                columns: new[] { "Id", "CompleteDistance", "EndingStationId", "IsActive", "Name", "StartingStationId" },
+                columns: new[] { "Id", "CompleteDistance", "EndingStationId", "IsActive", "Name", "StartingStationId", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, "10", 1, true, "21", 2 },
-                    { 2, "10", 1, true, "21", 2 }
+                    { 1, "10", 1, true, "21", 2, "mostar" },
+                    { 2, "10", 1, true, "21", 2, "mostar" }
                 });
 
             migrationBuilder.InsertData(
                 table: "PassengerCreditCards",
-                columns: new[] { "Id", "CreditCardId", "PassengerId", "SavingDate" },
+                columns: new[] { "Id", "CreditCardId", "PassengerId", "SavingDate", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, 1, 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 2, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, 1, 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "mostar" },
+                    { 2, 2, 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "sarajevo" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Shifts",
-                columns: new[] { "Id", "BusId", "DriverId", "ShiftDate", "ShiftEndingTime", "ShiftStartingTime" },
+                columns: new[] { "Id", "BusId", "DriverId", "ShiftDate", "ShiftEndingTime", "ShiftStartingTime", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateOnly(2024, 1, 1), new TimeOnly(16, 0, 0), new TimeOnly(8, 0, 0) },
-                    { 2, 2, 2, new DateOnly(2024, 1, 1), new TimeOnly(16, 0, 0), new TimeOnly(8, 0, 0) }
+                    { 1, 1, 1, new DateOnly(2024, 1, 1), new TimeOnly(16, 0, 0), new TimeOnly(8, 0, 0), "mostar" },
+                    { 2, 2, 2, new DateOnly(2024, 1, 1), new TimeOnly(16, 0, 0), new TimeOnly(8, 0, 0), "mostar" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Notifications",
-                columns: new[] { "Id", "Date", "Duration", "IsActive", "LineId", "NotificationTypeId" },
+                columns: new[] { "Id", "Date", "Duration", "IsActive", "LineId", "NotificationTypeId", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, new DateOnly(2024, 1, 1), new TimeOnly(1, 1, 1), true, 1, 1 },
-                    { 2, new DateOnly(2024, 1, 1), new TimeOnly(1, 1, 1), true, 2, 2 }
+                    { 1, new DateOnly(2024, 1, 1), new TimeOnly(1, 1, 1), true, 1, 1, "mostar" },
+                    { 2, new DateOnly(2024, 1, 1), new TimeOnly(1, 1, 1), true, 2, 2, "mostar" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Routes",
-                columns: new[] { "Id", "DistanceFromTheNextStation", "LineId", "StationId" },
+                columns: new[] { "Id", "DistanceFromTheNextStation", "LineId", "StationId", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, 15.6f, 1, 1 },
-                    { 2, 15.6f, 2, 2 }
+                    { 1, 15.6f, 1, 1, "mostar" },
+                    { 2, 15.6f, 2, 2, "mostar" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tickets",
-                columns: new[] { "Id", "CreatedDate", "ExpirationDate", "LineId", "QrCode", "TicketTypeId", "UserId", "ZoneId" },
+                columns: new[] { "Id", "CreatedDate", "ExpirationDate", "LineId", "QrCode", "TenantId", "TicketTypeId", "UserId", "ZoneId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new byte[0], 1, 2, 1 },
-                    { 2, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, new byte[0], 2, 1, 1 }
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, new byte[0], "mostar", 1, 2, 1 },
+                    { 2, new DateTime(2024, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, new byte[0], "mostar", 2, 1, 1 }
                 });
 
             migrationBuilder.CreateIndex(

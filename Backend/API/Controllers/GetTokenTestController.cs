@@ -17,7 +17,7 @@ namespace GPS.API.Controllers
             var user = await _context.MyAppUsers.FirstOrDefaultAsync();
 
             if (String.IsNullOrEmpty(tenantId))
-                tenantId = "tenant1";
+                tenantId = "mostar";
 
             user.TenantId = tenantId;
 

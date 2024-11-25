@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GPS.API.Interfaces;
 
 namespace GPS.API.Data.Models
 {
-    public class Shift
+    public class Shift:IMustHaveTenant
     {
         [Key]
         public int Id { get; set; }
@@ -16,5 +17,6 @@ namespace GPS.API.Data.Models
         public required DateOnly ShiftDate { get; set; }
         public required TimeOnly ShiftStartingTime { get; set; }
         public required TimeOnly ShiftEndingTime { get; set; }
+        public string? TenantId { get; set; }
     }
 }

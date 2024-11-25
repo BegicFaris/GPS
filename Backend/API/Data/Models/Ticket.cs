@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GPS.API.Interfaces;
 
 namespace GPS.API.Data.Models
 {
-    public class Ticket
+    public class Ticket : IMustHaveTenant
     {
         [Key]
         public int Id { get; set; }
@@ -22,5 +23,6 @@ namespace GPS.API.Data.Models
         public required DateTime CreatedDate { get; set; }
         public required DateTime ExpirationDate { get; set; }
         public required byte[] QrCode { get; set; }
+        public string? TenantId { get; set; }
     }
 }

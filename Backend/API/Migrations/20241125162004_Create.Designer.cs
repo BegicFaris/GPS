@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GPS.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241122212108_M1")]
-    partial class M1
+    [Migration("20241125162004_Create")]
+    partial class Create
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,8 @@ namespace GPS.API.Migrations
                             ManufactureYear = "2002",
                             Manufacturer = "MAN",
                             Model = "MK2",
-                            RegistrationNumber = "12345678"
+                            RegistrationNumber = "12345678",
+                            TenantId = "mostar"
                         },
                         new
                         {
@@ -77,7 +78,8 @@ namespace GPS.API.Migrations
                             ManufactureYear = "2003",
                             Manufacturer = "MAN",
                             Model = "MK3",
-                            RegistrationNumber = "asd5678"
+                            RegistrationNumber = "asd5678",
+                            TenantId = "sarajevo"
                         });
                 });
 
@@ -104,6 +106,9 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("CreditCards");
@@ -115,7 +120,8 @@ namespace GPS.API.Migrations
                             CCV = 123,
                             CardName = "Faris",
                             CardNumber = "1234 5679 8791",
-                            ExpirationDate = "7/28"
+                            ExpirationDate = "7/28",
+                            TenantId = "mostar"
                         },
                         new
                         {
@@ -123,7 +129,8 @@ namespace GPS.API.Migrations
                             CCV = 254,
                             CardName = "Nedim",
                             CardNumber = "2432 4454 4545",
-                            ExpirationDate = "7/28"
+                            ExpirationDate = "7/28",
+                            TenantId = "sarajevo"
                         });
                 });
 
@@ -142,6 +149,9 @@ namespace GPS.API.Migrations
                     b.Property<float>("DiscountValue")
                         .HasColumnType("real");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Discounts");
@@ -151,13 +161,15 @@ namespace GPS.API.Migrations
                         {
                             Id = 1,
                             DiscountName = "Student",
-                            DiscountValue = 0.15f
+                            DiscountValue = 0.15f,
+                            TenantId = "mostar"
                         },
                         new
                         {
                             Id = 2,
                             DiscountName = "Penzioner",
-                            DiscountValue = 0.17f
+                            DiscountValue = 0.17f,
+                            TenantId = "sarajevo"
                         });
                 });
 
@@ -181,6 +193,9 @@ namespace GPS.API.Migrations
                     b.Property<float>("Rating")
                         .HasColumnType("real");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -196,6 +211,7 @@ namespace GPS.API.Migrations
                             Id = 1,
                             Date = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Rating = 5f,
+                            TenantId = "mostar",
                             UserId = 5
                         },
                         new
@@ -203,6 +219,7 @@ namespace GPS.API.Migrations
                             Id = 2,
                             Date = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Rating = 3f,
+                            TenantId = "mostar",
                             UserId = 6
                         });
                 });
@@ -232,6 +249,9 @@ namespace GPS.API.Migrations
                     b.Property<int>("StartingStationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EndingStationId");
@@ -248,7 +268,8 @@ namespace GPS.API.Migrations
                             EndingStationId = 1,
                             IsActive = true,
                             Name = "21",
-                            StartingStationId = 2
+                            StartingStationId = 2,
+                            TenantId = "mostar"
                         },
                         new
                         {
@@ -257,7 +278,8 @@ namespace GPS.API.Migrations
                             EndingStationId = 1,
                             IsActive = true,
                             Name = "21",
-                            StartingStationId = 2
+                            StartingStationId = 2,
+                            TenantId = "mostar"
                         });
                 });
 
@@ -335,6 +357,9 @@ namespace GPS.API.Migrations
                     b.Property<int>("NotificationTypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LineId");
@@ -351,7 +376,8 @@ namespace GPS.API.Migrations
                             Duration = new TimeOnly(1, 1, 1),
                             IsActive = true,
                             LineId = 1,
-                            NotificationTypeId = 1
+                            NotificationTypeId = 1,
+                            TenantId = "mostar"
                         },
                         new
                         {
@@ -360,7 +386,8 @@ namespace GPS.API.Migrations
                             Duration = new TimeOnly(1, 1, 1),
                             IsActive = true,
                             LineId = 2,
-                            NotificationTypeId = 2
+                            NotificationTypeId = 2,
+                            TenantId = "mostar"
                         });
                 });
 
@@ -380,6 +407,9 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("NotificationTypes");
@@ -389,13 +419,15 @@ namespace GPS.API.Migrations
                         {
                             Id = 1,
                             Description = "A warning notif",
-                            Name = "Warning"
+                            Name = "Warning",
+                            TenantId = "mostar"
                         },
                         new
                         {
                             Id = 2,
                             Description = "A error notif",
-                            Name = "Error"
+                            Name = "Error",
+                            TenantId = "mostar"
                         });
                 });
 
@@ -416,6 +448,9 @@ namespace GPS.API.Migrations
                     b.Property<DateTime>("SavingDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreditCardId");
@@ -430,14 +465,16 @@ namespace GPS.API.Migrations
                             Id = 1,
                             CreditCardId = 1,
                             PassengerId = 5,
-                            SavingDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            SavingDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TenantId = "mostar"
                         },
                         new
                         {
                             Id = 2,
                             CreditCardId = 2,
                             PassengerId = 6,
-                            SavingDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            SavingDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TenantId = "sarajevo"
                         });
                 });
 
@@ -458,6 +495,9 @@ namespace GPS.API.Migrations
                     b.Property<int>("StationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LineId");
@@ -472,14 +512,16 @@ namespace GPS.API.Migrations
                             Id = 1,
                             DistanceFromTheNextStation = 15.6f,
                             LineId = 1,
-                            StationId = 1
+                            StationId = 1,
+                            TenantId = "mostar"
                         },
                         new
                         {
                             Id = 2,
                             DistanceFromTheNextStation = 15.6f,
                             LineId = 2,
-                            StationId = 2
+                            StationId = 2,
+                            TenantId = "mostar"
                         });
                 });
 
@@ -496,6 +538,9 @@ namespace GPS.API.Migrations
 
                     b.Property<int>("LineId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -527,6 +572,9 @@ namespace GPS.API.Migrations
                     b.Property<TimeOnly>("ShiftStartingTime")
                         .HasColumnType("time");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BusId");
@@ -543,7 +591,8 @@ namespace GPS.API.Migrations
                             DriverId = 1,
                             ShiftDate = new DateOnly(2024, 1, 1),
                             ShiftEndingTime = new TimeOnly(16, 0, 0),
-                            ShiftStartingTime = new TimeOnly(8, 0, 0)
+                            ShiftStartingTime = new TimeOnly(8, 0, 0),
+                            TenantId = "mostar"
                         },
                         new
                         {
@@ -552,7 +601,8 @@ namespace GPS.API.Migrations
                             DriverId = 2,
                             ShiftDate = new DateOnly(2024, 1, 1),
                             ShiftEndingTime = new TimeOnly(16, 0, 0),
-                            ShiftStartingTime = new TimeOnly(8, 0, 0)
+                            ShiftStartingTime = new TimeOnly(8, 0, 0),
+                            TenantId = "mostar"
                         });
                 });
 
@@ -576,6 +626,9 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ZoneId")
                         .HasColumnType("int");
 
@@ -592,6 +645,7 @@ namespace GPS.API.Migrations
                             GPSCode = "6.6.6",
                             Location = "Bafo",
                             Name = "Bafo",
+                            TenantId = "mostar",
                             ZoneId = 1
                         },
                         new
@@ -600,6 +654,7 @@ namespace GPS.API.Migrations
                             GPSCode = "13123",
                             Location = "Sutina",
                             Name = "Sutina1",
+                            TenantId = "sarajevo",
                             ZoneId = 2
                         });
                 });
@@ -656,13 +711,18 @@ namespace GPS.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "tenant1",
-                            Name = "Tenant1"
+                            Id = "mostar",
+                            Name = "MostarBus"
                         },
                         new
                         {
-                            Id = "tenant2",
-                            Name = "Tenant2"
+                            Id = "sarajevo",
+                            Name = "Sarajevo"
+                        },
+                        new
+                        {
+                            Id = "bugojno",
+                            Name = "Bugojno"
                         });
                 });
 
@@ -686,6 +746,9 @@ namespace GPS.API.Migrations
                     b.Property<byte[]>("QrCode")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TicketTypeId")
                         .HasColumnType("int");
@@ -716,6 +779,7 @@ namespace GPS.API.Migrations
                             ExpirationDate = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LineId = 1,
                             QrCode = new byte[0],
+                            TenantId = "mostar",
                             TicketTypeId = 1,
                             UserId = 2,
                             ZoneId = 1
@@ -727,6 +791,7 @@ namespace GPS.API.Migrations
                             ExpirationDate = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LineId = 2,
                             QrCode = new byte[0],
+                            TenantId = "mostar",
                             TicketTypeId = 2,
                             UserId = 1,
                             ZoneId = 1
@@ -745,6 +810,9 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("TicketTypes");
@@ -753,12 +821,14 @@ namespace GPS.API.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Basic"
+                            Name = "Basic",
+                            TenantId = "mostar"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Advanced"
+                            Name = "Advanced",
+                            TenantId = "mostar"
                         });
                 });
 
@@ -776,6 +846,9 @@ namespace GPS.API.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -826,25 +899,27 @@ namespace GPS.API.Migrations
                         new
                         {
                             Id = 1,
-                            Email = "mail@mail.com",
+                            Email = "1",
                             FirstName = "Adi",
                             LastName = "Gosto",
-                            PasswordHash = new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 },
-                            TenantId = "tenant1",
+                            PasswordHash = new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 },
+                            PasswordSalt = new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 },
+                            TenantId = "mostar",
                             DriversLicenseNumber = "a1435affaa",
-                            HireDate = new DateTime(2024, 11, 22, 22, 21, 7, 421, DateTimeKind.Local).AddTicks(2693),
+                            HireDate = new DateTime(2024, 11, 25, 17, 20, 3, 443, DateTimeKind.Local).AddTicks(9597),
                             License = "1123123"
                         },
                         new
                         {
                             Id = 2,
-                            Email = "mail@mail2.com",
+                            Email = "2",
                             FirstName = "Nedim",
                             LastName = "Jugo",
-                            PasswordHash = new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 },
-                            TenantId = "tenant1",
+                            PasswordHash = new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 },
+                            PasswordSalt = new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 },
+                            TenantId = "sarajevo",
                             DriversLicenseNumber = "adasd43aa",
-                            HireDate = new DateTime(2024, 11, 22, 22, 21, 7, 423, DateTimeKind.Local).AddTicks(4960),
+                            HireDate = new DateTime(2024, 11, 25, 17, 20, 3, 446, DateTimeKind.Local).AddTicks(3299),
                             License = "11jdfghsdjg23"
                         });
                 });
@@ -870,25 +945,27 @@ namespace GPS.API.Migrations
                         new
                         {
                             Id = 3,
-                            Email = "mail@mail.com",
+                            Email = "3",
                             FirstName = "Adil",
                             LastName = "Joldic",
-                            PasswordHash = new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 },
-                            TenantId = "tenant1",
+                            PasswordHash = new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 },
+                            PasswordSalt = new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 },
+                            TenantId = "mostar",
                             Department = "HR",
-                            HireDate = new DateTime(2024, 11, 22, 22, 21, 7, 423, DateTimeKind.Local).AddTicks(5676),
+                            HireDate = new DateTime(2024, 11, 25, 17, 20, 3, 446, DateTimeKind.Local).AddTicks(4219),
                             ManagerLevel = "1"
                         },
                         new
                         {
                             Id = 4,
-                            Email = "mail@mail2.com",
+                            Email = "4",
                             FirstName = "Denis",
                             LastName = "Music",
-                            PasswordHash = new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 },
-                            TenantId = "tenant1",
+                            PasswordHash = new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 },
+                            PasswordSalt = new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 },
+                            TenantId = "bugojno",
                             Department = "IT",
-                            HireDate = new DateTime(2024, 11, 22, 22, 21, 7, 423, DateTimeKind.Local).AddTicks(6551),
+                            HireDate = new DateTime(2024, 11, 25, 17, 20, 3, 446, DateTimeKind.Local).AddTicks(5749),
                             ManagerLevel = "2"
                         });
                 });
@@ -908,20 +985,22 @@ namespace GPS.API.Migrations
                         new
                         {
                             Id = 5,
-                            Email = "mail@mail.com",
+                            Email = "5",
                             FirstName = "Adil",
                             LastName = "Joldic",
-                            PasswordHash = new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 },
-                            TenantId = "tenant1"
+                            PasswordHash = new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 },
+                            PasswordSalt = new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 },
+                            TenantId = "mostar"
                         },
                         new
                         {
                             Id = 6,
-                            Email = "mail@mail2.com",
+                            Email = "6",
                             FirstName = "Denis",
                             LastName = "Music",
-                            PasswordHash = new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 },
-                            TenantId = "tenant2"
+                            PasswordHash = new byte[] { 141, 75, 67, 189, 24, 209, 196, 203, 78, 102, 207, 174, 58, 9, 88, 70, 90, 217, 26, 235, 170, 154, 191, 76, 52, 248, 133, 67, 84, 12, 195, 61, 21, 151, 253, 104, 153, 165, 211, 147, 225, 162, 182, 182, 180, 252, 20, 112, 120, 27, 14, 143, 209, 195, 53, 2, 2, 173, 236, 145, 25, 39, 154, 233 },
+                            PasswordSalt = new byte[] { 6, 192, 36, 189, 105, 140, 19, 7, 213, 176, 188, 15, 130, 70, 115, 85, 28, 192, 48, 175, 112, 237, 216, 164, 56, 44, 239, 117, 78, 118, 18, 254, 3, 138, 20, 245, 97, 53, 95, 234, 120, 153, 199, 168, 60, 108, 173, 118, 130, 249, 157, 157, 180, 161, 239, 181, 88, 43, 235, 190, 202, 249, 189, 168, 170, 104, 156, 14, 15, 105, 63, 23, 223, 247, 68, 247, 115, 33, 242, 240, 112, 91, 253, 96, 235, 253, 57, 61, 119, 142, 191, 73, 238, 131, 203, 203, 63, 38, 39, 127, 165, 96, 8, 160, 66, 49, 137, 166, 190, 48, 191, 3, 218, 241, 198, 155, 227, 48, 173, 71, 133, 10, 2, 244, 243, 248, 41, 123 },
+                            TenantId = "sarajevo"
                         });
                 });
 

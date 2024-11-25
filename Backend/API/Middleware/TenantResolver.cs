@@ -16,9 +16,8 @@ namespace GPS.API.Middleware
         {
             if (context.Request.Path.StartsWithSegments("/api/Account/Register/Driver") ||
                 context.Request.Path.StartsWithSegments("/api/Account/Login") ||
-                    context.Request.Path.StartsWithSegments("/api/AAGetTokenTest/GetToken"))
+                context.Request.Path.StartsWithSegments("/api/AAGetTokenTest/GetToken"))
             {
-
                 await _next(context); // Continue without doing tenant resolution
                 return;
             }
