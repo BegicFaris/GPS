@@ -6,7 +6,7 @@ using GPS.API.Interfaces;
 namespace GPS.API.Data.Models
 {
     [Table("MyAppUsers")]
-    public abstract class MyAppUser 
+    public abstract class MyAppUser  : IMustHaveTenant
     {
         [Key]
         public int Id { get; set; }
@@ -22,7 +22,7 @@ namespace GPS.API.Data.Models
         public byte[]? Image { get; set; }
         public string? Address { get; set; }
         public bool? Status { get; set; }
-
+        public string? TenantId { get; set; }
     }
 
 }

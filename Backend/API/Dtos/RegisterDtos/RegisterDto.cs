@@ -1,6 +1,8 @@
-﻿namespace GPS.API.Dtos.RegisterDtos
+﻿using GPS.API.Interfaces;
+
+namespace GPS.API.Dtos.RegisterDtos
 {
-    public abstract class RegisterDto
+    public abstract class RegisterDto : IMustHaveTenant
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
@@ -10,5 +12,6 @@
         public DateTime? RegistrationDate { get; set; }
         public byte[]? Image { get; set; }
         public string? Address { get; set; }
+        public required string TenantId { get; set; }
     }
 }

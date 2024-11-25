@@ -1,5 +1,6 @@
 ﻿using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using GPS.API.Services.TenantServices;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics.SymbolStore;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace GPS.API.Services.TokenServices
 {
-    public class TokenService (IConfiguration config): ITokenService
+    public class TokenService (IConfiguration config, ICurrentTenantService currentTenantService) : ITokenService
     {
         public string CreateToken(MyAppUser user)
         {
@@ -16,9 +17,15 @@ namespace GPS.API.Services.TokenServices
             if (tokenKey.Length < 64) throw new Exception("Your tokeKey need to be longer");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
 
+            if (currentTenantService.TenantId == null)
+            {
+                currentTenantService.SetTenant(user.TenantId);
+            }
+
             var claims = new List<Claim> 
             { 
-                new(ClaimTypes.NameIdentifier, user.Email)
+                new(ClaimTypes.NameIdentifier, user.Email),
+                new Claim("TenantId", currentTenantService.TenantId)
             };
 
             var creds= new SigningCredentials(key,SecurityAlgorithms.HmacSha512Signature);

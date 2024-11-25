@@ -36,7 +36,8 @@ namespace GPS.API.Controllers
                 License = dto.License,
                 DriversLicenseNumber = dto.DriversLicenseNumber,
                 HireDate = DateTime.Now,
-                WorkingHoursInAWeek = dto.WorkingHoursInAWeek
+                WorkingHoursInAWeek = dto.WorkingHoursInAWeek,
+                TenantId= dto.TenantId
             };
 
             _context.MyAppUsers.Add(user);
@@ -68,7 +69,8 @@ namespace GPS.API.Controllers
                 Address = dto.Address,
                 HireDate = DateTime.Now,
                 Department = dto.Department,
-                ManagerLevel = dto.ManagerLevel
+                ManagerLevel = dto.ManagerLevel,
+                TenantId = dto.TenantId
             };
 
             _context.MyAppUsers.Add(user);
@@ -98,7 +100,8 @@ namespace GPS.API.Controllers
                 RegistrationDate = DateTime.Now,
                 Image = dto.Image,
                 Address = dto.Address,
-                DiscountID = dto.DiscountId
+                DiscountID = dto.DiscountId,
+                TenantId = dto.TenantId
             };
 
             _context.MyAppUsers.Add(user);
@@ -111,11 +114,11 @@ namespace GPS.API.Controllers
             };
         }
 
-
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto dto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto dto, ICurrentTenantService currentTenantService)
         {
-            var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email == dto.Email);
+
+            var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email.Equals(dto.Email)); //dodati provjeru
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
             if (user == null)
@@ -128,6 +131,7 @@ namespace GPS.API.Controllers
                     return Unauthorized("Invalid password");
                 }
             }
+            currentTenantService.SetTenant(user.TenantId);
             return new UserDto
             {
                 Email = user.Email,

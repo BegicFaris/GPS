@@ -6,6 +6,7 @@ using GPS.API.Interfaces;
 using System.Text;
 
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using GPS.API.Services.TenantServices;
 
 
 namespace GPS.API.Data.DbContexts
@@ -13,8 +14,8 @@ namespace GPS.API.Data.DbContexts
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentTenantService currentTenantService) : DbContext(options)
     {
         //Implemenitg Multitenatcy into the AppDbContext
-        public string CurrentTenantID = currentTenantService.TenantId;
         private readonly DbContextOptions<ApplicationDbContext> options = options;
+        public string CurrentTenantID => currentTenantService.TenantId ?? throw new Exception("TenantId not found.");
         private readonly ICurrentTenantService currentTenantService = currentTenantService;
 
 
@@ -58,6 +59,9 @@ namespace GPS.API.Data.DbContexts
             //Ovo treba implementirati za svaku klasu koja koristi tenant
             //modelBuilder.Entity<NekaKlasa>().HasQueryFilter(a => a.TenantId == CurrentTenantID);
 
+            //modelBuilder.Entity<MyAppUser>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<Bus>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+
 
             //Adding test data to the DB
             modelBuilder.Entity<Tenant>().HasData(
@@ -84,17 +88,17 @@ namespace GPS.API.Data.DbContexts
                 new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f }
                 );
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123" },
-                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23" }
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), Email = "mail@mail.com", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123", TenantId = "tenant1" },
+                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), Email = "mail@mail2.com", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23", TenantId = "tenant1" }
                 );
             modelBuilder.Entity<Manager>().HasData(
-                new Manager { Id = 3, Email = "mail@mail.com", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1" },
-                new Manager { Id = 4, Email = "mail@mail2.com", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2" }
+                new Manager { Id = 3, Email = "mail@mail.com", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1", TenantId="tenant1" },
+                new Manager { Id = 4, Email = "mail@mail2.com", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2", TenantId = "tenant1" }
 
                 );
             modelBuilder.Entity<Passenger>().HasData(
-                new Passenger { Id = 5, Email = "mail@mail.com", FirstName = "Adil", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), LastName = "Joldic" },
-                new Passenger { Id = 6, Email = "mail@mail2.com", FirstName = "Denis", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), LastName = "Music" }
+                new Passenger { Id = 5, Email = "mail@mail.com", FirstName = "Adil", PasswordHash = Encoding.UTF8.GetBytes("e1f2142aec055d334a048a52f51c204d31889a2b7305f5997e37d7e5395194fec9bb2383e4f66efa67bdefd3e0384ecc699761c05b19e965b151af8a4dd4f5fd"), LastName = "Joldic", TenantId = "tenant1" },
+                new Passenger { Id = 6, Email = "mail@mail2.com", FirstName = "Denis", PasswordHash = Encoding.UTF8.GetBytes("93c8bbc4b96d326cd19288318286b07fa6933be6b74d4ad6f1e861f3b580fb909f0d9001dd0a3e790116b6f885372b1ba005f50e0bf5a9051647a6104518caa4"), LastName = "Music", TenantId = "tenant2" }
                 );
             modelBuilder.Entity<Feedback>().HasData(
                new Feedback { Id = 1, Date = new DateTime(2024, 1, 1), UserId = 5, Rating = 5 },
@@ -108,12 +112,10 @@ namespace GPS.API.Data.DbContexts
                 new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21" },
                  new Line { Id = 2, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21" }
                 );
-
             modelBuilder.Entity<NotificationType>().HasData(
                 new NotificationType { Id = 1, Description = "A warning notif", Name = "Warning" },
                 new NotificationType { Id = 2, Description = "A error notif", Name = "Error" }
                 );
-
             modelBuilder.Entity<Notification>().HasData(
                 new Notification { Id = 1, Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 1, NotificationTypeId = 1 },
                 new Notification { Id = 2, Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 2, NotificationTypeId = 2 }
@@ -130,13 +132,12 @@ namespace GPS.API.Data.DbContexts
                 new Shift { Id = 1, BusId = 1, DriverId = 1, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0) },
                 new Shift { Id = 2, BusId = 2, DriverId = 2, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0) }
                 );
-
             modelBuilder.Entity<TicketType>().HasData(
                 new TicketType { Id = 1, Name = "Basic" },
                 new TicketType { Id = 2, Name = "Advanced" }
                 );
             modelBuilder.Entity<Ticket>().HasData(
-                new Ticket { Id = 1, CreatedDate= new DateTime(2024, 1, 1), ExpirationDate= new DateTime(2024, 2, 2), LineId=1, QrCode=new byte[] { }, TicketTypeId=1, UserId=2, ZoneId=1 },
+                new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 1, QrCode = new byte[] { }, TicketTypeId = 1, UserId = 2, ZoneId = 1 },
                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 2, QrCode = new byte[] { }, TicketTypeId = 2, UserId = 1, ZoneId = 1 }
                 );
 
