@@ -58,3 +58,5 @@ coverage/
 
 # Temporary local files
 *.log
+Frontend/Client/ssl/localhost-key.pem
+Frontend/Client/ssl/localhost.pem
