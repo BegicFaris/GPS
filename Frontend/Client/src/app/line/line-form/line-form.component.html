@@ -1,0 +1,44 @@
+<div class="container mt-5">  line.id ? 'Edit Line' : 
+  <h2 class="mb-4 text-center">{{'Add New Line' }}</h2>
+  
+  <form (ngSubmit)="saveLine()" class="shadow p-4 rounded border">
+    
+    <!-- Name -->
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" [(ngModel)]="line.name" name="name" required>
+    </div>
+
+    <!-- Starting Station ID -->
+    <div class="mb-3">
+      <label for="startingStationId" class="form-label">Starting Station ID</label>
+      <input type="number" class="form-control" id="startingStationId" [(ngModel)]="line.startingStationId" name="startingStationId" required>
+    </div>
+
+    <!-- Ending Station ID -->
+    <div class="mb-3">
+      <label for="endingStationId" class="form-label">Ending Station ID</label>
+      <input type="number" class="form-control" id="endingStationId" [(ngModel)]="line.endingStationId" name="endingStationId" required>
+    </div>
+
+    <!-- Complete Distance -->
+    <div class="mb-3">
+      <label for="completeDistance" class="form-label">Complete Distance (km)</label>
+      <input type="number" class="form-control" id="completeDistance" [(ngModel)]="line.completeDistance" name="completeDistance" required>
+    </div>
+
+    <!-- Active Status -->
+    <div class="mb-3">
+      <label for="isActive" class="form-label">Is Active?</label>
+      <select class="form-control" id="isActive" [(ngModel)]="line.isActive" name="isActive" required>
+        <option [ngValue]="true">Yes</option>
+        <option [ngValue]="false">No</option>
+      </select>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center"> line.id ? 'Update' : 
+      <button class="btn btn-primary" type="submit">{{ 'Add' }}</button>
+    </div>
+  </form>
+</div>

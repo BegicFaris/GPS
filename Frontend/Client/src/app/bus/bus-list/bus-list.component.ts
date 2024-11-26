@@ -1,6 +1,6 @@
 // src/app/bus-list/bus-list.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Bus } from '../models/bus.model';
+import { Bus } from '../bus.model';
 import { BusService } from '../bus.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

@@ -1,8 +1,7 @@
-// src/app/bus.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Bus } from './models/bus.model';
+import { Bus } from './bus.model';
 
 @Injectable({
   providedIn: 'root'

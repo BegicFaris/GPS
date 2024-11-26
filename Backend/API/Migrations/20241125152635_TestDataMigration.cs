@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GPS.API.Migrations
 {
     /// <inheritdoc />
-    public partial class NewData : Migration
+    public partial class TestDataMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -325,8 +325,8 @@ namespace GPS.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartingStationID = table.Column<int>(type: "int", nullable: false),
-                    EndingStationID = table.Column<int>(type: "int", nullable: false),
+                    StartingStationId = table.Column<int>(type: "int", nullable: false),
+                    EndingStationId = table.Column<int>(type: "int", nullable: false),
                     CompleteDistance = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -334,13 +334,13 @@ namespace GPS.API.Migrations
                 {
                     table.PrimaryKey("PK_Lines", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lines_Stations_EndingStationID",
-                        column: x => x.EndingStationID,
+                        name: "FK_Lines_Stations_EndingStationId",
+                        column: x => x.EndingStationId,
                         principalTable: "Stations",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Lines_Stations_StartingStationID",
-                        column: x => x.StartingStationID,
+                        name: "FK_Lines_Stations_StartingStationId",
+                        column: x => x.StartingStationId,
                         principalTable: "Stations",
                         principalColumn: "Id");
                 });
@@ -537,8 +537,8 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "DriversLicenseNumber", "HireDate", "License", "WorkingHoursInAWeek" },
                 values: new object[,]
                 {
-                    { 1, "a1435affaa", new DateTime(2024, 11, 21, 13, 41, 1, 278, DateTimeKind.Local).AddTicks(2945), "1123123", null },
-                    { 2, "adasd43aa", new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(5323), "11jdfghsdjg23", null }
+                    { 1, "a1435affaa", new DateTime(2024, 11, 25, 16, 26, 34, 356, DateTimeKind.Local).AddTicks(6230), "1123123", null },
+                    { 2, "adasd43aa", new DateTime(2024, 11, 25, 16, 26, 34, 358, DateTimeKind.Local).AddTicks(6487), "11jdfghsdjg23", null }
                 });
 
             migrationBuilder.InsertData(
@@ -555,8 +555,8 @@ namespace GPS.API.Migrations
                 columns: new[] { "Id", "Department", "HireDate", "ManagerLevel" },
                 values: new object[,]
                 {
-                    { 3, "HR", new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(6006), "1" },
-                    { 4, "IT", new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(6788), "2" }
+                    { 3, "HR", new DateTime(2024, 11, 25, 16, 26, 34, 358, DateTimeKind.Local).AddTicks(7200), "1" },
+                    { 4, "IT", new DateTime(2024, 11, 25, 16, 26, 34, 358, DateTimeKind.Local).AddTicks(7918), "2" }
                 });
 
             migrationBuilder.InsertData(
@@ -579,7 +579,7 @@ namespace GPS.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Lines",
-                columns: new[] { "Id", "CompleteDistance", "EndingStationID", "IsActive", "Name", "StartingStationID" },
+                columns: new[] { "Id", "CompleteDistance", "EndingStationId", "IsActive", "Name", "StartingStationId" },
                 values: new object[,]
                 {
                     { 1, "10", 1, true, "21", 2 },
@@ -637,14 +637,14 @@ namespace GPS.API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lines_EndingStationID",
+                name: "IX_Lines_EndingStationId",
                 table: "Lines",
-                column: "EndingStationID");
+                column: "EndingStationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lines_StartingStationID",
+                name: "IX_Lines_StartingStationId",
                 table: "Lines",
-                column: "StartingStationID");
+                column: "StartingStationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_LineId",

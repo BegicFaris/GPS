@@ -4,9 +4,11 @@ import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { BusListComponent } from './app/bus-list/bus-list.component';
-import { BusFormComponent } from './app/bus-form/bus-form.component';
+import { BusListComponent } from './app/bus/bus-list/bus-list.component';
+import { BusFormComponent } from './app/bus/bus-form/bus-form.component';
 import { LandingPageComponent } from './app/landing-page/landing-page.component';
+import { LineListComponent } from './app/line/line-list/line-list.component';
+import { LineFormComponent } from './app/line/line-form/line-form.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -14,9 +16,10 @@ bootstrapApplication(AppComponent, {
       HttpClientModule, 
       RouterModule.forRoot([
         { path: 'landing-page', component: LandingPageComponent },
-        { path: '', component: BusListComponent },
-        { path: 'add', component: BusFormComponent },
-        { path: 'edit/:id', component: BusFormComponent },
+        { path: 'buses', component: BusListComponent },
+        { path: 'buses/add', component: BusFormComponent },
+        { path: 'lines', component: LineListComponent },
+        { path: 'lines/add', component: LineFormComponent },
       ])
     ),
   ],

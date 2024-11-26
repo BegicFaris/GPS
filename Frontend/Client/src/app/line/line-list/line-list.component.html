@@ -1,0 +1,121 @@
+<!-- src/app/line-list/line-list.component.html -->
+<div>
+    @if(lines.length > 0)
+    {
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Line Name</th>
+          <th scope="col">Starting Station</th>
+          <th scope="col">Ending Station</th>
+          <th scope="col">Complete Distance</th>
+          <th scope="col">Is Active</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(line of lines; track line.id){
+          <tr>
+            <td>{{ line.name }}</td>  
+            <td>{{ line.startingStationId }}</td>  <!-- This could be replaced with the actual station name or object -->
+            <td>{{ line.endingStationId }}</td>    <!-- Similar to above, can be replaced with station names -->
+            <td>{{ line.completeDistance }}</td>
+            <td>{{ line.isActive ? 'Active' : 'Inactive' }}</td>
+            <td>
+              <button (click)="selectLine(line)">Edit</button>
+              <button (click)="deleteLine(line.id)">Delete</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+  
+  <ng-template #noLines>
+    <p>No lines available.</p>
+  </ng-template>
+  
+  <!-- Line editing form (only visible when a line is selected for editing) -->
+  <div class="container mt-4">
+  @if ( selectedLine ) {
+    <h3>Edit Line</h3>
+    <form (ngSubmit)="editLine()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="name">Line Name</label>
+            <input 
+              type="text" 
+              id="name" 
+              [(ngModel)]="selectedLine.name" 
+              name="name" 
+              class="form-control" 
+              required />
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="startingStationId">Starting Station ID</label>
+            <input 
+              type="number" 
+              id="startingStationId" 
+              [(ngModel)]="selectedLine.startingStationId" 
+              name="startingStationId" 
+              class="form-control" 
+              required />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="endingStationId">Ending Station ID</label>
+            <input 
+              type="number" 
+              id="endingStationId" 
+              [(ngModel)]="selectedLine.endingStationId" 
+              name="endingStationId" 
+              class="form-control" 
+              required />
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="completeDistance">Complete Distance</label>
+            <input 
+              type="text" 
+              id="completeDistance" 
+              [(ngModel)]="selectedLine.completeDistance" 
+              name="completeDistance" 
+              class="form-control" 
+              required />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="isActive">Is Active</label>
+            <select 
+              id="isActive" 
+              [(ngModel)]="selectedLine.isActive" 
+              name="isActive" 
+              class="form-control">
+              <option [ngValue]="true">Active</option>
+              <option [ngValue]="false">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+  
+      <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary ml-2" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  }
+  </div>
+  

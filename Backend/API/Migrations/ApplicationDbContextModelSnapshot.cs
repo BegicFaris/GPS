@@ -213,7 +213,7 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EndingStationID")
+                    b.Property<int>("EndingStationId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -223,14 +223,14 @@ namespace GPS.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StartingStationID")
+                    b.Property<int>("StartingStationId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EndingStationID");
+                    b.HasIndex("EndingStationId");
 
-                    b.HasIndex("StartingStationID");
+                    b.HasIndex("StartingStationId");
 
                     b.ToTable("Lines");
 
@@ -239,19 +239,19 @@ namespace GPS.API.Migrations
                         {
                             Id = 1,
                             CompleteDistance = "10",
-                            EndingStationID = 1,
+                            EndingStationId = 1,
                             IsActive = true,
                             Name = "21",
-                            StartingStationID = 2
+                            StartingStationId = 2
                         },
                         new
                         {
                             Id = 2,
                             CompleteDistance = "10",
-                            EndingStationID = 1,
+                            EndingStationId = 1,
                             IsActive = true,
                             Name = "21",
-                            StartingStationID = 2
+                            StartingStationId = 2
                         });
                 });
 
@@ -822,7 +822,7 @@ namespace GPS.API.Migrations
                             LastName = "Gosto",
                             PasswordHash = new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 },
                             DriversLicenseNumber = "a1435affaa",
-                            HireDate = new DateTime(2024, 11, 21, 13, 41, 1, 278, DateTimeKind.Local).AddTicks(2945),
+                            HireDate = new DateTime(2024, 11, 25, 16, 26, 34, 356, DateTimeKind.Local).AddTicks(6230),
                             License = "1123123"
                         },
                         new
@@ -833,7 +833,7 @@ namespace GPS.API.Migrations
                             LastName = "Jugo",
                             PasswordHash = new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 },
                             DriversLicenseNumber = "adasd43aa",
-                            HireDate = new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(5323),
+                            HireDate = new DateTime(2024, 11, 25, 16, 26, 34, 358, DateTimeKind.Local).AddTicks(6487),
                             License = "11jdfghsdjg23"
                         });
                 });
@@ -864,7 +864,7 @@ namespace GPS.API.Migrations
                             LastName = "Joldic",
                             PasswordHash = new byte[] { 101, 49, 102, 50, 49, 52, 50, 97, 101, 99, 48, 53, 53, 100, 51, 51, 52, 97, 48, 52, 56, 97, 53, 50, 102, 53, 49, 99, 50, 48, 52, 100, 51, 49, 56, 56, 57, 97, 50, 98, 55, 51, 48, 53, 102, 53, 57, 57, 55, 101, 51, 55, 100, 55, 101, 53, 51, 57, 53, 49, 57, 52, 102, 101, 99, 57, 98, 98, 50, 51, 56, 51, 101, 52, 102, 54, 54, 101, 102, 97, 54, 55, 98, 100, 101, 102, 100, 51, 101, 48, 51, 56, 52, 101, 99, 99, 54, 57, 57, 55, 54, 49, 99, 48, 53, 98, 49, 57, 101, 57, 54, 53, 98, 49, 53, 49, 97, 102, 56, 97, 52, 100, 100, 52, 102, 53, 102, 100 },
                             Department = "HR",
-                            HireDate = new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(6006),
+                            HireDate = new DateTime(2024, 11, 25, 16, 26, 34, 358, DateTimeKind.Local).AddTicks(7200),
                             ManagerLevel = "1"
                         },
                         new
@@ -875,7 +875,7 @@ namespace GPS.API.Migrations
                             LastName = "Music",
                             PasswordHash = new byte[] { 57, 51, 99, 56, 98, 98, 99, 52, 98, 57, 54, 100, 51, 50, 54, 99, 100, 49, 57, 50, 56, 56, 51, 49, 56, 50, 56, 54, 98, 48, 55, 102, 97, 54, 57, 51, 51, 98, 101, 54, 98, 55, 52, 100, 52, 97, 100, 54, 102, 49, 101, 56, 54, 49, 102, 51, 98, 53, 56, 48, 102, 98, 57, 48, 57, 102, 48, 100, 57, 48, 48, 49, 100, 100, 48, 97, 51, 101, 55, 57, 48, 49, 49, 54, 98, 54, 102, 56, 56, 53, 51, 55, 50, 98, 49, 98, 97, 48, 48, 53, 102, 53, 48, 101, 48, 98, 102, 53, 97, 57, 48, 53, 49, 54, 52, 55, 97, 54, 49, 48, 52, 53, 49, 56, 99, 97, 97, 52 },
                             Department = "IT",
-                            HireDate = new DateTime(2024, 11, 21, 13, 41, 1, 280, DateTimeKind.Local).AddTicks(6788),
+                            HireDate = new DateTime(2024, 11, 25, 16, 26, 34, 358, DateTimeKind.Local).AddTicks(7918),
                             ManagerLevel = "2"
                         });
                 });
@@ -925,13 +925,13 @@ namespace GPS.API.Migrations
                 {
                     b.HasOne("GPS.API.Data.Models.Station", "EndingStation")
                         .WithMany()
-                        .HasForeignKey("EndingStationID")
+                        .HasForeignKey("EndingStationId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("GPS.API.Data.Models.Station", "StartingStation")
                         .WithMany()
-                        .HasForeignKey("StartingStationID")
+                        .HasForeignKey("StartingStationId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

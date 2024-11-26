@@ -1,6 +1,5 @@
-// src/app/bus-form/bus-form.component.ts
 import { Component, NgModule, OnInit } from '@angular/core';
-import { Bus } from '../models/bus.model';
+import { Bus } from '../bus.model';
 import { BusService } from '../bus.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
