@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BusListComponent } from './app/bus-list/bus-list.component';
 import { BusFormComponent } from './app/bus-form/bus-form.component';
 import { LandingPageComponent } from './app/landing-page/landing-page.component';
+import { LoginComponent } from './app/login/login.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -14,7 +15,7 @@ bootstrapApplication(AppComponent, {
       HttpClientModule, 
       RouterModule.forRoot([
         { path: 'landing-page', component: LandingPageComponent },
-        { path: '', component: BusListComponent },
+        { path: '', component: LoginComponent },
         { path: 'add', component: BusFormComponent },
         { path: 'edit/:id', component: BusFormComponent },
       ])
