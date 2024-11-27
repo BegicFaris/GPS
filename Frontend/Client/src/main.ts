@@ -1,25 +1,16 @@
 // src/main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
+import { provideRouter, RouterModule } from '@angular/router';
+import { routes } from './app/app.routes';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { BusListComponent } from './app/bus-list/bus-list.component';
-import { BusFormComponent } from './app/bus-form/bus-form.component';
-import { LandingPageComponent } from './app/landing-page/landing-page.component';
-import { LoginComponent } from './app/login/login.component';
+import { provideHttpClient } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(
-      HttpClientModule, 
-      RouterModule.forRoot([
-        { path: 'landing-page', component: LandingPageComponent },
-        { path: '', component: LoginComponent },
-        { path: 'add', component: BusFormComponent },
-        { path: 'edit/:id', component: BusFormComponent },
-      ])
-    ),
+    provideHttpClient(),
+    provideRouter(routes), 
+    provideAnimations()
   ],
-})
-  .catch((err) => console.error(err));
+}).catch((err) => console.error(err));

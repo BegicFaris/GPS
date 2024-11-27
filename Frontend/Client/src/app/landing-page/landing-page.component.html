@@ -1,94 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bus Application - Welcome</title>
-</head>
-<body>
 
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <h1>Welcome to Our Bus Service</h1>
-            <p>Your reliable partner in getting around the city</p>
+    <div class="container mt-5">
+        <div style="text-align: center;">
+            @if(!registerMode){
+                <h1>Gradski prevozni sistem</h1>
+                <p class="lead">Za sve funkcionalnosti molimo vas da se registujete</p>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg me-2" (click)="registerToggle()" >
+                        Register
+                    </button>
+                </div>
+            }
+            @else {
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-6">
+                            <app-register></app-register>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-    </header>
-
-    <!-- Hero Section -->
-<section class="hero">
-    <div class="container">
-        <h2>Safe, Comfortable, and Reliable Bus Rides</h2>
-        <p>Explore our routes and timetables, and book your next trip today!</p>
-        <a href="#routes" class="cta-button">Explore Routes</a>
     </div>
-</section>
-
-    <!-- About Section -->
-    <section class="section" id="about">
-        <div class="container">
-            <h3>About Our Bus Service</h3>
-            <p>We provide a seamless and comfortable bus service to help you get around the city with ease. Our buses are modern, well-maintained, and follow a strict schedule to ensure punctuality. Whether you're commuting for work, school, or leisure, we've got you covered.</p>
-        </div>
-    </section>
-
-    <!-- Routes Section -->
-    <section class="section" id="routes">
-        <div class="container">
-            <h3>Our Bus Routes</h3>
-            <div class="card-container">
-                <div class="card">
-                    <h4>Route 1</h4>
-                    <p>Downtown ↔ North Station</p>
-                </div>
-                <div class="card">
-                    <h4>Route 2</h4>
-                    <p>West End ↔ South Terminal</p>
-                </div>
-                <div class="card">
-                    <h4>Route 3</h4>
-                    <p>East Village ↔ Central Park</p>
-                </div>
-            </div>
-            <a href="#timetable" class="cta-button">View Timetable</a>
-        </div>
-    </section>
-
-    <!-- Timetable Section -->
-    <section class="section" id="timetable">
-        <div class="container">
-            <h3>Timetable</h3>
-            <p>Our buses run at regular intervals. Please check below for the full timetable for each route.</p>
-            <div class="card-container">
-                <div class="card">
-                    <h4>Route 1 - Downtown to North Station</h4>
-                    <p>06:00 AM - 10:00 PM</p>
-                </div>
-                <div class="card">
-                    <h4>Route 2 - West End to South Terminal</h4>
-                    <p>06:30 AM - 09:30 PM</p>
-                </div>
-                <div class="card">
-                    <h4>Route 3 - East Village to Central Park</h4>
-                    <p>07:00 AM - 10:00 PM</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action Section -->
-    <section class="section" id="cta">
-        <div class="container" style="text-align: center;">
-            <h3>Ready to travel with us?</h3>
-            <a href="#booking" class="cta-button">Book Your Ride Now</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Bus Service Inc. All Rights Reserved.</p>
-    </footer>
-
-</body>
-</html>
+    
+    

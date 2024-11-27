@@ -1,14 +1,36 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AccountService } from './_services/account.service';
+import { NavComponent } from './nav/nav.component';
+import { LandingPageComponent } from "./landing-page/landing-page.component";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  template: '<router-outlet></router-outlet>',
+  imports: [NavComponent, RouterOutlet],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
   styles: []
 })
 export class AppComponent {
-  title = 'login-app';
+  http = inject(HttpClient);
+  private accountService = inject(AccountService);
+  title = 'GPS';
+  users: any;
+
+  ngOnInit(): void{
+    this.setCurrentUser();
+  }
+
+  setCurrentUser(){
+    const userString = localStorage.getItem('user');
+    if(!userString) return;
+    const user = JSON.parse(userString);
+    this.accountService.currentUser.set(user);
+  }
+
+
+
 }

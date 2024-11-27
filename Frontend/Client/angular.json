@@ -60,7 +60,6 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          //opcije za SSL certifikate
           "options": {
             "ssl": true,
             "sslCert": "./ssl/localhost.pem",
