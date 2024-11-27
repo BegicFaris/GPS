@@ -1,6 +1,7 @@
-<div class="container mt-5">  line.id ? 'Edit Line' : 
-  <h2 class="mb-4 text-center">{{'Add New Line' }}</h2>
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Add New Line</h2>
   
+  <!-- Form for creating a new line -->
   <form (ngSubmit)="saveLine()" class="shadow p-4 rounded border">
     
     <!-- Name -->
@@ -37,8 +38,8 @@
     </div>
 
     <!-- Submit Button -->
-    <div class="text-center"> line.id ? 'Update' : 
-      <button class="btn btn-primary" type="submit">{{ 'Add' }}</button>
+    <div class="text-center">
+      <button class="btn btn-primary" type="submit">Add</button>
     </div>
   </form>
 </div>

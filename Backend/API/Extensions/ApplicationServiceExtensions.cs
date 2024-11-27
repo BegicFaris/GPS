@@ -8,6 +8,7 @@ using GPS.API.Services.LineServices;
 using GPS.API.Services.ManagerServices;
 using GPS.API.Services.NotificationServices;
 using GPS.API.Services.PassengerServices;
+using GPS.API.Services.RouteServices;
 using GPS.API.Services.ScheduleServices;
 using GPS.API.Services.ShiftServices;
 using GPS.API.Services.StationServices;
@@ -16,16 +17,16 @@ using GPS.API.Services.TicketServices;
 using GPS.API.Services.TokenServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using RS1_2024_25.API.Services.UserServices;
 
 namespace GPS.API.Extensions
 {
     public static class ApplicationServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services, 
-            IConfiguration config
-            ) {
-            
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration config)
+        {
+
             // Add services to the container.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("db1")));
@@ -37,7 +38,35 @@ namespace GPS.API.Extensions
             services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Description = "Please enter your token with this format: ''Bearer YOUR_TOKEN''",
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                            Reference = new OpenApiReference
+                            {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        },
+                        new List<string>()
+                     }
+                });
+            });
             services.AddHttpContextAccessor();
 
 
@@ -55,6 +84,7 @@ namespace GPS.API.Extensions
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<ILineService, LineService>();
             services.AddScoped<IBusService, BusService>();
+            services.AddScoped<IRouteService, RouteService>();
             // Adding the scpoped service CurrentTenantService
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();

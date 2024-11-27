@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using GPS.API.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GPS.API.Data.Models
 {

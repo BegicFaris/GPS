@@ -1,10 +1,11 @@
 ﻿using static System.Collections.Specialized.BitVector32;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GPS.API.Interfaces;
 
 namespace GPS.API.Data.Models
 {
-    public class Route
+    public class Route : IMustHaveTenant
     {
         [Key]
         public int Id { get; set; }
@@ -15,5 +16,6 @@ namespace GPS.API.Data.Models
         public required int StationId { get; set; }
         public Station? Station { get; set; }
         public required float DistanceFromTheNextStation { get; set; }
+        public string? TenantId { get; set; }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GPS.API.Interfaces;
 
 namespace GPS.API.Data.Models
 {
-    public class Notification
+    public class Notification :IMustHaveTenant
     {
         [Key]
         public int Id { get; set; }
@@ -17,6 +18,6 @@ namespace GPS.API.Data.Models
         [ForeignKey(nameof(Line))]
         public required int LineId { get; set; }
         public Line? Line { get; set; }
-
+        public string? TenantId { get; set; }
     }
 }

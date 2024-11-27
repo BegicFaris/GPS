@@ -6,9 +6,10 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BusListComponent } from './app/bus/bus-list/bus-list.component';
 import { BusFormComponent } from './app/bus/bus-form/bus-form.component';
-import { LandingPageComponent } from './app/landing-page/landing-page.component';
 import { LineListComponent } from './app/line/line-list/line-list.component';
 import { LineFormComponent } from './app/line/line-form/line-form.component';
+import { LoginComponent } from './app/login/login.component';
+import { LandingPageComponent } from './app/landing-page/landing-page.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -25,3 +26,12 @@ bootstrapApplication(AppComponent, {
   ],
 })
   .catch((err) => console.error(err));
+
+
+  // bootstrapApplication(AppComponent, {
+  //   providers: [
+  //     provideHttpClient(),
+  //     provideRouter(routes),
+  //     provideAnimations()
+  //   ],
+  // }).catch((err) => console.error(err));

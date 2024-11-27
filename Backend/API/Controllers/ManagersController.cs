@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GPS.API.Controllers
 {
@@ -13,6 +14,7 @@ namespace GPS.API.Controllers
             _managerService = managerService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Manager>>> GetAllManagers()
         {
@@ -20,6 +22,7 @@ namespace GPS.API.Controllers
             return Ok(managers);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Manager>> GetManager(int id)
         {

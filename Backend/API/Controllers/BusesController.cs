@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GPS.API.Controllers
 {
@@ -13,16 +14,17 @@ namespace GPS.API.Controllers
             _busService = busService;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetAllBuses() =>
             Ok(await _busService.GetAllBusesAsync());
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBus(int id)
+        public async Task<IActionResult> GetBus(int id, string token)
         {
-            var bus = await _busService.GetBusByIdAsync(id);
-            if (bus == null) return NotFound();
-            return Ok(bus);
+                var bus = await _busService.GetBusByIdAsync(id);
+                if (bus == null) return NotFound();
+                return Ok(bus);
         }
 
         [HttpPost]

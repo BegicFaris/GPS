@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GPS.API.Interfaces;
 namespace GPS.API.Data.Models
 {
-    public class Feedback
+    public class Feedback : IMustHaveTenant
     {
         [Key]
         public int Id { get; set; }
@@ -13,5 +14,6 @@ namespace GPS.API.Data.Models
         public required float Rating { get; set; }
         public required DateTime Date { get; set; }
         public byte[]? Picture { get; set; }
+        public string? TenantId { get; set; }
     }
 }

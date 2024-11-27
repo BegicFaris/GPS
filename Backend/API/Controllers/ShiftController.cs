@@ -1,4 +1,5 @@
 ﻿using GPS.API.Data.Models;
+using GPS.API.Dtos.ShiftDtos;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,17 +27,41 @@ namespace GPS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateShift(Shift shift)
+        public async Task<IActionResult> CreateShift(ShiftCreateDto shiftCreateDto)
         {
+            var shift = new Shift
+            {
+                BusId = shiftCreateDto.BusId,
+                DriverId = shiftCreateDto.DriverId,
+                ShiftDate = shiftCreateDto.ShiftDate,
+                ShiftEndingTime = shiftCreateDto.ShiftEndingTime,
+                ShiftStartingTime = shiftCreateDto.ShiftStartingTime,
+            };
+
             var createdShift = await _shiftService.CreateShiftAsync(shift);
             return CreatedAtAction(nameof(CreateShift), new { id = createdShift.Id }, createdShift);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateShift(int id, Shift shift)
+        public async Task<IActionResult> UpdateShift(int id, ShiftUpdateDto shiftUpdateDto)
         {
-            if (id != shift.Id) return BadRequest();
-            var updatedShift = await _shiftService.UpdateShiftAsync(shift);
+            if (id != shiftUpdateDto.Id) return BadRequest();
+
+            var existingShift = await _shiftService.GetShiftByIdAsync(id);
+            if (existingShift == null) return NotFound($"Shift with Id:{id} not found!");
+
+            if (shiftUpdateDto.BusId != null)
+                existingShift.BusId = shiftUpdateDto.BusId.Value;
+            if (shiftUpdateDto.DriverId != null)
+                existingShift.DriverId = shiftUpdateDto.DriverId.Value;
+            if (shiftUpdateDto.ShiftDate != null)
+                existingShift.ShiftDate = shiftUpdateDto.ShiftDate.Value;
+            if (shiftUpdateDto.ShiftStartingTime != null)
+                existingShift.ShiftStartingTime = shiftUpdateDto.ShiftStartingTime.Value;
+            if (shiftUpdateDto.ShiftEndingTime != null)
+                existingShift.ShiftEndingTime = shiftUpdateDto.ShiftEndingTime.Value;
+
+            var updatedShift = await _shiftService.UpdateShiftAsync(existingShift);
             return Ok(updatedShift);
         }
 
