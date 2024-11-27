@@ -59,7 +59,6 @@ namespace GPS.API.Data.DbContexts
             modelBuilder.Entity<Manager>().ToTable("Managers");
             //Ovo treba implementirati za svaku klasu koja koristi tenant
             //modelBuilder.Entity<NekaKlasa>().HasQueryFilter(a => a.TenantId == CurrentTenantID);
-
             //modelBuilder.Entity<MyAppUser>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Bus>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<CreditCard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);

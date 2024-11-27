@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p>landing-page works!</p>
 <body>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -211,3 +212,30 @@
     
 
 </body>
+=======
+
+    <div class="container mt-5">
+        <div style="text-align: center;">
+            @if(!registerMode){
+                <h1>Gradski prevozni sistem</h1>
+                <p class="lead">Za sve funkcionalnosti molimo vas da se registujete</p>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg me-2" (click)="registerToggle()" >
+                        Register
+                    </button>
+                </div>
+            }
+            @else {
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-6">
+                            <app-register></app-register>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+    
+>>>>>>> a9b4edbdc5f845f3d21311939e7dbb5b0abf351c
