@@ -10,6 +10,8 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { BuyTicketComponent } from './buy-ticket/buy-ticket.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { HomeComponent } from './home/home.component';
+import { LineViewComponent } from './lines/line-view/line-view.component';
+import { LineCreateComponent } from './lines/line-create/line-create.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -23,15 +25,16 @@ export const routes: Routes = [
   { path: 'buy-ticket', component:BuyTicketComponent},
   { path: 'about-us', component:AboutUsComponent},
   { path: 'home', component:HomeComponent},
+  { path: 'lines', component: LineViewComponent },
+  { path: 'lines/add', component: LineCreateComponent },
+  
+  
+  
 
 
-
-
-
-
-
-
-
+  
+  
+  
   //ne diraj ovo
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
