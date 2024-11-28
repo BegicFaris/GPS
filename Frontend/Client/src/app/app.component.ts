@@ -1,15 +1,19 @@
-import { HttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AccountService } from './_services/account.service';
 import { NavComponent } from './nav/nav.component';
-import { LandingPageComponent } from "./landing-page/landing-page.component";
+import { AuthInterceptor } from './_services/auth-interceptor.service';
+
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [NavComponent, RouterOutlet],
+
+  providers: [
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   styles: []
@@ -20,13 +24,13 @@ export class AppComponent {
   title = 'GPS';
   users: any;
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.setCurrentUser();
   }
 
-  setCurrentUser(){
+  setCurrentUser() {
     const userString = localStorage.getItem('user');
-    if(!userString) return;
+    if (!userString) return;
     const user = JSON.parse(userString);
     this.accountService.currentUser.set(user);
   }
