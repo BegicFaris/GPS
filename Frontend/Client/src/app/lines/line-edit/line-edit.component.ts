@@ -15,14 +15,14 @@ import { NgIf } from '@angular/common';
 })
 export class LineEditComponent {
 
-  constructor(public dialogRef: MatDialogRef<LineEditComponent>, @Inject(MAT_DIALOG_DATA) public data: Line) {
+  constructor(public dialogRef: MatDialogRef<LineEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
 
   }
   private cdr = inject(ChangeDetectorRef);
   private lineService = inject(LineService);
-  lineUpdate: Line | null = null;
+  lineUpdate:any={};
   ngOnInit(): void {
-    this.lineUpdate = this.data;
+    this.lineUpdate=this.data;
     this.Log();
     this.cdr.detectChanges();
   }

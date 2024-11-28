@@ -16,7 +16,6 @@ export class LineCreateComponent {
   private lineService = inject(LineService);
   lineCreate:any = {};
   addNewLine() {
-    console.log(this.lineCreate);
     if (this.lineCreate.isActive === undefined) {
       this.lineCreate.isActive = false;
     }
