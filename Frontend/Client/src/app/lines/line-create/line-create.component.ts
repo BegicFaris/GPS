@@ -1,7 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LineService } from '../../_services/line.service';
+import { StationService } from '../../_services/station.service';
 import { Router } from '@angular/router';
+import { Station } from '../../_models/station';
 
 
 @Component({
@@ -14,6 +16,11 @@ import { Router } from '@angular/router';
 export class LineCreateComponent {
   private router=inject(Router);
   private lineService = inject(LineService);
+  private stationService= inject(StationService)
+  stations:Station[]=[];
+  ngOnInit(){
+    this.loadStations();
+  }
   lineCreate:any = {};
   addNewLine() {
     if (this.lineCreate.isActive === undefined) {
@@ -30,5 +37,12 @@ export class LineCreateComponent {
   cancle(){
     this.router.navigate(['/lines'])
   }
+  loadStations(){
+    this.stationService.getAllStations().subscribe(
+      (data) => {
+        this.stations = data; // or data.lines if it's nested
+      },
+    );
 
+  }
 }

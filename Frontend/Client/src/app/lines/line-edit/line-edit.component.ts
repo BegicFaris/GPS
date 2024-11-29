@@ -1,8 +1,10 @@
 import { Component, inject, Inject } from '@angular/core';
-import { FormsModule,  } from '@angular/forms';
+import { FormsModule, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineService } from '../../_services/line.service';
 import { NgIf } from '@angular/common';
+import { StationService } from '../../_services/station.service';
+import { Station } from '../../_models/station';
 
 @Component({
   selector: 'app-line-edit',
@@ -13,16 +15,17 @@ import { NgIf } from '@angular/common';
 })
 export class LineEditComponent {
 
-  constructor(public dialogRef: MatDialogRef<LineEditComponent>, @Inject(MAT_DIALOG_DATA) public lineUpdate: {id:number, name:string, startingStationId : number, endingStationId:number,completeDistance:string, isActive:boolean }) {
+  constructor(public dialogRef: MatDialogRef<LineEditComponent>, @Inject(MAT_DIALOG_DATA) public lineUpdate: { id: number, name: string, startingStationId: number, endingStationId: number, completeDistance: string, isActive: boolean }) {
 
   }
   private lineService = inject(LineService);
+  private stationService = inject(StationService);
+  stations: Station[] = [];
+
   ngOnInit(): void {
-    this.Log();
+    this.loadStations();
   }
-  Log() {
-    console.log(this.lineUpdate);
-  }
+
   saveChanges() {
     this.lineService.updateLine(this.lineUpdate).subscribe({
       next: response => {
@@ -36,6 +39,13 @@ export class LineEditComponent {
   }
   closeDialog() {
     this.dialogRef.close();
+  }
+  loadStations() {
+    this.stationService.getAllStations().subscribe(
+      (data) => {
+        this.stations = data; // or data.lines if it's nested
+      },
+    );
   }
 }
 

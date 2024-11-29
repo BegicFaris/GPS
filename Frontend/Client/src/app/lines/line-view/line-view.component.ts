@@ -5,6 +5,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { LineEditComponent } from '../line-edit/line-edit.component';
+import { Station } from '../../_models/station';
 
 @Component({
   selector: 'app-line-view',
@@ -48,7 +49,6 @@ export class LineViewComponent {
         }
       });
     }
-
   }
   openEditDialog(line: Line) {
     const dialogRef = this.dialog.open(LineEditComponent, {

@@ -20,8 +20,8 @@
     <tr>
       <th scope="row">{{$index + 1}}</th>
       <td>{{line.name}}</td>
-      <td>{{line.startingStationId}}</td>
-      <td>{{line.endingStationId}}</td>
+      <td>{{line.startingStation.name}}</td>
+      <td>{{line.endingStation.name}}</td>
       <td>{{line.completeDistance}}</td>
       <td>@if(line.isActive){Active}@else{Not active}</td>
       <td><button type="button" class="btn btn-primary" (click)="openEditDialog(line)">Edit</button></td>
