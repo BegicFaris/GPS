@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { LineService } from '../../_services/line.service';
-import { Line } from '../../_models/lines/line';
+import { Line } from '../../_models/line';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,11 +54,18 @@ export class LineViewComponent {
     const dialogRef = this.dialog.open(LineEditComponent, {
       height: '800px',
       width: '1000px',  // Customize the width of the dialog
-      data: { line },  // Pass the current data to the dialog
+      data: {
+        id: line.id,
+        name: line.name,
+        startingStationId: line.startingStationId,
+        endingStationId: line.endingStationId,
+        completeDistance: line.completeDistance,
+        isActive: line.isActive
+      },  // Pass the current data to the dialog
     });
     dialogRef.afterClosed().subscribe(result => {
+      this.loadLines();
       if (result) {
-        this.loadLines();
         console.log('Updated Line:', result);
       }
     });

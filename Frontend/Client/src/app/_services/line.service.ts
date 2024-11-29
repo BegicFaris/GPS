@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Line } from '../_models/lines/line';
+import { Line } from '../_models/line';
 import { catchError } from 'rxjs';
 
 @Injectable({
@@ -31,7 +31,7 @@ export class LineService {
     );
   }
   updateLine(line: any) {
-    return this.http.put<Line>(this.baseUrl + `lines/${line.Id}`, line).pipe(
+    return this.http.put<Line>(this.baseUrl + `lines/${line.id}`, line).pipe(
       catchError(error => {
         console.error('Error updating line:', error);
         return (error);
