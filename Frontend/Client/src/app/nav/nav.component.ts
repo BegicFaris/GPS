@@ -24,6 +24,10 @@ export class NavComponent {
   private router = inject(Router);
   model: any = {};
 
+  get userRole(): string | null{
+    return this.accountService.getUserRole();
+  }
+
   login() {
     this.accountService.login(this.model).subscribe({
       next: (_) => {

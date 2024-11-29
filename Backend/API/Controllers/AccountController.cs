@@ -7,6 +7,7 @@ using GPS.API.Services.TokenServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -44,11 +45,12 @@ namespace GPS.API.Controllers
 
             _context.MyAppUsers.Add(user);
             await _context.SaveChangesAsync();
-
+            string role = "Driver";
             return new UserDto
             {
                 Email = user.Email,
-                Token = tokenService.CreateToken(user)
+                Token = tokenService.CreateToken(user),
+                Role = role
             };
         }
 
@@ -79,11 +81,12 @@ namespace GPS.API.Controllers
 
             _context.MyAppUsers.Add(user);
             await _context.SaveChangesAsync();
-
+            string role = "Manager";
             return new UserDto
             {
                 Email = user.Email,
-                Token = tokenService.CreateToken(user)
+                Token = tokenService.CreateToken(user),
+                Role = role
             };
         }
 
@@ -112,11 +115,12 @@ namespace GPS.API.Controllers
 
             _context.MyAppUsers.Add(user);
             await _context.SaveChangesAsync();
-
+            string role = "Passenger";
             return new UserDto
             {
                 Email = user.Email,
-                Token = tokenService.CreateToken(user)
+                Token = tokenService.CreateToken(user),
+                Role = role
             };
         }
 
@@ -137,11 +141,20 @@ namespace GPS.API.Controllers
                     return Unauthorized("Invalid password");
                 }
             }
+            string role = user switch
+            {
+                Driver => "Driver",
+                Manager => "Manager",
+                Passenger => "Passenger",
+                _ => "Unknown"
+            };
+
             currentTenantService.SetTenant(user.TenantId);
             return new UserDto
             {
                 Email = user.Email,
-                Token = tokenService.CreateToken(user)
+                Token = tokenService.CreateToken(user),
+                Role = role
             };
         }
     }

@@ -25,6 +25,11 @@ export class AccountService {
     );
   }
 
+  getUserRole(): string | null{
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user).role :null;
+  }
+
   register(model: any){
     return this.http.post<User>(this.baseUrl + 'account/register/passenger', model)
     .pipe(

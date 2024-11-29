@@ -12,6 +12,10 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { HomeComponent } from './home/home.component';
 import { LineViewComponent } from './lines/line-view/line-view.component';
 import { LineCreateComponent } from './lines/line-create/line-create.component';
+import { ManagerDashboardComponent } from './manager-dashboard/manager-dashboard.component';
+import { RoleGuard } from './guards/role.guard';
+import { DriverDashboardComponent } from './driver-dashboard/driver-dashboard.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -27,7 +31,22 @@ export const routes: Routes = [
   { path: 'home', component:HomeComponent},
   { path: 'lines', component: LineViewComponent },
   { path: 'lines/add', component: LineCreateComponent },
-  
+  {
+    path: 'manager-dashboard',
+    component: ManagerDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'Manager' }, // Restrict access to Managers
+  },
+  {
+    path: 'driver-dashboard',
+    component: DriverDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'Driver' }, // Restrict access to Drivers
+  },
+  {
+    path: 'unauthorized',
+    component: UnauthorizedComponent, // A simple page showing "Access Denied"
+  },
   
   
 
@@ -36,5 +55,5 @@ export const routes: Routes = [
   
   
   //ne diraj ovo
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '/unauthorized', pathMatch: 'full' },
 ];

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container">
+  <div class="container">
     <a class="navbar-brand" href="/home">GPS</a>
     <button
       class="navbar-toggler"
@@ -65,6 +65,30 @@
             >About us</a
           >
         </li>
+        @if (userRole === "Manager") {
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              routerLink="/manager-dashboard"
+              aria-current="page"
+              href="#"
+              >Manager dashboard</a
+            >
+          </li>
+        }
+        @if (userRole === "Driver") {
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              routerLink="/driver-dashboard"
+              aria-current="page"
+              href="#"
+              >Driver dashboard</a
+            >
+          </li>
+        }
       </ul>
       <div dropdown class="dropdown">
         <a
