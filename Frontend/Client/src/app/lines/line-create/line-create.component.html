@@ -5,7 +5,7 @@
         <input type="text" class="form-control" name="name" [(ngModel)]="lineCreate.name" placeholder="Name">
     </div>
     <div class="mb-3">
-        <label class="form-label">Starting station id</label>
+        <label class="form-label">Starting station</label>
         <select class="form-select" name="startingStationId" [(ngModel)]="lineCreate.startingStationId" #startingStationId="ngModel">
             @for (station of stations; track station.id) {
               <option [value]="station.id">
@@ -15,7 +15,7 @@
           </select>
     </div>
     <div class="mb-3">
-        <label class="form-label">Ending station id</label>
+        <label class="form-label">Ending station</label>
         <select class="form-select" name="endingStationId" [(ngModel)]="lineCreate.endingStationId" #endingStationId="ngModel">
             @for (station of stations; track station.id) {
               <option [value]="station.id">
@@ -34,6 +34,6 @@
     </div>
     <div  class="button-container">
         <button type="submit" class="btn btn-primary">Add</button>
-        <button type="button" class="btn btn-danger" (click)="cancle()">Cancle</button>
+        <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
     </div>
 </form>

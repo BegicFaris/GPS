@@ -42,7 +42,7 @@ export class LineViewComponent {
         next: response => {
           this.loadLines();
           console.log('Line deleted successfully', response);
-          this.cancle(); // Navigate back after successful deletion
+          this.cancel(); // Navigate back after successful deletion
         },
         error: error => {
           console.error('Error deleting line', error);
@@ -71,7 +71,7 @@ export class LineViewComponent {
     });
 
   }
-  cancle() {
+  cancel() {
     this.router.navigate(['/lines']);
   }
 }

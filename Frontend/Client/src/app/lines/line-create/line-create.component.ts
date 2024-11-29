@@ -29,12 +29,12 @@ export class LineCreateComponent {
     this.lineService.createLine(this.lineCreate).subscribe({
       next: response=>{
         console.log(response);
-        this.cancle();
+        this.cancel();
       }
     })
     this.router.navigate(['/lines'])
   }
-  cancle(){
+  cancel(){
     this.router.navigate(['/lines'])
   }
   loadStations(){
