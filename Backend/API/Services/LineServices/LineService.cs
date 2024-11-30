@@ -14,11 +14,13 @@ namespace GPS.API.Services.LineServices
             _context = context;
         }
 
+        //.Include(l => l.StartingStation).Include(l=>l.EndingStation)    
         public async Task<IEnumerable<Line>> GetAllLinesAsync() =>
-            await _context.Lines.ToListAsync();
+             await _context.Lines.Include(x => x.StartingStation).Include(x=>x.EndingStation).ToListAsync();
 
+            
         public async Task<Line> GetLineByIdAsync(int id) =>
-            await _context.Lines.FindAsync(id);
+            await _context.Lines.Include(x => x.StartingStation).SingleOrDefaultAsync(x => x.Id == id);
 
         public async Task<Line> CreateLineAsync(Line line)
         {

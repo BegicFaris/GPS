@@ -19,7 +19,7 @@ namespace GPS.API.Middleware
                 context.Request.Path.StartsWithSegments("/api/Account/Register/Manager") ||
                 context.Request.Path.StartsWithSegments("/api/Account/Login") ||
                 context.Request.Path.StartsWithSegments("/api/AAGetTokenTest/GetToken") ||
-                context.Request.Path.StartsWithSegments("/api/Tenant"))
+                context.Request.Path.StartsWithSegments("/api/Tenants"))
             {
                 await _next(context); // Continue without doing tenant resolution
                 return;

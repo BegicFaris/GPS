@@ -5,11 +5,11 @@ using GPS.API.Dtos.ScheduleDtos;
 
 namespace GPS.API.Controllers
 {
-    public class ScheduleController : MyControllerBase
+    public class SchedulesController : MyControllerBase
     {
         private readonly IScheduleService _scheduleService;
 
-        public ScheduleController(IScheduleService scheduleService)
+        public SchedulesController(IScheduleService scheduleService)
         {
             _scheduleService = scheduleService;
         }

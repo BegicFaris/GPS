@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
 {
-    public class TenantController: MyControllerBase
+    public class TenantsController: MyControllerBase
     {
         private readonly ITenantService _tenantService;
 
-        public TenantController(ITenantService tenantService)
+        public TenantsController(ITenantService tenantService)
         {
             _tenantService = tenantService;
         }

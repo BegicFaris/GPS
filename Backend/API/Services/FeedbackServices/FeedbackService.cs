@@ -13,9 +13,9 @@ namespace GPS.API.Services.FeedbackServices
             _context = context;
         }
         public async Task<IEnumerable<Feedback>> GetAllFeedbacksAsync() =>
-            await _context.Feedbacks.ToListAsync();
+            await _context.Feedbacks.Include(x=>x.User).ToListAsync();
         public async Task<Feedback> GetFeedbackByIdAsync(int id) =>
-          await _context.Feedbacks.FindAsync(id);
+          await _context.Feedbacks.Include(x => x.User).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<Feedback> CreateFeedbackAsync(Feedback feedback)
         {
             _context.Feedbacks.Add(feedback);

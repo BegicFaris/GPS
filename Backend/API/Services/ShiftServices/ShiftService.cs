@@ -13,9 +13,9 @@ namespace GPS.API.Services.ShiftServices
             _context = context;
         }
         public async Task<IEnumerable<Shift>> GetAllShiftsAsync() =>
-            await _context.Shifts.ToListAsync();
+            await _context.Shifts.Include(x => x.Bus).Include(x => x.Driver).ToListAsync();
         public async Task<Shift> GetShiftByIdAsync(int id) =>
-          await _context.Shifts.FindAsync(id);
+          await _context.Shifts.Include(x => x.Bus).Include(x => x.Driver).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<Shift> CreateShiftAsync(Shift shift)
         {
             _context.Shifts.Add(shift);

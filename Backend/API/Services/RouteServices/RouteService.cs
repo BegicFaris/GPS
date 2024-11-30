@@ -13,9 +13,9 @@ namespace GPS.API.Services.RouteServices
             _context = context;
         }
         public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesAsync() =>
-            await _context.Routes.ToListAsync();
+            await _context.Routes.Include(x => x.Line).Include(x => x.Station).ToListAsync();
         public async Task<Data.Models.Route> GetRouteByIdAsync(int id) =>
-          await _context.Routes.FindAsync(id);
+          await _context.Routes.Include(x => x.Line).Include(x => x.Station).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<Data.Models.Route> CreateRouteAsync(Data.Models.Route route)
         {
             _context.Routes.Add(route);

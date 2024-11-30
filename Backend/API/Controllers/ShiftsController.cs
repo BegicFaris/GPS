@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
 {
-    public class ShiftController : MyControllerBase
+    public class ShiftsController : MyControllerBase
     {
         private readonly IShiftService _shiftService;
 
-        public ShiftController(IShiftService shiftService)
+        public ShiftsController(IShiftService shiftService)
         {
             _shiftService = shiftService;
         }

@@ -6,11 +6,11 @@ using System.Security.Cryptography.Xml;
 
 namespace GPS.API.Controllers
 {
-    public class FeedbackController : MyControllerBase
+    public class FeedbacksController : MyControllerBase
     {
         private readonly IFeedbackService _feedbackService;
 
-        public FeedbackController(IFeedbackService feedbackService)
+        public FeedbacksController(IFeedbackService feedbackService)
         {
             _feedbackService = feedbackService;
         }

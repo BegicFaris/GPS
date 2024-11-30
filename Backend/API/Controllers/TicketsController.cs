@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
 {
-    public class TicketController : MyControllerBase
+    public class TicketsController : MyControllerBase
     {
         private readonly ITicketService _ticketService;
 
-        public TicketController(ITicketService ticketService)
+        public TicketsController(ITicketService ticketService)
         {
             _ticketService = ticketService;
         }
