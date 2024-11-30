@@ -14,7 +14,7 @@ export class TenantService {
   baseUrl= 'https://localhost:5001/api/';
 
   fetchTenants(): Observable<Tenant[]> {
-    return this.http.get<Tenant[]>(this.baseUrl + 'tenant/tenant').pipe(
+    return this.http.get<Tenant[]>(this.baseUrl + 'tenants/tenant').pipe(
       catchError(this.handleError) // Handle errors
     );
   }
