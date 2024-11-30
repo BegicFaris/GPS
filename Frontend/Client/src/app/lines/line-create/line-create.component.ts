@@ -4,6 +4,7 @@ import { LineService } from '../../_services/line.service';
 import { StationService } from '../../_services/station.service';
 import { Router } from '@angular/router';
 import { Station } from '../../_models/station';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -16,9 +17,11 @@ import { Station } from '../../_models/station';
 export class LineCreateComponent {
   private router=inject(Router);
   private lineService = inject(LineService);
-  private stationService= inject(StationService)
+  private stationService= inject(StationService);
+  private titleService = inject(Title);
   stations:Station[]=[];
   ngOnInit(){
+    this.titleService.setTitle("Add line");
     this.loadStations();
   }
   lineCreate:any = {};

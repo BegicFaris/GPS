@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,6 +19,12 @@ export class ResetPasswordComponent {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
     });
+  }
+  private titleService = inject(Title);
+
+  ngOnInit()
+  {
+    this.titleService.setTitle("Reset password");
   }
 
   onSubmit() {

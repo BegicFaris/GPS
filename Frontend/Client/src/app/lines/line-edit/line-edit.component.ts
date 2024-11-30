@@ -5,6 +5,7 @@ import { LineService } from '../../_services/line.service';
 import { NgIf } from '@angular/common';
 import { StationService } from '../../_services/station.service';
 import { Station } from '../../_models/station';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-line-edit',
@@ -20,9 +21,11 @@ export class LineEditComponent {
   }
   private lineService = inject(LineService);
   private stationService = inject(StationService);
+  private titleService = inject(Title);
   stations: Station[] = [];
 
   ngOnInit(): void {
+    this.titleService.setTitle("Update line");
     this.loadStations();
   }
 

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manager-dashboard',
@@ -8,5 +9,12 @@ import { Component } from '@angular/core';
   styleUrl: './manager-dashboard.component.css'
 })
 export class ManagerDashboardComponent {
+  private titleService = inject(Title);
+
+  ngOnInit()
+  {
+    this.titleService.setTitle("Manager dashboard");
+  }
+
 
 }

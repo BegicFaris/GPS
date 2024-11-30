@@ -13,9 +13,9 @@ namespace GPS.API.Services.NotificationServices
             _context = context;
         }
         public async Task<IEnumerable<Notification>> GetAllNotificationsAsync() =>
-            await _context.Notifications.Include(x => x.NotificationType).ToListAsync();
+            await _context.Notifications.Include(x => x.NotificationType).Include(x=>x.Line).ToListAsync();
         public async Task<Notification> GetNotificationByIdAsync(int id) =>
-          await _context.Notifications.Include(x => x.NotificationType).SingleOrDefaultAsync(x => x.Id == id);
+          await _context.Notifications.Include(x => x.NotificationType).Include(x=>x.Line).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<Notification> CreateNotificationAsync(Notification notification)
         {
             _context.Notifications.Add(notification);

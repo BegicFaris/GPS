@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,6 +11,12 @@ import { Router } from '@angular/router';
 })
 export class UnauthorizedComponent {
   private router = inject(Router);
+  private titleService = inject(Title);
+
+  ngOnInit()
+  {
+    this.titleService.setTitle("Unauthorized");
+  }
   homepage(){
     this.router.navigateByUrl('/home');
   }

@@ -3,6 +3,7 @@ import { NavComponent } from '../nav/nav.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { RegisterComponent } from '../register/register.component';
 import { HttpClient } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
@@ -15,8 +16,12 @@ export class LandingPageComponent implements OnInit {
   http = inject(HttpClient);
   registerMode = false;
   users: any;
+  private titleService = inject(Title);
 
-  ngOnInit(): void {}
+  ngOnInit()
+  {
+    this.titleService.setTitle("Welcome");
+  }
 
   registerToggle() {
     this.registerMode = !this.registerMode;

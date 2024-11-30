@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { LineEditComponent } from '../line-edit/line-edit.component';
 import { Station } from '../../_models/station';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-line-view',
@@ -17,12 +18,13 @@ import { Station } from '../../_models/station';
 export class LineViewComponent {
   private lineService = inject(LineService);
   private router = inject(Router);
-  private dialog = inject(MatDialog)
+  private dialog = inject(MatDialog);
+  private titleService = inject(Title);
   lines: Line[] = [];
 
   ngOnInit() {
+    this.titleService.setTitle("Lines");
     this.loadLines();
-    // Reload data on navigation back
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd && event.url === '/lines') {
         this.loadLines();
