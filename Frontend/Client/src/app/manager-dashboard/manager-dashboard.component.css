@@ -1,0 +1,91 @@
+/* Vertical Navbar Styling */
+.nav-link {
+  font-size: 16px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+/* Main Content Styling */
+.flex-grow-1 {
+  overflow-y: auto;
+}
+
+.vertical-menu {
+    position: absolute;
+    top: 0; 
+    /* Align below the horizontal navbar */
+    left: 0;
+    width: 100%; /* Make it fit the nav's width */
+  height: 100%; /* Make it fit the nav's height */
+  background-color: inherit; /* Match the background color of the parent nav */
+  color: inherit;
+    height: calc(100vh - 56px); /* Fill the remaining height of the viewport */ /* Background color to match navbar */
+    color: #ffffff; /* Text coplor */
+    overflow-y: auto; /* Enable vertical scrolling for overflow */
+    padding: 5px;
+    margin: 0;
+  }
+  
+  .vertical-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .vertical-menu .nav-item {
+    display: block;
+  }
+  
+  .vertical-menu .nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  .vertical-menu .nav-link:hover,
+  .vertical-menu .nav-link.active {
+    background-color: #495057;
+  }
+  
+  /* Add these new styles */
+  #sidebar {
+    position: relative; /* Required for .vertical-menu to align properly */
+  width: auto; /* Ensure width matches the collapse/expand logic */
+  height: 100%;
+    transition: width 0.3s ease;
+  }
+  
+  #sidebar.collapsed {
+    width: 60px;
+  }
+  
+  #sidebar.collapsed .vertical-menu > *:not(button) {
+    display: none;
+  }
+  
+  #sidebarCollapseBtn {
+    padding: 0;
+    font-size: 1.5rem;
+  }
+  
+  #content {
+    transition: margin-left 0.3s ease;
+  }
+  
+  #content.expanded {
+    margin-left: 60px;
+  }
+  
+  

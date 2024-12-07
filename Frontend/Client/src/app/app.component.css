@@ -8,8 +8,8 @@ app-nav {
  /* Makes sure it stays on top of other elements */
 }
 
-div {
-  margin-top: 60px; /* Adjust this based on the height of your nav */
+div{
+  margin-top: 65px; /* Adjust this based on the height of your nav */
   padding: 20px;
   padding: 0;
 }

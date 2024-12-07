@@ -13,7 +13,7 @@ import { Title } from '@angular/platform-browser';
   standalone: true,
   imports: [RouterLink, MatDialogModule, MatButtonModule],
   templateUrl: './line-view.component.html',
-  styleUrl: './line-view.component.css'
+  styleUrl: './line-view.component.css',
 })
 export class LineViewComponent {
   private lineService = inject(LineService);
@@ -23,7 +23,7 @@ export class LineViewComponent {
   lines: Line[] = [];
 
   ngOnInit() {
-    this.titleService.setTitle("Lines");
+    this.titleService.setTitle('Lines');
     this.loadLines();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd && event.url === '/lines') {
@@ -32,46 +32,44 @@ export class LineViewComponent {
     });
   }
   loadLines() {
-    this.lineService.getAllLines().subscribe(
-      (data) => {
-        this.lines = data; // or data.lines if it's nested
-      },
-    );
+    this.lineService.getAllLines().subscribe((data) => {
+      this.lines = data; // or data.lines if it's nested
+      console.log(this.lines);
+    });
   }
   deleteLine(id: number) {
     if (confirm('Are you sure you want to delete this line?')) {
       this.lineService.deleteLine(id).subscribe({
-        next: response => {
+        next: (response) => {
           this.loadLines();
           console.log('Line deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
-        error: error => {
+        error: (error) => {
           console.error('Error deleting line', error);
-        }
+        },
       });
     }
   }
   openEditDialog(line: Line) {
     const dialogRef = this.dialog.open(LineEditComponent, {
       height: '800px',
-      width: '1000px',  // Customize the width of the dialog
+      width: '1000px', // Customize the width of the dialog
       data: {
         id: line.id,
         name: line.name,
         startingStationId: line.startingStationId,
         endingStationId: line.endingStationId,
         completeDistance: line.completeDistance,
-        isActive: line.isActive
-      },  // Pass the current data to the dialog
+        isActive: line.isActive,
+      }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       this.loadLines();
       if (result) {
         console.log('Updated Line:', result);
       }
     });
-
   }
   cancel() {
     this.router.navigate(['/lines']);
