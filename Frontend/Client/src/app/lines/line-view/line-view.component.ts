@@ -72,6 +72,6 @@ export class LineViewComponent {
     });
   }
   cancel() {
-    this.router.navigate(['/lines']);
+    this.router.navigate(['manager-dashboard/lines']);
   }
 }

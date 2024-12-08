@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { LineService } from '../../_services/line.service';
 import { StationService } from '../../_services/station.service';
 import { Router } from '@angular/router';
@@ -19,22 +19,35 @@ export class LineCreateComponent {
   private stationService = inject(StationService);
   private titleService = inject(Title);
   stations: Station[] = [];
+
+
+
+
   ngOnInit() {
     this.titleService.setTitle('Add line');
     this.loadStations();
   }
   lineCreate: any = {};
-  addNewLine() {
-    if (this.lineCreate.isActive === undefined) {
-      this.lineCreate.isActive = false;
+  addNewLine(newLineForm: NgForm) {
+
+    if (newLineForm.valid) {
+      if (this.lineCreate.isActive === undefined) {
+        this.lineCreate.isActive = false;
+      }
+      this.lineService.createLine(this.lineCreate).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.cancel();
+        },
+      });
+      this.router.navigate(['/manager-dashboard/lines']);
     }
-    this.lineService.createLine(this.lineCreate).subscribe({
-      next: (response) => {
-        console.log(response);
-        this.cancel();
-      },
-    });
-    this.router.navigate(['/manager-dashboard/lines']);
+    else{
+      Object.keys(newLineForm.controls).forEach(field => {
+        const control = newLineForm.controls[field];
+        control.markAsTouched({ onlySelf: true });
+      });
+    }
   }
   cancel() {
     this.router.navigate(['/manager-dashboard/lines']);
