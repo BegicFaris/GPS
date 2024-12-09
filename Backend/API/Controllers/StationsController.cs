@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace GPS.API.Controllers
 {
 
-    public class StationController : MyControllerBase
+    public class StationsController : MyControllerBase
     {
         private readonly IStationService _stationService;
 
-        public StationController(IStationService stationService)
+        public StationsController(IStationService stationService)
         {
             _stationService = stationService;
         }

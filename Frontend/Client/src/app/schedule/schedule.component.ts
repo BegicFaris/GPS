@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-schedule',
@@ -8,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrl: './schedule.component.css'
 })
 export class ScheduleComponent {
+  private titleService = inject(Title);
 
+  ngOnInit()
+  {
+    this.titleService.setTitle("Schedule");
+  }
 }

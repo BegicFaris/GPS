@@ -1,17 +1,53 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container">
-    <a class="navbar-brand" href="/home">GPS</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarCollapse"
-      aria-controls="navbarCollapse"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+  @if (accountService.currentUser()) {
+  <div class="d-flex align-items-center ms-2">
+    @for (notification of notifications; track $index) {
+    <div class="d-flex flex-column align-items-center me-3">
+      <div class="position-relative">
+        <i
+          [ngClass]="notification.iconClass"
+          class="fs-4 text-light cursor-pointer"
+          (mouseenter)="showDetails(notification.type)"
+          (mouseleave)="hideDetails(notification.type)"
+        ></i>
+        <span
+          class="badge bg-primary position-absolute top-0 start-100 translate-middle"
+          >{{ notification.count }}</span
+        >
+        
+      </div>
+    
+    </div>
+  
+    }
+  </div>
+  @for (notification of notifications; track $index) {
+  @if(notification.showDetails){
+    <div
+      class="notification-details bg-dark text-light p-2 rounded"
+      style="position: absolute; top: 50px; left: 50px; width: 200px;"
     >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      @for (detail of notification.details; track $index) {
+      <p class="mb-1">
+        {{ detail }}
+      </p>
+    }
+    </div>
+    }
+  }}
+  <button
+  class="navbar-toggler"
+  type="button"
+  data-bs-toggle="collapse"
+  data-bs-target="#navbarCollapse"
+  aria-controls="navbarCollapse"
+  aria-expanded="false"
+  aria-label="Toggle navigation"
+  >
+  <span class="navbar-toggler-icon"></span>
+</button>
+  <i class="bi bi-geo-alt" style="font-size: 24px; color: white; margin-left: 20%;"></i>
+  <a class="navbar-brand" href="/home">GPS</a>
     @if(accountService.currentUser()){
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
@@ -65,12 +101,36 @@
             >About us</a
           >
         </li>
+        @if (userRole === "Manager") {
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              routerLink="/manager-dashboard"
+              aria-current="page"
+              href="#"
+              >Manager dashboard</a
+            >
+          </li>
+        }
+        @if (userRole === "Driver") {
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              routerLink="/driver-dashboard"
+              aria-current="page"
+              href="#"
+              >Driver dashboard</a
+            >
+          </li>
+        }
       </ul>
       <div dropdown class="dropdown">
         <a
           dropdownToggle
           class="dropdown-toggle text-light text-decoration-none"
-          >Welcome user</a
+          >Welcome </a
         >
         <div *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item">Edit profile</a>
@@ -79,7 +139,9 @@
         </div>
       </div>
     </div>
-    } @if(!accountService.currentUser()){
+    }
+    <div class="d-flex align-items-center ms-auto me-2">
+    @if(!accountService.currentUser()){
     <form #loginForm="ngForm" (ngSubmit)="login()" class="d-flex">
       <input
         name="email"
@@ -110,5 +172,21 @@
       <button class="btn btn-outline-primary" type="submit">Login</button>
     </form>
     }
-  </div>
+    <div class="d-flex flex-column align-items-center ps-5">
+      <a href="/set-language/bosnian" class="d-block">
+        <img
+          src="bosnia-and-herzegovina-flag.png"
+          alt="Bosnian Flag"
+          style="width: 30px; height: 20px;"
+        />
+      </a>
+      <a href="/set-language/english" class="d-block">
+        <img
+          src="united-kingdom-flag.png"
+          alt="UK Flag"
+          style="width: 30px; height: 20px;"
+        />
+      </a>
+    </div>
+    </div>
 </nav>

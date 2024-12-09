@@ -7,6 +7,7 @@ import { Tenant } from '../_models/tenant';
 import { AccountService } from '../_services/account.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 class UserComponent {
   password: string = '';
   showPassword: boolean = false;
@@ -47,6 +48,7 @@ export class RegisterComponent {
 
   private router = inject(Router);
   tenantService = inject(TenantService);
+  private titleService = inject(Title);
   tenants: Tenant[] = []; // Array to hold tenant data
   errorMessage: string = '';
   showPassword: boolean = false;
@@ -71,6 +73,7 @@ export class RegisterComponent {
     });
   }
   ngOnInit(): void {
+    this.titleService.setTitle("Register");
     this.fetchTenants();
   }
 

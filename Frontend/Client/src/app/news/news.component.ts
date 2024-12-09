@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-news',
@@ -8,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrl: './news.component.css'
 })
 export class NewsComponent {
+  private titleService = inject(Title);
 
+  ngOnInit()
+  {
+    this.titleService.setTitle("News");
+  }
 }

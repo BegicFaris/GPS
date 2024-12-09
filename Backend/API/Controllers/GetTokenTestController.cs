@@ -25,7 +25,8 @@ namespace GPS.API.Controllers
             return new UserDto
             {
                 Email = user.Email,
-                Token = "Bearer " + tokenService.CreateToken(user)
+                Token = "Bearer " + tokenService.CreateToken(user),
+                Role = "Manager"
             };
 
 

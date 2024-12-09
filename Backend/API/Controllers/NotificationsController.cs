@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
 {
-    public class NotificationController : MyControllerBase
+    public class NotificationsController : MyControllerBase
     {
         private readonly INotificationService _notificationService;
 
-        public NotificationController(INotificationService notificationService)
+        public NotificationsController(INotificationService notificationService)
         {
             _notificationService = notificationService;
         }

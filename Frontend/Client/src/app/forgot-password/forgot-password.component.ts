@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,7 +19,12 @@ export class ForgotPasswordComponent {
       email: ['', [Validators.required, Validators.email]],
     });
   }
-
+  private titleService = inject(Title);
+  ngOnInit()
+  {
+    this.titleService.setTitle("Forgot password?");
+  }
+  
   onSubmit() {
     if (this.forgotPasswordForm.valid) {
       const email = this.forgotPasswordForm.value.email;

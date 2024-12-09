@@ -5,4 +5,4 @@ export interface Bus {
     model: string;
     capacity: string;
     manufactureYear: string;
-  }
+}

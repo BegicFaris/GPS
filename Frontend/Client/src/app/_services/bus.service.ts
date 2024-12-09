@@ -1,38 +1,53 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
 import { Bus } from '../_models/bus';
+import { catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusService {
-  private apiUrl = 'https://localhost:5001/api/buses'; // Ensure this is the correct API URL
+  private http = inject(HttpClient);
+  private baseUrl = 'https://localhost:5001/api/buses';
+  buses: Bus[] = [];
 
-  constructor(private http: HttpClient) { }
-
-  // Get all buses
-  getAllBuses(): Observable<Bus[]> {
-    return this.http.get<Bus[]>(this.apiUrl);
+  getAllBuses() {
+    return this.http.get<Bus[]>(this.baseUrl);
   }
 
-  // Get a specific bus by ID
-  getBusById(id: number): Observable<Bus> {
-    return this.http.get<Bus>(`${this.apiUrl}/${id}`);
+  getBus(id: number) {
+    return this.http.get<Bus>(this.baseUrl + `/${id}`).pipe(
+      catchError(error => {
+        console.error('Error fetching bus:', error);
+        return (error);
+      })
+    );
   }
 
-  // Create a new bus
-  createBus(bus: Bus): Observable<Bus> {
-    return this.http.post<Bus>(this.apiUrl, bus);
+  createBus(bus: any) {
+    return this.http.post<Bus>(this.baseUrl, bus).pipe(
+      catchError(error => {
+        console.error('Error creating bus:', error);
+        return (error);
+      })
+    );
   }
 
-  // Update a bus
-  updateBus(bus: Bus): Observable<Bus> {
-    return this.http.put<Bus>(`${this.apiUrl}/${bus.id}`, bus);
+  updateBus(bus: any) {
+    return this.http.put<Bus>(this.baseUrl + `/${bus.id}`, bus).pipe(
+      catchError(error => {
+        console.error('Error updating bus:', error);
+        return (error);
+      })
+    );
   }
 
-  // Delete a bus
-  deleteBus(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteBus(id: number) {
+    return this.http.delete(this.baseUrl + `/${id}`).pipe(
+      catchError(error => {
+        console.error('Error deleting bus:', error);
+        return (error);
+      })
+    );
   }
 }

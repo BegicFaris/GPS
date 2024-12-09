@@ -13,10 +13,10 @@ namespace GPS.API.Services.ScheduleServices
             _context = context;
         }
         public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync() =>
-            await _context.Schedules.ToListAsync();
+            await _context.Schedules.Include(x => x.Line).ToListAsync();
 
         public async Task<Schedule> GetScheduleByIdAsync(int id) =>
-          await _context.Schedules.FindAsync(id);
+          await _context.Schedules.Include(x => x.Line).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<Schedule> CreateScheduleAsync(Schedule schedule)
         {
             _context.Schedules.Add(schedule);

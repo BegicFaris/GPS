@@ -13,9 +13,9 @@ namespace GPS.API.Services.TicketServices
             _context = context;
         }
         public async Task<IEnumerable<Ticket>> GetAllTicketsAsync() =>
-            await _context.Tickets.ToListAsync();
+            await _context.Tickets.Include(x => x.TicketType).Include(x => x.Line).Include(x => x.UserId).ToListAsync();
         public async Task<Ticket> GetTicketByIdAsync(int id) =>
-          await _context.Tickets.FindAsync(id);
+          await _context.Tickets.Include(x => x.TicketType).Include(x => x.Line).Include(x=>x.UserId).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<Ticket> CreateTicketAsync(Ticket ticket)
         {
             _context.Tickets.Add(ticket);

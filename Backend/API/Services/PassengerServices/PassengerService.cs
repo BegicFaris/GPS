@@ -15,10 +15,10 @@ namespace GPS.API.Services.PassengerServices
         }
 
         public async Task<IEnumerable<Passenger>> GetAllPassengersAsync() =>
-            await _context.Passengers.ToListAsync();
+            await _context.Passengers.Include(x => x.Discount).ToListAsync();
 
         public async Task<Passenger> GetPassengerByIdAsync(int id) =>
-            await _context.Passengers.FindAsync(id);
+            await _context.Passengers.Include(x => x.Discount).SingleOrDefaultAsync(x => x.Id == id);
 
         public async Task<Passenger> CreatePassengerAsync(Passenger passenger)
         {

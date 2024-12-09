@@ -1,10 +1,12 @@
+import { Station } from "./station"
+
 export interface Line {
     id:number,
     name: string,
     startingStationId: number,
-    startingStation: any,
+    startingStation: Station,
     endingStationId: number,
-    endingStation: any,
+    endingStation: Station,
     completeDistance: string
     isActive: boolean
 }

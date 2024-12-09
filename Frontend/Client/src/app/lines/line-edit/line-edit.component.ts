@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, inject, Inject } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
+import { Component, inject, Inject } from '@angular/core';
+import { FormsModule, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Line } from '../../_models/line';
 import { LineService } from '../../_services/line.service';
-import { timeout } from 'rxjs';
 import { NgIf } from '@angular/common';
+import { StationService } from '../../_services/station.service';
+import { Station } from '../../_models/station';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-line-edit',
@@ -15,25 +16,39 @@ import { NgIf } from '@angular/common';
 })
 export class LineEditComponent {
 
-  constructor(public dialogRef: MatDialogRef<LineEditComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<LineEditComponent>, @Inject(MAT_DIALOG_DATA) public lineUpdate: { id: number, name: string, startingStationId: number, endingStationId: number, completeDistance: string, isActive: boolean }) {
 
   }
-  private cdr = inject(ChangeDetectorRef);
   private lineService = inject(LineService);
-  lineUpdate:any={};
+  private stationService = inject(StationService);
+  private titleService = inject(Title);
+  stations: Station[] = [];
+
   ngOnInit(): void {
-    this.lineUpdate=this.data;
-    this.Log();
-    this.cdr.detectChanges();
+    this.titleService.setTitle("Update line");
+    this.loadStations();
   }
-  Log() {
-    console.log(this.lineUpdate);
-  }
+
   saveChanges() {
+    this.lineService.updateLine(this.lineUpdate).subscribe({
+      next: response => {
+        console.log('Line update successfully', response);
+      },
+      error: error => {
+        console.error('Error deleting line', error);
+      }
+    });
     this.dialogRef.close(this.lineUpdate);
   }
   closeDialog() {
-    this.dialogRef.close(this.lineUpdate);
+    this.dialogRef.close();
+  }
+  loadStations() {
+    this.stationService.getAllStations().subscribe(
+      (data) => {
+        this.stations = data; // or data.lines if it's nested
+      },
+    );
   }
 }
 
