@@ -1,77 +1,78 @@
 /* Ensure the row is a flex container */
 .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch; /* This ensures all cards have the same height */
-  }
-  
-  /* Set all columns (.col-md-4) to stretch within the flex container */
-  .col-md-4 {
-    display: flex;
-  }
-  
-  /* Make the card fill the entire column space */
-  .card {
-    display: flex;
-    flex-direction: column;  /* Ensure image and body stack vertically */
-    height: 100%;             /* Make the card take the full height of its container */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch; /* This ensures all cards have the same height */
+}
 
-  .card:hover{
-    flex-grow: 1;
-  }
-  
-  /* Ensure that the card body stretches to fill available space */
-  .card-body {
-    flex-grow: 1;  /* This allows the body to fill up the remaining space */
-  }
-  
-  .image-overlay {       
-    background-color: rgba(13, 110, 253, 0.3); /* Semi-transparent blue */
-    position: absolute;             
-    top: 0;             
-    left: 0;             
-    width: 100%;             
-    height: 100%;             
-    z-index: 1;
-    transition: opacity 0.5s ease;         
-  }
+/* Set all columns (.col-md-4) to stretch within the flex container */
+.col-md-4 {
+  display: flex;
+}
 
-.image-container{
+/* Make the card fill the entire column space */
+.card {
+  display: flex;
+  flex-direction: column; /* Ensure image and body stack vertically */
+  height: 100%; /* Make the card take the full height of its container */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  flex-grow: 1;
+}
+
+/* Ensure that the card body stretches to fill available space */
+.card-body {
+  flex-grow: 1; /* This allows the body to fill up the remaining space */
+}
+
+.image-overlay {
+  background-color: rgba(13, 110, 253, 0.3); /* Semi-transparent blue */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+.image-container {
   transition: transform 0.5s ease;
   overflow: hidden;
   height: 200px;
 }
 
-.image-container-routes{
+.image-container-routes {
+  cursor: pointer;
   transition: transform 0.5s ease;
   overflow: hidden;
   height: 500px;
 }
 
-.image-container:hover img{
-  transform: scale(1.1);
+.image-container:hover img {
+  transform: scale(1.05);
 }
 
-.image-container img { 
+.image-container img {
   display: block;
-  width: 100%; 
-  height: auto; 
+  width: 100%;
+  height: auto;
   transition: transform 0.3s ease;
-  }
+}
 
-.text-container {             
-    position: absolute;             
-    z-index: 2; /* Place text above the overlay */
-    text-align: center; /* Center align text */
-    margin-top: 1rem; /* Add some space from the image */
-    transition: opacity 0.5s ease, transform 0.5 ease; 
-  }
+.text-container {
+  position: absolute;
+  z-index: 2; /* Place text above the overlay */
+  text-align: center; /* Center align text */
+  margin-top: 1rem; /* Add some space from the image */
+  transition: opacity 0.5s ease, transform 0.5 ease;
+}
 
-  p{
-    font-size: larger;
-  }
+p {
+  font-size: larger;
+}
 
 /* Ensure each carousel item has a fixed size */
 .carousel-image-container {
@@ -100,25 +101,34 @@
   transition: opacity 0.3s ease;
 }
 
-.carousel-image-container:hover img{
+.carousel-image-container:hover img {
   transform: scale(1.05);
 }
 
-.carousel-caption:hover{
+.carousel-caption:hover {
   opacity: 0.9;
 }
 
-.carousel-item{
+.carousel-item {
   transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
 }
 
-/* Ensure smooth fading */.carousel-item-next,.carousel-item-prev,.carousel-item.active {   display: block; } .carousel-item-next.carousel-item-left,.carousel-item-prev.carousel-item-right {   opacity: 0.5; /* Faded effect during transition */ }/* Ensure smooth fading */
+/* Ensure smooth fading */
 .carousel-item-next,
 .carousel-item-prev,
 .carousel-item.active {
   display: block;
 }
- 
+.carousel-item-next.carousel-item-left,
+.carousel-item-prev.carousel-item-right {
+  opacity: 0.5; /* Faded effect during transition */
+} /* Ensure smooth fading */
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+  display: block;
+}
+
 .carousel-item-next.carousel-item-left,
 .carousel-item-prev.carousel-item-right {
   opacity: 0.5; /* Faded effect during transition */
@@ -126,7 +136,11 @@
 
 /* Get Started Button */
 .btn-get-started {
-  background: linear-gradient(90deg, rgba(50, 50, 50, 1) 0%, rgba(75, 75, 75, 1) 100%); /* Dark gray gradient */
+  background: linear-gradient(
+    90deg,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(75, 75, 75, 1) 100%
+  ); /* Dark gray gradient */
   color: white;
   font-size: 20px; /* Slightly smaller font size for better proportion */
   padding: 15px 40px; /* Increased height with balanced width */
@@ -145,7 +159,11 @@
 
 /* Hover effect */
 .btn-get-started:hover {
-  background: linear-gradient(90deg, rgba(75, 75, 75, 1) 0%, rgba(50, 50, 50, 1) 100%); /* Reverse gradient on hover */
+  background: linear-gradient(
+    90deg,
+    rgba(75, 75, 75, 1) 0%,
+    rgba(50, 50, 50, 1) 100%
+  ); /* Reverse gradient on hover */
   transform: scale(1.05); /* Slightly enlarge button for interaction */
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
 }
@@ -158,7 +176,11 @@
 
 /* More Routes Button */
 .btn-more-routes {
-  background: linear-gradient(90deg, rgba(50, 50, 50, 1) 0%, rgba(75, 75, 75, 1) 100%); /* Dark gray gradient */
+  background: linear-gradient(
+    90deg,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(75, 75, 75, 1) 100%
+  ); /* Dark gray gradient */
   color: white;
   font-size: 20px;
   padding: 15px 40px;
@@ -177,7 +199,11 @@
 
 /* Hover effect */
 .btn-more-routes:hover {
-  background: linear-gradient(90deg, rgba(75, 75, 75, 1) 0%, rgba(50, 50, 50, 1) 100%); /* Reverse gradient on hover */
+  background: linear-gradient(
+    90deg,
+    rgba(75, 75, 75, 1) 0%,
+    rgba(50, 50, 50, 1) 100%
+  ); /* Reverse gradient on hover */
   transform: scale(1.05);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
@@ -190,7 +216,11 @@
 
 /* More Tours Button */
 .btn-more-tours {
-  background: linear-gradient(90deg, rgba(50, 50, 50, 1) 0%, rgba(75, 75, 75, 1) 100%); /* Dark gray gradient */
+  background: linear-gradient(
+    90deg,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(75, 75, 75, 1) 100%
+  ); /* Dark gray gradient */
   color: white;
   font-size: 20px;
   padding: 15px 40px;
@@ -209,7 +239,11 @@
 
 /* Hover effect */
 .btn-more-tours:hover {
-  background: linear-gradient(90deg, rgba(75, 75, 75, 1) 0%, rgba(50, 50, 50, 1) 100%); /* Reverse gradient on hover */
+  background: linear-gradient(
+    90deg,
+    rgba(75, 75, 75, 1) 0%,
+    rgba(50, 50, 50, 1) 100%
+  ); /* Reverse gradient on hover */
   transform: scale(1.05);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
@@ -220,10 +254,13 @@
   box-shadow: 0 0 12px rgba(50, 50, 50, 0.6);
 }
 
-
 /* Footer Styling */
 footer {
-  background: linear-gradient(90deg, rgba(50, 50, 50, 1) 0%, rgba(75, 75, 75, 1) 100%); /* Dark gray gradient */
+  background: linear-gradient(
+    90deg,
+    rgba(50, 50, 50, 1) 0%,
+    rgba(75, 75, 75, 1) 100%
+  ); /* Dark gray gradient */
   color: white;
   font-size: 14px; /* Smaller font size */
   padding-top: 30px; /* Smaller top padding */
@@ -244,7 +281,8 @@ footer h4 {
 }
 
 /* Footer Links */
-footer p, .footer li {
+footer p,
+.footer li {
   font-size: 14px; /* Consistent smaller text size */
   line-height: 1.6; /* Better text spacing */
 }
@@ -289,22 +327,23 @@ hr.my-4 {
   font-size: 12px;
   margin-top: 20px;
 }
- 
-h1, h2 {
+
+h1,
+h2 {
   color: #333;
   text-align: center;
 }
- 
+
 .station-select {
   margin-bottom: 20px;
 }
- 
+
 label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
- 
+
 select {
   width: 100%;
   padding: 10px;
@@ -313,31 +352,32 @@ select {
   border-radius: 4px;
   background-color: #fff;
 }
- 
+
 .station-info {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 20px;
 }
- 
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
- 
-th, td {
+
+th,
+td {
   text-align: left;
   padding: 12px;
   border-bottom: 1px solid #ddd;
 }
- 
+
 th {
   background-color: #f2f2f2;
   font-weight: bold;
 }
- 
+
 .buy-ticket {
   padding: 8px 12px;
   font-size: 14px;
@@ -348,9 +388,10 @@ th {
   cursor: pointer;
   transition: background-color 0.3s;
 }
- 
+
 .buy-ticket:hover {
   background-color: #0056b3;
+  cursor: pointer;
 }
 
 /* Responsive Footer */
@@ -359,7 +400,8 @@ th {
     font-size: 16px; /* Smaller font size on mobile */
   }
 
-  .footer p, .footer li {
+  .footer p,
+  .footer li {
     font-size: 12px; /* Smaller font size for mobile */
   }
 
@@ -377,56 +419,103 @@ th {
   display: flex;
   flex-wrap: wrap;
 }
- 
+
 .col-md-4 {
   display: flex;
 }
- 
+
 .card {
   display: flex;
   flex-direction: column;
   height: 100%;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
- 
+
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
- 
+
 .card-img-top {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
- 
+
 .card:hover .card-img-top {
   transform: scale(1.05);
 }
- 
+
 .card-body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
- 
+
 .card-title {
   font-size: 1.25rem;
   margin-bottom: 0.75rem;
 }
- 
+
 .card-text {
   flex-grow: 1;
 }
- 
+
 .btn-primary {
   align-self: start;
   transition: background-color 0.3s ease;
 }
- 
+
 .btn-primary:hover {
   background-color: #0056b3;
 }
 
+.image-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
+.image-overlay.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+}
+
+.overlay-content {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#enlargedImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+body.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+body.overlay-active {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
