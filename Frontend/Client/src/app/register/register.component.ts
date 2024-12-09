@@ -6,7 +6,7 @@ import { TenantService } from '../_services/tenant.service';
 import { Tenant } from '../_models/tenant';
 import { AccountService } from '../_services/account.service';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 class UserComponent {
   password: string = '';
@@ -20,7 +20,7 @@ class UserComponent {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })

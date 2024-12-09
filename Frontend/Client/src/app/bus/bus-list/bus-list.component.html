@@ -1,0 +1,123 @@
+<!-- src/app/bus-list/bus-list.component.html -->
+<div>
+  @if(buses.length > 0)
+  {
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Registration Number</th>
+        <th scope="col">Manufacturer</th>
+        <th scope="col">Model</th>
+        <th scope="col">Capacity</th>
+        <th scope="col">Manufacture Year</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+
+      @for(bus of buses; track bus.id){
+        <tr>
+      
+        <td>{{ bus.registrationNumber }}</td>  
+        <td>{{ bus.manufacturer }}</td>
+        <td>{{ bus.model }}</td>
+        <td>{{ bus.capacity }}</td>
+        <td>{{ bus.manufactureYear }}</td>
+        <td>
+          <button (click)="selectBus(bus)">Edit</button>
+          <button (click)="deleteBus(bus.id)">Delete</button>
+        </td>
+      </tr>
+      }
+      
+    </tbody>
+  </table>
+}
+</div>
+
+<ng-template #noBuses>
+  <p>No buses available.</p>
+</ng-template>
+
+<!-- Bus editing form (only visible when a bus is selected for editing) -->
+<div class="container mt-4">
+@if ( selectedBus ) {
+  <h3>Edit Bus</h3>
+  <form (ngSubmit)="editBus()">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="registrationNumber">Registration Number</label>
+          <input 
+            type="text" 
+            id="registrationNumber" 
+            [(ngModel)]="selectedBus.registrationNumber" 
+            name="registrationNumber" 
+            class="form-control" 
+            required />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="manufacturer">Manufacturer</label>
+          <input 
+            type="text" 
+            id="manufacturer" 
+            [(ngModel)]="selectedBus.manufacturer" 
+            name="manufacturer" 
+            class="form-control" 
+            required />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="model">Model</label>
+          <input 
+            type="text" 
+            id="model" 
+            [(ngModel)]="selectedBus.model" 
+            name="model" 
+            class="form-control" 
+            required />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="capacity">Capacity</label>
+          <input 
+            type="text" 
+            id="capacity" 
+            [(ngModel)]="selectedBus.capacity" 
+            name="capacity" 
+            class="form-control" 
+            required />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="manufactureYear">Manufacture Year</label>
+          <input 
+            type="number" 
+            id="manufactureYear" 
+            [(ngModel)]="selectedBus.manufactureYear" 
+            name="manufactureYear" 
+            class="form-control" 
+            required />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mt-4">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary ml-2" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </form>
+}
+</div>

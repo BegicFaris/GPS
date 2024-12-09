@@ -1,0 +1,73 @@
+<!-- src/app/bus-form/bus-form.component.html
+<div class="form-group">
+  @if(bus){
+
+    <h2>{{ bus.id ? 'Edit Bus' : 'Add New Bus' }}</h2>
+    <form (ngSubmit)="saveBus()">
+      <label>Registration Number</label>
+      <input  class="form-control" [(ngModel)]="bus.registrationNumber" name="registrationNumber" required>
+  
+      <label>Manufacturer</label>
+      <input class="form-control" [(ngModel)]="bus.manufacturer" name="manufacturer" required>
+  
+      <label>Model</label>
+      <input class="form-control" [(ngModel)]="bus.model" name="model" required>
+  
+      <label>Capacity</label>
+      <input  class="form-control" [(ngModel)]="bus.capacity" name="capacity" required>
+  
+      <label>Manufacture Year</label>
+      <input class="form-control" [(ngModel)]="bus.manufactureYear" name="manufactureYear" required>
+  
+      <button class="btn btn-primary" type="submit">{{ bus.id ? 'Update' : 'Add' }}</button>
+    </form>
+  }
+  </div>
+    -->
+
+  <!-- src/app/bus-form/bus-form.component.html -->
+<div class="container mt-5">
+  @if(bus) {
+
+    <h2 class="mb-4 text-center">{{ bus.id ? 'Edit Bus' : 'Add New Bus' }}</h2>
+    
+    <form (ngSubmit)="saveBus()" class="shadow p-4 rounded border">
+      
+      <!-- Registration Number -->
+      <div class="mb-3">
+        <label for="registrationNumber" class="form-label">Registration Number</label>
+        <input type="text" class="form-control" id="registrationNumber" [(ngModel)]="bus.registrationNumber" name="registrationNumber" required>
+      </div>
+
+      <!-- Manufacturer -->
+      <div class="mb-3">
+        <label for="manufacturer" class="form-label">Manufacturer</label>
+        <input type="text" class="form-control" id="manufacturer" [(ngModel)]="bus.manufacturer" name="manufacturer" required>
+      </div>
+
+      <!-- Model -->
+      <div class="mb-3">
+        <label for="model" class="form-label">Model</label>
+        <input type="text" class="form-control" id="model" [(ngModel)]="bus.model" name="model" required>
+      </div>
+
+      <!-- Capacity -->
+      <div class="mb-3">
+        <label for="capacity" class="form-label">Capacity</label>
+        <input type="text" class="form-control" id="capacity" [(ngModel)]="bus.capacity" name="capacity" required>
+      </div>
+
+      <!-- Manufacture Year -->
+      <div class="mb-3">
+        <label for="manufactureYear" class="form-label">Manufacture Year</label>
+        <input type="text" class="form-control" id="manufactureYear" [(ngModel)]="bus.manufactureYear" name="manufactureYear" required>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button class="btn btn-primary" type="submit">{{ bus.id ? 'Update' : 'Add' }}</button>
+      </div>
+    </form>
+
+  }
+</div>

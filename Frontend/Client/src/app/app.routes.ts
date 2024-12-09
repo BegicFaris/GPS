@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NewsComponent } from './news/news.component';
@@ -16,9 +15,11 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { NotificationViewComponent } from './notifications/notification-view/notification-view.component';
 import { NotificationCreateComponent } from './notifications/notification-create/notification-create.component';
 import { LineCreateComponent } from './lines/line-create/line-create.component';
+//import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RegisterComponent } from './register/register.component';
 
 export const routes: Routes = [
-  { path: '', component: LandingPageComponent },
+  { path: '', component: HomeComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'news', component: NewsComponent },
@@ -27,7 +28,7 @@ export const routes: Routes = [
   { path: 'buy-ticket', component: BuyTicketComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'home', component: HomeComponent },
-
+  { path: 'register', component: RegisterComponent },
   //{ path: 'lines', component: LineViewComponent },
   //{ path: 'lines/add', component: LineCreateComponent },
   { path: 'notifications', component: NotificationViewComponent },
@@ -56,3 +57,4 @@ export const routes: Routes = [
   //ne diraj ovo
   { path: '**', redirectTo: '/unauthorized', pathMatch: 'full' },
 ];
+

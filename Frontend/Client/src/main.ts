@@ -7,6 +7,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptor } from './app/_services/auth-interceptor.service';
 
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
@@ -19,3 +20,4 @@ bootstrapApplication(AppComponent, {
     }
   ],
 }).catch((err) => console.error(err));
+
