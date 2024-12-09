@@ -2,46 +2,78 @@
 <section id="carousel" class="py-5">
   <div class="container">
     <h2 class="text-center mb-4">Welcome to Mostar Local Bus Service</h2>
-    <p class="text-center mb-4">Reliable and affordable public transport within Mostar.</p>
+    <p class="text-center mb-4">
+      Reliable and affordable public transport within Mostar.
+    </p>
 
     <!-- Bootstrap Carousel -->
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+    <div
+      id="carouselExampleAutoplaying"
+      class="carousel slide"
+      data-bs-ride="carousel"
+      data-bs-interval="3000"
+    >
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="carousel-image-container">
-            <img src="MostarBridge.jpg" class="d-block w-100" alt="Mostar Sightseeing">
+            <img
+              src="MostarBridge.jpg"
+              class="d-block w-100"
+              alt="Mostar Sightseeing"
+            />
             <div class="carousel-caption d-none d-md-block">
               <h3>Explore the Old Bridge</h3>
-              <p>Discover the beauty of Mostar’s historic landmarks and scenic views.</p>
+              <p>
+                Discover the beauty of Mostar’s historic landmarks and scenic
+                views.
+              </p>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-image-container">
-            <img src="busevi.PNG" class="d-block w-100" alt="Bus Tours">
+            <img src="busevi.PNG" class="d-block w-100" alt="Bus Tours" />
             <div class="carousel-caption d-none d-md-block">
               <h3>Comfortable Bus Services</h3>
-              <p>Travel with comfort and enjoy a relaxing ride with our well-maintained buses.</p>
+              <p>
+                Travel with comfort and enjoy a relaxing ride with our
+                well-maintained buses.
+              </p>
             </div>
           </div>
         </div>
         <div class="carousel-item">
           <div class="carousel-image-container">
-            <img src="1620px-Blagaj_Ceilings.jpg" class="d-block w-100" alt="Adventure Trips">
+            <img
+              src="1620px-Blagaj_Ceilings.jpg"
+              class="d-block w-100"
+              alt="Adventure Trips"
+            />
             <div class="carousel-caption d-none d-md-block">
               <h3>Adventure Awaits</h3>
-              <p>Join us for exciting trips to nearby destinations and explore more of the region.</p>
+              <p>
+                Join us for exciting trips to nearby destinations and explore
+                more of the region.
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="prev">
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="prev"
+      >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="next">
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="next"
+      >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -75,8 +107,17 @@
       <tbody>
         <tr>
           <td>{{ selectedStation.zone }}</td>
-          <td>{{ selectedStation.busLines.join(', ') }}</td>
-          <td>@if (!accountService.currentUser()) {<button class="buy-ticket" [routerLink]="'/register'">Buy Ticket</button>}@else {<button class="buy-ticket" [routerLink]="'buy-ticket'">Buy Ticket</button>}</td>
+          <td>{{ selectedStation.busLines.join(", ") }}</td>
+          <td>
+            @if (!accountService.currentUser()) {<button
+              class="buy-ticket"
+              [routerLink]="'/register'"
+            >
+              Buy Ticket</button
+            >}@else {<button class="buy-ticket" [routerLink]="'buy-ticket'">
+              Buy Ticket</button
+            >}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -86,7 +127,7 @@
 
 @if (!accountService.currentUser()) {
 <div class="container mt-5">
-  <div style="text-align: center;">
+  <div style="text-align: center">
     @if(!registerMode){
     <div class="text-center">
       <h3>For all the features</h3>
@@ -94,12 +135,13 @@
         Register
       </button>
     </div>
-    }
-    @else {
+    } @else {
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-6">
-          <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+          <app-register
+            (cancelRegister)="cancelRegisterMode($event)"
+          ></app-register>
         </div>
       </div>
     </div>
@@ -117,11 +159,18 @@
       <div class="col-md-4 d-flex mb-4">
         <div class="card w-100">
           <div class="image-container-routes">
-          <img src="Linija-10-crvena.png" class="card-img-top" alt="Route 10">
+            <img
+              src="Linija-10-crvena.png"
+              class="card-img-top route-image"
+              alt="Route 10"
+            />
           </div>
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">Route 10: Sjeverni Logor - Blagaj</h5>
-            <p class="card-text flex-grow-1">Bus from Sjeverni Logor to the Blagaj Tekke, a popular tourist destination.</p>
+            <p class="card-text flex-grow-1">
+              Bus from Sjeverni Logor to the Blagaj Tekke, a popular tourist
+              destination.
+            </p>
           </div>
         </div>
       </div>
@@ -130,12 +179,18 @@
       <div class="col-md-4 d-flex mb-4">
         <div class="card w-100">
           <div class="image-container-routes">
-          <img src="Linija-6-plava.png" class="card-img-top" alt="Route 6">
-        </div>
+            <img
+              src="Linija-6-plava.png"
+              class="card-img-top route-image"
+              alt="Route 6"
+            />
+          </div>
           <div class="card-body d-flex flex-column">
             <h5 class="card-title">Route 6: Gorica - Zalik</h5>
-            <p class="card-text flex-grow-1">A route connecting almost all the important places in Mostar, the most used route in
-              Mostar.</p>
+            <p class="card-text flex-grow-1">
+              A route connecting almost all the important places in Mostar, the
+              most used route in Mostar.
+            </p>
           </div>
         </div>
       </div>
@@ -144,11 +199,19 @@
       <div class="col-md-4 d-flex mb-4">
         <div class="card w-100">
           <div class="image-container-routes">
-          <img src="Linija-22-smedja.png" class="card-img-top" alt="Route 22">
-        </div>
+            <img
+              src="Linija-22-smedja.png"
+              class="card-img-top route-image"
+              alt="Route 22"
+            />
+          </div>
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">Route 22: Bišće Polje - Bijelo polje (Round)</h5>
-            <p class="card-text flex-grow-1">A convenient route that connects places outside the city centre.</p>
+            <h5 class="card-title">
+              Route 22: Bišće Polje - Bijelo polje (Round)
+            </h5>
+            <p class="card-text flex-grow-1">
+              A convenient route that connects places outside the city centre.
+            </p>
           </div>
         </div>
       </div>
@@ -157,47 +220,65 @@
     <!-- Explore More Routes Button -->
     @if (!accountService.currentUser()) {
     <div class="text-center">
-      <a href="#more-routes" class="btn btn-more-routes btn-sm mt-4" [routerLink]="'/register'">Explore More Routes</a>
+      <a
+        href="#more-routes"
+        class="btn btn-more-routes btn-sm mt-4"
+        [routerLink]="'/register'"
+        >Explore More Routes</a
+      >
     </div>
-  }
-    @else {
-      <div class="text-center">
-        <a href="#more-routes" class="btn btn-more-routes btn-sm mt-4">Explore More Routes</a>
-      </div>
+    } @else {
+    <div class="text-center">
+      <a href="#more-routes" class="btn btn-more-routes btn-sm mt-4"
+        >Explore More Routes</a
+      >
+    </div>
     }
   </div>
 </section>
+<!-- Image Overlay -->
 
+<div id="imageOverlay" class="image-overlay">
+  <div class="overlay-content">
+    <img id="enlargedImage" src="" alt="Enlarged Image" />
+  </div>
+</div>
 <!-- Tours Section (Replaces Contact Us) -->
 <section class="py-5">
   <div class="container">
-  <h2 class="text-center mb-4">Popular Bus Tours from Mostar</h2>
-  <div class="row">
-        @for (tour of tours; track tour.id) {
-  <div class="col-md-4 d-flex mb-4">
-  <div class="card w-100">
-  <div class="image-container">
-  <img [src]="tour.image" [alt]="tour.title" class="card-img-top">
-  </div>
-  <div class="card-body d-flex flex-column">
-  <h3 class="card-title">{{ tour.title }}</h3>
-  <p class="card-text flex-grow-1">{{ tour.description }}</p>
-  </div>
-  </div>
-  </div>
-        }
-  </div>
-
+    <h2 class="text-center mb-4">Popular Bus Tours from Mostar</h2>
+    <div class="row">
+      @for (tour of tours; track tour.id) {
+      <div class="col-md-4 d-flex mb-4">
+        <div class="card w-100">
+          <div class="image-container">
+            <img [src]="tour.image" [alt]="tour.title" class="card-img-top" />
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h3 class="card-title">{{ tour.title }}</h3>
+            <p class="card-text flex-grow-1">{{ tour.description }}</p>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
 
     <!-- Explore More Tours Button -->
     @if (!accountService.currentUser()) {
     <div class="text-center">
-      <a href="#more-tours" class="btn btn-more-tours btn-sm mt-4" [routerLink]="'/register'">Explore More Tours</a>
-    </div>}
-    @else{
-      <div class="text-center">
-        <a href="#more-tours" class="btn btn-more-tours btn-sm mt-4">Explore More Tours</a>
-      </div>
+      <a
+        href="#more-tours"
+        class="btn btn-more-tours btn-sm mt-4"
+        [routerLink]="'/register'"
+        >Explore More Tours</a
+      >
+    </div>
+    } @else{
+    <div class="text-center">
+      <a href="#more-tours" class="btn btn-more-tours btn-sm mt-4"
+        >Explore More Tours</a
+      >
+    </div>
     }
   </div>
 </section>
@@ -212,7 +293,8 @@
           <i class="fa fa-bus" aria-hidden="true"></i> About Mostar Bus
         </h6>
         <p>
-          Explore the best bus services in Mostar. We offer scenic tours, comfortable transportation, and more.
+          Explore the best bus services in Mostar. We offer scenic tours,
+          comfortable transportation, and more.
         </p>
       </div>
 
@@ -234,9 +316,22 @@
 
       <div class="d-flex flex-column col-md-4 col-lg-3 col-xl-3 mb-md-0 mb-4">
         <h6 class="text-uppercase fw-bold mb-4">Contact Us</h6>
-        <div class="d-flex flex-column w-100 col-md-4 col-lg-3 col-xl-3 mb-md-0 mb-4">
-          <p><i class="fa fa-home me-3" aria-hidden="true"></i> Mostar, Bosnia and Herzegovina</p>
-          <p><i class="fa fa-envelope me-3" aria-hidden="true"></i> infomostarbus.com</p>
-          <p><i class="fa fa-phone me-3" aria-hidden=true></i> +387 123 456 789</p>
+        <div
+          class="d-flex flex-column w-100 col-md-4 col-lg-3 col-xl-3 mb-md-0 mb-4"
+        >
+          <p>
+            <i class="fa fa-home me-3" aria-hidden="true"></i> Mostar, Bosnia
+            and Herzegovina
+          </p>
+          <p>
+            <i class="fa fa-envelope me-3" aria-hidden="true"></i>
+            infomostarbus.com
+          </p>
+          <p>
+            <i class="fa fa-phone me-3" aria-hidden="true"></i> +387 123 456 789
+          </p>
         </div>
       </div>
+    </div>
+  </section>
+</footer>
