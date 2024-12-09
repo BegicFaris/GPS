@@ -1,18 +1,38 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, input, output, Output } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { catchError, tap, throwError } from 'rxjs';
 import { TenantService } from '../_services/tenant.service';
 import { Tenant } from '../_models/tenant';
+import { AccountService } from '../_services/account.service';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+class UserComponent {
+  password: string = '';
+  showPassword: boolean = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+}
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
+
+
+
 export class RegisterComponent {
+
+  
+  private accountService = inject(AccountService);
+  cancelRegister = output<boolean>();
+  registerForm: FormGroup;
+  
   model: any = {
     firstName: '',
     lastName: '',
@@ -25,12 +45,31 @@ export class RegisterComponent {
     image: null,
   };
 
+  private router = inject(Router);
   tenantService = inject(TenantService);
-
   tenants: Tenant[] = []; // Array to hold tenant data
   errorMessage: string = '';
-  constructor(private http: HttpClient) {}
+  showPassword: boolean = false;
 
+  constructor(private fb: FormBuilder) {
+    this.registerForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+/),
+        ],
+      ],
+      birthDate: ['', Validators.required],
+      address: ['', Validators.required],
+      tenantId: [null, Validators.required],
+      image: [null],
+    });
+  }
   ngOnInit(): void {
     this.fetchTenants();
   }
@@ -54,16 +93,63 @@ export class RegisterComponent {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input?.files?.length) {
-      this.model.image = input.files[0]; // Store the selected file in the model
+
+  if (input?.files?.length) {
+    const file = input.files[0];
+    const allowedExtensions = ['image/jpeg', 'image/png', 'image/gif']; // Add allowed image types here
+
+    if (!allowedExtensions.includes(file.type)) {
+      this.errorMessage = 'Please upload a valid image file (JPEG, PNG, GIF).';
+      this.model.image = null;
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result) {
+        const base64String = btoa(
+          String.fromCharCode(...new Uint8Array(reader.result as ArrayBuffer))
+        );
+        this.model.image = base64String; // Set image as base64 string
+      } else {
+        this.errorMessage = 'Failed to read the file.';
+        this.model.image = null;
+      } //Convert to array for JSON serialization
+    };
+    reader.onerror = () => {
+      this.errorMessage = 'Failed to read the file. Please try again.';
+      this.model.image = null;
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    this.errorMessage = 'No file selected.';
+    this.model.image = null;
+  }
   }
 
   register() {
-    console.log(this.model);
+    this.accountService.register(this.model).subscribe({
+      next: response => {
+        console.log('Registration successful:', response);
+        this.router.navigateByUrl('/home');
+        this.cancel();
+      },
+      error: error => {
+        console.error('Registration failed:', error);
+        if (error.status === 400) {
+          this.errorMessage = 'Invalid registration data. Please check your input.';
+        } else {
+          this.errorMessage = 'An unexpected error occurred. Please try again later.';
+        }
+      }
+    });
   }
 
   cancel() {
-    console.log('canceled');
+    this.cancelRegister.emit(false);
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

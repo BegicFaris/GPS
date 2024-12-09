@@ -1,6 +1,6 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-import { Bus } from '../bus.model';
-import { BusService } from '../bus.service';
+import { Bus } from '../../_models/bus';
+import { BusService } from '../../_services/bus.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
 

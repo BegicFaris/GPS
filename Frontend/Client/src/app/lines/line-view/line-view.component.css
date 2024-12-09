@@ -1,0 +1,19 @@
+.custom-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;  /* Ensure the dialog uses the full height */
+    margin: 0;  /* Remove any default margins */
+  }
+  .mat-dialog-backdrop {
+    background: rgba(0, 0, 0, 0.5);  /* Darker background */
+    pointer-events: all;  /* Ensures that the backdrop is blocking interaction */
+  }
+  .mat-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 90%; /* Max width for large screens */
+    max-height: 90%; /* Max height */
+    border-radius: 8px; /* Optional border radius */
+  }

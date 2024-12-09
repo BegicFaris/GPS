@@ -1,0 +1,32 @@
+
+<button routerLink="/lines/add" type="button" class="btn btn-success">Add new line</button>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Starting station</th>
+      <th scope="col">Ending station</th>
+      <th scope="col">Complete distance</th>
+      <th scope="col">Active</th>
+      <th scope="col"></th>
+      <th scope="col" ></th>
+    </tr>
+  </thead>
+  <tbody>
+
+
+    @for (line of lines; track $index) {
+    <tr>
+      <th scope="row">{{$index + 1}}</th>
+      <td>{{line.name}}</td>
+      <td>{{line.startingStationId}}</td>
+      <td>{{line.endingStationId}}</td>
+      <td>{{line.completeDistance}}</td>
+      <td>@if(line.isActive){Active}@else{Not active}</td>
+      <td><button type="button" class="btn btn-primary" (click)="openEditDialog(line)">Edit</button></td>
+      <td><button type="button" class="btn btn-danger" (click)="deleteLine(line.id)">Delete</button></td>
+    </tr>
+    }
+  </tbody>
+</table>

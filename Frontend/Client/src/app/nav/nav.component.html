@@ -1,59 +1,114 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">GPS</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-     
-        @if(accountService.currentUser()){
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Vijesti</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Raspored vožnji</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Galerija</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Cjenovnik</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">O nama</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" >Logout</a>
-          </li>
-        </ul>
-
-        <div dropdown class="dropdown">
-          <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">Welcome user</a>
-          <div *dropdownMenu class="dropdown-menu">
-            <a class="dropdown-item">Edit profile</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" (click)="logout()">Logout</a>
-          </div>
+    <a class="navbar-brand" href="/home">GPS</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    @if(accountService.currentUser()){
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="/news"
+            aria-current="page"
+            href="#"
+            >News</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="/schedule"
+            aria-current="page"
+            href="#"
+            >Schedule</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="/gallery"
+            aria-current="page"
+            href="#"
+            >Gallery</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="/buy-ticket"
+            aria-current="page"
+            href="#"
+            >Buy ticket</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="/about-us"
+            aria-current="page"
+            href="#"
+            >About us</a
+          >
+        </li>
+      </ul>
+      <div dropdown class="dropdown">
+        <a
+          dropdownToggle
+          class="dropdown-toggle text-light text-decoration-none"
+          >Welcome user</a
+        >
+        <div *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item">Edit profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
         </div>
-        </div>
-      }
-      @if(!accountService.currentUser()){
-        <form #loginForm="ngForm" (ngSubmit)="login()" class="d-flex">
-          <input 
-            name="email"
-            [(ngModel)]="model.email"
-            class="form-control me-2" 
-            placeholder="Email">
-          <input 
-            name="password"
-            [(ngModel)]="model.password"
-            class="form-control me-2" 
-            placeholder="Password" 
-            type="password">
-          <button class="btn btn-outline-success" type="submit">Login</button>
-        </form>
-      }
-        
       </div>
-  </nav>
+    </div>
+    } @if(!accountService.currentUser()){
+    <form #loginForm="ngForm" (ngSubmit)="login()" class="d-flex">
+      <input
+        name="email"
+        [(ngModel)]="model.email"
+        class="form-control me-2"
+        placeholder="Email"
+      />
+      <div class="position-relative me-2 w-100">
+        <input
+          name="password"
+          [(ngModel)]="model.password"
+          class="form-control me-2"
+          placeholder="Password"
+          [type]="showPassword ? 'text' : 'password'"
+        />
+        <button
+          type="button"
+          class="btn btn-primary bg-dark position-absolute end-0 top-50 translate-middle-y me-2"
+          style="width: 30px; height: 30px; border-radius: 50%; padding: 3px"
+          (click)="togglePasswordVisibility()"
+        >
+          <i
+            class="bi"
+            [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+          ></i>
+        </button>
+      </div>
+      <button class="btn btn-outline-primary" type="submit">Login</button>
+    </form>
+    }
+  </div>
+</nav>
