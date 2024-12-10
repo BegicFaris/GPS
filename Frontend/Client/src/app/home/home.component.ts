@@ -31,10 +31,10 @@ export class HomeComponent implements OnInit{
   accountService = inject(AccountService);
 
   stations: Station[] = [
-    { id: "1", name: "Central Station", zone: 1, busLines: ["101", "102", "103"] },
-    { id: "2", name: "Westfield", zone: 2, busLines: ["201", "202"] },
-    { id: "3", name: "Riverside", zone: 3, busLines: ["301", "302", "303", "304"] },
-    { id: "4", name: "Hill Valley", zone: 2, busLines: ["201", "204", "205"] },
+    { id: "1", name: "Musala", zone: 1, busLines: ["101", "102", "103"] },
+    { id: "2", name: "Šarića džamija", zone: 2, busLines: ["201", "202"] },
+    { id: "3", name: "Narodno pozorište", zone: 3, busLines: ["301", "302", "303", "304"] },
+    { id: "4", name: "Španski trg", zone: 2, busLines: ["201", "204", "205"] },
   ];
   selectedStationId: string = '';
   get selectedStation(): Station | undefined {
