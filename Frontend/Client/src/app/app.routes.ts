@@ -17,6 +17,8 @@ import { NotificationCreateComponent } from './notifications/notification-create
 import { LineCreateComponent } from './lines/line-create/line-create.component';
 //import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RegisterComponent } from './register/register.component';
+import { BusViewComponent } from './buses/bus-view/bus-view.component';
+import { BusCreateComponent } from './buses/bus-create/bus-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -41,6 +43,8 @@ export const routes: Routes = [
     children: [
       { path: 'lines', component: LineViewComponent },
       { path: 'lines/add', component: LineCreateComponent },
+      { path: 'buses', component: BusViewComponent },
+      { path: 'buses/add', component: BusCreateComponent}
     ],
   },
   {
