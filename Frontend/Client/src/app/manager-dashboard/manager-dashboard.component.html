@@ -1,55 +1,41 @@
 <div class="d-flex vh-100">
   <!-- Sidebar -->
-  <nav
-    id="sidebar"
-    class="bg-dark text-light p-3"
-    [ngClass]="{ collapsed: isSidebarCollapsed }"
-    [style.width]="isSidebarCollapsed ? '60px' : '250px'"
-  >
+  <nav id="sidebar" class="bg-dark text-light p-3" [ngClass]="{ collapsed: isSidebarCollapsed }"
+    [style.width]="isSidebarCollapsed ? '60px' : '250px'">
     <div class="vertical-menu">
       <div class="d-flex justify-content-between align-items-center">
         @if(!isSidebarCollapsed){
         <h3 class="mb-0">Manage</h3>
         }
         <button (click)="toggleSidebar()" class="btn btn-outline-light border">
-          <i
-            class="bi"
-            [ngClass]="{
+          <i class="bi" [ngClass]="{
               'bi-chevron-left': !isSidebarCollapsed,
               'bi-chevron-right': isSidebarCollapsed
-            }"
-          ></i>
+            }"></i>
         </button>
       </div>
       <hr />
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a
-            class="nav-link text-light"
-            data-bs-toggle="collapse"
-            href="#manageDataMenu"
-            role="button"
-            aria-expanded="false"
-            aria-controls="manageDataMenu"
-          >
+          <a class="nav-link text-light" data-bs-toggle="collapse" href="#manageDataMenu" role="button"
+            aria-expanded="false" aria-controls="manageDataMenu">
             <i class="bi bi-table"></i> Manage Data
           </a>
           <div class="collapse" id="manageDataMenu">
             <ul class="list-unstyled ps-2">
-              <li><a class="nav-link text-light">Bus</a></li>
+              <li><a [routerLink]="'buses'" routerLinkActive="router-link-active" class="nav-link text-light">Bus</a>
+              </li>
               <li><a href="#" class="nav-link text-light">Credit card</a></li>
               <li><a href="#" class="nav-link text-light">Driver</a></li>
               <li><a href="#" class="nav-link text-light">Feedback</a></li>
               <li>
-                <a
-                  [routerLink]="'lines'"
-                  routerLinkActive="router-link-active"
-                  class="nav-link text-light"
-                  >Line</a
-                >
+                <a [routerLink]="'lines'" routerLinkActive="router-link-active" class="nav-link text-light">Line</a>
               </li>
               <li><a href="#" class="nav-link text-light">Manager</a></li>
               <li><a href="#" class="nav-link text-light">Notification</a></li>
+              <li>
+                <a href="#" class="nav-link text-light">Passenger credit card</a>
+              </li>
               <li><a href="#" class="nav-link text-light">Passenger</a></li>
               <li><a href="#" class="nav-link text-light">Route</a></li>
               <li><a href="#" class="nav-link text-light">Schedule</a></li>
@@ -71,47 +57,27 @@
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link text-light"
-            href="#overview"
-            onclick="showSection('overview')"
-          >
+          <a class="nav-link text-light" href="#overview" onclick="showSection('overview')">
             <i class="bi bi-speedometer2"></i> Overview / Dashboard Summary
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link text-light"
-            href="#notifications"
-            onclick="showSection('notifications')"
-          >
+          <a class="nav-link text-light" href="#notifications" onclick="showSection('notifications')">
             <i class="bi bi-bell"></i> Notifications and Alerts
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link text-light"
-            href="#auditLogs"
-            onclick="showSection('auditLogs')"
-          >
+          <a class="nav-link text-light" href="#auditLogs" onclick="showSection('auditLogs')">
             <i class="bi bi-list-check"></i> Activity and Audit Logs
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link text-light"
-            href="#customReports"
-            onclick="showSection('customReports')"
-          >
+          <a class="nav-link text-light" href="#customReports" onclick="showSection('customReports')">
             <i class="bi bi-file-earmark-text"></i> Custom Reports and Queries
           </a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link text-light"
-            href="#permissions"
-            onclick="showSection('permissions')"
-          >
+          <a class="nav-link text-light" href="#permissions" onclick="showSection('permissions')">
             <i class="bi bi-person-check"></i> Permissions and Role Management
           </a>
         </li>

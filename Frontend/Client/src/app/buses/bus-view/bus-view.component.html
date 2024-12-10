@@ -1,0 +1,51 @@
+<button
+  [routerLink]="'/manager-dashboard/buses/add'"
+  type="button"
+  class="btn btn-success"
+>
+  Add new bus
+</button>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Registration number</th>
+      <th scope="col">Manufacturer</th>
+      <th scope="col">Model</th>
+      <th scope="col">Capacity</th>
+      <th scope="col">Manufacture year</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (bus of buses; track $index) {
+    <tr>
+      <th scope="row">{{ $index + 1 }}</th>
+      <td>{{ bus.registrationNumber }}</td>
+      <td>{{ bus.manufacturer }}</td>
+      <td>{{ bus.model }}</td>
+      <td>{{ bus.capacity }}</td>
+      <td>{{ bus.manufactureYear }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="openEditDialog(bus)"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteBus(bus.id)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

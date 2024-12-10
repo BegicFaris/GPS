@@ -1,5 +1,6 @@
+<div class="container mt-2">
 <h5 class="modal-title">Update line data</h5>
-<form *ngIf="lineUpdate" #updateLineForm="ngForm" (ngSubmit)="saveChanges()">
+<form #updateLineForm="ngForm" (ngSubmit)="saveChanges()">
     <div class="mb-3">
         <label class="form-label">Name</label>
         <input id="name" type="text" class="form-control" [(ngModel)]="lineUpdate.name" name="name" required />
@@ -42,3 +43,4 @@
         <td><button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button></td>
     </div>
 </form>
+</div>
