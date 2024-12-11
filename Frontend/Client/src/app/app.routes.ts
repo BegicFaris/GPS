@@ -19,6 +19,8 @@ import { LineCreateComponent } from './lines/line-create/line-create.component';
 import { RegisterComponent } from './register/register.component';
 import { BusViewComponent } from './buses/bus-view/bus-view.component';
 import { BusCreateComponent } from './buses/bus-create/bus-create.component';
+import { RouteViewComponent } from './routes/route-view/route-view.component';
+import { RouteCreateComponent } from './routes/route-create/route-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -44,7 +46,9 @@ export const routes: Routes = [
       { path: 'lines', component: LineViewComponent },
       { path: 'lines/add', component: LineCreateComponent },
       { path: 'buses', component: BusViewComponent },
-      { path: 'buses/add', component: BusCreateComponent}
+      { path: 'buses/add', component: BusCreateComponent }, 
+      { path: 'routes', component: RouteViewComponent },
+      { path: 'routes/add', component: RouteCreateComponent },
     ],
   },
   {
