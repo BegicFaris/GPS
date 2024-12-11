@@ -21,6 +21,8 @@ import { BusViewComponent } from './buses/bus-view/bus-view.component';
 import { BusCreateComponent } from './buses/bus-create/bus-create.component';
 import { RouteViewComponent } from './routes/route-view/route-view.component';
 import { RouteCreateComponent } from './routes/route-create/route-create.component';
+import { CreditCardViewComponent } from './creditCards/creditCard-view/creditCard-view.component';
+import { CreditCardCreateComponent } from './creditCards/creditCard-create/creditCard-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -49,6 +51,8 @@ export const routes: Routes = [
       { path: 'buses/add', component: BusCreateComponent }, 
       { path: 'routes', component: RouteViewComponent },
       { path: 'routes/add', component: RouteCreateComponent },
+      { path: 'creditCards', component: CreditCardViewComponent },
+      { path: 'creditCards/add', component: CreditCardCreateComponent },
     ],
   },
   {
