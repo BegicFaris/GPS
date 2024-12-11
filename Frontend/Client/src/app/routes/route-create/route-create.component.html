@@ -1,0 +1,46 @@
+<h5 class="modal-title">Add new route</h5>
+<form #newRouteForm="ngForm" (ngSubmit)="addNewRoute(newRouteForm)">
+
+  <div class="mb-3">
+    <label class="form-label">Line</label>
+    <select class="form-select" name="lineId" required [(ngModel)]="routeCreate.lineId"
+      #lineId="ngModel">
+      @for (line of lines; track line.id) {
+      <option [value]="line.id">
+        {{ line.name }}
+      </option>
+      }
+    </select>
+    @if(lineId.invalid && (lineId.dirty || lineId.touched)) {
+      @if(lineId.errors?.['required']) {<div class="text-danger">Line is required.</div>}
+    }
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Station</label>
+    <select class="form-select" name="stationId" required [(ngModel)]="routeCreate.stationId"
+      #stationId="ngModel">
+      @for (station of stations; track station.id) {
+      <option [value]="station.id">
+        {{ station.name }}
+      </option>
+      }
+    </select>
+    @if(stationId.invalid && (stationId.dirty || stationId.touched)) {
+      @if(stationId.errors?.['required']) {<div class="text-danger">Station is required.</div>}
+    }
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Distance from the next station</label>
+    <input type="text" class="form-control" name="distanceFromTheNextStation" required [(ngModel)]="routeCreate.distanceFromTheNextStation"  #distanceFromTheNextStation="ngModel" placeholder="0km">
+    @if(distanceFromTheNextStation.invalid && (distanceFromTheNextStation.dirty || distanceFromTheNextStation.touched)) {
+      @if(distanceFromTheNextStation.errors?.['required']) {<div class="text-danger">Distance from the next station is required.</div>}
+    }
+  </div>
+
+  <div class="button-container">
+    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+  </div>
+</form>
