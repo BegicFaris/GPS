@@ -1,9 +1,10 @@
 
-<button routerLink="/notifications/add" type="button" class="btn btn-success">Add new notification</button>
+<button routerLink="/manager-dashboard/notifications/add" type="button" class="btn btn-success">Add new notification</button>
 <table class="table">
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Description</th>
       <th scope="col">Notification Type</th>
       <th scope="col">Duration</th>
       <th scope="col">Date</th>
@@ -19,6 +20,7 @@
     @for (notification of notifications; track $index) {
     <tr>
       <th scope="row">{{$index + 1}}</th>
+      <td>{{notification.description}}</td>
       <td>{{notification.notificationType.name}}</td>
       <td>{{notification.duration}}</td>
       <td>{{notification.date}}</td>

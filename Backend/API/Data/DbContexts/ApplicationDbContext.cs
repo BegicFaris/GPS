@@ -76,7 +76,7 @@ namespace GPS.API.Data.DbContexts
             modelBuilder.Entity<TicketType>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Zone>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
 
-            
+
             //Adding test data to the DB
             modelBuilder.Entity<Tenant>().HasData(
                 new Tenant { Id = "mostar", Name = "Mostar" },
@@ -89,16 +89,16 @@ namespace GPS.API.Data.DbContexts
                 new Zone { Id = 3, Name = "Zone three", Price = 2.7M }
                 );
             modelBuilder.Entity<Bus>().HasData(
-                new Bus { Id = 1, Capacity = "20", Manufacturer = "MAN", ManufactureYear = "2002", Model = "MK2", RegistrationNumber = "12345678", TenantId="mostar" },
+                new Bus { Id = 1, Capacity = "20", Manufacturer = "MAN", ManufactureYear = "2002", Model = "MK2", RegistrationNumber = "12345678", TenantId = "mostar" },
                 new Bus { Id = 2, Capacity = "21", Manufacturer = "MAN", ManufactureYear = "2003", Model = "MK3", RegistrationNumber = "asd5678", TenantId = "mostar" }
                 );
             modelBuilder.Entity<CreditCard>().HasData(
                 new CreditCard { Id = 1, CardName = "Faris", CardNumber = "1234 5679 8791", CCV = 123, ExpirationDate = "7/28", TenantId = "mostar" },
-                new CreditCard { Id = 2, CardName = "Nedim", CardNumber = "2432 4454 4545", CCV = 254, ExpirationDate = "7/28" , TenantId = "mostar" }
+                new CreditCard { Id = 2, CardName = "Nedim", CardNumber = "2432 4454 4545", CCV = 254, ExpirationDate = "7/28", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Discount>().HasData(
-                new Discount { Id = 1, DiscountName = "Student", DiscountValue = 0.15f , TenantId = "mostar" },
-                new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f , TenantId = "mostar" }
+                new Discount { Id = 1, DiscountName = "Student", DiscountValue = 0.15f, TenantId = "mostar" },
+                new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f, TenantId = "mostar" }
                 );
 
             using var hmac = new HMACSHA512();
@@ -116,45 +116,47 @@ namespace GPS.API.Data.DbContexts
                 new Passenger { Id = 6, Email = "6", FirstName = "Denis", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, LastName = "Music", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Feedback>().HasData(
-               new Feedback { Id = 1, Date = new DateTime(2024, 1, 1), UserId = 5, Rating = 5 , TenantId = "mostar" },
-                new Feedback { Id = 2, Date = new DateTime(2024, 1, 1), UserId = 6, Rating = 3 , TenantId = "mostar" }
+               new Feedback { Id = 1, Date = new DateTime(2024, 1, 1), UserId = 5, Rating = 5, TenantId = "mostar" },
+                new Feedback { Id = 2, Date = new DateTime(2024, 1, 1), UserId = 6, Rating = 3, TenantId = "mostar" }
                 );
             modelBuilder.Entity<Station>().HasData(
                 new Station { Id = 1, GPSCode = "6.6.6", Location = "Bafo", Name = "Bafo", ZoneId = 1, TenantId = "mostar" },
-                new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2 , TenantId = "mostar" }
+                new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2, TenantId = "mostar" }
                 );
             modelBuilder.Entity<Line>().HasData(
-                new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21" , TenantId = "mostar" },
+                new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21", TenantId = "mostar" },
                  new Line { Id = 2, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21", TenantId = "mostar" }
                 );
             modelBuilder.Entity<NotificationType>().HasData(
-                new NotificationType { Id = 1, Description = "A warning notif", Name = "Warning" , TenantId = "mostar" },
-                new NotificationType { Id = 2, Description = "A error notif", Name = "Error" , TenantId = "mostar" }
+                new NotificationType { Id = 1, Description = "A warning notif", Name = "Warning", TenantId = "mostar" },
+                new NotificationType { Id = 2, Description = "A error notif", Name = "Error", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Notification>().HasData(
-                new Notification { Id = 1, Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 1, NotificationTypeId = 1 , TenantId = "mostar" },
-                new Notification { Id = 2, Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 2, NotificationTypeId = 2 , TenantId = "mostar" }
+                new Notification { Id = 1,Description="New notif", Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 1, NotificationTypeId = 1, TenantId = "mostar" },
+                new Notification { Id = 2,Description = "New notif", Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 2, NotificationTypeId = 2, TenantId = "mostar" }
                 );
             modelBuilder.Entity<PassengerCreditCard>().HasData(
-                new PassengerCreditCard { Id = 1, CreditCardId = 1, PassengerId = 5, SavingDate = new DateTime(2024, 1, 1) , TenantId = "mostar" },
-                new PassengerCreditCard { Id = 2, CreditCardId = 2, PassengerId = 6, SavingDate = new DateTime(2024, 1, 1) , TenantId = "mostar" }
+                new PassengerCreditCard { Id = 1, CreditCardId = 1, PassengerId = 5, SavingDate = new DateTime(2024, 1, 1), TenantId = "mostar" },
+                new PassengerCreditCard { Id = 2, CreditCardId = 2, PassengerId = 6, SavingDate = new DateTime(2024, 1, 1), TenantId = "mostar" }
                 );
             modelBuilder.Entity<Models.Route>().HasData(
-               new Models.Route { Id = 1, LineId = 1, StationId = 1, DistanceFromTheNextStation = 15.6f , TenantId = "mostar" },
-               new Models.Route { Id = 2, LineId = 2, StationId = 2, DistanceFromTheNextStation = 15.6f , TenantId = "mostar" }
+               new Models.Route { Id = 1, LineId = 1, StationId = 1, DistanceFromTheNextStation = 15.6f, TenantId = "mostar" },
+               new Models.Route { Id = 2, LineId = 2, StationId = 2, DistanceFromTheNextStation = 15.6f, TenantId = "mostar" }
                );
             modelBuilder.Entity<Shift>().HasData(
-                new Shift { Id = 1, BusId = 1, DriverId = 1, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0) , TenantId = "mostar" },
-                new Shift { Id = 2, BusId = 2, DriverId = 2, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0) , TenantId = "mostar" }
+                new Shift { Id = 1, BusId = 1, DriverId = 1, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0), TenantId = "mostar" },
+                new Shift { Id = 2, BusId = 2, DriverId = 2, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0), TenantId = "mostar" }
                 );
             modelBuilder.Entity<TicketType>().HasData(
-                new TicketType { Id = 1, Name = "Basic" , TenantId = "mostar"  },
-                new TicketType { Id = 2, Name = "Advanced" , TenantId = "mostar" }
+                new TicketType { Id = 1, Name = "Basic", TenantId = "mostar" },
+                new TicketType { Id = 2, Name = "Advanced", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Ticket>().HasData(
-                new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 1, QrCode = new byte[] { }, TicketTypeId = 1, UserId = 2, ZoneId = 1 , TenantId = "mostar" },
-                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 2, QrCode = new byte[] { }, TicketTypeId = 2, UserId = 1, ZoneId = 1 , TenantId = "mostar" }
+                new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 1, QrCode = new byte[] { }, TicketTypeId = 1, UserId = 2, ZoneId = 1, TenantId = "mostar" },
+                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 2, QrCode = new byte[] { }, TicketTypeId = 2, UserId = 1, ZoneId = 1, TenantId = "mostar" }
                 );
+
+
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {

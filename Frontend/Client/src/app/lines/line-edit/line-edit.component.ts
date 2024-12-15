@@ -1,5 +1,5 @@
 import { Component, inject, Inject } from '@angular/core';
-import { FormsModule, } from '@angular/forms';
+import { FormsModule, NgForm, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineService } from '../../_services/line.service';
 import { NgIf } from '@angular/common';
@@ -28,17 +28,15 @@ export class LineEditComponent {
     this.titleService.setTitle("Update line");
     this.loadStations();
   }
-
-  saveChanges() {
-    this.lineService.updateLine(this.lineUpdate).subscribe({
-      next: response => {
-        console.log('Line update successfully', response);
-      },
-      error: error => {
-        console.error('Error deleting line', error);
-      }
-    });
-    this.dialogRef.close(this.lineUpdate);
+  saveChanges(updateLineForm: NgForm) {
+    if(updateLineForm.valid){
+      this.lineService.updateLine(this.lineUpdate).subscribe({
+        next: response => {
+          console.log('Line update successfully', response);
+        }
+      });
+      this.dialogRef.close(this.lineUpdate);
+    }
   }
   closeDialog() {
     this.dialogRef.close();

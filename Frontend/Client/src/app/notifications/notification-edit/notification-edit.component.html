@@ -1,1 +1,77 @@
-<p>notification-edit works!</p>
+<h5 class="modal-title">Add new notification</h5>
+<form #updateNotificationForm="ngForm" (ngSubmit)="saveChanges(updateNotificationForm)">
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea type="text" name="description" class="form-control" required [(ngModel)]="notificationUpdate.description"
+            #description="ngModel" placeholder="Description" ></textarea>
+        @if(description.invalid && (description.dirty || description.touched)) {
+        @if(description.errors?.['required']) {<div class="text-danger">Description is required.</div>}
+        }
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Notification type</label>
+        <select class="form-select" name="notificationTypeId" required
+            [(ngModel)]="notificationUpdate.notificationTypeId" #notificationTypeId="ngModel">
+            @for (notificationType of notificationTypes; track notificationType.id) {
+            <option [value]="notificationType.id">
+                {{notificationType.name }}
+            </option>
+            }
+        </select>
+        @if(notificationTypeId.invalid && (notificationTypeId.dirty || notificationTypeId.touched)) {
+        @if(notificationTypeId.errors?.['required']) {<div class="text-danger">Notification type is required.</div>}
+        }
+
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Duration</label>
+        <input type="time" id="timepicker" class="form-control" name="duration" [(ngModel)]="notificationUpdate.duration" #duration="ngModel" required placeholder="Duration">
+        @if (duration.invalid && (duration.dirty || duration.touched)) {
+            <div class="text-danger">
+                Duration is required.
+            </div>
+            }
+    </div>
+    
+    <div class="mb-3">
+        <label>Date</label>
+        <input type="date" class="form-control" name="date" [(ngModel)]="notificationUpdate.date" #date="ngModel" required placeholder="Date" />
+        @if (date.invalid && (date.dirty || date.touched)) {
+        <div class="text-danger">
+            Date is required.
+        </div>
+        }
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Line</label>
+        <select class="form-select" name="lineId" required [(ngModel)]="notificationUpdate.lineId" #lineId="ngModel">
+            @for (line of lines; track line.id) {
+            <option [value]="line.id">
+                {{ line.name }}
+            </option>
+            }
+        </select>
+        @if(lineId.invalid && (lineId.dirty || lineId.touched)) {
+        @if(lineId.errors?.['required']) {<div class="text-danger">Line is required.</div>}
+        }
+    </div>
+
+
+    <div class="form-check form-switch">
+        <input name="isActive" [(ngModel)]="notificationUpdate.isActive" class="form-check-input" type="checkbox"
+            role="switch" id="flexSwitchCheckChecked">
+        <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+    </div>
+
+
+    <div class="button-container">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button>
+    </div>
+</form>

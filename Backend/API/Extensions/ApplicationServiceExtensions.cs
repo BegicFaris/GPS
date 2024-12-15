@@ -9,6 +9,7 @@ using GPS.API.Services.FeedbackServices;
 using GPS.API.Services.LineServices;
 using GPS.API.Services.ManagerServices;
 using GPS.API.Services.NotificationServices;
+using GPS.API.Services.NotificationTypeService;
 using GPS.API.Services.PassengerServices;
 using GPS.API.Services.RouteServices;
 using GPS.API.Services.ScheduleServices;
@@ -76,6 +77,7 @@ namespace GPS.API.Extensions
             //dodajte vaše servise
             //builder.Services.AddTransient<MyAuthService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<INotificationTypeService, NotificationTypeService>();
             services.AddScoped<IShiftService, ShiftService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<ITicketService, TicketService>();

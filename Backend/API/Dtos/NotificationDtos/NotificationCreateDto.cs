@@ -5,6 +5,7 @@ namespace GPS.API.Dtos.NotificationDtos
 {
     public class NotificationCreateDto
     {
+        public required string Description { get; set; }
         public required int NotificationTypeId { get; set; }
         public required TimeOnly Duration { get; set; }
         public required DateOnly Date { get; set; }

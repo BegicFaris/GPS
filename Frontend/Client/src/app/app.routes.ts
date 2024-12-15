@@ -26,6 +26,8 @@ import { ManagerCreateComponent } from './managers/manager-create/manager-create
 import { DriverViewComponent } from './drivers/driver-view/driver-view.component';
 import { DriverCreateComponent } from './drivers/driver-create/driver-create.component';
 import { PassengerViewComponent } from './passengers/passenger-view/passenger-view.component';
+import { CreditCardViewComponent } from './creditCards/creditCard-view/creditCard-view.component';
+import { CreditCardCreateComponent } from './creditCards/creditCard-create/creditCard-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -40,8 +42,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   //{ path: 'lines', component: LineViewComponent },
   //{ path: 'lines/add', component: LineCreateComponent },
-  { path: 'notifications', component: NotificationViewComponent },
-  { path: 'notifications/add', component: NotificationCreateComponent },
   {
     path: 'manager-dashboard',
     component: ManagerDashboardComponent,
@@ -59,6 +59,10 @@ export const routes: Routes = [
       { path: 'drivers', component: DriverViewComponent },
       { path: 'drivers/add', component: DriverCreateComponent },
       { path: 'passengers', component: PassengerViewComponent },
+      { path: 'creditCards', component: CreditCardViewComponent },
+      { path: 'creditCards/add', component: CreditCardCreateComponent },
+      { path: 'notifications', component: NotificationViewComponent },
+      { path: 'notifications/add', component: NotificationCreateComponent },
     ],
   },
   {
