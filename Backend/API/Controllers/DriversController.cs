@@ -2,6 +2,7 @@
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using GPS.API.Services.ManagerServices;
 
 namespace GPS.API.Controllers
 {
@@ -39,7 +40,47 @@ namespace GPS.API.Controllers
         public async Task<IActionResult> UpdateDriver(int id, Driver driver)
         {
             if (id != driver.Id) return BadRequest();
-            var updatedDriver = await _driverService.UpdateDriverAsync(driver);
+            var existingDriver = await _driverService.GetDriverByIdAsync(id);
+
+            if (driver.FirstName != null)
+                existingDriver.FirstName = driver.FirstName;
+
+            if (driver.LastName != null)
+                existingDriver.LastName = driver.LastName;
+
+            if (driver.Email != null)
+                existingDriver.Email = driver.Email;
+
+            if (driver.BirthDate.HasValue)
+                existingDriver.BirthDate = driver.BirthDate;
+
+            if (driver.RegistrationDate.HasValue)
+                existingDriver.RegistrationDate = driver.RegistrationDate;
+
+            if (driver.Image != null)
+                existingDriver.Image = driver.Image;
+
+            if (driver.Address != null)
+                existingDriver.Address = driver.Address;
+
+            if (driver.Status.HasValue)
+                existingDriver.Status = driver.Status;
+
+            if (driver.License != null)
+                existingDriver.License = driver.License;
+
+            if (driver.DriversLicenseNumber != null)
+                existingDriver.DriversLicenseNumber = driver.DriversLicenseNumber;
+
+            if (driver.HireDate != default)
+                existingDriver.HireDate = driver.HireDate;
+
+            if (driver.WorkingHoursInAWeek.HasValue)
+                existingDriver.WorkingHoursInAWeek = driver.WorkingHoursInAWeek;
+
+            var updatedDriver = await _driverService.UpdateDriverAsync(existingDriver);
+            if (updatedDriver == null)
+                return NotFound();
             return Ok(updatedDriver);
         }
 

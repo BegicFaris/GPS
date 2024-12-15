@@ -28,7 +28,7 @@ namespace GPS.API.Services.ManagerServices
         }
 
         public async Task<Manager> UpdateManagerAsync(Manager manager)
-        {
+        { 
             _context.Managers.Update(manager);
             await _context.SaveChangesAsync();
             return manager;

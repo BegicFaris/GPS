@@ -86,14 +86,20 @@
   
         <div class="mb-3 form-floating position-relative">
             <input
-              [type]="showPassword ? 'text' : 'password'"
-              class="form-control"
-              name="password"
-              [(ngModel)]="model.password"
-              #password="ngModel"
-              required
-              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-              placeholder="Password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            name="password"
+            id="passwordInput"
+            [(ngModel)]="model.password"
+            #password="ngModel"
+            #passwordInput
+            required
+            placeholder="Password"
+            data-bs-toggle="popover" 
+            data-bs-trigger="focus"
+            (input)="onPasswordInput()"
+            (focus)="onPasswordFocus()"
+            (blur)="onPasswordBlur()"
             />
             <label>Password</label>
             <button type="button" 
@@ -102,19 +108,23 @@
             (click)="togglePasswordVisibility()">
               <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
             </button>
-            @if (password.invalid && (password.dirty || password.touched)) {
+            @if (password.dirty || password.touched) {
               <div class="text-danger">
                 @if (password.errors?.['required']) {
                   Password is required.
                 }
-                @if (password.errors?.['pattern']) {
-                  Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.
-                }
               </div>
             }
-            
+            <app-password-strength-indicator
+            [show]="showPasswordStrength"
+            [hasUpperCase]="hasUpperCase"
+            [hasLowerCase]="hasLowerCase"
+            [hasNumber]="hasNumber"
+            [hasSpecialChar]="hasSpecialChar"
+            [hasMinLength]="hasMinLength"
+            ></app-password-strength-indicator>
           </div>    
-  
+        
         <div class="mb-3 form-floating">
           <input
             type="text"
@@ -153,7 +163,7 @@
   
     <div class="mb-3">
       <label class="form-label">Upload Profile Image</label>
-      <input type="file" class="form-control" (change)="onFileSelected($event)" />
+      <input type="file" class="form-control" (change)="onFileSelected($event)" #fileInput/>
     </div>
   
     <div class="form-group text-center">

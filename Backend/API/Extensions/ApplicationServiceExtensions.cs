@@ -4,6 +4,7 @@ using GPS.API.Interfaces;
 using GPS.API.Services.BusServices;
 using GPS.API.Services.CreditCardServices;
 using GPS.API.Services.DriverServices;
+using GPS.API.Services.DiscountServices;
 using GPS.API.Services.FeedbackServices;
 using GPS.API.Services.LineServices;
 using GPS.API.Services.ManagerServices;
@@ -17,10 +18,10 @@ using GPS.API.Services.StationServices;
 using GPS.API.Services.TenantServices;
 using GPS.API.Services.TicketServices;
 using GPS.API.Services.TokenServices;
+using GPS.API.Services.UserServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using RS1_2024_25.API.Services.UserServices;
 
 namespace GPS.API.Extensions
 {
@@ -31,7 +32,8 @@ namespace GPS.API.Extensions
 
             // Add services to the container.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("db1")));
+                options.UseSqlServer(config.GetConnectionString("db1")
+                ));
 
             services.AddDbContext<TenantDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("db1")));
@@ -90,7 +92,7 @@ namespace GPS.API.Extensions
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<ICreditCardService, CreditCardService>();
             services.AddScoped<ITenantService, TenantService>();
-
+            services.AddScoped<IDiscountService, DiscountService>();
 
             // Adding the scpoped service CurrentTenantService
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();

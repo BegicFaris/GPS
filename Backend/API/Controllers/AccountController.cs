@@ -23,8 +23,6 @@ namespace GPS.API.Controllers
         {
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
-            var tenant = await _context.Tenants.Where(t => t.Id == dto.TenantId).FirstOrDefaultAsync();
-            currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Driver
             {
@@ -39,9 +37,9 @@ namespace GPS.API.Controllers
                 Address = dto.Address,
                 License = dto.License,
                 DriversLicenseNumber = dto.DriversLicenseNumber,
-                HireDate = DateOnly.FromDateTime(DateTime.Now),
+                HireDate = dto.HireDate,
                 WorkingHoursInAWeek = dto.WorkingHoursInAWeek,
-                TenantId = dto.TenantId
+
             };
 
             _context.MyAppUsers.Add(user);
@@ -60,8 +58,6 @@ namespace GPS.API.Controllers
         {
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
-            var tenant = await _context.Tenants.Where(t => t.Id == dto.TenantId).FirstOrDefaultAsync();
-            currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Manager
             {
@@ -74,10 +70,9 @@ namespace GPS.API.Controllers
                 RegistrationDate = DateTime.Now,
                 Image = dto.Image,
                 Address = dto.Address,
-                HireDate = DateOnly.FromDateTime(DateTime.Now),
+                HireDate = dto.HireDate,
                 Department = dto.Department,
                 ManagerLevel = dto.ManagerLevel,
-                TenantId = dto.TenantId
             };
 
             _context.MyAppUsers.Add(user);
@@ -128,7 +123,6 @@ namespace GPS.API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto dto)
         {
-
             var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email.Equals(dto.Email)); //dodati provjeru
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));

@@ -3,9 +3,9 @@ using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 
-namespace RS1_2024_25.API.Services.UserServices
+namespace GPS.API.Services.UserServices
 {
-    public class MyAppUserService: IMyAppUserService
+    public class MyAppUserService : IMyAppUserService
     {
         private readonly ApplicationDbContext _context;
 

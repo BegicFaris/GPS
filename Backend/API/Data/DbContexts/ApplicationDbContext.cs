@@ -103,11 +103,11 @@ namespace GPS.API.Data.DbContexts
 
             using var hmac = new HMACSHA512();
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, Email = "1", FirstName = "Adi", HireDate = new DateOnly(2024, 12, 1), LastName = "Gosto", License = "1123123", TenantId = "mostar" },
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")),PasswordSalt=hmac.Key, Email = "1", FirstName = "Adi", HireDate = new DateOnly(2024, 12, 1), LastName = "Gosto", License = "1123123", TenantId = "mostar" },
                 new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, Email = "2", FirstName = "Nedim", HireDate = new DateOnly(2024, 12, 1), LastName = "Jugo", License = "11jdfghsdjg23", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Manager>().HasData(
-                new Manager { Id = 3, Email = "3", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, FirstName = "Adil", HireDate = new DateOnly(2024, 12, 1), LastName = "Joldic", Department = "HR", ManagerLevel = "1", TenantId = "mostar" },
+                new Manager { Id = 3, Email = "3", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, FirstName = "Adil", HireDate = new DateOnly(2024,12,1), LastName = "Joldic", Department = "HR", ManagerLevel = "1", TenantId = "mostar" },
                 new Manager { Id = 4, Email = "4", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, FirstName = "Denis", HireDate = new DateOnly(2024, 12, 1), LastName = "Music", Department = "IT", ManagerLevel = "2", TenantId = "mostar" }
 
                 );

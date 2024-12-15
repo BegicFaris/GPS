@@ -10,7 +10,6 @@ using GPS.API.Services.PassengerServices;
 using GPS.API.Services.ScheduleServices; 
 using GPS.API.Services.TenantServices;
 using Microsoft.EntityFrameworkCore;
-using RS1_2024_25.API.Services.UserServices;
 using GPS.API.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using GPS.API.Services.TokenServices;

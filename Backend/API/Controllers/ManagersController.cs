@@ -2,6 +2,8 @@
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using GPS.API.Dtos.RouteDtos;
+using GPS.API.Services.RouteServices;
 
 namespace GPS.API.Controllers
 {
@@ -42,10 +44,46 @@ namespace GPS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateManager(int id, Manager manager)
         {
-            if (id != manager.Id)
-                return BadRequest();
+            if (id != manager.Id) return BadRequest();
+            var existingManager = await _managerService.GetManagerByIdAsync(id);
+            if (existingManager == null) return NotFound($"Manager with Id:{id} not found!");
 
-            var updatedManager = await _managerService.UpdateManagerAsync(manager);
+
+            if (manager.FirstName != null)
+                existingManager.FirstName = manager.FirstName;
+
+            if (manager.LastName != null)
+                existingManager.LastName = manager.LastName;
+
+            if (manager.Email != null)
+                existingManager.Email = manager.Email;
+
+            if (manager.BirthDate.HasValue)
+                existingManager.BirthDate = manager.BirthDate;
+
+            if (manager.RegistrationDate.HasValue)
+                existingManager.RegistrationDate = manager.RegistrationDate;
+
+            if (manager.Image != null)
+                existingManager.Image = manager.Image;
+
+            if (manager.Address != null)
+                existingManager.Address = manager.Address;
+
+            if (manager.Status.HasValue)
+                existingManager.Status = manager.Status;
+
+            if (manager.HireDate != default)
+                existingManager.HireDate = manager.HireDate;
+
+            if (manager.Department != null)
+                existingManager.Department = manager.Department;
+
+            if (manager.ManagerLevel != null)
+                existingManager.ManagerLevel = manager.ManagerLevel;
+
+
+            var updatedManager = await _managerService.UpdateManagerAsync(existingManager);
             if (updatedManager == null)
                 return NotFound();
 

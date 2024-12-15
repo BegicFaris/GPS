@@ -36,6 +36,7 @@ export class PassengerService {
   updatePassenger(passenger: any) {
     return this.http.put<Passenger>(this.baseUrl + `/${passenger.id}`, passenger).pipe(
       catchError(error => {
+        console.log(passenger);
         console.error('Error updating passenger:', error);
         return (error);
       })
