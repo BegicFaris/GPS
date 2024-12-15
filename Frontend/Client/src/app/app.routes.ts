@@ -37,8 +37,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   //{ path: 'lines', component: LineViewComponent },
   //{ path: 'lines/add', component: LineCreateComponent },
-  { path: 'notifications', component: NotificationViewComponent },
-  { path: 'notifications/add', component: NotificationCreateComponent },
   {
     path: 'manager-dashboard',
     component: ManagerDashboardComponent,
@@ -53,6 +51,8 @@ export const routes: Routes = [
       { path: 'routes/add', component: RouteCreateComponent },
       { path: 'creditCards', component: CreditCardViewComponent },
       { path: 'creditCards/add', component: CreditCardCreateComponent },
+      { path: 'notifications', component: NotificationViewComponent },
+      { path: 'notifications/add', component: NotificationCreateComponent },
     ],
   },
   {
