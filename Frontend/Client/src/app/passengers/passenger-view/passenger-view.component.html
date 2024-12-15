@@ -1,0 +1,48 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Birth date</th>
+      <th scope="col">Address</th>
+      <th scope="col">Registration date</th>
+      <th scope="col">Discount</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (passenger of passengers; track $index) {
+    <tr>
+      <th scope="row">{{ $index + 1 }}</th>
+      <td>{{ passenger.firstName }}</td>
+      <td>{{ passenger.lastName }}</td>
+      <td>{{ passenger.email }}</td>
+      <td>{{ passenger.birthDate  | date:'dd.MM.yyyy'}}</td>
+      <td>{{ passenger.address }}</td>
+      <td>{{ passenger.registrationDate| date:'dd.MM.yyyy'}}</td>
+      <td>{{ passenger.discountID }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="openEditDialog(passenger)"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deletePassenger(passenger.id)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

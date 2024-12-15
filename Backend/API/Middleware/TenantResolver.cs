@@ -14,9 +14,8 @@ namespace GPS.API.Middleware
 
         public async Task InvokeAsync(HttpContext context, ICurrentTenantService currentTenantService)
         {
-            if (context.Request.Path.StartsWithSegments("/api/Account/Register/Driver") ||
+            if (
                 context.Request.Path.StartsWithSegments("/api/Account/Register/Passenger") ||
-                context.Request.Path.StartsWithSegments("/api/Account/Register/Manager") ||
                 context.Request.Path.StartsWithSegments("/api/Account/Login") ||
                 context.Request.Path.StartsWithSegments("/api/AAGetTokenTest/GetToken") ||
                 context.Request.Path.StartsWithSegments("/api/Tenants"))

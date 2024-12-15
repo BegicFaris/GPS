@@ -1,0 +1,47 @@
+<div class="container mt-2">
+<h5 class="modal-title">Update passenger data</h5>
+<form #updatePassengerForm="ngForm" (ngSubmit)="saveChanges()">
+  <div class="mb-3">
+    <label class="form-label" for="firstName">First Name:</label>
+    <input class="form-control" id="firstName" name="firstName" [(ngModel)]="passengerUpdate.firstName" disabled #firstName="ngModel" readonly type="text">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="lastName">Last Name:</label>
+    <input class="form-control" id="lastName" name="lastName" [(ngModel)]="passengerUpdate.lastName" disabled #lastName="ngModel" readonly type="text">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="email">Email:</label>
+    <input class="form-control" id="email" name="email" [(ngModel)]="passengerUpdate.email" #email="ngModel" disabled readonly type="email">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="birthDate">Birth Date:</label>
+    <input class="form-control" id="birthDate" name="birthDate" [(ngModel)]="passengerUpdate.birthDate" #birthDate="ngModel" disabled readonly type="date">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="address">Address:</label>
+    <input class="form-control" id="address" name="address" [(ngModel)]="passengerUpdate.address" #address="ngModel" disabled readonly>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="registrationDate">Registration Date:</label>
+    <input class="form-control" id="registrationDate" name="registrationDate" [(ngModel)]="passengerUpdate.registrationDate" disabled #registrationDate="ngModel" readonly type="date">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Discount</label>
+    <select class="form-select" name="discountId" [(ngModel)]="passengerUpdate.discountId"
+        #discountId="ngModel">
+        @for (discount of discounts; track discount.id) {
+        <option [value]="discount.id">
+            {{ discount.discountName }}
+        </option>
+        }
+    </select>
+</div>
+  
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button>
+  </form>
+</div>

@@ -17,7 +17,7 @@ namespace GPS.API.Data.Models
         public byte[]? PasswordHash { get; set; }
         [JsonIgnore]
         public byte[]? PasswordSalt { get; set; }
-        public DateTime? BirthDate { get; set; }
+        public DateOnly? BirthDate { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public byte[]? Image { get; set; }
         public string? Address { get; set; }

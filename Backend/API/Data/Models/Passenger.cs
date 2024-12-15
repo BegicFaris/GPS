@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace GPS.API.Data.Models
 {
@@ -7,6 +8,7 @@ namespace GPS.API.Data.Models
     {
         [ForeignKey(nameof(Discount))]
         public int? DiscountID { get; set; }
+        [JsonIgnore]
         public Discount? Discount { get; set; }
     }
 }

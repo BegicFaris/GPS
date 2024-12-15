@@ -2,6 +2,7 @@
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using GPS.API.Services.DriverServices;
 
 namespace GPS.API.Controllers
 {
@@ -42,10 +43,39 @@ namespace GPS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePassenger(int id, Passenger passenger)
         {
-            if (id != passenger.Id)
-                return BadRequest();
+            if (id != passenger.Id) return BadRequest();
+            var existingPassenger = await _passengerService.GetPassengerByIdAsync(id);
 
-            var updatedPassenger = await _passengerService.UpdatePassengerAsync(passenger);
+            if (passenger.FirstName != null)
+                existingPassenger.FirstName = passenger.FirstName;
+
+            if (passenger.LastName != null)
+                existingPassenger.LastName = passenger.LastName;
+
+            if (passenger.Email != null)
+                existingPassenger.Email = passenger.Email;
+
+            if (passenger.BirthDate.HasValue)
+                existingPassenger.BirthDate = passenger.BirthDate;
+
+            if (passenger.RegistrationDate.HasValue)
+                existingPassenger.RegistrationDate = passenger.RegistrationDate;
+
+            if (passenger.Image != null)
+                existingPassenger.Image = passenger.Image;
+
+            if (passenger.Address != null)
+                existingPassenger.Address = passenger.Address;
+
+            if (passenger.Status.HasValue)
+                existingPassenger.Status = passenger.Status;
+            if (passenger.DiscountID != null)
+                existingPassenger.DiscountID = passenger.DiscountID;
+
+
+
+
+            var updatedPassenger = await _passengerService.UpdatePassengerAsync(existingPassenger);
             if (updatedPassenger == null)
                 return NotFound();
 

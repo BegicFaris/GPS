@@ -21,6 +21,11 @@ import { BusViewComponent } from './buses/bus-view/bus-view.component';
 import { BusCreateComponent } from './buses/bus-create/bus-create.component';
 import { RouteViewComponent } from './routes/route-view/route-view.component';
 import { RouteCreateComponent } from './routes/route-create/route-create.component';
+import { ManagerViewComponent } from './managers/manager-view/manager-view.component';
+import { ManagerCreateComponent } from './managers/manager-create/manager-create.component';
+import { DriverViewComponent } from './drivers/driver-view/driver-view.component';
+import { DriverCreateComponent } from './drivers/driver-create/driver-create.component';
+import { PassengerViewComponent } from './passengers/passenger-view/passenger-view.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -49,6 +54,11 @@ export const routes: Routes = [
       { path: 'buses/add', component: BusCreateComponent }, 
       { path: 'routes', component: RouteViewComponent },
       { path: 'routes/add', component: RouteCreateComponent },
+      { path: 'managers', component: ManagerViewComponent },
+      { path: 'managers/add', component: ManagerCreateComponent },
+      { path: 'drivers', component: DriverViewComponent },
+      { path: 'drivers/add', component: DriverCreateComponent },
+      { path: 'passengers', component: PassengerViewComponent },
     ],
   },
   {

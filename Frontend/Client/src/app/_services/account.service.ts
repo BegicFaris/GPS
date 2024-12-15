@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../_models/user';
-import { map } from 'rxjs';
+import { catchError, map } from 'rxjs';
+import { Manager } from '../_models/manager';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,7 @@ export class AccountService {
   }
 
   register(model: any){
+    console.log(model);
     return this.http.post<User>(this.baseUrl + 'account/register/passenger', model)
     .pipe(
       map(user => {
@@ -43,6 +45,24 @@ export class AccountService {
     );
   }
 
+  registerManager(model: any){
+    return this.http.post<User>(this.baseUrl + 'account/register/manager', model).pipe(
+      catchError(error => {
+        console.error('Error creating manager:', error);
+        return (error);
+      })
+    );
+  }
+
+  registerDriver(model: any){
+    return this.http.post<User>(this.baseUrl + 'account/register/driver', model).pipe(
+      catchError(error => {
+        console.error('Error creating driver:', error);
+        return (error);
+      })
+    );
+  }
+  
   logout(){
     localStorage.removeItem('user');
     this.currentUser.set(null);

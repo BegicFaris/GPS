@@ -79,7 +79,7 @@ namespace GPS.API.Data.DbContexts
             
             //Adding test data to the DB
             modelBuilder.Entity<Tenant>().HasData(
-                new Tenant { Id = "mostar", Name = "MostarBus" },
+                new Tenant { Id = "mostar", Name = "Mostar" },
                 new Tenant { Id = "sarajevo", Name = "Sarajevo" },
                 new Tenant { Id = "bugojno", Name = "Bugojno" }
                 );
@@ -90,30 +90,30 @@ namespace GPS.API.Data.DbContexts
                 );
             modelBuilder.Entity<Bus>().HasData(
                 new Bus { Id = 1, Capacity = "20", Manufacturer = "MAN", ManufactureYear = "2002", Model = "MK2", RegistrationNumber = "12345678", TenantId="mostar" },
-                new Bus { Id = 2, Capacity = "21", Manufacturer = "MAN", ManufactureYear = "2003", Model = "MK3", RegistrationNumber = "asd5678", TenantId = "sarajevo" }
+                new Bus { Id = 2, Capacity = "21", Manufacturer = "MAN", ManufactureYear = "2003", Model = "MK3", RegistrationNumber = "asd5678", TenantId = "mostar" }
                 );
             modelBuilder.Entity<CreditCard>().HasData(
                 new CreditCard { Id = 1, CardName = "Faris", CardNumber = "1234 5679 8791", CCV = 123, ExpirationDate = "7/28", TenantId = "mostar" },
-                new CreditCard { Id = 2, CardName = "Nedim", CardNumber = "2432 4454 4545", CCV = 254, ExpirationDate = "7/28" , TenantId = "sarajevo" }
+                new CreditCard { Id = 2, CardName = "Nedim", CardNumber = "2432 4454 4545", CCV = 254, ExpirationDate = "7/28" , TenantId = "mostar" }
                 );
             modelBuilder.Entity<Discount>().HasData(
                 new Discount { Id = 1, DiscountName = "Student", DiscountValue = 0.15f , TenantId = "mostar" },
-                new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f , TenantId = "sarajevo" }
+                new Discount { Id = 2, DiscountName = "Penzioner", DiscountValue = 0.17f , TenantId = "mostar" }
                 );
 
             using var hmac = new HMACSHA512();
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")),PasswordSalt=hmac.Key, Email = "1", FirstName = "Adi", HireDate = DateTime.Now, LastName = "Gosto", License = "1123123", TenantId = "mostar" },
-                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, Email = "2", FirstName = "Nedim", HireDate = DateTime.Now, LastName = "Jugo", License = "11jdfghsdjg23", TenantId = "sarajevo" }
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")),PasswordSalt=hmac.Key, Email = "1", FirstName = "Adi", HireDate = new DateOnly(2024, 12, 1), LastName = "Gosto", License = "1123123", TenantId = "mostar" },
+                new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, Email = "2", FirstName = "Nedim", HireDate = new DateOnly(2024, 12, 1), LastName = "Jugo", License = "11jdfghsdjg23", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Manager>().HasData(
-                new Manager { Id = 3, Email = "3", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, FirstName = "Adil", HireDate = DateTime.Now, LastName = "Joldic", Department = "HR", ManagerLevel = "1", TenantId = "mostar" },
-                new Manager { Id = 4, Email = "4", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, FirstName = "Denis", HireDate = DateTime.Now, LastName = "Music", Department = "IT", ManagerLevel = "2", TenantId = "bugojno" }
+                new Manager { Id = 3, Email = "3", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, FirstName = "Adil", HireDate = new DateOnly(2024,12,1), LastName = "Joldic", Department = "HR", ManagerLevel = "1", TenantId = "mostar" },
+                new Manager { Id = 4, Email = "4", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, FirstName = "Denis", HireDate = new DateOnly(2024, 12, 1), LastName = "Music", Department = "IT", ManagerLevel = "2", TenantId = "mostar" }
 
                 );
             modelBuilder.Entity<Passenger>().HasData(
                 new Passenger { Id = 5, Email = "5", FirstName = "Adil", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, LastName = "Joldic", TenantId = "mostar" },
-                new Passenger { Id = 6, Email = "6", FirstName = "Denis", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, LastName = "Music", TenantId = "sarajevo" }
+                new Passenger { Id = 6, Email = "6", FirstName = "Denis", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, LastName = "Music", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Feedback>().HasData(
                new Feedback { Id = 1, Date = new DateTime(2024, 1, 1), UserId = 5, Rating = 5 , TenantId = "mostar" },
@@ -121,7 +121,7 @@ namespace GPS.API.Data.DbContexts
                 );
             modelBuilder.Entity<Station>().HasData(
                 new Station { Id = 1, GPSCode = "6.6.6", Location = "Bafo", Name = "Bafo", ZoneId = 1, TenantId = "mostar" },
-                new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2 , TenantId = "sarajevo" }
+                new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2 , TenantId = "mostar" }
                 );
             modelBuilder.Entity<Line>().HasData(
                 new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21" , TenantId = "mostar" },
@@ -137,7 +137,7 @@ namespace GPS.API.Data.DbContexts
                 );
             modelBuilder.Entity<PassengerCreditCard>().HasData(
                 new PassengerCreditCard { Id = 1, CreditCardId = 1, PassengerId = 5, SavingDate = new DateTime(2024, 1, 1) , TenantId = "mostar" },
-                new PassengerCreditCard { Id = 2, CreditCardId = 2, PassengerId = 6, SavingDate = new DateTime(2024, 1, 1) , TenantId = "sarajevo" }
+                new PassengerCreditCard { Id = 2, CreditCardId = 2, PassengerId = 6, SavingDate = new DateTime(2024, 1, 1) , TenantId = "mostar" }
                 );
             modelBuilder.Entity<Models.Route>().HasData(
                new Models.Route { Id = 1, LineId = 1, StationId = 1, DistanceFromTheNextStation = 15.6f , TenantId = "mostar" },

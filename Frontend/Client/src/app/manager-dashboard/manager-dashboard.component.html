@@ -23,20 +23,17 @@
           </a>
           <div class="collapse" id="manageDataMenu">
             <ul class="list-unstyled ps-2">
-              <li><a [routerLink]="'buses'" routerLinkActive="router-link-active" class="nav-link text-light">Bus</a>
-              </li>
+              <li><a [routerLink]="'buses'" routerLinkActive="router-link-active" class="nav-link text-light">Bus</a></li>
               <li><a href="#" class="nav-link text-light">Credit card</a></li>
-              <li><a href="#" class="nav-link text-light">Driver</a></li>
+              <li><a [routerLink]="'drivers'" class="nav-link text-light">Driver</a></li>
               <li><a href="#" class="nav-link text-light">Feedback</a></li>
-              <li>
-                <a [routerLink]="'lines'" routerLinkActive="router-link-active" class="nav-link text-light">Line</a>
-              </li>
-              <li><a href="#" class="nav-link text-light">Manager</a></li>
+              <li><a [routerLink]="'lines'" routerLinkActive="router-link-active" class="nav-link text-light">Line</a></li>
+              <li><a [routerLink]="'managers'" class="nav-link text-light">Manager</a></li>
               <li><a href="#" class="nav-link text-light">Notification</a></li>
               <li>
                 <a href="#" class="nav-link text-light">Passenger credit card</a>
               </li>
-              <li><a href="#" class="nav-link text-light">Passenger</a></li>
+              <li><a [routerLink]="'passengers'" class="nav-link text-light">Passenger</a></li>
               <li><a [routerLink]="'routes'" routerLinkActive="router-link-active" class="nav-link text-light">Route</a></li>
               <li><a href="#" class="nav-link text-light">Schedule</a></li>
               <li><a href="#" class="nav-link text-light">Shift</a></li>
