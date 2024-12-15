@@ -5,7 +5,7 @@ namespace GPS.API.Data.Models
     [Table("Managers")]
     public class Manager : MyAppUser
     {
-        public required DateTime HireDate { get; set; }
+        public required DateOnly HireDate { get; set; }
         public required string Department { get; set; }
         public required string ManagerLevel { get; set; }
     }

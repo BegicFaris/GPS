@@ -8,7 +8,7 @@ namespace GPS.API.Data.Models
     {
         public required string License { get; set; }
         public required string DriversLicenseNumber { get; set; }
-        public required DateTime HireDate { get; set; }
+        public required DateOnly HireDate { get; set; }
         public float? WorkingHoursInAWeek { get; set; }
     }
 }
