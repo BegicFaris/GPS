@@ -54,7 +54,7 @@ export class LineViewComponent {
   openEditDialog(line: Line) {
     const dialogRef = this.dialog.open(LineEditComponent, {
       height: '800px',
-      width: '1000px', // Customize the width of the dialog
+      width: '1000px', 
       data: {
         id: line.id,
         name: line.name,
@@ -62,7 +62,9 @@ export class LineViewComponent {
         endingStationId: line.endingStationId,
         completeDistance: line.completeDistance,
         isActive: line.isActive,
-      }, // Pass the current data to the dialog
+      },
+      autoFocus: true,
+      restoreFocus: true, 
     });
     dialogRef.afterClosed().subscribe((result) => {
       this.loadLines();
