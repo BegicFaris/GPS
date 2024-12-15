@@ -33,9 +33,6 @@ export class LineEditComponent {
       this.lineService.updateLine(this.lineUpdate).subscribe({
         next: response => {
           console.log('Line update successfully', response);
-        },
-        error: error => {
-          console.error('Error deleting line', error);
         }
       });
       this.dialogRef.close(this.lineUpdate);

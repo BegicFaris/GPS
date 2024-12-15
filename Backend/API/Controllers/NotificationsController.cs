@@ -31,6 +31,7 @@ namespace GPS.API.Controllers
         {
             var notification = new Notification
             {
+                Description = notificationCreateDto.Description,
                 NotificationTypeId = notificationCreateDto.NotificationTypeId,
                 Duration = notificationCreateDto.Duration,
                 IsActive = notificationCreateDto.IsActive,
@@ -50,6 +51,9 @@ namespace GPS.API.Controllers
             var existingNotification = await _notificationService.GetNotificationByIdAsync(id);
             if (existingNotification == null) return NotFound($"Notification with Id:{id} not found!");
 
+
+            if(notificationUpdateDto.Description !=null)
+                existingNotification.Description = notificationUpdateDto.Description;
             if (notificationUpdateDto.NotificationTypeId != null)
                 existingNotification.NotificationTypeId = notificationUpdateDto.NotificationTypeId.Value;
             if (notificationUpdateDto.Duration != null)

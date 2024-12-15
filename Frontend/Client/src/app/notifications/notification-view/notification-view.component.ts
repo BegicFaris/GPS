@@ -25,7 +25,7 @@ export class NotificationViewComponent {
     this.titleService.setTitle("Notifications");
     this.loadNotifications();
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && event.url === '/notifications') {
+      if (event instanceof NavigationEnd && event.url === '/manager-dashboard/notifications') {
         this.loadNotifications();
       }
     });
@@ -59,6 +59,7 @@ export class NotificationViewComponent {
       width: '1000px',  
       data: {
         id:notification.id,
+        description:notification.description,
         notificationTypeId:notification.notificationTypeId,
         duration:notification.duration,
         date:notification.date,
@@ -75,7 +76,7 @@ export class NotificationViewComponent {
 
   }
   cancel() {
-    this.router.navigate(['/notifications']);
+    this.router.navigate(['/manager-dashboard/notifications']);
   }
 }
 

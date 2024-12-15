@@ -7,6 +7,7 @@ using GPS.API.Services.TokenServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
@@ -38,9 +39,9 @@ namespace GPS.API.Controllers
                 Address = dto.Address,
                 License = dto.License,
                 DriversLicenseNumber = dto.DriversLicenseNumber,
-                HireDate = DateTime.Now,
+                HireDate = DateOnly.FromDateTime(DateTime.Now),
                 WorkingHoursInAWeek = dto.WorkingHoursInAWeek,
-                TenantId= dto.TenantId
+                TenantId = dto.TenantId
             };
 
             _context.MyAppUsers.Add(user);
@@ -73,7 +74,7 @@ namespace GPS.API.Controllers
                 RegistrationDate = DateTime.Now,
                 Image = dto.Image,
                 Address = dto.Address,
-                HireDate = DateTime.Now,
+                HireDate = DateOnly.FromDateTime(DateTime.Now),
                 Department = dto.Department,
                 ManagerLevel = dto.ManagerLevel,
                 TenantId = dto.TenantId

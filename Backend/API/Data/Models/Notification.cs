@@ -8,6 +8,9 @@ namespace GPS.API.Data.Models
     {
         [Key]
         public int Id { get; set; }
+
+        public required string Description { get; set; }
+
         [ForeignKey(nameof(NotificationType))]
         public required int NotificationTypeId { get; set; }
         public NotificationType? NotificationType { get; set; }
