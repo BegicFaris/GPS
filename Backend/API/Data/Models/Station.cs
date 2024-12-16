@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using GPS.API.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace GPS.API.Data.Models
 {

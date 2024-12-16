@@ -1,7 +1,9 @@
+import { Zone } from "./zone"
+
 export interface Station{
     id:number,
     zoneId: number,
-    zone: any,
+    zone?: Zone,
     name: string,
     location: string
     gpsCode: boolean

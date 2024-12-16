@@ -8,7 +8,6 @@ namespace GPS.API.Data.Models
     {
         [ForeignKey(nameof(Discount))]
         public int? DiscountID { get; set; }
-        [JsonIgnore]
         public Discount? Discount { get; set; }
     }
 }

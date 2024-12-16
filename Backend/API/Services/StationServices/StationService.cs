@@ -13,9 +13,9 @@ namespace GPS.API.Services.StationServices
             _context = context;
         }
         public async Task<IEnumerable<Station>> GetAllStationsAsync() =>
-            await _context.Stations.ToListAsync();
+            await _context.Stations.Include(x => x.Zone).ToListAsync();
         public async Task<Station> GetStationByIdAsync(int id) =>
-          await _context.Stations.FindAsync(id);
+          await _context.Stations.Include(x => x.Zone).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<Station> CreateStationAsync(Station station)
         {
             _context.Stations.Add(station);
