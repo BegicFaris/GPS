@@ -23,7 +23,7 @@
       <td>{{ passenger.birthDate  | date:'dd.MM.yyyy'}}</td>
       <td>{{ passenger.address }}</td>
       <td>{{ passenger.registrationDate| date:'dd.MM.yyyy'}}</td>
-      <td>{{ passenger.discountID }}</td>
+      <td>{{ passenger.discount?.discountName }}</td>
       <td>
         <button
           type="button"

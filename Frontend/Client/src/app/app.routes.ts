@@ -28,6 +28,9 @@ import { DriverCreateComponent } from './drivers/driver-create/driver-create.com
 import { PassengerViewComponent } from './passengers/passenger-view/passenger-view.component';
 import { CreditCardViewComponent } from './creditCards/creditCard-view/creditCard-view.component';
 import { CreditCardCreateComponent } from './creditCards/creditCard-create/creditCard-create.component';
+import { StationViewComponent } from './stations/station-view/station-view.component';
+import { StationEditComponent } from './stations/station-edit/station-edit.component';
+import { StationCreateComponent } from './stations/station-create/station-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -63,6 +66,8 @@ export const routes: Routes = [
       { path: 'creditCards/add', component: CreditCardCreateComponent },
       { path: 'notifications', component: NotificationViewComponent },
       { path: 'notifications/add', component: NotificationCreateComponent },
+      { path: 'stations', component: StationViewComponent },
+      { path: 'stations/add', component:  StationCreateComponent},
     ],
   },
   {

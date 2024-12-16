@@ -22,6 +22,7 @@ using GPS.API.Services.UserServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using GPS.API.Services.ZoneServices;
 
 namespace GPS.API.Extensions
 {
@@ -93,7 +94,7 @@ namespace GPS.API.Extensions
             services.AddScoped<ICreditCardService, CreditCardService>();
             services.AddScoped<ITenantService, TenantService>();
             services.AddScoped<IDiscountService, DiscountService>();
-
+            services.AddScoped<IZoneService,ZoneService>();
             // Adding the scpoped service CurrentTenantService
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();

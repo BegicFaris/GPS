@@ -84,9 +84,9 @@ namespace GPS.API.Data.DbContexts
                 new Tenant { Id = "bugojno", Name = "Bugojno" }
                 );
             modelBuilder.Entity<Zone>().HasData(
-                new Zone { Id = 1, Name = "Zone one", Price = 1.5M },
-                new Zone { Id = 2, Name = "Zone two", Price = 2.1M },
-                new Zone { Id = 3, Name = "Zone three", Price = 2.7M }
+                new Zone { Id = 1, Name = "1", Price = 1.5M, TenantId="mostar"},
+                new Zone { Id = 2, Name = "2", Price = 2.1M, TenantId = "mostar" },
+                new Zone { Id = 3, Name = "3", Price = 2.7M, TenantId = "mostar" }
                 );
             modelBuilder.Entity<Bus>().HasData(
                 new Bus { Id = 1, Capacity = "20", Manufacturer = "MAN", ManufactureYear = "2002", Model = "MK2", RegistrationNumber = "12345678", TenantId = "mostar" },
