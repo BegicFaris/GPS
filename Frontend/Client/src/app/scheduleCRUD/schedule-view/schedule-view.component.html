@@ -1,0 +1,45 @@
+<button
+  [routerLink]="'/manager-dashboard/schedules/add'"
+  type="button"
+  class="btn btn-success"
+>
+  Add new schedule
+</button>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Line</th>
+      <th scope="col">Departure time</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (schedule of schedules; track $index) {
+    <tr>
+      <th scope="row">{{ $index + 1 }}</th>
+      <td>{{ schedule.line.name }}</td>
+      <td>{{ schedule.departureTime }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="openEditDialog(schedule)"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteSchedule(schedule.id)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
