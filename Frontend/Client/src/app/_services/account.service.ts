@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../_models/user';
-import { catchError, map } from 'rxjs';
+import { catchError, map, throwError } from 'rxjs';
 import { Manager } from '../_models/manager';
 
 @Injectable({
@@ -15,6 +15,7 @@ export class AccountService {
   currentUser = signal<User | null>(null);
 
   login(model: any){
+    console.log(model);
     return this.http.post<User>(this.baseUrl + 'account/login', model)
     .pipe(
       map(user => {
@@ -22,13 +23,33 @@ export class AccountService {
           localStorage.setItem('user',JSON.stringify(user));
           this.currentUser.set(user);
         }
-      })
+        return user;
+      }),
+      catchError(this.handleError)
     );
   }
-
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Invalid email or password';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network error
+      errorMessage = error.error.message;
+    } else {
+      // Backend error
+      if (error.status === 401) {
+        errorMessage = 'Invalid email or password';
+      } else if (error.status === 500) {
+        errorMessage = 'An internal server error occurred. Please try again later.';
+      }
+    }
+    return throwError(() => new Error(errorMessage));
+  }
   getUserRole(): string | null{
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user).role :null;
+  }
+  getUserEmail(): string{
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user).email :null;
   }
 
   register(model: any){

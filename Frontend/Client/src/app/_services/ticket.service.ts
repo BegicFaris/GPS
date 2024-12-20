@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Ticket } from '../_models/ticket';
-import { catchError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,13 @@ export class TicketService {
   getAllTickets() {
     return this.http.get<Ticket[]>(this.baseUrl);
   }
-
+  getTicketByEmail(email: string): Observable<any>{
+        return this.http.get(this.baseUrl + `/get/${email}`).pipe(
+          catchError(error => {
+            return (error);
+          })
+        );
+      }
   getTicket(id: number) {
     return this.http.get<Ticket>(this.baseUrl + `/${id}`).pipe(
       catchError(error => {
@@ -22,6 +28,10 @@ export class TicketService {
         return (error);
       })
     );
+  }
+  
+  getUserTickets(email: string): Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(`${this.baseUrl}/get/${email}`);
   }
 
   createTicket(ticket: any) {

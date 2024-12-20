@@ -6,6 +6,7 @@ namespace GPS.API.Interfaces
     {
         Task<IEnumerable<Ticket>> GetAllTicketsAsync();
         Task<Ticket> GetTicketByIdAsync(int id);
+        Task<List<Ticket>> GetAllTicketsForUserEmail(string email);
         Task<Ticket> CreateTicketAsync(Ticket ticket);
         Task<Ticket> UpdateTicketAsync(Ticket ticket);
         Task<bool> DeleteTicketAsync(int id);

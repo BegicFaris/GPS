@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { MyAppUserService } from '../_services/my-app-user.service';
+import { MyAppUser } from '../_models/my-app-user';
 
 @Component({
   selector: 'app-nav',
@@ -18,24 +20,57 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
 })
-export class NavComponent {
+export class NavComponent implements OnInit{
+  ngOnInit(): void {
+    this.userEmail();  // Get email after login
+        this.loadName();
+  }
+  
   showPassword: boolean = false;
   accountService = inject(AccountService);
+  myAppUserService = inject(MyAppUserService);
   private router = inject(Router);
   model: any = {};
-
+  user: any={};
+  email: string ="";
+  loginError: string = '';
+  isLoading: boolean = false;
+  
   get userRole(): string | null{
     return this.accountService.getUserRole();
+    
+  }
+  
+  loadName() {
+    this.myAppUserService.getMyAppUserByEmail(this.email).subscribe(
+      (data) => {
+        this.user = data; // or data.routes if it's nested
+      },
+    );
   }
 
+  userEmail(){
+    this.email = this.accountService.getUserEmail();
+  }
+  
   login() {
+    this.loginError = '';
+    this.isLoading = true;
     this.accountService.login(this.model).subscribe({
       next: (_) => {
+        this.userEmail();  // Get email after login
+        this.loadName();
         this.router.navigateByUrl('/home');
-        
+        this.isLoading = false;
       },
-      error: (error) => console.log(error),
+      error: (error) => {
+        console.error('Login error:', error);
+        this.loginError = error.message;
+        alert(this.loginError);
+        this.isLoading = false;
+      }
     });
+
   }
 
   logout() {

@@ -13,9 +13,20 @@ namespace GPS.API.Services.TicketServices
             _context = context;
         }
         public async Task<IEnumerable<Ticket>> GetAllTicketsAsync() =>
-            await _context.Tickets.Include(x => x.TicketType).Include(x => x.Line).Include(x => x.UserId).ToListAsync();
+            await _context.Tickets.Include(x => x.TicketType).Include(x => x.Line).Include(x => x.User).ToListAsync();
         public async Task<Ticket> GetTicketByIdAsync(int id) =>
-          await _context.Tickets.Include(x => x.TicketType).Include(x => x.Line).Include(x=>x.UserId).SingleOrDefaultAsync(x => x.Id == id);
+          await _context.Tickets.Include(x => x.TicketType).Include(x => x.Line).Include(x=>x.User).SingleOrDefaultAsync(x => x.Id == id);
+        public async Task<List<Ticket>> GetAllTicketsForUserEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException("Email cannot be null or empty", nameof(email));
+            }
+
+            return await _context.Tickets.Include(x => x.TicketType).Include(x => x.Line).Include(x => x.User).Include(x=>x.Zone)
+                .Where(t => t.User.Email == email)
+                .ToListAsync(); 
+        }
         public async Task<Ticket> CreateTicketAsync(Ticket ticket)
         {
             _context.Tickets.Add(ticket);

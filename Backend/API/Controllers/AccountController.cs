@@ -14,8 +14,7 @@ using System.Text;
 
 namespace GPS.API.Controllers
 {
-    
-    public class AccountController(ApplicationDbContext _context, ITokenService tokenService,ICurrentTenantService currentTenantService): MyControllerBase
+    public class AccountController(ApplicationDbContext _context, ITokenService tokenService, ICurrentTenantService currentTenantService): MyControllerBase
     {
         
         [HttpPost("register/driver")]
@@ -123,17 +122,18 @@ namespace GPS.API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto dto)
         {
+            try
+            {
             var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email.Equals(dto.Email)); //dodati provjeru
-            using var hmac = new HMACSHA512(user.PasswordSalt);
+                if (user == null)
+                    return Unauthorized("Invalid email or password");
+                using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
-            if (user == null)
-                return Unauthorized("Invalid email or password");
-
             for (int i = 0; i < computedHash.Length; i++)
             {
                 if (computedHash[i] != user.PasswordHash[i])
                 {
-                    return Unauthorized("Invalid password");
+                    return Unauthorized("Invalid email or password");
                 }
             }
             string role = user switch
@@ -151,6 +151,11 @@ namespace GPS.API.Controllers
                 Token = tokenService.CreateToken(user),
                 Role = role
             };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An internal server error occurred"+ex);
+            }
         }
     }
 }
