@@ -38,7 +38,7 @@ namespace GPS.API.Extensions
 
             services.AddDbContext<TenantDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("db1")));
-
+            services.AddHttpClient();
 
             services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -54,6 +54,7 @@
             [(ngModel)]="model.birthDate"
             #birthDate="ngModel"
             required
+            [max]="maxDate"
             placeholder="Birth Date"
           />
           <label>Birth Date</label>
@@ -165,9 +166,20 @@
       <label class="form-label">Upload Profile Image</label>
       <input type="file" class="form-control" (change)="onFileSelected($event)" #fileInput/>
     </div>
+    <div class="mb-3 d-flex justify-content-center">
+      <ngx-recaptcha2 
+      #captchaElem
+      [siteKey]="siteKey"
+      (success)="handleSuccess($event)"
+      (reset)="handleReset()"
+      (expire)="handleExpire()"
+      (load)="handleLoad()"
+      formControlName="recaptcha">
+    </ngx-recaptcha2>
+    </div>
   
-    <div class="form-group text-center">
-      <button class="btn btn-success me-2" type="submit">
+    <div class="form-group text-center mb-1">
+      <button class="btn btn-success me-2" type="submit" [disabled]="!registerForm.form.valid || !captchaResponse">
         Register
       </button>
       <button class="btn btn-default me-2" type="button" [routerLink]="'/home'">

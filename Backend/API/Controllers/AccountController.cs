@@ -3,20 +3,23 @@ using GPS.API.Data.Models;
 using GPS.API.Dtos;
 using GPS.API.Dtos.RegisterDtos;
 using GPS.API.Interfaces;
+using GPS.API.Services;
 using GPS.API.Services.TokenServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Data;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace GPS.API.Controllers
 {
-    public class AccountController(ApplicationDbContext _context, ITokenService tokenService, ICurrentTenantService currentTenantService): MyControllerBase
+    public class AccountController(ApplicationDbContext _context, ITokenService tokenService, ICurrentTenantService currentTenantService, IHttpClientFactory _httpClientFactory) : MyControllerBase
     {
-        
+
         [HttpPost("register/driver")]
         public async Task<ActionResult<UserDto>> RegisterDriver(RegisterDriverDto dto)
         {
@@ -88,6 +91,10 @@ namespace GPS.API.Controllers
         [HttpPost("register/passenger")]
         public async Task<ActionResult<UserDto>> RegisterPassenger(RegisterPassengerDto dto)
         {
+            if (!await VerifyCaptcha(dto.CaptchaResponse))
+            {
+                return BadRequest("CAPTCHA verification failed");
+            }
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
             var tenant= await _context.Tenants.Where(t=>t.Id==dto.TenantId).FirstOrDefaultAsync();
@@ -117,6 +124,27 @@ namespace GPS.API.Controllers
                 Token = tokenService.CreateToken(user),
                 Role = role
             };
+        }
+        private async Task<bool> VerifyCaptcha(string captchaResponse)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.PostAsync(
+                "https://www.google.com/recaptcha/api/siteverify",
+                new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("secret", "6LfSlaEqAAAAAJzr4xo8VNya1a7-JGP7PXqqgWp6"),
+                    new KeyValuePair<string, string>("response", captchaResponse)
+                })
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var jsonData = JObject.Parse(jsonString);
+                return jsonData.Value<bool>("success");
+            }
+
+            return false;
         }
 
         [HttpPost("login")]

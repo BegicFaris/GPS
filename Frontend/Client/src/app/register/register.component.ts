@@ -1,29 +1,14 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  inject,
-  OnDestroy,
-  OnInit,
-  output,
-  ViewChild,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  NgForm,
-  Validators,
-} from '@angular/forms';
-import { catchError, tap, throwError } from 'rxjs';
+import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import {AfterViewInit,Component,ElementRef,inject,OnDestroy,OnInit,output,ViewChild,} from '@angular/core';
+import {FormBuilder,FormGroup,FormsModule,NgForm,ReactiveFormsModule,Validators,} from '@angular/forms';
 import { TenantService } from '../_services/tenant.service';
 import { Tenant } from '../_models/tenant';
 import { AccountService } from '../_services/account.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { PasswordStrengthIndicatorComponent } from './password-strenght-indicator';
+import { NgxCaptchaModule,ReCaptcha2Component } from 'ngx-captcha';
 
 class UserComponent {
   password: string = '';
@@ -45,7 +30,10 @@ interface PasswordModel {
     FormsModule,
     CommonModule,
     RouterLink,
+    ReactiveFormsModule,
     PasswordStrengthIndicatorComponent,
+    NgxCaptchaModule
+
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
@@ -53,8 +41,11 @@ interface PasswordModel {
 export class RegisterComponent implements OnInit {
   @ViewChild('passwordInput') passwordInput!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('captchaElem') captchaElem: any;
+
 
   private accountService = inject(AccountService);
+
   cancelRegister = output<boolean>();
   registerForm: FormGroup;
 
@@ -82,6 +73,10 @@ export class RegisterComponent implements OnInit {
   hasNumber = false;
   hasSpecialChar = false;
   hasMinLength = false;
+  captchaResponse: string | null = null;
+  maxDate: string = new Date().toISOString().split('T')[0];
+
+  siteKey: string = '6LfSlaEqAAAAACLF8vRUOkumCmiEBrQrkAG6fQLb';
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
@@ -143,14 +138,17 @@ export class RegisterComponent implements OnInit {
   }
 
   register(registerForm: NgForm) {
-    if (registerForm.valid) {
-      this.accountService.register(this.model).subscribe({
+    console.log(this.registerForm);
+    if (registerForm.valid && this.captchaResponse) {
+      const formData = { ...this.model, captchaResponse: this.captchaResponse };
+      this.accountService.register(formData).subscribe({
         next: (response) => {
           console.log('Registration successful:', response);
           this.router.navigateByUrl('/home');
           this.cancel();
         },
         error: (error) => {
+          console.log(formData);
           console.error('Registration failed:', error);
           if (error.status === 400) {
             this.errorMessage =
@@ -162,10 +160,10 @@ export class RegisterComponent implements OnInit {
         },
       });
     } else {
-      Object.keys(registerForm.controls).forEach((field) => {
-        const control = registerForm.controls[field];
-        control.markAsTouched({ onlySelf: true });
-      });
+      this.registerForm.markAllAsTouched();
+      if (!this.captchaResponse) {
+        this.errorMessage = 'Please complete the CAPTCHA';
+      }
     }
   }
 
@@ -198,5 +196,22 @@ export class RegisterComponent implements OnInit {
     setTimeout(() => {
       this.showPasswordStrength = false;
     }, 200);
+  }
+
+  handleSuccess(captchaResponse: string): void {
+    this.captchaResponse = captchaResponse;
+  }
+
+  handleLoad(): void {
+    console.log('reCAPTCHA loaded');
+  }
+
+  handleExpire(): void {
+    this.captchaResponse = null;
+    console.log('reCAPTCHA expired');
+  }
+  handleReset(): void {
+    this.captchaResponse = null;
+    console.log('reCAPTCHA reset');
   }
 }

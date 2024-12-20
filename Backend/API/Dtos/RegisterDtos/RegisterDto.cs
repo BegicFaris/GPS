@@ -12,5 +12,6 @@ namespace GPS.API.Dtos.RegisterDtos
         public DateTime? RegistrationDate { get; set; }
         public byte[]? Image { get; set; }
         public string? Address { get; set; }
+
     }
 }
