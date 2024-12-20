@@ -23,7 +23,6 @@ import { AccountService } from '../_services/account.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import * as bootstrap from 'bootstrap';
 import { PasswordStrengthIndicatorComponent } from './password-strenght-indicator';
 
 class UserComponent {
