@@ -25,8 +25,20 @@ namespace GPS.API.Controllers
             if (ticket == null) return NotFound();
             return Ok(ticket);
         }
+        [HttpGet("get/{email}")]
+          public async Task<IActionResult> GetTicketsByEmail(string email)
+          {
+         
+                  var tickets = await _ticketService.GetAllTicketsForUserEmail(email);
 
-        [HttpPost]
+                  if (tickets == null || !tickets.Any())
+                  {
+                return NoContent();
+            }
+
+                  return Ok(tickets);
+       
+          }
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketCreateDto ticketCreateDto)
         {
