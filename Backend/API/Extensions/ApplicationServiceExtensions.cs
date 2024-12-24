@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using GPS.API.Services.ZoneServices;
+using GPS.API.Services.EmailServices;
+using GPS.API.Services.PasswordresetServices;
 
 namespace GPS.API.Extensions
 {
@@ -99,7 +101,8 @@ namespace GPS.API.Extensions
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddScoped<IPasswordResetService, PasswordResetService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }

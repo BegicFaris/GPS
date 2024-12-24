@@ -180,7 +180,6 @@ namespace GPS.API.Data.DbContexts
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                    case EntityState.Modified:
                         entry.Entity.TenantId = CurrentTenantID;
                         break;
 
