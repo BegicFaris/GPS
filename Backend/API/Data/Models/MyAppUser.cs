@@ -23,6 +23,8 @@ namespace GPS.API.Data.Models
         public string? Address { get; set; }
         public bool? Status { get; set; }
         public string? TenantId { get; set; }
+        public string? ResetCode { get; set; }
+        public DateTime? ResetCodeExpiration { get; set; }
     }
 
 }

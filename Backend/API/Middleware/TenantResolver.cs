@@ -1,5 +1,6 @@
 using Azure.Core;
 using GPS.API.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace GPS.API.Middleware
 {
@@ -26,9 +27,21 @@ namespace GPS.API.Middleware
             }
 
             // Extract the TenantId from the JWT token (from the claims)
+            string tenantId = "";
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var tenantId = context.User?.Claims?.FirstOrDefault(c => c.Type == "TenantId")?.Value;
+            if (!string.IsNullOrEmpty(token))
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
 
+                tenantId= jwtToken.Claims.FirstOrDefault(c => c.Type == "TenantId")?.Value;
+
+            }
+            else
+            {
+                tenantId = context.Request.Headers["Tenant"].FirstOrDefault();
+
+            }
             if (!string.IsNullOrEmpty(tenantId))
             {
                 try
