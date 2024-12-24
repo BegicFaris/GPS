@@ -1,28 +1,26 @@
 import { Component, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Routes } from '@angular/router';
+import { RouterLink, Routes } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
 import { GalleryComponent } from '../gallery/gallery.component';
-import { FaqsComponent } from '../FAQs/faqs.component';
+import { AboutUsComponent } from '../about-us/about-us.component';
 import { NewsComponent } from '../news/news.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { BuyTicketComponent } from '../buy-ticket/buy-ticket.component';
 
 @Component({
-  selector: 'app-about-us',
+  selector: 'app-news',
   standalone: true,
-  imports: [],
-  templateUrl: './about-us.component.html',
-  styleUrl: './about-us.component.css'
+  imports: [RouterLink],
+  templateUrl: './faqs.component.html',
+  styleUrl: './faqs.component.css'
 })
-export class AboutUsComponent {
+export class FaqsComponent {
   private titleService = inject(Title);
 
-
-
-  ngOnInit() {
-    this.titleService.setTitle("About us");
-
+  ngOnInit()
+  {
+    this.titleService.setTitle("FAQs");
   }
 
   routes: Routes = [

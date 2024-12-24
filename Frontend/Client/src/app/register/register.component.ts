@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { PasswordStrengthIndicatorComponent } from './password-strenght-indicator';
-import { NgxCaptchaModule,ReCaptcha2Component } from 'ngx-captcha';
+import { NgxCaptchaModule, ReCaptcha2Component } from 'ngx-captcha';
 
 class UserComponent {
   password: string = '';

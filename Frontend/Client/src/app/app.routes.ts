@@ -34,6 +34,7 @@ import { StationCreateComponent } from './stations/station-create/station-create
 import { ScheduleViewComponent } from './scheduleCRUD/schedule-view/schedule-view.component';
 import { ScheduleCreateComponent } from './scheduleCRUD/schedule-create/schedule-create.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FaqsComponent } from './FAQs/faqs.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -45,8 +46,10 @@ export const routes: Routes = [
   { path: 'buy-ticket', component: BuyTicketComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'news', component: NewsComponent },
   { path: 'profile', component: UserProfileComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'faqs', component: FaqsComponent },
   //{ path: 'lines', component: LineViewComponent },
   //{ path: 'lines/add', component: LineCreateComponent },
   { path: 'gallery', component: GalleryComponent },

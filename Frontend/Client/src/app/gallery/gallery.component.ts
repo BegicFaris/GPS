@@ -2,10 +2,20 @@ import { Component, ElementRef, HostListener, inject, OnInit, ViewChild } from '
 import { GalleryService } from '../_services/gallery.service';
 import { Gallery } from '../_models/gallery';
 import { AccountService } from '../_services/account.service';
-
+import { RouterLink, Routes } from '@angular/router';
+import { HomeComponent } from '../home/home.component';
+import { BuyTicketComponent } from '../buy-ticket/buy-ticket.component';
+import { AboutUsComponent } from '../about-us/about-us.component';
+import { FaqsComponent } from '../FAQs/faqs.component';
+import { NewsComponent } from '../news/news.component';
+import { ScheduleComponent } from '../schedule/schedule.component';
 
 @Component({
     selector: 'app-gallery',
+    standalone: true,
+    imports: [
+        RouterLink
+    ],
     templateUrl: './gallery.component.html',
     styleUrls: ['./gallery.component.css']
 })
@@ -129,4 +139,14 @@ export class GalleryComponent implements OnInit {
             this.getPhotos();
         });
     }
+
+    routes: Routes = [
+            { path: 'home', component: HomeComponent },
+            { path: 'news', component: NewsComponent },
+            { path: 'schedule', component: ScheduleComponent },
+            { path: 'gallery', component: GalleryComponent },
+            { path: 'tickets', component: BuyTicketComponent },
+            { path: 'aboutUs', component: AboutUsComponent },
+            { path: 'faqs', component: FaqsComponent },
+          ];
 }
