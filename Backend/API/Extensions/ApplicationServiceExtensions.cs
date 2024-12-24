@@ -25,6 +25,7 @@ using Microsoft.OpenApi.Models;
 using GPS.API.Services.ZoneServices;
 using GPS.API.Services.EmailServices;
 using GPS.API.Services.PasswordresetServices;
+using GPS.API.Services;
 
 namespace GPS.API.Extensions
 {
@@ -97,6 +98,7 @@ namespace GPS.API.Extensions
             services.AddScoped<ITenantService, TenantService>();
             services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IZoneService,ZoneService>();
+            services.AddScoped<IGalleryService, GalleryService>();
             // Adding the scpoped service CurrentTenantService
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();

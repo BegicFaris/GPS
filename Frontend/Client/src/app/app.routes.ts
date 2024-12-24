@@ -47,6 +47,9 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'profile', component: UserProfileComponent },
   { path: 'register', component: RegisterComponent },
+  //{ path: 'lines', component: LineViewComponent },
+  //{ path: 'lines/add', component: LineCreateComponent },
+  { path: 'gallery', component: GalleryComponent },
 
   
   {
