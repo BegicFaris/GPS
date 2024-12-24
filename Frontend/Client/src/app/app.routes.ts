@@ -49,6 +49,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   //{ path: 'lines', component: LineViewComponent },
   //{ path: 'lines/add', component: LineCreateComponent },
+  { path: 'gallery', component: GalleryComponent },
   {
     path: 'manager-dashboard',
     component: ManagerDashboardComponent,
