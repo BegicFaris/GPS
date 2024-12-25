@@ -9,7 +9,7 @@ import { ScheduleComponent } from '../schedule/schedule.component';
 import { BuyTicketComponent } from '../buy-ticket/buy-ticket.component';
 
 @Component({
-  selector: 'app-news',
+  selector: 'app-faqs',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './faqs.component.html',
