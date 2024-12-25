@@ -25,6 +25,9 @@ namespace GPS.API.Data.Models
         public string? TenantId { get; set; }
         public string? ResetCode { get; set; }
         public DateTime? ResetCodeExpiration { get; set; }
+        public bool TwoFactorEnabled { get; set; }
+        public string? TwoFactorCode { get; set; }
+        public DateTime? TwoFactorCodeExpiry { get; set; }
     }
 
 }

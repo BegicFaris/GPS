@@ -1,5 +1,6 @@
 ﻿// PasswordResetController.cs
 using GPS.API.Controllers;
+using GPS.API.Dtos.PasswordResetDtos;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,10 +15,6 @@ public class PasswordResetController : MyControllerBase
         _passwordResetService = passwordResetService;
     }
 
-    public class emailDto
-    {
-        public string email { get; set; }
-    }
 
     [HttpPost("send-code")]
     public async Task<IActionResult> SendResetCode(emailDto e)
@@ -27,29 +24,16 @@ public class PasswordResetController : MyControllerBase
     }
 
     [HttpPost("verify-code")]
-    public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeRequest request)
+    public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeRequestDto request)
     {
         var isValid = await _passwordResetService.VerifyResetCode(request.Email, request.Code);
         return isValid ? Ok() : BadRequest("Invalid code");
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
     {
         var success = await _passwordResetService.ResetPassword(request.Email, request.Code, request.NewPassword);
         return success ? Ok() : BadRequest("Unable to reset password");
     }
-}
-
-public class VerifyCodeRequest
-{
-    public string Email { get; set; }
-    public string Code { get; set; }
-}
-
-public class ResetPasswordRequest
-{
-    public string Email { get; set; }
-    public string Code { get; set; }
-    public string NewPassword { get; set; }
 }

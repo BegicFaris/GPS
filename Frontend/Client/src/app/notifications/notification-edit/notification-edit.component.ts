@@ -17,7 +17,7 @@ import { FormsModule, NgForm } from '@angular/forms';
   styleUrl: './notification-edit.component.css'
 })
 export class NotificationEditComponent {
-  constructor(public dialogRef: MatDialogRef<NotificationEditComponent>, @Inject(MAT_DIALOG_DATA) public notificationUpdate:
+  constructor(public dialogRef: MatDialogRef<LineEditComponent>, @Inject(MAT_DIALOG_DATA) public notificationUpdate:
     {
       id: number,
       description: string,

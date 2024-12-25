@@ -26,6 +26,7 @@ using GPS.API.Services.ZoneServices;
 using GPS.API.Services.EmailServices;
 using GPS.API.Services.PasswordresetServices;
 using GPS.API.Services;
+using GPS.API.Services.TwoFactorAuthServices;
 
 namespace GPS.API.Extensions
 {
@@ -75,6 +76,7 @@ namespace GPS.API.Extensions
                      }
                 });
             });
+
             services.AddHttpContextAccessor();
 
 
@@ -105,6 +107,7 @@ namespace GPS.API.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPasswordResetService, PasswordResetService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITwoFactorAuthService, TwoFactorAuthService>();
 
             return services;
         }

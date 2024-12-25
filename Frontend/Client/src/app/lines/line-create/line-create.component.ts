@@ -19,7 +19,6 @@ export class LineCreateComponent {
   private stationService = inject(StationService);
   private titleService = inject(Title);
   stations: Station[] = [];
-  lineCreate: any = {};
 
 
 
@@ -28,6 +27,7 @@ export class LineCreateComponent {
     this.titleService.setTitle('Add line');
     this.loadStations();
   }
+  lineCreate: any = {};
   addNewLine(newLineForm: NgForm) {
 
     if (newLineForm.valid) {

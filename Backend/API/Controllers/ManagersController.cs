@@ -4,6 +4,7 @@ using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using GPS.API.Dtos.RouteDtos;
 using GPS.API.Services.RouteServices;
+using GPS.API.Dtos.LineDtos;
 
 namespace GPS.API.Controllers
 {
@@ -82,7 +83,7 @@ namespace GPS.API.Controllers
             if (manager.ManagerLevel != null)
                 existingManager.ManagerLevel = manager.ManagerLevel;
 
-
+            existingManager.TwoFactorEnabled = manager.TwoFactorEnabled;
             var updatedManager = await _managerService.UpdateManagerAsync(existingManager);
             if (updatedManager == null)
                 return NotFound();
