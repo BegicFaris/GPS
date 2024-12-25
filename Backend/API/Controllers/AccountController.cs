@@ -17,7 +17,7 @@ using System.Text;
 
 namespace GPS.API.Controllers
 {
-    public class AccountController(ApplicationDbContext _context, ITokenService tokenService, ICurrentTenantService currentTenantService, IHttpClientFactory _httpClientFactory) : MyControllerBase
+    public class AccountController(ApplicationDbContext _context, ITokenService tokenService, ICurrentTenantService currentTenantService, IHttpClientFactory _httpClientFactory, ITwoFactorAuthService _twoFactorAuthService) : MyControllerBase
     {
 
         [HttpPost("register/driver")]

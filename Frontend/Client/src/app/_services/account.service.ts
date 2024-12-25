@@ -1,8 +1,12 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../_models/user';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Manager } from '../_models/manager';
+
+interface TwoFAStatus {
+  twoFactorStatus: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +32,10 @@ export class AccountService {
       catchError(this.handleError)
     );
   }
+
+
   private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Invalid email or password';
+    let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Client-side or network error
       errorMessage = error.error.message;
@@ -43,6 +49,29 @@ export class AccountService {
     }
     return throwError(() => new Error(errorMessage));
   }
+
+  
+
+  get2FAStatus(email: string): Observable<TwoFAStatus> {
+    return this.http.get<TwoFAStatus>(`${this.baseUrl}twofactorauth/get-2fa-status`, {
+      params: new HttpParams().set('email', email),
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  sendResetCode(email: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}twofactorauth/send-code`, { email }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  verifyCode(email: string, code: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}twofactorauth/verify-code`, { email, code }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
   getUserRole(): string | null{
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user).role :null;

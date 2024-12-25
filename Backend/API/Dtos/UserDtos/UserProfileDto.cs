@@ -13,7 +13,7 @@ namespace GPS.API.Dtos.UserDtos
         public string? Address { get; set; }
         public bool? Status { get; set; }
         public string UserType { get; set; }
-
+        public bool TwoFactorEnabled { get; set; }
         // Additional properties based on user type
         public DateOnly? HireDate { get; set; }
         public string? Department { get; set; }

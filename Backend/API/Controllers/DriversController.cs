@@ -78,6 +78,8 @@ namespace GPS.API.Controllers
             if (driver.WorkingHoursInAWeek.HasValue)
                 existingDriver.WorkingHoursInAWeek = driver.WorkingHoursInAWeek;
 
+            existingDriver.TwoFactorEnabled = driver.TwoFactorEnabled;
+
             var updatedDriver = await _driverService.UpdateDriverAsync(existingDriver);
             if (updatedDriver == null)
                 return NotFound();

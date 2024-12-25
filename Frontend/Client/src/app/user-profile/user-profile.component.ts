@@ -70,7 +70,8 @@ export class UserProfileComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email], [this.emailExistsValidator()]],
       birthDate: ['', Validators.required],
-      address: ['', Validators.required]
+      address: ['', Validators.required],
+      twoFactorEnabled: [false],
     });
   }
 
@@ -95,7 +96,6 @@ export class UserProfileComponent implements OnInit {
       this.userService.getMyAppUserByEmail(email).subscribe({
         next: (user) => {
           this.userProfile = user;
-
           console.log(user);
           console.log(this.userProfile)
           this.userType = this.getUserType(user); 
@@ -147,7 +147,8 @@ export class UserProfileComponent implements OnInit {
       lastName: this.userProfile.lastName,
       email: this.userProfile.email,
       birthDate: this.userProfile.birthDate,
-      address: this.userProfile.address
+      address: this.userProfile.address,
+      twoFactorEnabled: this.userProfile.twoFactorEnabled,
     });
   }
 
@@ -200,8 +201,7 @@ export class UserProfileComponent implements OnInit {
           id: this.userProfile.id,
           registrationDate: this.userProfile.registrationDate,
           status: this.userProfile.status,
-          tenantId: this.userProfile.tenantId
-          
+          tenantId: this.userProfile.tenantId,
         };
         if (this.userProfile.image instanceof Uint8Array) {
           updatedUser.image = btoa(String.fromCharCode.apply(null, this.userProfile.image));
@@ -217,7 +217,7 @@ export class UserProfileComponent implements OnInit {
           }
         }
         if(this.userType==="Passenger"){
-          this.passengerService.updatePassenger( updatedUser).subscribe({
+          this.passengerService.updatePassenger(updatedUser).subscribe({
             next: () => {
               console.log('Profile updated successfully');
               const userData = localStorage.getItem('user');
@@ -334,4 +334,5 @@ export class UserProfileComponent implements OnInit {
     return '';
   }
   
+
 }

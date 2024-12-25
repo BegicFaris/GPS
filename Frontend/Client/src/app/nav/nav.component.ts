@@ -5,7 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MyAppUserService } from '../_services/my-app-user.service';
+import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { MyAppUser } from '../_models/my-app-user';
+
 
 @Component({
   selector: 'app-nav',
@@ -21,25 +24,30 @@ import { MyAppUser } from '../_models/my-app-user';
   styleUrl: './nav.component.css',
 })
 export class NavComponent implements OnInit{
-  ngOnInit(): void {
-    this.userEmail();  // Get email after login
-        this.loadName();
-  }
-  
   showPassword: boolean = false;
   accountService = inject(AccountService);
   myAppUserService = inject(MyAppUserService);
-  private router = inject(Router);
+  router = inject(Router);
   model: any = {};
   user: any={};
   email: string ="";
   loginError: string = '';
   isLoading: boolean = false;
-  
+  showTwoFactorInput: boolean = false;
+  twoFactorCode: string = '';
+  codeVerified: boolean = false;
+  codeError: string = '';
+  invalidCode: boolean = false;
+  ngOnInit(): void {
+    this.userEmail();  // Get email after login
+        this.loadName();
+  }
+
   get userRole(): string | null{
     return this.accountService.getUserRole();
     
   }
+
   
   loadName() {
     this.myAppUserService.getMyAppUserByEmail(this.email).subscribe(
@@ -56,23 +64,70 @@ export class NavComponent implements OnInit{
   login() {
     this.loginError = '';
     this.isLoading = true;
+    this.accountService.get2FAStatus(this.model.email).subscribe({
+      next: (status) => {
+        if (status.twoFactorStatus) {
+          this.showTwoFactorInput = true; // Show input for the 2FA code
+    
+          // Send 2FA code to user's email
+          this.accountService.sendResetCode(this.model.email).subscribe({
+            next: () => {
+              console.log('2FA code sent successfully');
+              this.isLoading = false;
+            },
+            error: (error) => {
+              console.error('Error sending 2FA code:', error);
+              this.loginError = 'Failed to send the 2FA code. Please try again.';
+            },
+          });
+        } else {
+          // Log in directly if 2FA is not enabled
+          this.performLogin();
+        }
+      },
+      error: (error) => {
+        console.error('Error checking 2FA status:', error);
+        this.loginError = 'An error occurred while checking 2FA status. Please try again.';
+      },
+    });
+    
+  }
+  verifyTwoFactorCode(code: string) {
+    this.accountService.verifyCode(this.model.email, code).subscribe({
+      next: (response) => {
+        console.log('2FA verification successful:', response);
+        this.twoFactorCode='';
+        this.performLogin();
+      },
+      error: (error) => {
+        console.error('Error verifying 2FA code:', error);
+        this.loginError = 'Invalid 2FA code. Please try again.';
+        this.invalidCode = true;
+        this.twoFactorCode = ''; // Clear the input
+        this.isLoading = false;
+      },
+    });
+  }
+  closePopup() {
+    this.invalidCode = false;
+  }
+  
+  private performLogin() {
     this.accountService.login(this.model).subscribe({
       next: (_) => {
-        this.userEmail();  // Get email after login
+        this.userEmail();
         this.loadName();
         this.router.navigateByUrl('/home');
         this.isLoading = false;
+        this.showTwoFactorInput = false;
       },
       error: (error) => {
         console.error('Login error:', error);
         this.loginError = error.message;
-        alert(this.loginError);
         this.isLoading = false;
       }
     });
-
   }
-
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');

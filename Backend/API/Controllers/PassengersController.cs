@@ -72,6 +72,7 @@ namespace GPS.API.Controllers
             if (passenger.DiscountID != null)
                 existingPassenger.DiscountID = passenger.DiscountID;
 
+                existingPassenger.TwoFactorEnabled = passenger.TwoFactorEnabled;
 
 
 
