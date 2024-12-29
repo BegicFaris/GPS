@@ -30,6 +30,7 @@ namespace GPS.API.Data.DbContexts
         public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Discount> Discounts { get; set; }
+        public DbSet<FavoriteLine> FavoriteLines { get; set; }
         public DbSet<Passenger> Passengers { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Driver> Drivers { get; set; }
@@ -65,6 +66,7 @@ namespace GPS.API.Data.DbContexts
             modelBuilder.Entity<Bus>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<CreditCard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Discount>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<FavoriteLine>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Feedback>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Line>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Notification>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
