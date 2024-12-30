@@ -5,12 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from '../register/register.component';
 import { RouterLink, Routes } from '@angular/router';
 import { AccountService } from '../_services/account.service';
-import { NewsComponent } from '../news/news.component';
-import { ScheduleComponent } from '../schedule/schedule.component';
-import { GalleryComponent } from '../gallery/gallery.component';
-import { BuyTicketComponent } from '../buy-ticket/buy-ticket.component';
-import { AboutUsComponent } from '../about-us/about-us.component';
-import { FaqsComponent } from '../FAQs/faqs.component';
 
 interface Station {
   id: string;
@@ -144,16 +138,6 @@ export class HomeComponent implements OnInit{
       this.renderer.removeClass(document.body, 'overlay-active');
     }
   }
-
-    routes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'news', component: NewsComponent },
-    { path: 'schedule', component: ScheduleComponent },
-    { path: 'gallery', component: GalleryComponent },
-    { path: 'tickets', component: BuyTicketComponent },
-    { path: 'aboutUs', component: AboutUsComponent },
-    { path: 'faqs', component: FaqsComponent },
-  ];
   
 
 }

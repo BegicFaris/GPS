@@ -5,13 +5,21 @@ import { RouterOutlet } from '@angular/router';
 import { AccountService } from './_services/account.service';
 import { NavComponent } from './nav/nav.component';
 import { AuthInterceptor } from './_services/auth-interceptor.service';
-
+import { FooterComponent } from "./footer/footer.component";
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { GalleryComponent } from './gallery/gallery.component';
+import { FaqsComponent } from './FAQs/faqs.component';
+import { NewsComponent } from './news/news.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { BuyTicketComponent } from './buy-ticket/buy-ticket.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NavComponent, RouterOutlet],
+  imports: [NavComponent, RouterOutlet, FooterComponent, RouterModule],
 
   providers: [
 ],
@@ -32,5 +40,15 @@ export class AppComponent implements OnInit{
     const user = JSON.parse(userString);
     this.accountService.currentUser.set(user);
   }
+
+  routes: Routes = [
+        { path: 'home', component: HomeComponent },
+        { path: 'news', component: NewsComponent },
+        { path: 'schedule', component: ScheduleComponent },
+        { path: 'gallery', component: GalleryComponent },
+        { path: 'tickets', component: BuyTicketComponent },
+        { path: 'aboutUs', component: AboutUsComponent },
+        { path: 'faqs', component: FaqsComponent },
+      ];
 
 }

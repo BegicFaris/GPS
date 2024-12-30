@@ -27,6 +27,7 @@ using GPS.API.Services.EmailServices;
 using GPS.API.Services.PasswordresetServices;
 using GPS.API.Services;
 using GPS.API.Services.TwoFactorAuthServices;
+using GPS.API.Services.FavoriteLineService;
 using GPS.API.Services.TicketInfoServices;
 using GPS.API.Services.TicketTypeServices;
 using GPS.API.Services.StripeServices;
@@ -102,6 +103,7 @@ namespace GPS.API.Extensions
             services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IZoneService,ZoneService>();
             services.AddScoped<IGalleryService, GalleryService>();
+            services.AddScoped<IFavoriteLineService,FavoriteLineService>();
             // Adding the scpoped service CurrentTenantService
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();
