@@ -1,0 +1,13 @@
+
+.bi {
+  font-size: 1.25rem;
+}
+.d-flex {
+  cursor: pointer;
+}
+.container {
+  padding-top: 20px;
+  margin-left: 10%;  /* Move the content to the left */
+  max-width: 350px;  /* Adjust the width to make it shorter */
+  width: 100%;       /* Allow it to be responsive */
+}
