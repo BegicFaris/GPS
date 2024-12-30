@@ -41,7 +41,6 @@ styles: [
       padding: 20px;
       font-family: 'Arial', sans-serif;
       animation: fadeIn 0.5s ease-in-out;
-      overflow: hidden;
       border-radius: 15px;
     }
     .dialog-icon {
@@ -73,7 +72,7 @@ styles: [
       text-align: center;
     }
     mat-dialog-content p {
-      font-size: 16px;
+      font-size: 10px;
       margin-bottom: 20px;
       word-wrap: break-word;
     }
@@ -130,6 +129,9 @@ styles: [
       text-align: center !important;
       overflow: hidden !important;
     }
+    ::ng-deep .mat-mdc-dialog-content {
+  max-height: unset !important;
+}
     `,
   ],
 })
