@@ -119,7 +119,7 @@ export class UserProfileComponent implements OnInit {
           this.tickets = tickets.map(ticket => ({
             ...ticket,
             qrCode: ticket.qrCode ? this.decodeQrCode(ticket.qrCode) : null
-          }));
+          })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
           this.hasTickets = true;
           } else {
             this.tickets = [];

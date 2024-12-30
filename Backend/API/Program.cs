@@ -28,6 +28,7 @@ builder.Services.AddApplicationServices(config);
 //Identiteti
 builder.Services.AddIdentityServices(config);
 
+
 var app = builder.Build();
 
 

@@ -11,15 +11,8 @@ namespace GPS.API.Data.Models
         [ForeignKey(nameof(MyAppUser))]
         public required int UserId { get; set; }
         public MyAppUser? User { get; set; }
-        [ForeignKey(nameof(Line))]
-        public required int LineId { get; set; }
-        public Line? Line { get; set; }
-        [ForeignKey(nameof(Zone))]
-        public required int ZoneId { get; set; }
-        public Zone? Zone { get; set; }
-        [ForeignKey(nameof(TicketType))]
-        public required int TicketTypeId { get; set; }
-        public TicketType? TicketType { get; set; }
+        public required int TicketInfoId { get; set; }
+        public TicketInfo? TicketInfo { get; set; }
         public required DateTime CreatedDate { get; set; }
         public required DateTime ExpirationDate { get; set; }
         public required byte[] QrCode { get; set; }

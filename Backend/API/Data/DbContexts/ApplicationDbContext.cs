@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using GPS.API.Services.TenantServices;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore.Internal;
 
 
 namespace GPS.API.Data.DbContexts
@@ -44,6 +45,7 @@ namespace GPS.API.Data.DbContexts
         public DbSet<SystemActionLog> SystemActionsLog { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<Gallery> Galleries { get; set; }
+        public DbSet<TicketInfo> TicketInfos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -77,6 +79,7 @@ namespace GPS.API.Data.DbContexts
             modelBuilder.Entity<Ticket>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<TicketType>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Zone>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<TicketInfo>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
 
 
             //Adding test data to the DB
@@ -86,9 +89,10 @@ namespace GPS.API.Data.DbContexts
                 new Tenant { Id = "bugojno", Name = "Bugojno" }
                 );
             modelBuilder.Entity<Zone>().HasData(
-                new Zone { Id = 1, Name = "1", Price = 1.5M, TenantId = "mostar" },
-                new Zone { Id = 2, Name = "2", Price = 2.1M, TenantId = "mostar" },
-                new Zone { Id = 3, Name = "3", Price = 2.7M, TenantId = "mostar" }
+                new Zone { Id = 1, Name = "Zone 1", TenantId = "mostar" },
+                new Zone { Id = 2, Name = "Zone 2", TenantId = "mostar" },
+                new Zone { Id = 3, Name = "Zone 3", TenantId = "mostar" }
+
                 );
             modelBuilder.Entity<Bus>().HasData(
                 new Bus { Id = 1, Capacity = "20", Manufacturer = "MAN", ManufactureYear = "2002", Model = "MK2", RegistrationNumber = "12345678", TenantId = "mostar" },
@@ -150,12 +154,20 @@ namespace GPS.API.Data.DbContexts
                 new Shift { Id = 2, BusId = 2, DriverId = 2, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0), TenantId = "mostar" }
                 );
             modelBuilder.Entity<TicketType>().HasData(
-                new TicketType { Id = 1, Name = "Basic", TenantId = "mostar" },
-                new TicketType { Id = 2, Name = "Advanced", TenantId = "mostar" }
+                new TicketType { Id = 1, Name = "Single", TenantId = "mostar" },
+                new TicketType { Id = 2, Name = "Monthly", TenantId = "mostar" }
+                );
+            modelBuilder.Entity<TicketInfo>().HasData(
+                new TicketInfo { Id = 1, Price = 1.5M, ZoneId = 1, TicketTypeId = 1, TenantId = "mostar" },
+                new TicketInfo { Id = 2, Price = 2.1M, ZoneId = 2, TicketTypeId = 1, TenantId = "mostar" },
+                new TicketInfo { Id = 3, Price = 2.9M, ZoneId = 3, TicketTypeId = 1, TenantId = "mostar" },
+                new TicketInfo { Id = 4, Price = 50.0M, ZoneId = 1, TicketTypeId = 2, TenantId = "mostar" },
+                new TicketInfo { Id = 5, Price = 75.0M, ZoneId = 2, TicketTypeId = 2, TenantId = "mostar" },
+                new TicketInfo { Id = 6, Price = 95.0M, ZoneId = 3, TicketTypeId = 2, TenantId = "mostar" }
                 );
             modelBuilder.Entity<Ticket>().HasData(
-                new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 1, QrCode = ticketQrCode, TicketTypeId = 1, UserId = 2, ZoneId = 1, TenantId = "mostar" },
-                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), LineId = 2, QrCode = ticketQrCode, TicketTypeId = 2, UserId = 1, ZoneId = 1, TenantId = "mostar" }
+                new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2),TicketInfoId=1, QrCode = ticketQrCode, UserId = 2, TenantId = "mostar" },
+                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2),TicketInfoId = 2,QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" }
                 );
 
             modelBuilder.Entity<Gallery>().HasData(
