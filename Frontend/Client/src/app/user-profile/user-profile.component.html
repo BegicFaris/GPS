@@ -123,11 +123,12 @@
         <h5>Ticket History</h5>
       </div>
       <div class="card-body">
+      <div class="table-responsive">
         @if(hasTickets){
-        <table class="table table-bordered table-hover">
+          <div class="ticket-table-wrapper">
+        <table class="table table-hover">
           <thead>
             <tr>
-              <th>Line</th>
               <th>Zone</th>
               <th>Type</th>
               <th>Created</th>
@@ -137,9 +138,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let ticket of tickets">
-              <td>{{ticket.line?.name}}</td>
-              <td>{{ticket.zone?.name}}</td>
-              <td>{{ticket.ticketType?.name}}</td>
+              <td>{{ticket.ticketInfo.zone.name}}</td>
+              <td>{{ticket.ticketInfo.ticketType.name}}</td>
               <td>{{ticket.createdDate | date}}</td>
               <td>{{ticket.expirationDate | date}}</td>
               <td>
@@ -150,7 +150,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
         }
+      </div>
         @if(!hasTickets){
           <div  class="text-center mt-4 no-tickets-message">
             <p>No tickets jet</p>

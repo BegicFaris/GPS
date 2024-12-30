@@ -1,15 +1,14 @@
-import { Line } from "./line";
-import { MyAppUser } from "./my-app-user";
-import { TicketType } from "./ticket-type";
-import { Zone } from "./zone";
+import { Line } from './line';
+import { MyAppUser } from './my-app-user';
+import { TicketInfo } from './ticket-info';
+import { TicketType } from './ticket-type';
+import { Zone } from './zone';
 
 export interface Ticket {
-    id: number;
+  id: number;
   userId: number;
-  lineId: number;
-  zoneId: number;
-  zone: Zone;
-  ticketTypeId: number;
+  ticketInfoId: number;
+  ticketInfo: TicketInfo;
   createdDate: string;
   expirationDate: string;
   qrCode: string;
