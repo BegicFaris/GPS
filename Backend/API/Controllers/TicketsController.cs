@@ -32,20 +32,31 @@ namespace GPS.API.Controllers
             if (ticket == null) return NotFound();
             return Ok(ticket);
         }
+
+
+
         [HttpGet("get/{email}")]
         public async Task<IActionResult> GetTicketsByEmail(string email)
         {
-
             var tickets = await _ticketService.GetAllTicketsForUserEmail(email);
-
             if (tickets == null || !tickets.Any())
             {
                 return NoContent();
             }
-
             return Ok(tickets);
-
         }
+        [HttpGet("get/{email}/paginated")]
+        public async Task<IActionResult> GetTicketsByEmailPaginated(string email, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
+        {
+            var result = await _ticketService.GetUserTicketsPaginatedAsync(email, pageNumber, pageSize);
+            if (result == null)
+            {
+                return NoContent();
+            }
+            return Ok(result);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketCreateDto ticketCreateDto)
         {
