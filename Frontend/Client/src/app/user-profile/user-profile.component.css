@@ -3,3 +3,29 @@
     font-weight: bold;
     color: #999;
   }
+
+  .ticket-table-wrapper {
+    max-height: 250px; /* Adjust height to fit your rows */
+    overflow-y: auto;
+    border: 1px solid #ddd; /* Optional: Add a border to the scrolling container */
+  }
+  
+  .ticket-table-wrapper thead th {
+    position: sticky;
+    top: 0;
+    background-color: #ffffff; /* Ensure the header has a solid background */
+    z-index: 10; /* Ensure the header stays above other content */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow to separate the header */
+    text-align: center; /* Center-align header text */
+  }
+  
+  .ticket-table-wrapper tbody tr:hover {
+    background-color: #f1f1f1; /* Optional: Add hover effect */
+  }
+  .ticket-table-wrapper tbody td {
+    text-align: center;
+  }
+
+  table {
+    border-collapse: collapse;
+  }

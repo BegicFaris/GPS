@@ -8,7 +8,6 @@ namespace GPS.API.Data.Models
         [Key]
         public int Id { get; set; }
         public required string Name { get; set; }
-        public decimal Price { get; set; }
         public string? TenantId { get; set; }
     }
 }

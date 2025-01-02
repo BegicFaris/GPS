@@ -1,5 +1,75 @@
-<p>buy-ticket works!</p>
+<header class="wizard-header">
+  <div class="header-content">
+    <i class="fa fa-bus" aria-hidden="true"></i>
+  </div>
+  <div class="header-image">
+    <img src="buy-hub.jpg" alt="Concert Hall" class="background-image">
+  </div>
+  <div class="header-text">
+    <p class="header-description">Experience the magic of live events</p>
+    <p class="header-cta">Book your tickets now and create unforgettable memories!</p>
+  </div>
+</header>
+<div class="ticket-wizard">
+  <h1 class="wizard-title">Ticket Wizard</h1>
+  <p class="wizard-subtitle">Complete your ticket booking in just 3 steps!</p>
+  <div class="progress-indicator">
+    <div class="step-indicator" [class.active]="currentStep >= 1">
+      <span class="step-number">1</span>
+      <span class="step-label">Ticket Type</span>
+    </div>
+    <div class="step-indicator" [class.active]="currentStep >= 2">
+      <span class="step-number">2</span>
+      <span class="step-label">Select Zone</span>
+    </div>
+    <div class="step-indicator" [class.active]="currentStep === 3">
+      <span class="step-number">3</span>
+      <span class="step-label">Payment</span>
+    </div>
+  </div>
+  <!-- Step 1: Select Ticket Type -->
+  <div *ngIf="currentStep === 1" class="step">
+    <h2 class="step-title">
+      <i class="fa fa-ticket icon" aria-hidden="true"></i>
+      Select Ticket Type
+    </h2>
+    <div class="card-container">
+      <div *ngFor="let type of ticketTypes" class="card" (click)="selectTicketType(type)">
+        <i class="fa fa-ticket card-icon"></i>
+        <h3 class="card-title">{{ type.name }}</h3>
+      </div>
+    </div>
+  </div>
 
-<div class="app-container">
-  <app-footer></app-footer>
+  <!-- Step 2: Select Zone -->
+  <div *ngIf="currentStep === 2" class="step">
+    <h2 class="step-title">
+      <i class="fa fa-map-marker icon"></i>
+      Select Zone
+    </h2>
+    <div class="card-container">
+      <div *ngFor="let info of ticketInfos" class="card" (click)="selectTicketInfo(info)">
+        <h3 class="card-title">{{ info.zone.name }}</h3>
+        <p class="card-detail">Price: {{ calculateDiscountedPrice(info.price, userDiscount) | currencyFormat:'KM'}}</p>
+      </div>
+    </div>
+    <p class="note">
+      <i class="fa fa-info-circle icon" aria-hidden="true"></i>
+      Note: All prices are displayed in Bosnian marks (KM), and any applicable discounts have already been applied.
+    </p>
+  </div>
+
+  <!-- Step 3: Payment -->
+  <div *ngIf="currentStep === 3" class="step">
+    <app-payment [ticketInfo]="selectedTicketInfo"></app-payment>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="navigation">
+    <button *ngIf="currentStep > 1" class="btn" (click)="previousStep()">
+      <i class="fa fa-arrow-left icon"></i>
+      Previous
+    </button>
+
+  </div>
 </div>

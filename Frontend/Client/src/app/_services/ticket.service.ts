@@ -43,6 +43,10 @@ export class TicketService {
     );
   }
 
+  createTicketWithStripe(ticketData: any): Observable<Ticket> {
+    return this.http.post<Ticket>(`${this.baseUrl}/create-with-payment`, ticketData);
+  }
+
   updateTicket(ticket: any) {
     return this.http.put<Ticket>(this.baseUrl + `/${ticket.id}`, ticket).pipe(
       catchError(error => {

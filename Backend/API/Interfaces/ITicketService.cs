@@ -10,5 +10,6 @@ namespace GPS.API.Interfaces
         Task<Ticket> CreateTicketAsync(Ticket ticket);
         Task<Ticket> UpdateTicketAsync(Ticket ticket);
         Task<bool> DeleteTicketAsync(int id);
+        Task<Ticket> CreateTicketOnBuying(int ticketInfoId, string userEmail);
     }
 }

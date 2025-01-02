@@ -28,6 +28,9 @@ using GPS.API.Services.PasswordresetServices;
 using GPS.API.Services;
 using GPS.API.Services.TwoFactorAuthServices;
 using GPS.API.Services.FavoriteLineService;
+using GPS.API.Services.TicketInfoServices;
+using GPS.API.Services.TicketTypeServices;
+using GPS.API.Services.StripeServices;
 
 namespace GPS.API.Extensions
 {
@@ -79,8 +82,6 @@ namespace GPS.API.Extensions
             });
 
             services.AddHttpContextAccessor();
-
-
             //dodajte vaše servise
             //builder.Services.AddTransient<MyAuthService>();
             services.AddScoped<INotificationService, NotificationService>();
@@ -109,7 +110,11 @@ namespace GPS.API.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPasswordResetService, PasswordResetService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITicketInfoService, TicketInfoService>();
             services.AddScoped<ITwoFactorAuthService, TwoFactorAuthService>();
+            services.AddScoped<ITicketTypeService, TicketTypeService>();
+            services.AddScoped<IStripeService, StripeService>();
+
 
             return services;
         }
