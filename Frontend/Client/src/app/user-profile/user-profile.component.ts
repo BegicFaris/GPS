@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ManagerService } from '../_services/manager.service';
 import { DriverService } from '../_services/driver.service';
 import { debounceTime, first, Observable, of, switchMap } from 'rxjs';
+import { Ticket } from '../_models/ticket';
 
 @Component({
   selector: 'app-user-profile',
@@ -38,13 +39,20 @@ import { debounceTime, first, Observable, of, switchMap } from 'rxjs';
 export class UserProfileComponent implements OnInit {
   userProfile: any;
   profileForm!: FormGroup;
-  tickets: any[] = [];
   userType: string = '';
   profileImageUrl: SafeUrl | null = null;
-  hasTickets= false;
   originalEmail: string = '';
   maxDate: string = new Date().toISOString().split('T')[0];
+  
+  tickets: Ticket[] = [];
+  hasTickets: boolean = false;
+  pageNumber: number = 1;
+  pageSize: number = 5;  // You can change this as needed
+  totalPages: number = 0;
+  pageNumbers: number[] = [];
 
+
+  
   constructor(
     private userService: MyAppUserService,
     private accountService: AccountService,
@@ -58,10 +66,11 @@ export class UserProfileComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  ngOnInit() {
+
+  async ngOnInit(): Promise<void> {
     this.initForm();
     this.loadUserProfile();
-    this.loadUserTickets();
+    await this.loadUserTickets();
   }
 
   initForm() {
@@ -110,33 +119,34 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  loadUserTickets() {
+  async loadUserTickets(): Promise<void> {
     const email = this.accountService.getUserEmail();
     if (email) {
-      this.ticketService.getUserTickets(email).subscribe({
-        next: (tickets) => {
-          if (tickets && tickets.length > 0) {
-          this.tickets = tickets.map(ticket => ({
-            ...ticket,
-            qrCode: ticket.qrCode ? this.decodeQrCode(ticket.qrCode) : null
-          })).sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-          this.hasTickets = true;
-          } else {
-            this.tickets = [];
-            this.hasTickets = false;
-          }
-        },
-        error: (error) => {
-          this.tickets = [];
-          this.hasTickets=false; 
-          if (error.status === 404) {
-            // Default to an empty array
-          } else {
-            console.error('Failed to load tickets:', error);
-          }
-        },
-      });
+      try {
+        const data = await this.ticketService.getUserTicketsPaginated(email, this.pageNumber, this.pageSize).toPromise();
+        if(data){
+          this.tickets = data.tickets;
+          this.totalPages = data.totalPages;
+          this.hasTickets=true;
+          await this.generatePagination();
+        }
+      } catch (error) {
+        console.error('Error loading tickets:', error);
+      }
     }
+  }
+
+  async changePage(page: number):Promise<void> {
+    if (page >= 1 && page <= this.totalPages) {
+      this.hasTickets = true;
+      this.pageNumber = page;
+     await this.loadUserTickets();  // Since loadUserTickets is still async, we handle it with await
+    }
+  }
+
+  async generatePagination(): Promise<void> {
+    const totalPages = this.totalPages;
+    this.pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);  // Generates an array [1, 2, 3, ... totalPages]
   }
 
 

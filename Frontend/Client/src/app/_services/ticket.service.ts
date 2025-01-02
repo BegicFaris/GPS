@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Ticket } from '../_models/ticket';
 import { catchError, Observable } from 'rxjs';
@@ -6,10 +6,13 @@ import { catchError, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TicketService {
   private http = inject(HttpClient);
   private baseUrl = 'https://localhost:5001/api/tickets';
   tickets: Ticket[] = [];
+
+ 
 
   getAllTickets() {
     return this.http.get<Ticket[]>(this.baseUrl);
@@ -34,6 +37,16 @@ export class TicketService {
     return this.http.get<Ticket[]>(`${this.baseUrl}/get/${email}`);
   }
 
+  getUserTicketsPaginated(
+    email: string, 
+    pageNumber: number = 1, 
+    pageSize: number = 5
+  ): Observable<PagintedTickets> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+    return this.http.get<PagintedTickets>(`${this.baseUrl}/get/${email}/paginated`, { params });
+  }
   createTicket(ticket: any) {
     return this.http.post<Ticket>(this.baseUrl, ticket).pipe(
       catchError(error => {
@@ -64,4 +77,12 @@ export class TicketService {
       })
     );
   }
+}
+
+interface PagintedTickets {
+  totalTickets: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+  tickets: Ticket[];
 }
