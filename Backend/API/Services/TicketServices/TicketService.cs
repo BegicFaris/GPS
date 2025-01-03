@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using QRCoder;
 using System.Drawing.Imaging;
 using System.Drawing;
+using static QRCoder.PayloadGenerator;
 
 namespace GPS.API.Services.TicketServices
 {
@@ -18,9 +19,9 @@ namespace GPS.API.Services.TicketServices
             _logger = logger;
         }
         public async Task<IEnumerable<Ticket>> GetAllTicketsAsync() =>
-            await _context.Tickets.Include(x => x.TicketInfo ).Include(x => x.User).ToListAsync();
+            await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).ToListAsync();
         public async Task<Ticket> GetTicketByIdAsync(int id) =>
-          await _context.Tickets.Include(x => x.TicketInfo).Include(x=>x.User).SingleOrDefaultAsync(x => x.Id == id);
+          await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<List<Ticket>> GetAllTicketsForUserEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -30,7 +31,7 @@ namespace GPS.API.Services.TicketServices
 
             return await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).Include(x => x.TicketInfo.Zone).Include(x => x.TicketInfo.TicketType)
                 .Where(t => t.User.Email == email)
-                .ToListAsync(); 
+                .ToListAsync();
         }
         public async Task<Ticket> CreateTicketAsync(Ticket ticket)
         {
@@ -77,7 +78,8 @@ namespace GPS.API.Services.TicketServices
             {
                 expirationDays = 30;
             }
-            else {
+            else
+            {
                 expirationDays = 1;
             }
             var ticket = new Ticket
@@ -116,5 +118,39 @@ namespace GPS.API.Services.TicketServices
             }
         }
 
+        public async Task<object> GetUserTicketsPaginatedAsync(string email, int pageNumber, int pageSize)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException("Email cannot be null or empty", nameof(email));
+            }
+
+            var skip = (pageNumber - 1) * pageSize;
+            var take = pageSize;
+
+            var tickets = await _context.Tickets
+            .Include(x => x.TicketInfo)
+            .Include(x => x.User)
+            .Include(x => x.TicketInfo.Zone)
+            .Include(x => x.TicketInfo.TicketType)
+            .Where(t => t.User.Email == email)
+            .OrderByDescending(t => t.CreatedDate)  // Order by creation date in descending order
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+
+
+            var totalTickets = await _context.Tickets.Include(x=>x.User).Where(x=>x.User.Email==email).CountAsync();
+            var totalPages = (int)Math.Ceiling(totalTickets / (double)pageSize);
+            return new
+            {
+                TotalTickets = totalTickets,
+                TotalPages = totalPages,
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+                Tickets = tickets
+            };
+
+        }
     }
 }

@@ -169,7 +169,23 @@ namespace GPS.API.Data.DbContexts
                 );
             modelBuilder.Entity<Ticket>().HasData(
                 new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2),TicketInfoId=1, QrCode = ticketQrCode, UserId = 2, TenantId = "mostar" },
-                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2),TicketInfoId = 2,QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" }
+                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2),TicketInfoId = 2,QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 3, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 4, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 5, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 6, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 7, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 8, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 9, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 10, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 11, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 12, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 13, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 14, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 15, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 16, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 17, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 18, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" }
                 );
 
             modelBuilder.Entity<Gallery>().HasData(
