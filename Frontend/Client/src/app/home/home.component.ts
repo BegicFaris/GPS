@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from '../register/register.component';
 import { RouterLink, Routes } from '@angular/router';
 import { AccountService } from '../_services/account.service';
+import { Title } from '@angular/platform-browser';
+import { LazyLoadDirective } from '../lazy-load.directive';
 
 interface Station {
   id: string;
@@ -23,11 +25,13 @@ interface Tour {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, RegisterComponent, RouterLink],
+  imports: [CommonModule, FormsModule, RegisterComponent, RouterLink, LazyLoadDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit{
+private titleService = inject(Title);
+
   accountService = inject(AccountService);
 
   stations: Station[] = [
@@ -87,6 +91,8 @@ export class HomeComponent implements OnInit{
   constructor(private renderer: Renderer2, private el: ElementRef) {}
 
   ngOnInit() {
+    this.titleService.setTitle("Home");
+
     this.imageOverlay = this.el.nativeElement.querySelector('#imageOverlay');
     this.enlargedImage = this.el.nativeElement.querySelector('#enlargedImage') as HTMLImageElement;
 

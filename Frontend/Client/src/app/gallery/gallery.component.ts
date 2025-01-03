@@ -2,17 +2,21 @@ import { Component, ElementRef, HostListener, inject, OnInit, ViewChild } from '
 import { GalleryService } from '../_services/gallery.service';
 import { Gallery } from '../_models/gallery';
 import { AccountService } from '../_services/account.service';
+import { LazyLoadDirective } from '../lazy-load.directive';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-gallery',
     standalone: true,
-    imports: [
+    imports: [ LazyLoadDirective
 ],
     templateUrl: './gallery.component.html',
     styleUrls: ['./gallery.component.css']
 })
 export class GalleryComponent implements OnInit {  
     @ViewChild('fileInput') fileInput!: ElementRef;
+
+    private titleService = inject(Title);
 
     public accountService = inject(AccountService);
 
@@ -28,6 +32,7 @@ export class GalleryComponent implements OnInit {
     constructor(private galleryService: GalleryService) {}
 
     ngOnInit(): void {
+        this.titleService.setTitle("Gallery");
         this.getPhotos(); // Fetch existing photos on component load
         console.log(this.photos);
     }
