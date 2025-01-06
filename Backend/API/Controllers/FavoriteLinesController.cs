@@ -42,7 +42,7 @@ namespace GPS.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBus(int id)
+        public async Task<IActionResult> DeleteFavoriteLine(int id)
         {
             var success = await favoriteLineService.DeleteFavoriteLineAsync(id);
             if (!success) return NotFound();
