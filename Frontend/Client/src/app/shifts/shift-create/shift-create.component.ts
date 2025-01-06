@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Bus } from '../../_models/bus';
 import { Driver } from '../../_models/driver';
+import { Shift } from '../../_models/shift';
 
 @Component({
   selector: 'app-shift-create',
@@ -38,7 +39,7 @@ export class ShiftCreateComponent {
       this.shiftService.createShift(this.shiftCreate).subscribe({
         next: (response) => {
           console.log(response);
-          this.cancel();
+          this.router.navigate(['/manager-dashboard/shifts/details'],  { queryParams: response as Shift});
         },
       });
       this.cancel();
@@ -47,10 +48,8 @@ export class ShiftCreateComponent {
       Object.keys(newShiftForm.controls).forEach(field => {
         const control = newShiftForm.controls[field];
         control.markAsTouched({ onlySelf: true });
-      });
+      }); 
     }
-
-
   }
 
   cancel() {
@@ -68,12 +67,15 @@ export class ShiftCreateComponent {
         this.buses = data;
       });
   }
+  
+
   isEndingTimeInvalid(): boolean {
+    if(this.shiftCreate.shiftStartingTime==null || this.shiftCreate.shiftEndingTime==null)
+      return false;
     const startTime = this.parseTime(this.shiftCreate.shiftStartingTime);
     const endTime = this.parseTime(this.shiftCreate.shiftEndingTime);
     return endTime < startTime;
   }
-
   parseTime(time: string): Date {
     const [hours, minutes, seconds] = time.split(':').map(Number);
     const date = new Date();

@@ -10,6 +10,7 @@
       <th scope="col">Shift ending time</th>
       <th scope="col"></th>
       <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -25,6 +26,7 @@
       <td>{{shift.shiftEndingTime}}</td>
       <td><button type="button" class="btn btn-primary" (click)="openEditDialog(shift)">Edit</button></td>
       <td><button type="button" class="btn btn-danger" (click)="deleteShift(shift.id)">Delete</button></td>
+      <td><button type="button" class="btn btn-primary" (click)="openShiftDetails(shift)">Shift details</button></td>
     </tr>
     }
   </tbody>

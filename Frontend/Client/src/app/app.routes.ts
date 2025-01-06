@@ -37,6 +37,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FaqsComponent } from './FAQs/faqs.component';
 import { ShiftCreateComponent } from './shifts/shift-create/shift-create.component';
 import { ShiftViewComponent } from './shifts/shift-view/shift-view.component';
+import { ShiftDetailsComponent } from './shifts/shift-details/shift-details.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -83,7 +84,8 @@ export const routes: Routes = [
       { path: 'schedules', component: ScheduleViewComponent },
       { path: 'schedules/add', component:  ScheduleCreateComponent},
       { path: 'shifts/add', component:  ShiftCreateComponent},
-      { path: 'shifts', component:  ShiftViewComponent}
+      { path: 'shifts', component:  ShiftViewComponent},
+      { path: 'shifts/details', component:  ShiftDetailsComponent}
     ],
   },
   {
