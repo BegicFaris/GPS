@@ -34,4 +34,8 @@ export class GalleryService {
     deletePhoto(id: number): Observable<void> {
         return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
+    // Update the order of photos
+    updatePhotoOrder(updatedOrder: { id: number, newPosition: number }[]): Observable<any> {
+        return this.http.put(`${this.apiUrl}/order`, updatedOrder);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
+using GPS.API.Dtos.PhotoDtos;
 using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +51,32 @@ namespace GPS.API.Services
 
             _context.Galleries.Remove(gallery);
             await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdatePhotoOrderAsync(List<PhotoOrderDto> updatedOrder)
+        {
+            // Fetch photos based on the provided IDs
+            var photoIds = updatedOrder.Select(o => o.Id).ToList();
+            var photosToUpdate = await _context.Galleries
+                .Where(p => photoIds.Contains(p.Id))
+                .ToListAsync();
+
+            if (photosToUpdate.Count != updatedOrder.Count)
+            {
+                return false; // Some photos not found
+            }
+
+            // Update the position of each photo
+            foreach (var photo in photosToUpdate)
+            {
+                var orderUpdate = updatedOrder.First(o => o.Id == photo.Id);
+                photo.Position = orderUpdate.NewPosition;
+            }
+
+            // Save the changes
+            await _context.SaveChangesAsync();
+
             return true;
         }
     }
