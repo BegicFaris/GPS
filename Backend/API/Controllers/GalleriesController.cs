@@ -1,10 +1,10 @@
 ﻿using GPS.API.Data.Models;
+using GPS.API.Dtos.PhotoDtos;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
 {
-
     public class GalleryController : MyControllerBase
     {
         private readonly IGalleryService _galleryService;
@@ -59,6 +59,25 @@ namespace GPS.API.Controllers
             }
 
             return NoContent();
+        }
+
+        // PUT: api/gallery/order
+        [HttpPut("order")]
+        public async Task<IActionResult> UpdatePhotoOrder([FromBody] List<PhotoOrderDto> updatedOrder)
+        {
+            if (updatedOrder == null || !updatedOrder.Any())
+            {
+                return BadRequest("Invalid photo order data.");
+            }
+
+            // Update the photo order
+            var success = await _galleryService.UpdatePhotoOrderAsync(updatedOrder);
+            if (!success)
+            {
+                return NotFound("Some photos were not found.");
+            }
+
+            return Ok(new { message = "Photo order updated successfully." });
         }
     }
 }
