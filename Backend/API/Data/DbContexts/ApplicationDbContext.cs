@@ -46,6 +46,7 @@ namespace GPS.API.Data.DbContexts
         public DbSet<SystemActionLog> SystemActionsLog { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<Gallery> Galleries { get; set; }
+        public DbSet<ShiftDetail> ShiftDetails { get; set; }
         public DbSet<TicketInfo> TicketInfos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -65,6 +66,7 @@ namespace GPS.API.Data.DbContexts
             //Ovo treba implementirati za svaku klasu koja koristi tenant
             //modelBuilder.Entity<NekaKlasa>().HasQueryFilter(a => a.TenantId == CurrentTenantID);
             //modelBuilder.Entity<MyAppUser>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<ShiftDetail>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Bus>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<CreditCard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Discount>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);

@@ -19,6 +19,7 @@ import { ManagerService } from '../_services/manager.service';
 import { DriverService } from '../_services/driver.service';
 import { debounceTime, first, Observable, of, switchMap } from 'rxjs';
 import { Ticket } from '../_models/ticket';
+import { ThemeService } from '../_services/theme.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -50,8 +51,8 @@ export class UserProfileComponent implements OnInit {
   pageSize: number = 5;  // You can change this as needed
   totalPages: number = 0;
   pageNumbers: number[] = [];
-
-
+  
+  isDarkTheme$!: Observable<boolean>;
   
   constructor(
     private userService: MyAppUserService,
@@ -63,11 +64,13 @@ export class UserProfileComponent implements OnInit {
     private fb: FormBuilder,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private themeService: ThemeService
   ) { }
-
+  
 
   async ngOnInit(): Promise<void> {
+    this.isDarkTheme$ = this.themeService.isDarkTheme$;
     this.initForm();
     this.loadUserProfile();
     await this.loadUserTickets();
@@ -343,6 +346,8 @@ export class UserProfileComponent implements OnInit {
   
     return '';
   }
-  
+  toggleTheme() {
+    this.themeService.toggleTheme();
+  }
 
 }

@@ -31,6 +31,7 @@ using GPS.API.Services.FavoriteLineService;
 using GPS.API.Services.TicketInfoServices;
 using GPS.API.Services.TicketTypeServices;
 using GPS.API.Services.StripeServices;
+using GPS.API.Services.ShiftDetailServices;
 
 namespace GPS.API.Extensions
 {
@@ -91,6 +92,7 @@ namespace GPS.API.Extensions
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IStationService, StationService>();
             services.AddScoped<IMyAppUserService, MyAppUserService>();
+            services.AddScoped<IShiftDetailService, ShiftDetailService>();
             services.AddScoped<IDriverService, DriverService>();
             services.AddScoped<IPassengerService, PassengerService>();
             services.AddScoped<IManagerService, ManagerService>();

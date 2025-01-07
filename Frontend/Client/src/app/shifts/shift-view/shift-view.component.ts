@@ -77,4 +77,8 @@ export class ShiftViewComponent {
   goToAddForm(){
     this.router.navigate(['/manager-dashboard/shifts/add']);
   }
+  openShiftDetails(shift:Shift){
+    this.router.navigate(['/manager-dashboard/shifts/details'],  { queryParams: shift });
+  }
+
 }
