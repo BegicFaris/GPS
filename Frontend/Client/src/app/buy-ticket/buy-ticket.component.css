@@ -12,7 +12,7 @@ body {
     max-width: 900px;
     margin: 50px auto;
     padding: 20px;
-    background: #fff;
+    background-color: var(--table-body-background);
     border-radius: 10px;
     position: relative;
     z-index: 1;
@@ -51,11 +51,11 @@ body {
      text-align: center;
     font-size: 28px;
     margin: 10px 0;
-    color: #333;
+    color: var(--text-color);
   }
   
   .wizard-subtitle {
-    color: #555;
+    color:var(--sub-text);
     text-align: center;
     margin-bottom: 20px;
   }
@@ -103,6 +103,7 @@ body {
   .card-title {
     font-size: 1.2rem;
     margin: 10px 0;
+    color:var(--text-color);
   }
 
   .card-detail {
@@ -216,7 +217,7 @@ body {
   
   .note {
     font-size: 0.9rem;
-    color: #555;
+    color: var(--sub-text);
     margin-top: 10px;
     display: flex;
     justify-content: center;
@@ -227,3 +228,4 @@ body {
     margin-right: 5px;
     color: #007BFF;
   }
+
