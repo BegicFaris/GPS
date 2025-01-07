@@ -1,19 +1,26 @@
 <div class="container mt-3">
   @for (line of lines; track $index) {
-  <div class="d-flex align-items-center border rounded mb-2 p-2" (click)="selectLine(line)">
+  <div
+    class="d-flex align-items-center border rounded mb-2 p-2"
+    (click)="selectLine(line)"
+  >
     <div class="me-2">
       <i class="bi bi-bus fs-5"></i>
     </div>
     <div class="flex-grow-1">
-      <strong>Line {{ line.id }}:</strong> {{ line.startingStation.name }} - {{ line.endingStation.name }}
+      <strong>Line {{ line.id }}:</strong> {{ line.startingStation.name }} -
+      {{ line.endingStation.name }}
     </div>
-     @if (currentUser!=null) 
-     {
+    @if (currentUser!=null) {
     <div>
-      <i class="bi" [ngClass]="isFavorite(line.id) ? 'bi-star-fill text-dark' : 'bi-star text-dark'"
-      (click)="toggleFavorite(line.id, $event)" style="cursor: pointer;"></i>
+      <i
+        class="bi"
+        [ngClass]="isFavorite(line.id) ? 'bi-star-fill' : 'bi-star'"
+        (click)="toggleFavorite(line.id, $event)"
+        style="cursor: pointer"
+      ></i>
     </div>
-  }
+    }
   </div>
   @if (selectedLine && selectedLine.id === line.id) {
   <div class="mt-2 border rounded p-2">
@@ -23,6 +30,6 @@
     <p>Starting Station: {{ selectedLine.startingStation.name }}</p>
     <p>Ending Station: {{ selectedLine.endingStation.name }}</p>
     <p>Complete Distance: {{ selectedLine.completeDistance }}</p>
-  </div>}
-  }
+  </div>
+  } }
 </div>
