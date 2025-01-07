@@ -65,6 +65,14 @@ export const routes: Routes = [
         loadComponent: () => import('./lines/line-create/line-create.component').then(m => m.LineCreateComponent)
       },
       {
+        path: 'discounts',
+        loadComponent: () => import('./discounts/discount-view/discount-view.component').then(m => m.DiscountViewComponent)
+      },
+      {
+        path: 'discounts/add',
+        loadComponent: () => import('./discounts/discount-create/discount-create.component').then(m => m.DiscountCreateComponent)
+      },
+      {
         path: 'buses',
         loadComponent: () => import('./buses/bus-view/bus-view.component').then(m => m.BusViewComponent)
       },
