@@ -24,4 +24,31 @@ export class DiscountService {
     );
   }
 
+  createDiscount(discount: any) {
+      return this.http.post<Discount>(this.baseUrl, discount).pipe(
+        catchError(error => {
+          console.error('Error creating discount:', error);
+          return (error);
+        })
+      );
+    }
+  
+    updateDiscount(discount: any) {
+      return this.http.put<Discount>(this.baseUrl + `/${discount.id}`, discount).pipe(
+        catchError(error => {
+          console.error('Error updating discount:', error);
+          return (error);
+        })
+      );
+    }
+  
+    deleteDiscount(id: number) {
+      return this.http.delete(this.baseUrl + `/${id}`).pipe(
+        catchError(error => {
+          console.error('Error deleting discount:', error);
+          return (error);
+        })
+      );
+    }
+
 }

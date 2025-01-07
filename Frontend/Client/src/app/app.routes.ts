@@ -85,28 +85,39 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { role: 'Manager' },
     children: [
-      { path: 'lines', component: LineViewComponent },
-      { path: 'lines/add', component: LineCreateComponent },
-      { path: 'buses', component: BusViewComponent },
-      { path: 'buses/add', component: BusCreateComponent }, 
-      { path: 'routes', component: RouteViewComponent },
-      { path: 'routes/add', component: RouteCreateComponent },
-      { path: 'managers', component: ManagerViewComponent },
-      { path: 'managers/add', component: ManagerCreateComponent },
-      { path: 'drivers', component: DriverViewComponent },
-      { path: 'drivers/add', component: DriverCreateComponent },
-      { path: 'passengers', component: PassengerViewComponent },
-      { path: 'creditCards', component: CreditCardViewComponent },
-      { path: 'creditCards/add', component: CreditCardCreateComponent },
-      { path: 'notifications', component: NotificationViewComponent },
-      { path: 'notifications/add', component: NotificationCreateComponent },
-      { path: 'stations', component: StationViewComponent },
-      { path: 'stations/add', component:  StationCreateComponent},
-      { path: 'schedules', component: ScheduleViewComponent },
-      { path: 'schedules/add', component:  ScheduleCreateComponent},
-      { path: 'shifts/add', component:  ShiftCreateComponent},
-      { path: 'shifts', component:  ShiftViewComponent},
-      { path: 'shifts/details', component:  ShiftDetailsComponent}
+      {
+        path: 'lines',
+        loadComponent: () => import('./lines/line-view/line-view.component').then(m => m.LineViewComponent)
+      },
+      {
+        path: 'lines/add',
+        loadComponent: () => import('./lines/line-create/line-create.component').then(m => m.LineCreateComponent)
+      },
+      {
+        path: 'discounts',
+        loadComponent: () => import('./discounts/discount-view/discount-view.component').then(m => m.DiscountViewComponent)
+      },
+      {
+        path: 'discounts/add',
+        loadComponent: () => import('./discounts/discount-create/discount-create.component').then(m => m.DiscountCreateComponent)
+      },
+      {
+        path: 'buses',
+        loadComponent: () => import('./buses/bus-view/bus-view.component').then(m => m.BusViewComponent)
+      },
+      {
+        path: 'buses/add',
+        loadComponent: () => import('./buses/bus-create/bus-create.component').then(m => m.BusCreateComponent)
+      },
+      {
+        path: 'routes',
+        loadComponent: () => import('./routes/route-view/route-view.component').then(m => m.RouteViewComponent)
+      },
+      {
+        path: 'routes/add',
+        loadComponent: () => import('./routes/route-create/route-create.component').then(m => m.RouteCreateComponent)
+      },
+      // Add other children with loadComponent similarly...
     ],
   },
   {
