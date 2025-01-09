@@ -84,7 +84,66 @@ export const routes: Routes = [
         path: 'routes/add',
         loadComponent: () => import('./routes/route-create/route-create.component').then(m => m.RouteCreateComponent)
       },
-      // Add other children with loadComponent similarly...
+      {
+        path: 'drivers/add',
+        loadComponent: () => import('./drivers/driver-create/driver-create.component').then(m => m.DriverCreateComponent)
+      },
+      {
+        path: 'drivers',
+        loadComponent: () => import('./drivers/driver-view/driver-view.component').then(m => m.DriverViewComponent)
+      },
+      {
+        path: 'shifts/add',
+        loadComponent: () => import('./shifts/shift-create/shift-create.component').then(m => m.ShiftCreateComponent)
+      },
+      {
+        path: 'shifts',
+        loadComponent: () => import('./shifts/shift-view/shift-view.component').then(m => m.ShiftViewComponent)
+      },
+      {
+        path: 'shifts/details',
+        loadComponent: () => import('./shifts/shift-details/shift-details.component').then(m => m.ShiftDetailsComponent)
+      },
+      {
+        path: 'notifications/add',
+        loadComponent: () => import('./notifications/notification-create/notification-create.component').then(m => m.NotificationCreateComponent)
+      },
+      {
+        path: 'notifications',
+        loadComponent: () => import('./notifications/notification-view/notification-view.component').then(m => m.NotificationViewComponent)
+      },
+      {
+        path: 'managers/add',
+        loadComponent: () => import('./managers/manager-create/manager-create.component').then(m => m.ManagerCreateComponent)
+      },
+      {
+        path: 'managers',
+        loadComponent: () => import('./managers/manager-view/manager-view.component').then(m => m.ManagerViewComponent)
+      },
+      {
+        path: 'passengers',
+        loadComponent: () => import('./passengers/passenger-view/passenger-view.component').then(m => m.PassengerViewComponent)
+      },
+      {
+        path: 'routes/add',
+        loadComponent: () => import('./routes/route-create/route-create.component').then(m => m.RouteCreateComponent)
+      },
+      {
+        path: 'schedules/add',
+        loadComponent: () => import('./schedules/schedule-create/schedule-create.component').then(m => m.ScheduleCreateComponent)
+      },
+      {
+        path: 'schedules',
+        loadComponent: () => import('./schedules/schedule-view/schedule-view.component').then(m => m.ScheduleViewComponent)
+      },
+      {
+        path: 'stations/add',
+        loadComponent: () => import('./stations/station-create/station-create.component').then(m => m.StationCreateComponent)
+      },
+      {
+        path: 'stations',
+        loadComponent: () => import('./stations/station-view/station-view.component').then(m => m.StationViewComponent)
+      },
     ],
   },
   {
