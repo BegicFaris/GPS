@@ -1,7 +1,7 @@
 // shift-detail.service.ts
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { catchError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { ShiftDetail } from '../_models/shift-detail'; // Adjust path accordingly
 
 @Injectable({
@@ -49,4 +49,8 @@ export class ShiftDetailService {
       })
     );
   }
+  GetShiftDetailPdf(shiftId:number):Observable<Blob>{
+    return this.http.get<Blob>(`${this.baseUrl}/generate-pdf/${shiftId}`, { responseType: 'blob' as 'json' });
+  }
+
 }

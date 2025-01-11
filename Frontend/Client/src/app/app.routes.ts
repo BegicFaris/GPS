@@ -1,5 +1,34 @@
 import { Routes } from '@angular/router';
 import { RoleGuard } from './guards/role.guard';
+import { DriverDashboardComponent } from './driver-dashboard/driver-dashboard.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { NotificationViewComponent } from './notifications/notification-view/notification-view.component';
+import { NotificationCreateComponent } from './notifications/notification-create/notification-create.component';
+import { LineCreateComponent } from './lines/line-create/line-create.component';
+//import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RegisterComponent } from './register/register.component';
+import { BusViewComponent } from './buses/bus-view/bus-view.component';
+import { BusCreateComponent } from './buses/bus-create/bus-create.component';
+import { RouteViewComponent } from './routes/route-view/route-view.component';
+import { RouteCreateComponent } from './routes/route-create/route-create.component';
+import { ManagerViewComponent } from './managers/manager-view/manager-view.component';
+import { ManagerCreateComponent } from './managers/manager-create/manager-create.component';
+import { DriverViewComponent } from './drivers/driver-view/driver-view.component';
+import { DriverCreateComponent } from './drivers/driver-create/driver-create.component';
+import { PassengerViewComponent } from './passengers/passenger-view/passenger-view.component';
+import { CreditCardViewComponent } from './creditCards/creditCard-view/creditCard-view.component';
+import { CreditCardCreateComponent } from './creditCards/creditCard-create/creditCard-create.component';
+import { StationViewComponent } from './stations/station-view/station-view.component';
+import { StationEditComponent } from './stations/station-edit/station-edit.component';
+import { StationCreateComponent } from './stations/station-create/station-create.component';
+import { ScheduleViewComponent } from './scheduleCRUD/schedule-view/schedule-view.component';
+import { ScheduleCreateComponent } from './scheduleCRUD/schedule-create/schedule-create.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FaqsComponent } from './FAQs/faqs.component';
+import { ShiftCreateComponent } from './shifts/shift-create/shift-create.component';
+import { ShiftViewComponent } from './shifts/shift-view/shift-view.component';
+import { ShiftDetailsComponent } from './shifts/shift-details/shift-details.component';
+import { LineViewComponent } from './lines/line-view/line-view.component';
 
 export const routes: Routes = [
 
