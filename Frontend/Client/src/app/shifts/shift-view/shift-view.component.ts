@@ -6,6 +6,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Shift } from '../../_models/shift';
 import { ShiftEditComponent } from '../shift-edit/shift-edit.component';
 import { FormsModule } from '@angular/forms';
+import { ShiftDetailService } from '../../_services/shift-detail.service';
 
 @Component({
   selector: 'app-shift-view',
@@ -16,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ShiftViewComponent {
   private shiftService = inject(ShiftService);
+  private shiftDetailService=inject(ShiftDetailService);
   private router = inject(Router);
   private titleService = inject(Title);
   private dialog = inject(MatDialog)
@@ -79,6 +81,19 @@ export class ShiftViewComponent {
   }
   openShiftDetails(shift:Shift){
     this.router.navigate(['/manager-dashboard/shifts/details'],  { queryParams: shift });
+  }
+
+  downloadShiftDetails(shiftId: number) {
+    this.shiftDetailService.GetShiftDetailPdf(shiftId).subscribe((pdfBlob: Blob) => {
+      const url = window.URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ShiftOverviewReport.pdf'; // File name for download
+      a.click();
+      window.URL.revokeObjectURL(url); // Clean up URL object
+    }, error => {
+      console.error('Error generating PDF:', error);
+    });
   }
 
 }

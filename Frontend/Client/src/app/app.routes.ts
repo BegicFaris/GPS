@@ -28,6 +28,7 @@ import { FaqsComponent } from './FAQs/faqs.component';
 import { ShiftCreateComponent } from './shifts/shift-create/shift-create.component';
 import { ShiftViewComponent } from './shifts/shift-view/shift-view.component';
 import { ShiftDetailsComponent } from './shifts/shift-details/shift-details.component';
+import { LineViewComponent } from './lines/line-view/line-view.component';
 
 export const routes: Routes = [
 
