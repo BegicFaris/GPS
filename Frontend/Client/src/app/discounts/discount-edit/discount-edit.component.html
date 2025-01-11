@@ -1,0 +1,44 @@
+<h5 class="modal-title">Update Discount</h5>
+<form #updateDiscountForm="ngForm" (ngSubmit)="saveChanges()">
+
+  <div class="mb-3">
+    <label class="form-label">Discount Name</label>
+    <input 
+      type="text" 
+      name="discountName" 
+      class="form-control" 
+      required 
+      [(ngModel)]="discountUpdate.discountName" 
+      #discountName="ngModel" 
+      placeholder="Name">
+    <div *ngIf="discountName.invalid && (discountName.dirty || discountName.touched)" class="text-danger">
+      <div *ngIf="discountName.errors?.['required']">Discount name is required.</div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="discountValue" class="form-label">Discount Value</label>
+    <input 
+      type="number" 
+      id="discountValue" 
+      name="discountValue" 
+      class="form-control" 
+      required 
+      min="0" 
+      max="1" 
+      step="0.01" 
+      [(ngModel)]="discountUpdate.discountValue" 
+      #discountValue="ngModel" 
+      placeholder="Enter discount value (e.g., 0.5)">
+    <div *ngIf="discountValue.invalid && (discountValue.dirty || discountValue.touched)" class="text-danger">
+      <div *ngIf="discountValue.errors?.['required']">Discount value is required.</div>
+      <div *ngIf="discountValue.errors?.['max']">Discount value must be less than 1.</div>
+      <div *ngIf="discountValue.errors?.['min']">Discount value must be at least 0.</div>
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button type="submit" class="btn btn-primary" [disabled]="updateDiscountForm.invalid">Save Changes</button>
+    <button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button>
+  </div>
+</form>

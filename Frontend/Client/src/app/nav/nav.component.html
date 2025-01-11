@@ -101,16 +101,6 @@
             >About us</a
           >
         </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLinkActive="active"
-            routerLink="/faqs"
-            aria-current="page"
-            href="#"
-            >FAQs</a
-          >
-        </li>
         @if (userRole === "Manager") {
           <li class="nav-item">
             <a
@@ -136,6 +126,9 @@
           </li>
         }
       </ul>
+      <button mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
+        <mat-icon>{{ themeService.getThemeIcon() }}</mat-icon>
+      </button>
       <div dropdown class="dropdown">
         <a
           dropdownToggle

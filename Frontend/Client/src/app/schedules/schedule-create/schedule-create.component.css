@@ -1,4 +1,9 @@
 
+.modal-title,.mb-3,.form-check, .btn{
+    margin-left:auto;
+    margin-right:auto;
+    width:50%;
+}
 .btn {
     display: inline-flex;
     justify-content: center;

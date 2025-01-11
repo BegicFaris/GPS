@@ -8,6 +8,9 @@ import { MyAppUserService } from '../_services/my-app-user.service';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MyAppUser } from '../_models/my-app-user';
+import { ThemeService } from '../_services/theme.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
@@ -19,6 +22,8 @@ import { MyAppUser } from '../_models/my-app-user';
     CommonModule,
     RouterLink,
     RouterLinkActive,
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
@@ -38,16 +43,21 @@ export class NavComponent implements OnInit{
   codeVerified: boolean = false;
   codeError: string = '';
   invalidCode: boolean = false;
+
+  constructor(public themeService: ThemeService) {}
+
   ngOnInit(): void {
     this.userEmail();  // Get email after login
-        this.loadName();
+    this.loadName();
   }
 
   get userRole(): string | null{
     return this.accountService.getUserRole();
     
   }
-
+  toggleTheme() {
+    this.themeService.toggleTheme();
+  }
   
   loadName() {
     this.myAppUserService.getMyAppUserByEmail(this.email).subscribe(

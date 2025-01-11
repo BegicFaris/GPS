@@ -76,37 +76,103 @@ export const routes: Routes = [
     loadComponent: () => import('./register/register.component').then(m => m.RegisterComponent)
   },
   {
-    path: 'faqs',
-    loadComponent: () => import('./FAQs/faqs.component').then(m => m.FaqsComponent)
-  },
-  {
     path: 'manager-dashboard',
     loadComponent: () => import('./manager-dashboard/manager-dashboard.component').then(m => m.ManagerDashboardComponent),
     canActivate: [RoleGuard],
     data: { role: 'Manager' },
     children: [
-      { path: 'lines', component: LineViewComponent },
-      { path: 'lines/add', component: LineCreateComponent },
-      { path: 'buses', component: BusViewComponent },
-      { path: 'buses/add', component: BusCreateComponent }, 
-      { path: 'routes', component: RouteViewComponent },
-      { path: 'routes/add', component: RouteCreateComponent },
-      { path: 'managers', component: ManagerViewComponent },
-      { path: 'managers/add', component: ManagerCreateComponent },
-      { path: 'drivers', component: DriverViewComponent },
-      { path: 'drivers/add', component: DriverCreateComponent },
-      { path: 'passengers', component: PassengerViewComponent },
-      { path: 'creditCards', component: CreditCardViewComponent },
-      { path: 'creditCards/add', component: CreditCardCreateComponent },
-      { path: 'notifications', component: NotificationViewComponent },
-      { path: 'notifications/add', component: NotificationCreateComponent },
-      { path: 'stations', component: StationViewComponent },
-      { path: 'stations/add', component:  StationCreateComponent},
-      { path: 'schedules', component: ScheduleViewComponent },
-      { path: 'schedules/add', component:  ScheduleCreateComponent},
-      { path: 'shifts/add', component:  ShiftCreateComponent},
-      { path: 'shifts', component:  ShiftViewComponent},
-      { path: 'shifts/details', component:  ShiftDetailsComponent}
+      {
+        path: 'lines',
+        loadComponent: () => import('./lines/line-view/line-view.component').then(m => m.LineViewComponent)
+      },
+      {
+        path: 'lines/add',
+        loadComponent: () => import('./lines/line-create/line-create.component').then(m => m.LineCreateComponent)
+      },
+      {
+        path: 'discounts',
+        loadComponent: () => import('./discounts/discount-view/discount-view.component').then(m => m.DiscountViewComponent)
+      },
+      {
+        path: 'discounts/add',
+        loadComponent: () => import('./discounts/discount-create/discount-create.component').then(m => m.DiscountCreateComponent)
+      },
+      {
+        path: 'buses',
+        loadComponent: () => import('./buses/bus-view/bus-view.component').then(m => m.BusViewComponent)
+      },
+      {
+        path: 'buses/add',
+        loadComponent: () => import('./buses/bus-create/bus-create.component').then(m => m.BusCreateComponent)
+      },
+      {
+        path: 'routes',
+        loadComponent: () => import('./routes/route-view/route-view.component').then(m => m.RouteViewComponent)
+      },
+      {
+        path: 'routes/add',
+        loadComponent: () => import('./routes/route-create/route-create.component').then(m => m.RouteCreateComponent)
+      },
+      {
+        path: 'drivers/add',
+        loadComponent: () => import('./drivers/driver-create/driver-create.component').then(m => m.DriverCreateComponent)
+      },
+      {
+        path: 'drivers',
+        loadComponent: () => import('./drivers/driver-view/driver-view.component').then(m => m.DriverViewComponent)
+      },
+      {
+        path: 'shifts/add',
+        loadComponent: () => import('./shifts/shift-create/shift-create.component').then(m => m.ShiftCreateComponent)
+      },
+      {
+        path: 'shifts',
+        loadComponent: () => import('./shifts/shift-view/shift-view.component').then(m => m.ShiftViewComponent)
+      },
+      {
+        path: 'shifts/details',
+        loadComponent: () => import('./shifts/shift-details/shift-details.component').then(m => m.ShiftDetailsComponent)
+      },
+      {
+        path: 'notifications/add',
+        loadComponent: () => import('./notifications/notification-create/notification-create.component').then(m => m.NotificationCreateComponent)
+      },
+      {
+        path: 'notifications',
+        loadComponent: () => import('./notifications/notification-view/notification-view.component').then(m => m.NotificationViewComponent)
+      },
+      {
+        path: 'managers/add',
+        loadComponent: () => import('./managers/manager-create/manager-create.component').then(m => m.ManagerCreateComponent)
+      },
+      {
+        path: 'managers',
+        loadComponent: () => import('./managers/manager-view/manager-view.component').then(m => m.ManagerViewComponent)
+      },
+      {
+        path: 'passengers',
+        loadComponent: () => import('./passengers/passenger-view/passenger-view.component').then(m => m.PassengerViewComponent)
+      },
+      {
+        path: 'routes/add',
+        loadComponent: () => import('./routes/route-create/route-create.component').then(m => m.RouteCreateComponent)
+      },
+      {
+        path: 'schedules/add',
+        loadComponent: () => import('./schedules/schedule-create/schedule-create.component').then(m => m.ScheduleCreateComponent)
+      },
+      {
+        path: 'schedules',
+        loadComponent: () => import('./schedules/schedule-view/schedule-view.component').then(m => m.ScheduleViewComponent)
+      },
+      {
+        path: 'stations/add',
+        loadComponent: () => import('./stations/station-create/station-create.component').then(m => m.StationCreateComponent)
+      },
+      {
+        path: 'stations',
+        loadComponent: () => import('./stations/station-view/station-view.component').then(m => m.StationViewComponent)
+      },
     ],
   },
   {
