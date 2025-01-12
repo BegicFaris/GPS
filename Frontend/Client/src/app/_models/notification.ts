@@ -1,14 +1,17 @@
 import { Line } from "./line";
+import { MyAppUser } from "./my-app-user";
 import { NotificationType } from "./notification-type";
 
 export interface Notification {
-    description : string;
     id: number;
+    title : string;
+    description : string;
+    image?: string;
     notificationTypeId: number;
     notificationType: NotificationType;
-    duration: string;
-    date: string;
-    isActive: boolean;
+    creationDate: string;
     lineId: number;
     line: Line;
+    managerId:number;
+    manager:MyAppUser;
 }
