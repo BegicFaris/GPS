@@ -9,18 +9,24 @@ namespace GPS.API.Data.Models
         [Key]
         public int Id { get; set; }
 
+        public required string Title { get; set; }
         public required string Description { get; set; }
+        public byte[]? Image { get; set; }
 
         [ForeignKey(nameof(NotificationType))]
         public required int NotificationTypeId { get; set; }
         public NotificationType? NotificationType { get; set; }
 
-        public required TimeOnly Duration { get; set; }
-        public required DateOnly Date { get; set; }
-        public required bool IsActive { get; set; }
         [ForeignKey(nameof(Line))]
-        public required int LineId { get; set; }
+        public int? LineId { get; set; }
         public Line? Line { get; set; }
+
+        public required DateOnly CreationDate { get; set; }
+
+        [ForeignKey(nameof(MyAppUser))]
+        public required int ManagerId { get; set; }
+        public MyAppUser? Manager { get; set; }
+
         public string? TenantId { get; set; }
     }
 }
