@@ -15,10 +15,13 @@ namespace GPS.API.Services
             _context = context;
         }
 
-        // Upload photo and save to the database
         public async Task<Gallery> UploadPhotoAsync(Gallery gallery)
         {
             if (gallery == null) throw new ArgumentNullException(nameof(gallery));
+
+            // Assign default position as the next highest position
+            var maxPosition = await _context.Galleries.MaxAsync(g => (int?)g.Position) ?? 0;
+            gallery.Position = maxPosition + 1;
 
             _context.Galleries.Add(gallery);
             await _context.SaveChangesAsync();
@@ -34,11 +37,13 @@ namespace GPS.API.Services
             return gallery;
         }
 
-        // Retrieve all photos
         public async Task<IEnumerable<Gallery>> GetAllPhotosAsync()
         {
-            return await _context.Galleries.ToListAsync();
+            return await _context.Galleries
+                .OrderBy(g => g.Position) // Ensure photos are ordered by position
+                .ToListAsync();
         }
+
 
         // Delete photo by ID
         public async Task<bool> DeletePhotoAsync(int id)
