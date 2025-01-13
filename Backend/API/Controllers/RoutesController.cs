@@ -18,6 +18,18 @@ namespace GPS.API.Controllers
         public async Task<IActionResult> GetAllRoutes() =>
             Ok(await _routeService.GetAllRoutesAsync());
 
+        [HttpGet("line/{id}")]
+        public async Task<IActionResult> GetStationCountByLineIdAsync(int lineId) =>
+            Ok(await _routeService.GetStationCountByLineIdAsync(lineId));
+
+        [HttpDelete("line/{id}")]
+        public async Task<IActionResult> DeleteAllRoutesByLineIdAsync(int lineId)
+        {
+            var success = await _routeService.DeleteAllRoutesByLineIdAsync(lineId);
+            if (!success) return NotFound();
+            return NoContent();
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRoute(int id)
         {
