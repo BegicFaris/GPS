@@ -2,10 +2,14 @@
     height: 100px;
 }
 
-.modal-title,.mb-3,.form-check, .btn{
+.modal-title,.form-check, .btn{
     margin-left:auto;
     margin-right:auto;
     width:50%;
+}
+.mb-3{
+    margin-left:0;
+    margin-right:0;
 }
 .btn {
     display: inline-flex;

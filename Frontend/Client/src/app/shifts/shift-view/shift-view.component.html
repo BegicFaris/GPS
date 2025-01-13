@@ -1,4 +1,4 @@
-<button  type="button" class="btn btn-success" (click)="goToAddForm()">Add new shift</button>
+<button type="button" class="btn btn-success" (click)="goToAddForm()">Add new shift</button>
 <table class="table">
   <thead>
     <tr>
@@ -8,6 +8,7 @@
       <th scope="col">Shift date</th>
       <th scope="col">Shift starting time</th>
       <th scope="col">Shift ending time</th>
+      <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
@@ -24,9 +25,31 @@
       <td>{{shift.shiftDate}}</td>
       <td>{{shift.shiftStartingTime}}</td>
       <td>{{shift.shiftEndingTime}}</td>
-      <td><button type="button" class="btn btn-primary" (click)="openEditDialog(shift)">Edit</button></td>
-      <td><button type="button" class="btn btn-danger" (click)="deleteShift(shift.id)">Delete</button></td>
-      <td><button type="button" class="btn btn-primary" (click)="openShiftDetails(shift)">Shift details</button></td>
+
+
+      <td class="text-center">
+        <button type="button" class="btn btn-primary" (click)="openEditDialog(shift)">
+          <i class="bi bi-pencil"></i>
+        </button>
+      </td>
+
+      <td class="text-center">
+        <button type="button" class="btn btn-primary" (click)="openShiftDetails(shift)">
+          Shift details
+        </button>
+      </td>
+
+      <td class="text-center">
+        <button type="button" class="btn btn-primary" (click)="downloadShiftDetails(shift.id)">
+          <i class="bi bi-download"></i>
+        </button>
+      </td>
+
+      <td class="text-center">
+        <button type="button" class="btn btn-danger" (click)="deleteShift(shift.id)">
+          Delete
+        </button>
+      </td>
     </tr>
     }
   </tbody>
