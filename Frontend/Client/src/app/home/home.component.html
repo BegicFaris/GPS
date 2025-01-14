@@ -80,17 +80,30 @@ data-bs-interval="3000"
 </button>
 </div>
 
+<!-- Help Section -->
+<div class="help-section py-5 text-center">
+  <div class="container">
+    <h3 class="mb-3">Need Assistance?</h3>
+    <p class="help-text lead">We’re here to help you with any queries or concerns.</p>
+    <a href="tel:+387123456789" class="btn btn-help mt-3">+387/123-456-789</a>
+  </div>
+</div>
+
 <div class="container">
-  <h1>Buy a ticket</h1>
+  <h1>Buy a Ticket</h1>
+
+  <!-- Station Selector Section -->
   <div class="station-select">
-    <label for="stationDropdown">Select a Station:</label>
+    <label for="stationDropdown" class="station-label">Select a Station:</label>
     <select id="stationDropdown" [(ngModel)]="selectedStationId" (ngModelChange)="watchSelectedStation()">
-      <option value="null">Choose a station</option>
-      @for (station of stations; track station.id) {
-      <option [value]="station.id">{{ station.name }}</option>
-      }
+      <option [value]="null">Choose a station</option>
+      <ng-container *ngFor="let station of stations">
+        <option [value]="station.id">{{ station.name }}</option>
+      </ng-container>
     </select>
   </div>
+
+  
 
   @if (selectedStation) {
   <div class="station-info">
