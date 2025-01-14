@@ -3,17 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, inject, OnInit, Renderer2 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from '../register/register.component';
-import { RouterLink, Routes } from '@angular/router';
+import { Router, RouterLink, Routes } from '@angular/router';
 import { AccountService } from '../_services/account.service';
 import { Title } from '@angular/platform-browser';
 import { LazyLoadDirective } from '../lazy-load.directive';
+import { Station } from '../_models/station';
+import { StationService } from '../_services/station.service';
+import { LineService } from '../_services/line.service';
+import { Line } from '../_models/line';
+import { first, firstValueFrom } from 'rxjs';
 
-interface Station {
-  id: string;
-  name: string;
-  zone: number;
-  busLines: string[];
-}
 
 interface Tour {
   id: number;
@@ -30,25 +29,50 @@ interface Tour {
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit{
+buyATicket() {
+  this.router.navigate(['/buy-ticket']);
+
+}
 private titleService = inject(Title);
+private stationService = inject(StationService);
+private lineService = inject(LineService);
+private router = inject(Router)
 
   accountService = inject(AccountService);
 
-  stations: Station[] = [
-    { id: "1", name: "Musala", zone: 1, busLines: ["101", "102", "103"] },
-    { id: "2", name: "Šarića džamija", zone: 2, busLines: ["201", "202"] },
-    { id: "3", name: "Narodno pozorište", zone: 3, busLines: ["301", "302", "303", "304"] },
-    { id: "4", name: "Španski trg", zone: 2, busLines: ["201", "204", "205"] },
-  ];
-  selectedStationId: string = '';
-  get selectedStation(): Station | undefined {
-    return this.stations.find(station => station.id === this.selectedStationId);
-  }
+  stations: Station[] = [];
+  lines: Line[] = [];
+
+  selectedStationId: number | null=null;
+  selectedStation: Station | undefined;
 
   http = inject(HttpClient);
   registerMode = false;
   users: any;
 
+ async watchSelectedStation(): Promise<void> {
+    // Check if `selectedStationId` exists
+    if (this.selectedStationId) {
+      this.selectedStation=await firstValueFrom(this.stationService.getStation(this.selectedStationId));
+
+
+
+
+      if(this.selectedStation){
+        this.loadLines();
+      }
+    }}
+
+    loadLines(){
+        if(this.selectedStation)
+        {
+          this.lineService.getAllLinesByStationId(this.selectedStation?.id).subscribe(
+            (data)=>{
+              this.lines=data;
+            }
+          );
+        }
+    }
 
   registerToggle() {
     this.registerMode = !this.registerMode;
@@ -92,6 +116,8 @@ private titleService = inject(Title);
 
   ngOnInit() {
     this.titleService.setTitle("Home");
+    this.loadStations();
+
 
     this.imageOverlay = this.el.nativeElement.querySelector('#imageOverlay');
     this.enlargedImage = this.el.nativeElement.querySelector('#enlargedImage') as HTMLImageElement;
@@ -104,6 +130,12 @@ private titleService = inject(Title);
     if (this.imageOverlay) {
       this.renderer.listen(this.imageOverlay, 'click', () => this.hideEnlargedImage());
     }
+  }
+  loadStations() {
+    this.stationService.getAllStations().subscribe((data)=>
+      {
+        this.stations=data;
+      });   
   }
 
   showEnlargedImage(event: Event) {

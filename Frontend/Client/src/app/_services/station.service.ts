@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { Station } from '../_models/station';
 
 @Injectable({
@@ -13,13 +13,8 @@ export class StationService {
   getAllStations() {
     return this.http.get<Station[]>(this.baseUrl );
   }
-  getStation(id: number){
-    return this.http.get<Station>(this.baseUrl + `/${id}`).pipe(
-      catchError(error => {
-        console.error('Error fetching station:', error);
-        return (error);
-      })
-    );
+  getStation(id: number):Observable<Station>{
+    return this.http.get<Station>(this.baseUrl + `/${id}`);
   }
   createStation(station: any) {
     return this.http.post<Station>(this.baseUrl, station).pipe(
