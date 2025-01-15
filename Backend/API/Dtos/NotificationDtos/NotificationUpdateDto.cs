@@ -11,7 +11,7 @@ namespace GPS.API.Dtos.NotificationDtos
         public byte[]? Image { get; set; }
         public  int? NotificationTypeId { get; set; }
         public  int? LineId { get; set; }
-        public  DateOnly? CreationDate { get; set; }
+        public  DateTime? CreationDate { get; set; }
         public  int? ManagerId { get; set; }
     }
 }

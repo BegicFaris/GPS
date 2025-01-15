@@ -22,7 +22,7 @@
       <td>{{notification.title}}</td>
       <td>{{notification.description}}</td>
       <td>{{notification.notificationType.name}}</td>
-      <td>{{notification.creationDate}}</td>
+      <td>{{notification.creationDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
       <td>{{notification.line!=null?notification.line.name:"No line"}}</td>
       <td><button type="button" class="btn btn-primary" (click)="openEditDialog(notification)">Edit</button></td>
       <td><button type="button" class="btn btn-danger" (click)="deleteNotificatiom(notification.id)">Delete</button>

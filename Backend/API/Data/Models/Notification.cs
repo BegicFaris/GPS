@@ -21,7 +21,7 @@ namespace GPS.API.Data.Models
         public int? LineId { get; set; }
         public Line? Line { get; set; }
 
-        public required DateOnly CreationDate { get; set; }
+        public required DateTime CreationDate { get; set; }
 
         [ForeignKey(nameof(MyAppUser))]
         public required int ManagerId { get; set; }

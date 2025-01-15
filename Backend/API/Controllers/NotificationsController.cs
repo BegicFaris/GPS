@@ -1,4 +1,5 @@
 ﻿using GPS.API.Data.Models;
+using GPS.API.Dtos;
 using GPS.API.Dtos.NotificationDtos;
 using GPS.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,15 +9,33 @@ namespace GPS.API.Controllers
     public class NotificationsController : MyControllerBase
     {
         private readonly INotificationService _notificationService;
+        private readonly IEmailService _emailService;
 
-        public NotificationsController(INotificationService notificationService)
+        public NotificationsController(INotificationService notificationService, IEmailService emailService)
         {
             _notificationService = notificationService;
+            _emailService = emailService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllNotifications() =>
             Ok(await _notificationService.GetAllNotificationsAsync());
+
+        [HttpGet("paged")]
+        public async Task<ActionResult<PagedResult<Notification>>> GetNotifications(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 7)
+        {
+            try
+            {
+                var result = await _notificationService.GetNotificationsAsync(page, pageSize);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while retrieving notifications");
+            }
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetNotification(int id)
@@ -41,6 +60,17 @@ namespace GPS.API.Controllers
             };
             var createdNotification = await _notificationService.CreateNotificationAsync(notification);
             return CreatedAtAction(nameof(CreateNotification), new { id = createdNotification.Id }, createdNotification);
+        }
+
+        [HttpGet("recent")]
+        public async Task<ActionResult<IEnumerable<Notification>>> GetRecentNotifications([FromQuery] int hours = 48)
+        {
+            var tenantId = User.FindFirst("TenantId")?.Value;
+            if (string.IsNullOrEmpty(tenantId))
+                return Unauthorized();
+
+            var notifications = await _notificationService.GetRecentNotificationsAsync(tenantId, hours);
+            return Ok(notifications);
         }
 
         [HttpPut("{id}")]

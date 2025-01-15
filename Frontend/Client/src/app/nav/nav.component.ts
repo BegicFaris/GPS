@@ -11,7 +11,15 @@ import { MyAppUser } from '../_models/my-app-user';
 import { ThemeService } from '../_services/theme.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Notification } from '../_models/notification';
+import { NotificationService } from '../_services/notification.service';
 
+interface GroupedNotifications {
+  type: string;
+  count: number;
+  notifications: Notification[];
+  showDetails: boolean;
+}
 
 @Component({
   selector: 'app-nav',
@@ -23,19 +31,19 @@ import { MatButtonModule } from '@angular/material/button';
     RouterLink,
     RouterLinkActive,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
 })
-export class NavComponent implements OnInit{
+export class NavComponent implements OnInit {
   showPassword: boolean = false;
   accountService = inject(AccountService);
   myAppUserService = inject(MyAppUserService);
   router = inject(Router);
   model: any = {};
-  user: any={};
-  email: string ="";
+  user: any = {};
+  email: string = '';
   loginError: string = '';
   isLoading: boolean = false;
   showTwoFactorInput: boolean = false;
@@ -43,34 +51,65 @@ export class NavComponent implements OnInit{
   codeVerified: boolean = false;
   codeError: string = '';
   invalidCode: boolean = false;
+  groupedNotifications: GroupedNotifications[] = [];
+  currentlyVisibleNotification: GroupedNotifications | null = null;
 
-  constructor(public themeService: ThemeService) {}
+  constructor(
+    public themeService: ThemeService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
-    this.userEmail();  // Get email after login
+    this.userEmail(); // Get email after login
     this.loadName();
+    this.loadNotifications();
   }
 
-  get userRole(): string | null{
+  get userRole(): string | null {
     return this.accountService.getUserRole();
-    
   }
   toggleTheme() {
     this.themeService.toggleTheme();
   }
-  
-  loadName() {
-    this.myAppUserService.getMyAppUserByEmail(this.email).subscribe(
-      (data) => {
-        this.user = data; // or data.routes if it's nested
+  loadNotifications() {
+    this.notificationService.getRecentNotifications().subscribe({
+      next: (notifications) => {
+        this.groupNotifications(notifications);
       },
-    );
+      error: (error) => {
+        console.error('Error fetching notifications:', error);
+      },
+    });
+  }
+  groupNotifications(notifications: Notification[]) {
+    const grouped = notifications.reduce((acc, notification) => {
+      const type = notification.notificationType.name;
+      if (!acc[type]) {
+        acc[type] = {
+          type,
+          count: 0,
+          notifications: [],
+          showDetails: false,
+        };
+      }
+      acc[type].count++;
+      acc[type].notifications.push(notification);
+      return acc;
+    }, {} as Record<string, GroupedNotifications>);
+
+    this.groupedNotifications = Object.values(grouped);
   }
 
-  userEmail(){
+  loadName() {
+    this.myAppUserService.getMyAppUserByEmail(this.email).subscribe((data) => {
+      this.user = data; // or data.routes if it's nested
+    });
+  }
+
+  userEmail() {
     this.email = this.accountService.getUserEmail();
   }
-  
+
   login() {
     this.loginError = '';
     this.isLoading = true;
@@ -78,7 +117,7 @@ export class NavComponent implements OnInit{
       next: (status) => {
         if (status.twoFactorStatus) {
           this.showTwoFactorInput = true; // Show input for the 2FA code
-    
+
           // Send 2FA code to user's email
           this.accountService.sendResetCode(this.model.email).subscribe({
             next: () => {
@@ -87,7 +126,8 @@ export class NavComponent implements OnInit{
             },
             error: (error) => {
               console.error('Error sending 2FA code:', error);
-              this.loginError = 'Failed to send the 2FA code. Please try again.';
+              this.loginError =
+                'Failed to send the 2FA code. Please try again.';
             },
           });
         } else {
@@ -97,23 +137,23 @@ export class NavComponent implements OnInit{
       },
       error: (error) => {
         console.error('Error checking 2FA status:', error);
-        this.loginError = 'An error occurred while checking 2FA status. Please try again.';
+        this.loginError =
+          'An error occurred while checking 2FA status. Please try again.';
       },
     });
-    
   }
   verifyTwoFactorCode(code: string) {
     this.accountService.verifyCode(this.model.email, code).subscribe({
       next: (response) => {
         console.log('2FA verification successful:', response);
-        this.twoFactorCode='';
+        this.twoFactorCode = '';
         this.performLogin();
       },
       error: (error) => {
         console.error('Error verifying 2FA code:', error);
         this.loginError = 'Invalid 2FA code. Please try again.';
         this.invalidCode = true;
-        this.twoFactorCode = ''; // Clear the input
+        this.twoFactorCode = '';
         this.isLoading = false;
       },
     });
@@ -121,7 +161,7 @@ export class NavComponent implements OnInit{
   closePopup() {
     this.invalidCode = false;
   }
-  
+
   private performLogin() {
     this.accountService.login(this.model).subscribe({
       next: (_) => {
@@ -135,7 +175,7 @@ export class NavComponent implements OnInit{
         console.error('Login error:', error);
         this.loginError = error.message;
         this.isLoading = false;
-      }
+      },
     });
   }
   logout() {
@@ -147,42 +187,42 @@ export class NavComponent implements OnInit{
     this.showPassword = !this.showPassword;
   }
 
-notifications = [
-    {
-      type: 'warning',
-      iconClass: 'bi bi-exclamation-circle-fill text-warning',
-      count: 2,
-      details: ['Low battery', 'Overdue maintenance'],
-      showDetails: false,
-    },
-    {
-      type: 'caution',
-      iconClass: 'bi bi-exclamation-triangle-fill text-danger',
-      count: 1,
-      details: ['Speeding detected'],
-      showDetails: false,
-    },
-    {
-      type: 'info',
-      iconClass: 'bi bi-info-circle-fill text-info',
-      count: 5,
-      details: ['Route updated', 'Weather change', 'New message'],
-      showDetails: false,
-    },
-  ];
-
-  showDetails(type: string): void {
-    const notification = this.notifications.find((n) => n.type === type);
-    if (notification) {
-      notification.showDetails = true;
+  getNotificationIcon(type: string): string {
+    switch (type.toLowerCase()) {
+      case 'warning':
+        return 'bi bi-exclamation-circle-fill text-warning';
+      case 'error':
+        return 'bi bi-exclamation-triangle-fill text-danger';
+      case 'general':
+        return 'bi bi-info-circle-fill text-info';
+      default:
+        return 'bi bi-bell-fill text-secondary';
+    }
+  }
+  showDetails(group: GroupedNotifications): void {
+    if (!this.currentlyVisibleNotification) {
+      group.showDetails = true;
     }
   }
 
-  hideDetails(type: string): void {
-    const notification = this.notifications.find((n) => n.type === type);
-    if (notification) {
-      notification.showDetails = false;
+  hideDetails(group: GroupedNotifications): void {
+    if (!this.currentlyVisibleNotification) {
+      group.showDetails = false;
     }
   }
 
+  toggleDetails(group: GroupedNotifications): void {
+    if (this.currentlyVisibleNotification === group) {
+      group.showDetails = !group.showDetails;
+      if (!group.showDetails) {
+        this.currentlyVisibleNotification = null;
+      }
+    } else {
+      if (this.currentlyVisibleNotification) {
+        this.currentlyVisibleNotification.showDetails = false;
+      }
+      group.showDetails = true;
+      this.currentlyVisibleNotification = group;
+    }
+  }
 }

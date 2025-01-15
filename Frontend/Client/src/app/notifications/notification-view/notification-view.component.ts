@@ -6,11 +6,12 @@ import { Notification } from '../../_models/notification';
 import { NotificationEditComponent } from '../notification-edit/notification-edit.component';
 import { Title } from '@angular/platform-browser';
 import { lastValueFrom } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-notification-view',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink,CommonModule],
   templateUrl: './notification-view.component.html',
   styleUrl: './notification-view.component.css'
 })
@@ -24,6 +25,8 @@ export class NotificationViewComponent {
 
   async ngOnInit() {
     this.titleService.setTitle("Notifications");
+
+  
     await this.loadNotifications();
     await lastValueFrom(this.router.events);
     this.router.events.subscribe(async (event) => {
@@ -42,7 +45,8 @@ export class NotificationViewComponent {
         next: response => {
           this.loadNotifications();
           console.log('Notification deleted successfully', response);
-          this.cancel(); 
+          this.cancel();
+          window.location.reload() 
         },
         error: error => {
           console.error('Error deleting notification', error);
