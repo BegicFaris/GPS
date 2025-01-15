@@ -19,6 +19,10 @@ namespace GPS.API.Controllers
         public async Task<IActionResult> GetAllLines() =>
             Ok(await _lineService.GetAllLinesAsync());
 
+        [HttpGet("station/{stationId}")]
+        public async Task<IActionResult> GetAllLinesByStationId(int stationId) =>
+            Ok(await _lineService.GetAllLinesByStationIdAsync(stationId));
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLine(int id)
         {

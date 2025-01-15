@@ -31,14 +31,14 @@ namespace GPS.API.Controllers
         {
             var notification = new Notification
             {
+                Title = notificationCreateDto.Title,
                 Description = notificationCreateDto.Description,
+                Image= notificationCreateDto.Image,
                 NotificationTypeId = notificationCreateDto.NotificationTypeId,
-                Duration = notificationCreateDto.Duration,
-                IsActive = notificationCreateDto.IsActive,
-                Date = notificationCreateDto.Date,
-                LineId = notificationCreateDto.LineId
+                CreationDate = notificationCreateDto.CreationDate,
+                LineId = notificationCreateDto.LineId,
+                ManagerId = notificationCreateDto.ManagerId,
             };
-
             var createdNotification = await _notificationService.CreateNotificationAsync(notification);
             return CreatedAtAction(nameof(CreateNotification), new { id = createdNotification.Id }, createdNotification);
         }
@@ -51,19 +51,20 @@ namespace GPS.API.Controllers
             var existingNotification = await _notificationService.GetNotificationByIdAsync(id);
             if (existingNotification == null) return NotFound($"Notification with Id:{id} not found!");
 
-
-            if(notificationUpdateDto.Description !=null)
+            if (notificationUpdateDto.Title != null)
+                existingNotification.Title = notificationUpdateDto.Title;
+            if (notificationUpdateDto.Description !=null)
                 existingNotification.Description = notificationUpdateDto.Description;
+            if (notificationUpdateDto.Image != null)
+                existingNotification.Image = notificationUpdateDto.Image;
             if (notificationUpdateDto.NotificationTypeId != null)
                 existingNotification.NotificationTypeId = notificationUpdateDto.NotificationTypeId.Value;
-            if (notificationUpdateDto.Duration != null)
-                existingNotification.Duration = notificationUpdateDto.Duration.Value;
-            if (notificationUpdateDto.Date != null)
-                existingNotification.Date = notificationUpdateDto.Date.Value;
-            if (notificationUpdateDto.IsActive != null)
-                existingNotification.IsActive = notificationUpdateDto.IsActive.Value;
+            if (notificationUpdateDto.CreationDate != null)
+                existingNotification.CreationDate = notificationUpdateDto.CreationDate.Value;
             if (notificationUpdateDto.LineId != null)
                 existingNotification.LineId = notificationUpdateDto.LineId.Value;
+            if(notificationUpdateDto.ManagerId != null)
+                existingNotification.ManagerId= notificationUpdateDto.ManagerId.Value;
 
             var updatedNotification = await _notificationService.UpdateNotificationAsync(existingNotification);
             return Ok(updatedNotification);

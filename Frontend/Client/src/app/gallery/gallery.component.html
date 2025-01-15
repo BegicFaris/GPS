@@ -5,7 +5,6 @@
   <div *ngIf="accountService.getUserRole() === 'Manager'" class="upload-container">
     <label class="file-input-label">
       <input type="file" (change)="onFileSelected($event)" #fileInput class="file-input" />
-      <span>Choose File</span>
     </label>
     <button (click)="onUpload()" class="upload-button">Upload Photo</button>
   </div>

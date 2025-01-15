@@ -7,95 +7,103 @@
     </p>
 
     <!-- Bootstrap Carousel -->
-    <div
-      id="carouselExampleAutoplaying"
-      class="carousel slide"
-      data-bs-ride="carousel"
-      data-bs-interval="3000"
-    >
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="carousel-image-container">
-            <img
-              appLazyLoad="MostarBridge.jpg"
-              class="d-block w-100"
-              alt="Mostar Sightseeing"
-            />
-            <div class="carousel-caption d-none d-md-block">
-              <h3>Explore the Old Bridge</h3>
-              <p>
-                Discover the beauty of Mostar’s historic landmarks and scenic
-                views.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-image-container">
-            <img 
-            appLazyLoad="busevi.PNG" 
-            class="d-block w-100" 
-            alt="Bus Tours" 
-            />
-            <div class="carousel-caption d-none d-md-block">
-              <h3>Comfortable Bus Services</h3>
-              <p>
-                Travel with comfort and enjoy a relaxing ride with our
-                well-maintained buses.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-image-container">
-            <img
-            appLazyLoad="1620px-Blagaj_Ceilings.jpg"
-              class="d-block w-100"
-              alt="Adventure Trips"
-            />
-            <div class="carousel-caption d-none d-md-block">
-              <h3>Adventure Awaits</h3>
-              <p>
-                Join us for exciting trips to nearby destinations and explore
-                more of the region.
-              </p>
-            </div>
-          </div>
-        </div>
+<div
+id="carouselExampleAutoplaying"
+class="carousel slide"
+data-bs-ride="carousel"
+data-bs-interval="3000"
+>
+<div class="carousel-inner">
+  <div class="carousel-item active">
+    <div class="carousel-image-container">
+      <img
+        src="MostarBridge.jpg"
+        class="d-block w-100"
+        alt="Mostar Sightseeing"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Explore the Old Bridge</h3>
+        <p>
+          Discover the beauty of Mostar’s historic landmarks and scenic views.
+        </p>
       </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
   </div>
-</section>
+  <div class="carousel-item">
+    <div class="carousel-image-container">
+      <img 
+        src="busevi.PNG" 
+        class="d-block w-100" 
+        alt="Bus Tours" 
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Comfortable Bus Services</h3>
+        <p>
+          Travel with comfort and enjoy a relaxing ride with our well-maintained buses.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="carousel-item">
+    <div class="carousel-image-container">
+      <img
+        src="1620px-Blagaj_Ceilings.jpg"
+        class="d-block w-100"
+        alt="Adventure Trips"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h3>Adventure Awaits</h3>
+        <p>
+          Join us for exciting trips to nearby destinations and explore more of the region.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<button
+  class="carousel-control-prev"
+  type="button"
+  data-bs-target="#carouselExampleAutoplaying"
+  data-bs-slide="prev"
+>
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Previous</span>
+</button>
+<button
+  class="carousel-control-next"
+  type="button"
+  data-bs-target="#carouselExampleAutoplaying"
+  data-bs-slide="next"
+>
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="visually-hidden">Next</span>
+</button>
+</div>
+
+<!-- Help Section -->
+<div class="help-section py-5 text-center">
+  <div class="container">
+    <h3 class="mb-3">Need Assistance?</h3>
+    <p class="help-text lead">We’re here to help you with any queries or concerns.</p>
+    <a href="tel:+387123456789" class="btn btn-help mt-3">+387/123-456-789</a>
+  </div>
+</div>
 
 <div class="container">
-  <h1>Buy a ticket</h1>
+  <h1>Buy a Ticket</h1>
+
+  <!-- Station Selector Section -->
   <div class="station-select">
-    <label for="stationDropdown">Select a Station:</label>
-    <select id="stationDropdown" [(ngModel)]="selectedStationId">
-      <option value="">Choose a station</option>
-      @for (station of stations; track station.id) {
-      <option [value]="station.id">{{ station.name }}</option>
-      }
+    <label for="stationDropdown" class="station-label">Select a Station:</label>
+    <select id="stationDropdown" [(ngModel)]="selectedStationId" (ngModelChange)="watchSelectedStation()">
+      <option [value]="null">Choose a station</option>
+      <ng-container *ngFor="let station of stations">
+        <option [value]="station.id">{{ station.name }}</option>
+      </ng-container>
     </select>
   </div>
+
+  
 
   @if (selectedStation) {
   <div class="station-info">
@@ -110,18 +118,9 @@
       </thead>
       <tbody>
         <tr>
-          <td>{{ selectedStation.zone }}</td>
-          <td>{{ selectedStation.busLines.join(", ") }}</td>
-          <td>
-            @if (!accountService.currentUser()) {<button
-              class="buy-ticket"
-              [routerLink]="'/register'"
-            >
-              Buy Ticket</button
-            >}@else {<button class="buy-ticket" [routerLink]="'buy-ticket'">
-              Buy Ticket</button
-            >}
-          </td>
+          <td>{{selectedStation.zone?.name}}</td>
+          <td>@for (line of lines; track $index) { {{line.name}} }</td>
+          <td><button class="btn btn-primary" (click)="buyATicket()">Buy a ticket</button> </td>
         </tr>
       </tbody>
     </table>

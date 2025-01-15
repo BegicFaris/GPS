@@ -6,6 +6,7 @@ namespace GPS.API.Interfaces
     public interface ILineService
     {
         Task<IEnumerable<Line>> GetAllLinesAsync();
+        Task<IEnumerable<Line>> GetAllLinesByStationIdAsync(int stationId);
         Task<Line?> GetLineByIdAsync(int id);
         Task<Line> CreateLineAsync(Line line);
         Task<Line> UpdateLineAsync(Line line);

@@ -5,6 +5,7 @@ import { NotificationService } from '../../_services/notification.service';
 import { Notification } from '../../_models/notification';
 import { NotificationEditComponent } from '../notification-edit/notification-edit.component';
 import { Title } from '@angular/platform-browser';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-notification-view',
@@ -21,21 +22,18 @@ export class NotificationViewComponent {
   notifications: Notification[] = [];
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle("Notifications");
-    this.loadNotifications();
-    this.router.events.subscribe((event) => {
+    await this.loadNotifications();
+    await lastValueFrom(this.router.events);
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/manager-dashboard/notifications') {
-        this.loadNotifications();
+        await this.loadNotifications();
       }
     });
   }
-  loadNotifications() {
-    this.notificationService.getAllNotifications().subscribe(
-      (data) => {
-        this.notifications = data; 
-      },
-    );
+  async loadNotifications() {
+    this.notifications=await lastValueFrom(this.notificationService.getAllNotifications());
   }
 
   deleteNotificatiom(id: number) {
@@ -59,12 +57,13 @@ export class NotificationViewComponent {
       width: '1000px',  
       data: {
         id:notification.id,
+        title:notification.title,
         description:notification.description,
+        image:notification.image,
         notificationTypeId:notification.notificationTypeId,
-        duration:notification.duration,
-        date:notification.date,
-        isActive:notification.isActive,
-        lineId:notification.lineId
+        creationDate:notification.creationDate,
+        lineId:notification.lineId,
+        managerId:notification.managerId
       },  
     });
     dialogRef.afterClosed().subscribe(result => {

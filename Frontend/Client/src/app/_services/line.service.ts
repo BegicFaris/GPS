@@ -15,6 +15,11 @@ export class LineService {
     return this.http.get<Line[]>(this.baseUrl);
   }
 
+  getAllLinesByStationId(stationId: number) {
+    return this.http.get<Line[]>(this.baseUrl + `/station/${stationId}`);
+  }
+
+
   getLine(id: number) {
     return this.http.get<Line>(this.baseUrl + `/${id}`).pipe(
       catchError(error => {

@@ -532,3 +532,39 @@ body.overlay-active {
 h2{
   color: var(--text-color);
 }
+
+/* Help Section */
+.help-section {
+  background-color: var(--background-color); 
+  border-radius: 15px; /* Rounded edges */
+}
+
+.help-section h3 {
+  color: var(--text-color);
+  font-size: 1.75rem; /* Increased heading size */
+}
+
+.help-text {
+  color: var(--sub-color); 
+  font-size: 1.25rem; /* Slightly larger font for better emphasis */
+}
+
+.contact-number {
+  color: #007bff; /* Bootstrap primary color for consistency */
+}
+
+.btn-help {
+  background-color: var(--button-primary); 
+  color: white;
+  padding: 10px 30px;
+  font-size: 1.25rem;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.btn-help:hover {
+  background-color: #0056b3; /* Slightly darker blue */
+  transform: scale(1.05); /* Slight zoom-in on hover */
+}

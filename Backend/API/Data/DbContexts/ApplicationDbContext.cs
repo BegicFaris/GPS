@@ -142,8 +142,8 @@ namespace GPS.API.Data.DbContexts
                 new NotificationType { Id = 2, Description = "A error notif", Name = "Error", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Notification>().HasData(
-                new Notification { Id = 1, Description = "New notif", Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 1, NotificationTypeId = 1, TenantId = "mostar" },
-                new Notification { Id = 2, Description = "New notif", Date = new DateOnly(2024, 1, 1), Duration = new TimeOnly(1, 1, 1), IsActive = true, LineId = 2, NotificationTypeId = 2, TenantId = "mostar" }
+                new Notification { Id = 1, Title="A new notif",Description = "New notif", CreationDate = new DateOnly(2024, 1, 1), LineId = 1, NotificationTypeId = 1,ManagerId=1 ,TenantId = "mostar" },
+                               new Notification { Id = 2, Title = "A new notif", Description = "New notif", CreationDate = new DateOnly(2024, 1, 1), LineId = 1, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" }
                 );
             modelBuilder.Entity<PassengerCreditCard>().HasData(
                 new PassengerCreditCard { Id = 1, CreditCardId = 1, PassengerId = 5, SavingDate = new DateTime(2024, 1, 1), TenantId = "mostar" },
