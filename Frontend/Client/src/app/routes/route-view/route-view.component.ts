@@ -8,8 +8,12 @@ import { Title } from '@angular/platform-browser';
 import { Line } from '../../_models/line';
 import { __param } from 'tslib';
 import { LineService } from '../../_services/line.service';
-import { catchError, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+
+interface LineWithStationCount extends Line {
+  stationCount: number;
+}
 
 @Component({
   selector: 'app-route-view',
@@ -19,6 +23,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './route-view.component.css',
 })
 export class RouteViewComponent {
+  linesWithStationCount: LineWithStationCount[] = [];
   private lineService = inject(LineService);
   private routeService = inject(RouteService);
   private router = inject(Router);
@@ -26,32 +31,41 @@ export class RouteViewComponent {
   private titleService = inject(Title);
   lines: Line[] = [];
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle('Routes');
-    this.loadLines();
+    await this.loadLines();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd && event.url === '/routes') {
         this.loadLines();
       }
     });
   }
-  loadLines() {
-    this.lineService.getAllLines().subscribe((data) => {
-      this.lines = data; // or data.routes if it's nested
-      console.log(this.lines);
-    });
+  async loadLines() {
+    try {
+      // Fetch all lines
+      const data = await firstValueFrom(this.lineService.getAllLines());
+      this.lines = data; // Assuming data contains the lines
+
+      // Create a new array of lines with station counts
+      for (let line of this.lines) {
+        const response = await firstValueFrom(this.routeService.getStationCountByLineId(line.id));
+        const lineWithStationCount: LineWithStationCount = {
+          ...line, // Copy all properties from the original line
+          stationCount: response.count // Add the stationCount property
+        };
+        this.linesWithStationCount.push(lineWithStationCount); // Add it to a new array
+      }
+
+      console.log(this.linesWithStationCount); // Now, linesWithStationCount contains the new objects with stationCount
+    } catch (error) {
+      console.error('Error loading lines:', error);
+    }
   }
 
-  getStationCount(lineId: number): Observable<number> {
-    return this.routeService.getStationCountByLineId(lineId).pipe(catchError((error) => {
-      console.error('Error fetching station count:', error); return of(0); 
-     }) ); }
-
-
-      openRouteDetails(line: Line){
-        this.router.navigate(['manager-dashboard/routes/details'], { queryParams: line });
-      }
-      cancel() {
-        this.router.navigate(['manager-dashboard/routes']);
-      }
-    }
+  openRouteDetails(line: Line) {
+    this.router.navigate(['manager-dashboard/routes/details'], { queryParams: line });
+  }
+  cancel() {
+    this.router.navigate(['manager-dashboard/routes']);
+  }
+}

@@ -22,24 +22,33 @@
                 </select>
                 <div *ngIf="routeForm.get('stationId')?.invalid && routeForm.get('stationId')?.touched"
                     class="text-danger validation-message">
-                    Station is required
+                    <div *ngIf="routeForm.get('stationId')?.errors?.['required']">
+                        Station is required.
+                    </div>
                 </div>
             </td>
 
-            <td>        
+            <td>
                 <input type="time" class="form-control" formControlName="distanceFromTheNextStation" />
-                <div *ngIf="routeForm.get('distanceFromTheNextStation')?.errors?.['required']" class="text-danger validation-message">
-                    Distance from the next station is required
+                <div *ngIf="routeForm.get('distanceFromTheNextStation')?.invalid && routeForm.get('distanceFromTheNextStation')?.touched"
+                    class="text-danger validation-message">
+                    <div *ngIf="routeForm.get('distanceFromTheNextStation')?.errors?.['required']">
+                        Distance from the nex station is required.
+                    </div>
                 </div>
             </td>
 
             <td>
                 <select class="form-select" formControlName="order">
-                    <option *ngFor="let orderNumber of routeCountArr" [value]="orderNumber">{{ orderNumber }}</option>
+                    <option *ngFor="let orderNumber of routeCountArr" [value]="orderNumber">
+                        {{ orderNumber }}
+                    </option>
                 </select>
                 <div *ngIf="routeForm.get('order')?.invalid && routeForm.get('order')?.touched"
                     class="text-danger validation-message">
-                    Order is required
+                    <div *ngIf="routeForm.get('order')?.errors?.['required']">
+                        Order is required.
+                    </div>
                 </div>
             </td>
 
@@ -47,9 +56,8 @@
                 <button *ngIf="!routeForm.get('isEditMode')?.value" class="btn btn-primary"
                     (click)="addRoute(i)">Add</button>
                 <button *ngIf="routeForm.get('isEditMode')?.value" class="btn btn-danger"
-                (click)="deleteRoute(i)">Delete</button>
+                    (click)="deleteRoute(i)">Delete</button>
             </td>
         </tr>
     </tbody>
-
 </table>

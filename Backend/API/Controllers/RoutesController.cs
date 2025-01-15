@@ -18,11 +18,20 @@ namespace GPS.API.Controllers
         public async Task<IActionResult> GetAllRoutes() =>
             Ok(await _routeService.GetAllRoutesAsync());
 
-        [HttpGet("line/{id}")]
-        public async Task<IActionResult> GetStationCountByLineIdAsync(int lineId) =>
-            Ok(await _routeService.GetStationCountByLineIdAsync(lineId));
+        [HttpGet("line/{lineId}")]
+        public async Task<IActionResult> GetAllRoutesByLineId(int lineId)
+        {
+            return Ok(await _routeService.GetAllRoutesByLineIdAsync(lineId));
+        }
 
-        [HttpDelete("line/{id}")]
+        [HttpGet("station/{lineId}")]
+        public async Task<IActionResult> GetStationCountByLineIdAsync(int lineId)
+        {
+            var count = await _routeService.GetStationCountByLineIdAsync(lineId);
+            return Ok(new { count });
+        }
+
+        [HttpDelete("line/{lineId}")]
         public async Task<IActionResult> DeleteAllRoutesByLineIdAsync(int lineId)
         {
             var success = await _routeService.DeleteAllRoutesByLineIdAsync(lineId);
@@ -45,7 +54,8 @@ namespace GPS.API.Controllers
             {
             LineId=routeCreateDto.LineId,
             StationId=routeCreateDto.StationId,
-            DistanceFromTheNextStation=routeCreateDto.DistanceFromTheNextStation
+            DistanceFromTheNextStation=routeCreateDto.DistanceFromTheNextStation,
+            Order=routeCreateDto.Order,
             }; 
             var createdRoute = await _routeService.CreateRouteAsync(route);
             return CreatedAtAction(nameof(GetRoute), new { id = createdRoute.Id }, createdRoute);

@@ -3,6 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { Route } from '../_models/route';
 import { catchError, Observable } from 'rxjs';
 
+interface StationCountResponse {
+  count: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,9 +19,9 @@ export class RouteService {
     return this.http.get<Route[]>(this.baseUrl);
   }
 
-  getAllRoutesByLineId(lineId: number) {
+  getAllRoutesByLineId(lineId: number): Observable<Route[]> {
     return this.http.get<Route[]>(this.baseUrl + `/line/${lineId}`);
-  }
+}
 
   getRoute(id: number) {
     return this.http.get<Route>(this.baseUrl + `/${id}`).pipe(
@@ -28,12 +32,12 @@ export class RouteService {
     );
   }
   
-  getStationCountByLineId(lineId: number): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/line/${lineId}`);
+  getStationCountByLineId(lineId: number){
+    return this.http.get<StationCountResponse>(`${this.baseUrl}/station/${lineId}`);
   }
   
   deleteAllRoutesByLineIdAsync(lineId: number) {
-    return this.http.delete(this.baseUrl + `/${lineId}`).pipe(
+    return this.http.delete(this.baseUrl + `/line/${lineId}`).pipe(
       catchError(error => {
         console.error('Error deleting route:', error);
         return (error);

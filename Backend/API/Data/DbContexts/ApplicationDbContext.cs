@@ -150,8 +150,8 @@ namespace GPS.API.Data.DbContexts
                 new PassengerCreditCard { Id = 2, CreditCardId = 2, PassengerId = 6, SavingDate = new DateTime(2024, 1, 1), TenantId = "mostar" }
                 );
             modelBuilder.Entity<Models.Route>().HasData(
-               new Models.Route { Id = 1, LineId = 1, StationId = 1, DistanceFromTheNextStation = 15.6f, TenantId = "mostar" },
-               new Models.Route { Id = 2, LineId = 2, StationId = 2, DistanceFromTheNextStation = 15.6f, TenantId = "mostar" }
+               new Models.Route { Id = 1, LineId = 1, StationId = 1, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 1, TenantId = "mostar" },
+               new Models.Route { Id = 2, LineId = 2, StationId = 2, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 2, TenantId = "mostar" }
                );
             modelBuilder.Entity<Shift>().HasData(
                 new Shift { Id = 1, BusId = 1, DriverId = 1, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0), TenantId = "mostar" },

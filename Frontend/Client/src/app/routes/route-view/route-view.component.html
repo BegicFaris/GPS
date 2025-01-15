@@ -9,12 +9,12 @@
     </tr>
   </thead>
   <tbody>
-    @for (line of lines; track $index) {
+    @for (line of linesWithStationCount; track $index) {
     <tr>
       <th scope="row">{{ $index + 1 }}</th>
       <td>{{ line.name }}</td>
-      <td> 1</td>
-      <td><button type="button" class="btn btn-primary" (click)="openRouteDetails(line)">Shift details</button></td>
+      <td> {{line.stationCount}}</td>
+      <td><button type="button" class="btn btn-primary" (click)="openRouteDetails(line)">Route details</button></td>
     </tr>
     }
   </tbody>
