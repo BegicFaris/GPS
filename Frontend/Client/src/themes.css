@@ -20,6 +20,7 @@
   --accordion-arrow-invert: 0%;
   --accordion-button-bg: #f8f9fa;
   --accordion-button-active-bg: #e7f1ff;
+  --featured-card-background:#f0f0f0;
 }
 
 .dark-theme {
@@ -43,6 +44,7 @@
   --accordion-arrow-invert: 100%;
   --accordion-button-bg: #2b3035;
   --accordion-button-active-bg: #3a3f44;
+  --featured-card-background:#303030;
 }
 
 body {

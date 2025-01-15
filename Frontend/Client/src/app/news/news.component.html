@@ -1,1 +1,47 @@
-<p>news works!</p>
+<div class="news-container">
+    <div class="featured-news" *ngIf="notifications.length > 0">
+      <div class="news-card featured">
+        <div class="image-container">
+          <img [src]="'data:image/jpeg;base64,' + notifications[0].image" [alt]="notifications[0].title">
+        </div>
+        <div class="content">
+          <h2>{{notifications[0].title}}</h2>
+          <p class="description">{{notifications[0].description}}</p>
+          <div class="meta-info">
+            <span class="date">Created date: {{formatDate(notifications[0].creationDate)}}</span>
+            <span class="line" *ngIf="notifications[0].line">Line: {{notifications[0].line.name}}</span>
+            <span class="creator" *ngIf="notifications[0].manager">Created by: {{notifications[0].manager.firstName+' '+notifications[0].manager.lastName}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="news-grid">
+      <div class="news-card" *ngFor="let notification of notifications.slice(1)">
+        <div class="image-container">
+          <img [src]="'data:image/jpeg;base64,' + notification.image" [alt]="notification.title">
+        </div>
+        <div class="content">
+          <h3>{{notification.title}}</h3>
+          <p class="description">{{notification.description}}</p>
+          <div class="meta-info">
+            <span class="date">Created date: {{formatDate(notification.creationDate)}}</span>
+            <span class="line" *ngIf="notification.line">Line: {{notification.line.name}}</span>
+            <span class="creator" *ngIf="notification.manager">Created by: {{notification.manager.firstName+' '+notification.manager.lastName}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" 
+              (click)="onPageChange(currentPage - 1)">
+        Previous
+      </button>
+      <span>Page {{currentPage}} of {{totalPages}}</span>
+      <button [disabled]="currentPage === totalPages" 
+              (click)="onPageChange(currentPage + 1)">
+        Next
+      </button>
+    </div>
+  </div>
+  

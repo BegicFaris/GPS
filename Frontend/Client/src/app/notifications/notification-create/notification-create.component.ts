@@ -59,13 +59,14 @@ export class NotificationCreateComponent {
     if (newNotificationForm.valid) {
       if (this.notificationCreate.lineId == "")
         this.notificationCreate.lineId = null;
-      this.notificationCreate.creationDate = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+      this.notificationCreate.creationDate = new Date();
 
       console.log(this.notificationCreate);
       this.notificationService.createNotification(this.notificationCreate).subscribe({
         next: (response) => {
           console.log(response);
           this.cancel();
+          window.location.reload(); 
         },
       });
       this.router.navigate(['/manager-dashboard/notifications']);
@@ -87,16 +88,16 @@ export class NotificationCreateComponent {
 
   if (input.files && input.files[0]) {
     const file = input.files[0];
-    const validImageTypes = ['image/jpeg', 'image/png']; // Add allowed types
+    const validImageTypes = ['image/jpeg', 'image/png'];
 
-    // Check if the file type is valid
+
     if (!validImageTypes.includes(file.type)) {
       alert('Please upload a valid image file (JPEG, PNG, or GIF).');
-      this.clearFileInput(); // Automatically clear the file input
+      this.clearFileInput(); 
       return;
     }
 
-    // Set the file name to the file input
+
     this.fileName = file.name;
 
     // Create a FileReader to read the image file

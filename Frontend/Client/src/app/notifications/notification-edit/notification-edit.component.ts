@@ -55,6 +55,7 @@ export class NotificationEditComponent {
         }
       });
       this.dialogRef.close(this.notificationUpdate);
+      window.location.reload(); 
     }
   }
 

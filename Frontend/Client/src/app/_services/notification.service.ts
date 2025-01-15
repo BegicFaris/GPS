@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Notification } from '../_models/notification';
-import { catchError } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,14 @@ export class NotificationService {
     );
   }
 
+  getNotifications(page: number, pageSize: number = 7): Observable<{
+    items: Notification[],
+    totalCount: number
+  }> {
+    return this.http.get<any>(`${this.baseUrl}/paged?page=${page}&pageSize=${pageSize}`);
+  }
+
+
   createNotification(notification: any) {
     return this.http.post<Notification>(this.baseUrl, notification).pipe(
       catchError(error => {
@@ -31,6 +39,10 @@ export class NotificationService {
         return (error);
       })
     );
+  }
+
+  getRecentNotifications(hours: number = 48): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${this.baseUrl}/recent?hours=${hours}`);
   }
 
   updateNotification(notification: any) {

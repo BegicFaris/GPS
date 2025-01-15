@@ -138,12 +138,21 @@ namespace GPS.API.Data.DbContexts
                  new Line { Id = 2, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21", TenantId = "mostar" }
                 );
             modelBuilder.Entity<NotificationType>().HasData(
-                new NotificationType { Id = 1, Description = "A warning notif", Name = "Warning", TenantId = "mostar" },
-                new NotificationType { Id = 2, Description = "A error notif", Name = "Error", TenantId = "mostar" }
+                new NotificationType { Id = 1, Description = "A warning notification", Name = "Warning", TenantId = "mostar" },
+                new NotificationType { Id = 2, Description = "A error notification", Name = "Error", TenantId = "mostar" },
+                new NotificationType { Id = 3, Description = "A general notification", Name = "General", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Notification>().HasData(
-                new Notification { Id = 1, Title="A new notif",Description = "New notif", CreationDate = new DateOnly(2024, 1, 1), LineId = 1, NotificationTypeId = 1,ManagerId=1 ,TenantId = "mostar" },
-                               new Notification { Id = 2, Title = "A new notif", Description = "New notif", CreationDate = new DateOnly(2024, 1, 1), LineId = 1, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" }
+                new Notification { Id = 1, Title="A new notif 1",Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 1,ManagerId=1 ,TenantId = "mostar" },
+                new Notification { Id = 2, Title = "A new notif 2", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 3, Title = "A new notif 3", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 2, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 4, Title = "A new notif 4", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 5, Title = "A new notif 5", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 2, NotificationTypeId = 2, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 6, Title = "A new notif 6", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 2, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 7, Title = "A new notif 7", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 2, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 8, Title = "A new notif 8", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 3, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 9, Title = "A new notif 9", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 2, NotificationTypeId = 2, ManagerId = 1, TenantId = "mostar" },
+                new Notification { Id = 10, Title = "A new notif 10", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2025, 1, 1), LineId = 1, NotificationTypeId = 2, ManagerId = 1, TenantId = "mostar" }
                 );
             modelBuilder.Entity<PassengerCreditCard>().HasData(
                 new PassengerCreditCard { Id = 1, CreditCardId = 1, PassengerId = 5, SavingDate = new DateTime(2024, 1, 1), TenantId = "mostar" },
