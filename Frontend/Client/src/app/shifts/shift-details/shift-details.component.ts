@@ -138,10 +138,6 @@ export class ShiftDetailsComponent implements OnInit {
     const shiftDetailEndingTime = this.shiftDetails[this.shiftDetails.length - 2].get('shiftDetailEndingTime')?.value;
     const normalizedShiftDetailEndingTime = this.normalizeTime(shiftDetailEndingTime);
     const normalizedShiftEndingTime = this.normalizeTime(this.shift.shiftEndingTime);
-    console.log("s: "+ normalizedShiftStartingTime);
-    console.log("sd: "+ normalizedShiftDetailStartingTime);
-    console.log("e: "+ normalizedShiftEndingTime);
-    console.log("ed: "+ normalizedShiftDetailEndingTime);
     return normalizedShiftDetailEndingTime === normalizedShiftEndingTime && normalizedShiftDetailStartingTime === normalizedShiftStartingTime;
   }
   normalizeTime(time: string): string {

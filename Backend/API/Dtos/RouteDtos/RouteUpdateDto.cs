@@ -10,5 +10,6 @@ namespace GPS.API.Dtos.RouteDtos
         public int? LineId { get; set; }
         public int? StationId { get; set; }
         public TimeOnly? DistanceFromTheNextStation { get; set; }
+        public required int? Order { get; set; }
     }
 }

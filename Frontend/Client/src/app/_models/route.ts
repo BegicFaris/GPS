@@ -7,5 +7,6 @@ export interface Route {
     line: Line;
     stationId: number;
     station: Station;
-    distanceFromTheNextStation: number;
+    distanceFromTheNextStation: string;
+    order: number;
 }

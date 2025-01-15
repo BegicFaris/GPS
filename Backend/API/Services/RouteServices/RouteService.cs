@@ -16,6 +16,25 @@ namespace GPS.API.Services.RouteServices
             await _context.Routes.Include(x => x.Line).Include(x => x.Station).ToListAsync();
         public async Task<Data.Models.Route> GetRouteByIdAsync(int id) =>
           await _context.Routes.Include(x => x.Line).Include(x => x.Station).SingleOrDefaultAsync(x => x.Id == id);
+
+        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesByLineIdAsync(int lineId) =>
+            await _context.Routes.Include(x => x.Line).Include(x => x.Station).Where(x=> x.LineId == lineId).OrderBy(x=>x.Order).ToListAsync();
+
+        public async Task<int> GetStationCountByLineIdAsync(int lineId) =>
+          await _context.Routes.Where(r => r.Line.Id == lineId && r.Station != null).CountAsync();
+
+        public async Task<bool> DeleteAllRoutesByLineIdAsync(int lineId)
+        {
+            var routes = await _context.Routes
+                .Where(r => r.LineId == lineId)
+                .ToListAsync();
+            if (routes == null || !routes.Any())
+                return false;
+            _context.Routes.RemoveRange(routes);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<Data.Models.Route> CreateRouteAsync(Data.Models.Route route)
         {
             _context.Routes.Add(route);
