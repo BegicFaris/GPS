@@ -10,8 +10,6 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Name</th>
-      <th scope="col">Starting station</th>
-      <th scope="col">Ending station</th>
       <th scope="col">Complete distance</th>
       <th scope="col">Active</th>
       <th scope="col"></th>
@@ -23,8 +21,6 @@
     <tr>
       <th scope="row">{{ $index + 1 }}</th>
       <td>{{ line.name }}</td>
-      <td>{{ line.startingStation.name }}</td>
-      <td>{{ line.endingStation.name }}</td>
       <td>{{ line.completeDistance }}</td>
       <td>@if(line.isActive){Active}@else{Not active}</td>
       <td>

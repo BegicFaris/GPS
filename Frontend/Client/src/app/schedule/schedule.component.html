@@ -1,35 +1,41 @@
 <div class="container mt-3">
-  @for (line of lines; track $index) {
-  <div
-    class="d-flex align-items-center border rounded mb-2 p-2"
-    (click)="selectLine(line)"
-  >
-    <div class="me-2">
-      <i class="bi bi-bus fs-5"></i>
+  <!-- Container for the two columns (64%) -->
+  <div class="columns-container">
+    <div class="row">
+      @for (line of lines; track $index) {
+        <div class="col-md-6 col-12 mb-2 custom-col-width">
+          <div class="d-flex align-items-center border rounded p-2" (click)="selectLine(line)">
+            <div class="me-2">
+              <i class="bi bi-bus-front fs-5"></i> 
+            </div>
+            <div class="flex-grow-1">
+              <strong>Line {{ line.name }}:</strong>
+            </div>
+            @if (currentUser != null) {
+            <div>
+              <i class="bi" [ngClass]="isFavorite(line.id) ? 'bi-star-fill' : 'bi-star'"
+                (click)="toggleFavorite(line.id, $event)" style="cursor: pointer"></i>
+            </div>
+            }
+          </div>
+
+          @if (selectedLine && selectedLine.id === line.id) {
+          <div class="mt-2 border rounded p-2">
+            <p><strong>Line Details:</strong></p>
+            <p>ID: {{ selectedLine.id }}</p>
+            <p>Name: {{ selectedLine.name }}</p>
+            <p>Complete Distance: {{ selectedLine.completeDistance }}</p>
+          </div>
+          }
+        </div>
+      }
     </div>
-    <div class="flex-grow-1">
-      <strong>Line {{ line.id }}:</strong> {{ line.startingStation.name }} -
-      {{ line.endingStation.name }}
-    </div>
-    @if (currentUser!=null) {
-    <div>
-      <i
-        class="bi"
-        [ngClass]="isFavorite(line.id) ? 'bi-star-fill' : 'bi-star'"
-        (click)="toggleFavorite(line.id, $event)"
-        style="cursor: pointer"
-      ></i>
-    </div>
-    }
   </div>
-  @if (selectedLine && selectedLine.id === line.id) {
-  <div class="mt-2 border rounded p-2">
-    <p><strong>Line Details:</strong></p>
-    <p>ID: {{ selectedLine.id }}</p>
-    <p>Name: {{ selectedLine.name }}</p>
-    <p>Starting Station: {{ selectedLine.startingStation.name }}</p>
-    <p>Ending Station: {{ selectedLine.endingStation.name }}</p>
-    <p>Complete Distance: {{ selectedLine.completeDistance }}</p>
+
+  <!-- Container for the images (36%) -->
+  <div class="images-container">
+    <img src="Zone.jpg" alt="Image 1" style="width: 100%; max-width: 100%; object-fit: cover;">
+    <img src="Zone.jpg" alt="Image 2" style="width: 100%; max-width: 100%; object-fit: cover;">
+    <!-- Add more images here as needed -->
   </div>
-  } }
 </div>

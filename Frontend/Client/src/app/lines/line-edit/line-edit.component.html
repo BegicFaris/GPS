@@ -12,40 +12,7 @@
             }
 
         </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Starting station</label>
-            <select class="form-select" name="startingStationId" [(ngModel)]="lineUpdate.startingStationId"
-                #startingStationId="ngModel">
-                @for (station of stations; track station.id) {
-                <option [value]="station.id">
-                    {{ station.name }}
-                </option>
-                }
-            </select>
-            @if(startingStationId.invalid && (startingStationId.dirty || startingStationId.touched)) {
-            @if(startingStationId.errors?.['required']) {<div class="text-danger">Starting station is required.</div>}
-            }
-        </div>
-
-
-        <div class="mb-3">
-            <label class="form-label">Ending station</label>
-            <select class="form-select" name="endingStationId" [(ngModel)]="lineUpdate.endingStationId"
-                #endingStationId="ngModel">
-                @for (station of stations; track station.id) {
-                <option [value]="station.id">
-                    {{ station.name }}
-                </option>
-                }
-            </select>
-            @if(endingStationId.invalid && (endingStationId.dirty || endingStationId.touched)) {
-            @if(endingStationId.errors?.['required']) {<div class="text-danger">Ending station is required.</div>}
-        }
-        </div>
-
-
+        
         <div>
             <label class="form-label">Complete distance</label>
             <input type="text" id="completeDistance" class="form-control" name="completeDistance"

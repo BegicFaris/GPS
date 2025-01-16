@@ -1,13 +1,73 @@
-
 .bi {
   font-size: 1.25rem;
 }
+
 .d-flex {
   cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 3px; /* Reduced padding further to minimize height */
 }
+
 .container {
   padding-top: 20px;
-  margin-left: 10%;  /* Move the content to the left */
-  max-width: 350px;  /* Adjust the width to make it shorter */
-  width: 100%;       /* Allow it to be responsive */
+  margin-left: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Space between columns */
+  gap: 10px; /* Reduced gap between columns */
+}
+
+.columns-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px; /* Reduced gap between items */
+  flex: 0 0 64%; /* Take 64% of the container width */
+}
+
+.images-container {
+  flex: 0 0 36%; /* Take 36% of the container width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px; /* Reduced gap between images */
+  height: 100%; /* Ensure it takes the full height */
+}
+
+.custom-col-width {
+  width: 100%; /* Ensure it's 100% of the container width */
+  margin-bottom: 3px; /* Reduced margin between items */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px; /* Reduced gap between items */
+}
+
+.custom-col-width .d-flex {
+  padding: 3px; /* Reduced padding to match target container */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%; /* Ensure it's the same width */
+}
+
+.col-md-6 {
+  width: 48%; /* Ensures each column takes up roughly 50% of the row width */
+  margin-bottom: 3px; 
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .col-md-6 {
+    width: 100%; /* Make it full width on smaller screens */
+  }
+}
+
+.images-container img {
+  width: 100%; /* Ensure images stretch to container width */
+  max-width: 100%;
+  object-fit: cover;
+  height: auto; /* Allow images to adjust their height naturally */
 }
