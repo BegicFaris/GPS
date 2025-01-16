@@ -1,23 +1,24 @@
+
+
 <div class="container py-5">
   <!-- About Us Section -->
   <div class="row align-items-center mb-5">
     <div class="col-md-6 mb-4 mb-md-0">
-      <img src="image1.jpg" class="img-fluid rounded shadow" alt="Mostar Bus">
+      <img src="image1.jpg" class="img-fluid rounded shadow" alt="{{ 'ABOUT_US.IMAGE_ALT' | translate }}">
     </div>
     <div class="col-md-6">
-      <h2 class="display-5 fw-bold text-primary mb-3">About Mostar Bus</h2>
-      <p class="text">
-        Welcome to <strong>Mostar Bus</strong>, where we deliver safe, reliable, and comfortable travel experiences across the historic and picturesque city of Mostar. Whether you're commuting for work or sightseeing, our modern fleet ensures your journey is pleasant and efficient.
+      <h2 class="display-5 fw-bold text-primary mb-3">{{ 'ABOUT_US.TITLE' | translate }}</h2>
+      <p class="text" [innerHTML]="'ABOUT_US.DESCRIPTION' | translate">
       </p>
-      <a href="#" class="btn  btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#contactModal">
-        Get in Touch
+      <a href="#" class="btn btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#contactModal">
+        {{ 'ABOUT_US.GET_IN_TOUCH' | translate }}
       </a>
     </div>
   </div>
-
+ 
   <!-- FAQ Section -->
   <div class="faq-section p-4 rounded shadow">
-    <h3 class="text-primary fw-bold mb-4">Frequently Asked Questions</h3>
+    <h3 class="text-primary fw-bold mb-4">{{ 'ABOUT_US.FAQ_TITLE' | translate }}</h3>
     <div class="accordion" id="faqAccordion">
       <!-- Question 1 -->
       <div class="accordion-item">
@@ -29,12 +30,11 @@
             data-bs-target="#faqCollapse1"
             aria-expanded="true"
             aria-controls="faqCollapse1">
-            What routes does Mostar Bus cover?
+            {{ 'ABOUT_US.FAQ_Q1' | translate }}
           </button>
         </h2>
         <div id="faqCollapse1" class="accordion-collapse collapse show" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
-          <div class="accordion-body">
-            We cover all major routes within Mostar, including key tourist attractions, business districts, and residential areas. For a detailed route map, visit our <a href="/schedule">Schedule</a>.
+          <div class="accordion-body" [innerHTML]="'ABOUT_US.FAQ_A1' | translate">
           </div>
         </div>
       </div>
@@ -48,12 +48,12 @@
             data-bs-target="#faqCollapse2"
             aria-expanded="false"
             aria-controls="faqCollapse2">
-            How can I purchase tickets?
+            {{ 'ABOUT_US.FAQ_Q2' | translate }}
           </button>
         </h2>
         <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
           <div class="accordion-body">
-            Tickets can be purchased online through our website, via our mobile app, or directly at ticket counters at Mostar's bus stations.
+            {{ 'ABOUT_US.FAQ_A2' | translate }}
           </div>
         </div>
       </div>
@@ -67,31 +67,31 @@
             data-bs-target="#faqCollapse3"
             aria-expanded="false"
             aria-controls="faqCollapse3">
-            Do you offer discounts for students or seniors?
+            {{ 'ABOUT_US.FAQ_Q3' | translate }}
           </button>
         </h2>
         <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
           <div class="accordion-body">
-            Yes, we offer discounted fares for students and senior citizens. Please present valid identification when purchasing tickets to avail of these discounts.
+            {{ 'ABOUT_US.FAQ_A3' | translate }}
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
+ 
 <!-- Contact Modal -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="contactModalLabel">Contact Us</h5>
+        <h5 class="modal-title" id="contactModalLabel">{{ 'ABOUT_US.CONTACT_US' | translate }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p><strong>Email:</strong> {{ email }}</p>
-        <p><strong>Phone:</strong> {{ phone }}</p>
-        <p><strong>Location:</strong></p>
+        <p><strong>{{ 'ABOUT_US.EMAIL' | translate }}:</strong> {{ email }}</p>
+        <p><strong>{{ 'ABOUT_US.PHONE' | translate }}:</strong> {{ phone }}</p>
+        <p><strong>{{ 'ABOUT_US.LOCATION' | translate }}:</strong></p>
         <div class="ratio ratio-16x9">
           <iframe
             [src]="locationUrl | safeUrl"
@@ -107,3 +107,6 @@
     </div>
   </div>
 </div>
+ 
+ 
+ 

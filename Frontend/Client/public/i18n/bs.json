@@ -1,0 +1,33 @@
+{
+  "NAV": {
+    "NEWS": "Vijesti",
+    "SCHEDULE": "Raspored",
+    "GALLERY": "Galerija",
+    "BUY_TICKET": "Kupi kartu",
+    "ABOUT_US": "O nama",
+    "MANAGER_DASHBOARD": "Menadžerska ploča",
+    "DRIVER_DASHBOARD": "Vozačka ploča",
+    "WELCOME": "Dobrodošli"
+  },
+  "ABOUT_US": {
+    "PAGE_TITLE": "O nama - Mostar Bus",
+    "IMAGE_ALT": "Mostar Bus",
+    "TITLE": "O Mostar Busu",
+    "DESCRIPTION": "Dobrodošli u <strong>Mostar Bus</strong>, gdje pružamo sigurna, pouzdana i udobna putovanja kroz historijski i slikoviti grad Mostar. Bez obzira putujete li na posao ili razgledate, naša moderna flota osigurava da vaše putovanje bude ugodno i efikasno.",
+    "GET_IN_TOUCH": "Kontaktirajte nas",
+    "FAQ_TITLE": "Često postavljana pitanja",
+    "FAQ_Q1": "Koje rute pokriva Mostar Bus?",
+    "FAQ_A1": "Pokrivamo sve glavne rute unutar Mostara, uključujući ključne turističke atrakcije, poslovne četvrti i stambena područja. Za detaljnu mapu ruta, posjetite naš <a href='/schedule'>Raspored</a>.",
+    "FAQ_Q2": "Kako mogu kupiti karte?",
+    "FAQ_A2": "Karte se mogu kupiti online putem naše web stranice, putem naše mobilne aplikacije ili direktno na šalterima na autobuskim stanicama u Mostaru.",
+    "FAQ_Q3": "Da li nudite popuste za studente ili penzionere?",
+    "FAQ_A3": "Da, nudimo snižene cijene karata za studente i penzionere. Molimo da prilikom kupovine karata pokažete važeću identifikaciju kako biste ostvarili ove popuste.",
+    "CONTACT_US": "Kontaktirajte nas",
+    "EMAIL": "Email",
+    "PHONE": "Telefon",
+    "LOCATION": "Lokacija"
+  }
+}
+ 
+ 
+ 
