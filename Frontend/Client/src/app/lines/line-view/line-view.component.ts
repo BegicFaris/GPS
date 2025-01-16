@@ -58,8 +58,6 @@ export class LineViewComponent {
       data: {
         id: line.id,
         name: line.name,
-        startingStationId: line.startingStationId,
-        endingStationId: line.endingStationId,
         completeDistance: line.completeDistance,
         isActive: line.isActive,
       },

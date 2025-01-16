@@ -28,7 +28,6 @@
               <li><a [routerLink]="'drivers'" class="nav-link text-light">Driver</a></li>
               <li><a [routerLink]="'lines'" routerLinkActive="router-link-active" class="nav-link text-light">Line</a></li>
               <li><a [routerLink]="'managers'" class="nav-link text-light">Manager</a></li>
-              <li><a [routerLink]="'notifications'" routerLinkActive="router-link-active" class="nav-link text-light">Notification</a></li>
               <li><a [routerLink]="'passengers'" class="nav-link text-light">Passenger</a></li>
               <li><a [routerLink]="'routes'" routerLinkActive="router-link-active" class="nav-link text-light">Route</a></li>
               <li><a [routerLink]="'schedules'" class="nav-link text-light">Schedule</a></li> 
@@ -43,7 +42,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="#notifications" onclick="showSection('notifications')">
+          <li><a [routerLink]="'notifications'" routerLinkActive="router-link-active" class="nav-link text-light">
             <i class="bi bi-bell"></i> Notifications and Alerts
           </a>
         </li>

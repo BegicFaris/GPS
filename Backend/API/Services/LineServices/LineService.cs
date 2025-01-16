@@ -15,13 +15,22 @@ namespace GPS.API.Services.LineServices
             _context = context;
         }
 
-        //.Include(l => l.StartingStation).Include(l=>l.EndingStation)    
-        public async Task<IEnumerable<Line>> GetAllLinesAsync() =>
-             await _context.Lines.Include(x => x.StartingStation).Include(x=>x.EndingStation).ToListAsync();
+        public async Task<IEnumerable<Line>> GetAllLinesAsync()
+        {
+            var lines = await _context.Lines.ToListAsync(); // Fetch all lines from DB first
+            return lines.OrderBy(line => ExtractLeadingNumber(line.Name))
+                        .ThenBy(line => line.Name); // Secondary alphabetical sorting
+        }
+
+        private int? ExtractLeadingNumber(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return null; // Handle empty names
+            var match = System.Text.RegularExpressions.Regex.Match(name, @"^\d+"); // Extract leading number
+            return match.Success ? int.Parse(match.Value) : (int?)null; // Return null if no leading number
+        }
 
         public async Task<IEnumerable<Line>> GetAllLinesByStationIdAsync(int stationId)
         {
-            // Fetch routes and lines from the database asynchronously
             var routes = await _context.Routes.Where(x => x.StationId == stationId).ToListAsync();
             var allLines = await _context.Lines.ToListAsync();
 
@@ -38,14 +47,12 @@ namespace GPS.API.Services.LineServices
                     }
                 }
             }
-
-            // Remove duplicates by grouping by line.Id
             return lines.GroupBy(line => line.Id).Select(group => group.First()).ToList();
         }
 
 
         public async Task<Line> GetLineByIdAsync(int id) =>
-            await _context.Lines.Include(x => x.StartingStation).SingleOrDefaultAsync(x => x.Id == id);
+            await _context.Lines.SingleOrDefaultAsync(x => x.Id == id);
 
         public async Task<Line> CreateLineAsync(Line line)
         {

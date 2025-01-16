@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
-using GPS.API.Data.Models;
+﻿using GPS.API.Data.Models;
 using GPS.API.Interfaces;
-using System.Text;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using GPS.API.Services.TenantServices;
 using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore.Internal;
+using System.Text;
 
 
 namespace GPS.API.Data.DbContexts
@@ -131,19 +127,124 @@ namespace GPS.API.Data.DbContexts
                 );
             modelBuilder.Entity<Station>().HasData(
                 new Station { Id = 1, GPSCode = "6.6.6", Location = "Bafo", Name = "Bafo", ZoneId = 1, TenantId = "mostar" },
-                new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2, TenantId = "mostar" }
+                new Station { Id = 2, GPSCode = "13123", Location = "Sutina", Name = "Sutina1", ZoneId = 2, TenantId = "mostar" },
+                new Station { Id = 3, GPSCode = "12345", Location = "Centar", Name = "Centar1", ZoneId = 3, TenantId = "mostar" },
+                new Station { Id = 4, GPSCode = "67890", Location = "Rondo", Name = "Rondo1", ZoneId = 1, TenantId = "mostar" },
+                new Station { Id = 5, GPSCode = "54321", Location = "Bijeli Brijeg", Name = "Bijeli Brijeg1", ZoneId = 2, TenantId = "mostar" },
+                new Station { Id = 6, GPSCode = "98765", Location = "Tekija", Name = "Tekija1", ZoneId = 3, TenantId = "mostar" },
+                new Station { Id = 7, GPSCode = "11111", Location = "Zalik", Name = "Zalik1", ZoneId = 1, TenantId = "mostar" },
+                new Station { Id = 8, GPSCode = "22222", Location = "Orlac", Name = "Orlac1", ZoneId = 2, TenantId = "mostar" },
+                new Station { Id = 9, GPSCode = "33333", Location = "Donja Mahala", Name = "Donja Mahala1", ZoneId = 3, TenantId = "mostar" },
+                new Station { Id = 10, GPSCode = "44444", Location = "Vrapčići", Name = "Vrapčići1", ZoneId = 1, TenantId = "mostar" },
+                new Station { Id = 11, GPSCode = "55555", Location = "Raštani", Name = "Raštani1", ZoneId = 2, TenantId = "mostar" },
+                new Station { Id = 12, GPSCode = "66666", Location = "Jasenica", Name = "Jasenica1", ZoneId = 3, TenantId = "mostar" },
+                new Station { Id = 13, GPSCode = "77777", Location = "Blagaj", Name = "Blagaj1", ZoneId = 1, TenantId = "mostar" },
+                new Station { Id = 14, GPSCode = "88888", Location = "Buna", Name = "Buna1", ZoneId = 2, TenantId = "mostar" },
+                new Station { Id = 15, GPSCode = "99999", Location = "Gnojnice", Name = "Gnojnice1", ZoneId = 3, TenantId = "mostar" },
+                new Station { Id = 16, GPSCode = "10101", Location = "Liska", Name = "Liska1", ZoneId = 1, TenantId = "mostar" },
+                new Station { Id = 17, GPSCode = "20202", Location = "Humilišani", Name = "Humilišani1", ZoneId = 3, TenantId = "mostar" }
                 );
+
             modelBuilder.Entity<Line>().HasData(
-                new Line { Id = 1, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21", TenantId = "mostar" },
-                 new Line { Id = 2, CompleteDistance = "10", IsActive = true, EndingStationId = 1, StartingStationId = 2, Name = "21", TenantId = "mostar" }
-                );
+                new Line { Id = 1, CompleteDistance = "10", IsActive = true, Name = "21", TenantId = "mostar" },
+                new Line { Id = 3, CompleteDistance = "10", IsActive = true, Name = "22", TenantId = "mostar" },
+                new Line { Id = 4, CompleteDistance = "10", IsActive = true, Name = "23", TenantId = "mostar" },
+                new Line { Id = 5, CompleteDistance = "10", IsActive = true, Name = "24", TenantId = "mostar" },
+                new Line { Id = 6, CompleteDistance = "10", IsActive = true, Name = "25", TenantId = "mostar" },
+                new Line { Id = 7, CompleteDistance = "10", IsActive = true, Name = "26", TenantId = "mostar" },
+                new Line { Id = 8, CompleteDistance = "10", IsActive = true, Name = "1", TenantId = "mostar" },
+                new Line { Id = 9, CompleteDistance = "10", IsActive = true, Name = "2", TenantId = "mostar" },
+                new Line { Id = 10, CompleteDistance = "10", IsActive = true, Name = "6", TenantId = "mostar" },
+                new Line { Id = 11, CompleteDistance = "10", IsActive = true, Name = "10", TenantId = "mostar" },
+                new Line { Id = 12, CompleteDistance = "10", IsActive = true, Name = "11", TenantId = "mostar" },
+                new Line { Id = 2, CompleteDistance = "10", IsActive = true, Name = "48", TenantId = "mostar" }
+             );
+            modelBuilder.Entity<Models.Route>().HasData(
+
+                new Models.Route { Id = 1, LineId = 1, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 2, LineId = 1, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 3, LineId = 1, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 4, LineId = 1, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 4, TenantId = "mostar" },
+                
+                // Line 2 - "48"
+                new Models.Route { Id = 5, LineId = 2, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 6, LineId = 2, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 7, LineId = 2, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 3, TenantId = "mostar" },
+                
+                // Line 3 - "22"
+                new Models.Route { Id = 8, LineId = 3, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 9, LineId = 3, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 10, LineId = 3, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 11, LineId = 3, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 4, TenantId = "mostar" },
+                
+                // Line 4 - "23"
+                new Models.Route { Id = 12, LineId = 4, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 16), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 13, LineId = 4, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 14, LineId = 4, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 53, LineId = 4, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 4, TenantId = "mostar" },
+                
+                // Line 5 - "24"
+                new Models.Route { Id = 54, LineId = 5, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 49, LineId = 5, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 50, LineId = 5, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 51, LineId = 5, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 6), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 52, LineId = 5, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+
+                new Models.Route { Id = 15, LineId = 6, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 16, LineId = 6, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 17, LineId = 6, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 18, LineId = 6, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 19, LineId = 6, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 5, TenantId = "mostar" },
+
+                new Models.Route { Id = 20, LineId = 7, StationId = 13, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 21, LineId = 7, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 22, LineId = 7, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 23, LineId = 7, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 24, LineId = 7, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+
+                // Line 8 - "1"
+                new Models.Route { Id = 25, LineId = 8, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 26, LineId = 8, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 27, LineId = 8, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 28, LineId = 8, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 29, LineId = 8, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 5, TenantId = "mostar" },
+
+                // Line 9 - "2"
+                new Models.Route { Id = 30, LineId = 9, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 31, LineId = 9, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 32, LineId = 9, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 33, LineId = 9, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 34, LineId = 9, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 5, TenantId = "mostar" },
+
+                // Line 10 - "6"
+                new Models.Route { Id = 35, LineId = 10, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 36, LineId = 10, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 6), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 37, LineId = 10, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 38, LineId = 10, StationId = 13, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 39, LineId = 10, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+
+                // Line 11 - "10"
+                new Models.Route { Id = 40, LineId = 11, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 41, LineId = 11, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 42, LineId = 11, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 43, LineId = 11, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 44, LineId = 11, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+
+                // Line 12 - "11"
+                new Models.Route { Id = 45, LineId = 12, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 46, LineId = 12, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 47, LineId = 12, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 48, LineId = 12, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 4, TenantId = "mostar" }
+            );
+
+
             modelBuilder.Entity<NotificationType>().HasData(
                 new NotificationType { Id = 1, Description = "A warning notification", Name = "Warning", TenantId = "mostar" },
                 new NotificationType { Id = 2, Description = "A error notification", Name = "Error", TenantId = "mostar" },
                 new NotificationType { Id = 3, Description = "A general notification", Name = "General", TenantId = "mostar" }
                 );
             modelBuilder.Entity<Notification>().HasData(
-                new Notification { Id = 1, Title="A new notif 1",Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 1,ManagerId=1 ,TenantId = "mostar" },
+                new Notification { Id = 1, Title = "A new notif 1", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
                 new Notification { Id = 2, Title = "A new notif 2", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
                 new Notification { Id = 3, Title = "A new notif 3", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 2, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
                 new Notification { Id = 4, Title = "A new notif 4", Description = "New notif", Image = GalleryImage, CreationDate = new DateTime(2024, 1, 1), LineId = 1, NotificationTypeId = 1, ManagerId = 1, TenantId = "mostar" },
@@ -158,10 +259,6 @@ namespace GPS.API.Data.DbContexts
                 new PassengerCreditCard { Id = 1, CreditCardId = 1, PassengerId = 5, SavingDate = new DateTime(2024, 1, 1), TenantId = "mostar" },
                 new PassengerCreditCard { Id = 2, CreditCardId = 2, PassengerId = 6, SavingDate = new DateTime(2024, 1, 1), TenantId = "mostar" }
                 );
-            modelBuilder.Entity<Models.Route>().HasData(
-               new Models.Route { Id = 1, LineId = 1, StationId = 1, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 1, TenantId = "mostar" },
-               new Models.Route { Id = 2, LineId = 2, StationId = 2, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 2, TenantId = "mostar" }
-               );
             modelBuilder.Entity<Shift>().HasData(
                 new Shift { Id = 1, BusId = 1, DriverId = 1, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0), TenantId = "mostar" },
                 new Shift { Id = 2, BusId = 2, DriverId = 2, ShiftDate = new DateOnly(2024, 1, 1), ShiftEndingTime = new TimeOnly(16, 0, 0), ShiftStartingTime = new TimeOnly(8, 0, 0), TenantId = "mostar" }
@@ -179,8 +276,8 @@ namespace GPS.API.Data.DbContexts
                 new TicketInfo { Id = 6, Price = 95.0M, ZoneId = 3, TicketTypeId = 2, TenantId = "mostar" }
                 );
             modelBuilder.Entity<Ticket>().HasData(
-                new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2),TicketInfoId=1, QrCode = ticketQrCode, UserId = 2, TenantId = "mostar" },
-                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2),TicketInfoId = 2,QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
+                new Ticket { Id = 1, CreatedDate = new DateTime(2024, 1, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 1, QrCode = ticketQrCode, UserId = 2, TenantId = "mostar" },
+                new Ticket { Id = 2, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
                 new Ticket { Id = 3, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
                 new Ticket { Id = 4, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
                 new Ticket { Id = 5, CreatedDate = new DateTime(2024, 2, 1), ExpirationDate = new DateTime(2024, 2, 2), TicketInfoId = 2, QrCode = ticketQrCode, UserId = 1, TenantId = "mostar" },
@@ -200,7 +297,7 @@ namespace GPS.API.Data.DbContexts
                 );
 
             modelBuilder.Entity<Gallery>().HasData(
-                new Gallery { Id = 1, PhotoData = GalleryImage, UploadDate = new DateTime(2024, 12, 23), TenantId = "mostar"},
+                new Gallery { Id = 1, PhotoData = GalleryImage, UploadDate = new DateTime(2024, 12, 23), TenantId = "mostar" },
                 new Gallery { Id = 2, PhotoData = GalleryImage, UploadDate = new DateTime(2024, 12, 23), TenantId = "mostar" }
                 );
 
