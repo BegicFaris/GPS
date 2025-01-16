@@ -13,12 +13,14 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { NewsComponent } from './news/news.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { BuyTicketComponent } from './buy-ticket/buy-ticket.component';
-
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
+ 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NavComponent, RouterOutlet, FooterComponent, RouterModule],
+  imports: [NavComponent, RouterOutlet, FooterComponent, RouterModule, TranslateModule],
 
   providers: [
 ],
@@ -31,7 +33,14 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.setCurrentUser();
+    
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
   }
+
+  constructor(private translate: TranslateService) {}
+ 
+ 
 
   setCurrentUser() {
     const userString = localStorage.getItem('user');

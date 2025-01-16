@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Notification } from '../_models/notification';
 import { NotificationService } from '../_services/notification.service';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface GroupedNotifications {
   type: string;
@@ -32,6 +34,7 @@ interface GroupedNotifications {
     RouterLinkActive,
     MatIconModule,
     MatButtonModule,
+    TranslateModule
   ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css',
@@ -56,6 +59,7 @@ export class NavComponent implements OnInit {
 
   constructor(
     public themeService: ThemeService,
+    private translateService: TranslateService,
     private notificationService: NotificationService
   ) {}
 
@@ -224,5 +228,8 @@ export class NavComponent implements OnInit {
       group.showDetails = true;
       this.currentlyVisibleNotification = group;
     }
+  }
+  setLanguage(lang: string) {
+    this.translateService.use(lang);
   }
 }

@@ -1,235 +1,135 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   @if (accountService.currentUser()) {
-    <div class="d-flex align-items-center ms-2">
-      @for (group of groupedNotifications; track group.type) {
-      <div class="d-flex flex-column align-items-center me-3">
-        <div class="position-relative">
-          <i
-            [ngClass]="getNotificationIcon(group.type)"
-            class="fs-4 text-light cursor-pointer"
-            (mouseenter)="showDetails(group)"
-            (mouseleave)="hideDetails(group)"
-            (click)="toggleDetails(group)"
-          ></i>
-          <span
-            class="badge bg-primary position-absolute top-0 start-100 translate-middle"
-            >{{ group.count }}</span
-          >
-        </div>
-      </div>
-      }
-    </div>
+  <div class="d-flex align-items-center ms-2">
     @for (group of groupedNotifications; track group.type) {
-      @if(group['showDetails']){
-        <div
-          class="notification-details bg-dark text-light p-2 rounded"
-          style="position: absolute; top: 50px; left: 50px; width: 250px; max-height: 300px; overflow-y: auto;"
-        >
-          <h6 class="mb-2">{{ group.type }} ({{ group.count }})</h6>
-          @for (notification of group.notifications; track notification.id) {
-            <div class="mb-2 pb-2 border-bottom">
-              <h6 class="mb-1">{{ notification.title }}</h6>
-              <p class="mb-1 small">{{ notification.description }}</p>
-              <small>{{ notification.creationDate | date:'short' }}</small>
-            </div>
-          }
-        </div>
-        }
-      }}
-  <button
-  class="navbar-toggler"
-  type="button"
-  data-bs-toggle="collapse"
-  data-bs-target="#navbarCollapse"
-  aria-controls="navbarCollapse"
-  aria-expanded="false"
-  aria-label="Toggle navigation"
-  >
-  <span class="navbar-toggler-icon"></span>
-</button>
-  <i class="bi bi-geo-alt" style="font-size: 24px; color: white; margin-left: 20%;"></i>
-  <a class="navbar-brand" href="/home">GPS</a>
-    @if(accountService.currentUser()){
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLinkActive="active"
-            routerLink="/news"
-            aria-current="page"
-            href="#"
-            >News</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLinkActive="active"
-            routerLink="/schedule"
-            aria-current="page"
-            href="#"
-            >Schedule</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLinkActive="active"
-            routerLink="/gallery"
-            aria-current="page"
-            href="#"
-            >Gallery</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLinkActive="active"
-            routerLink="/buy-ticket"
-            aria-current="page"
-            href="#"
-            >Buy ticket</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            routerLinkActive="active"
-            routerLink="/about-us"
-            aria-current="page"
-            href="#"
-            >About us</a
-          >
-        </li>
-        @if (userRole === "Manager") {
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              routerLink="/manager-dashboard"
-              aria-current="page"
-              href="#"
-              >Manager dashboard</a
-            >
-          </li>
-        }
-        @if (userRole === "Driver") {
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              routerLink="/driver-dashboard"
-              aria-current="page"
-              href="#"
-              >Driver dashboard</a
-            >
-          </li>
-        }
-      </ul>
-      <button mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
-        <mat-icon>{{ themeService.getThemeIcon() }}</mat-icon>
-      </button>
-      <div dropdown class="dropdown">
-        <a
-          dropdownToggle
-          class="dropdown-toggle text-light text-decoration-none"
-          >Welcome {{user.firstName}}</a
-        >
-        <div *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/profile">Edit profile</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="logout()">Logout</a>
-        </div>
+    <div class="d-flex flex-column align-items-center me-3">
+      <div class="position-relative">
+        <i [ngClass]="getNotificationIcon(group.type)" class="fs-4 text-light cursor-pointer"
+          (mouseenter)="showDetails(group)" (mouseleave)="hideDetails(group)" (click)="toggleDetails(group)"></i>
+        <span class="badge bg-primary position-absolute top-0 start-100 translate-middle">{{ group.count }}</span>
       </div>
     </div>
     }
-    <div class="d-flex align-items-center ms-auto me-2">
+  </div>
+  @for (group of groupedNotifications; track group.type) {
+  @if(group['showDetails']){
+  <div class="notification-details bg-dark text-light p-2 rounded"
+    style="position: absolute; top: 50px; left: 50px; width: 250px; max-height: 300px; overflow-y: auto;">
+    <h6 class="mb-2">{{ group.type }} ({{ group.count }})</h6>
+    @for (notification of group.notifications; track notification.id) {
+    <div class="mb-2 pb-2 border-bottom">
+      <h6 class="mb-1">{{ notification.title }}</h6>
+      <p class="mb-1 small">{{ notification.description }}</p>
+      <small>{{ notification.creationDate | date:'short' }}</small>
+    </div>
+    }
+  </div>
+  }
+  }}
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <i class="bi bi-geo-alt" style="font-size: 24px; color: white; margin-left: 20%;"></i>
+  <a class="navbar-brand" href="/home">GPS</a>
+  @if(accountService.currentUser()){
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/news" aria-current="page" href="#">{{ 'NAV.NEWS' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/schedule" aria-current="page" href="#">{{ 'NAV.SCHEDULE' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/gallery" aria-current="page" href="#">{{ 'NAV.GALLERY' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/buy-ticket" aria-current="page" href="#">{{ 'NAV.BUY_TICKET' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/about-us" aria-current="page" href="#">{{ 'NAV.ABOUT_US' | translate }}</a>
+      </li>
+      @if (userRole === "Manager") {
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/manager-dashboard" aria-current="page"
+          href="#">{{ 'NAV.MANAGER_DASHBOARD' | translate }}</a>
+      </li>
+      }
+      @if (userRole === "Driver") {
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/driver-dashboard" aria-current="page" href="#">{{ 'NAV.DRIVER_DASHBOARD' | translate }}</a>
+      </li>
+      }
+    </ul>
+    <button mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
+      <mat-icon>{{ themeService.getThemeIcon() }}</mat-icon>
+    </button>
+    <div dropdown class="dropdown">
+      <a dropdownToggle class="dropdown-toggle text-light text-decoration-none">{{ 'NAV.WELCOME' | translate }} {{user.firstName}}</a>
+      <div *dropdownMenu class="dropdown-menu">
+        <a class="dropdown-item" routerLink="/profile">Edit profile</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+  }
+  <div class="d-flex align-items-center ms-auto me-2">
     @if(!accountService.currentUser()){
-      @if(!showTwoFactorInput){
+    @if(!showTwoFactorInput){
     <form #loginForm="ngForm" (ngSubmit)="login()" class="d-flex">
-      <input
-        name="email"
-        [(ngModel)]="model.email"
-        class="form-control me-2"
-        placeholder="Email"
-      />
+      <input name="email" [(ngModel)]="model.email" class="form-control me-2" placeholder="Email" />
       <div class="position-relative me-2 w-100">
-        <input
-          name="password"
-          [(ngModel)]="model.password"
-          class="form-control me-2"
-          placeholder="Password"
-          [type]="showPassword ? 'text' : 'password'"
-        />
-        <button
-          type="button"
-          class="btn btn-primary bg-dark position-absolute end-0 top-50 translate-middle-y me-2"
-          style="width: 30px; height: 30px; border-radius: 50%; padding: 3px"
-          (click)="togglePasswordVisibility()"
-        >
-          <i
-            class="bi"
-            [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
-          ></i>
+        <input name="password" [(ngModel)]="model.password" class="form-control me-2" placeholder="Password"
+          [type]="showPassword ? 'text' : 'password'" />
+        <button type="button" class="btn btn-primary bg-dark position-absolute end-0 top-50 translate-middle-y me-2"
+          style="width: 30px; height: 30px; border-radius: 50%; padding: 3px" (click)="togglePasswordVisibility()">
+          <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
         </button>
       </div>
-      <button class="btn btn-outline-primary d-flex align-items-center" type="submit" [disabled]="!loginForm.form.valid || isLoading">
+      <button class="btn btn-outline-primary d-flex align-items-center" type="submit"
+        [disabled]="!loginForm.form.valid || isLoading">
         @if(isLoading){
-          <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-          Loading...
+        <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+        Loading...
         } @else {
-          Login
+        Login
         }
       </button>
 
     </form>
-  } @else {
+    } @else {
     <form (ngSubmit)="verifyTwoFactorCode(twoFactorCode)" class="d-flex">
-      <input
-        name="twoFactorCode"
-        [(ngModel)]="twoFactorCode"
-        class="form-control me-2"
-        [ngClass]="{'is-invalid': invalidCode}"
-        placeholder="Enter 6-digit code"
-        required
-        minlength="6"
-        maxlength="6"
-        pattern="\d{6}"
-      />
-      <button class="btn btn-outline-primary d-flex align-items-center" type="submit" [disabled]="twoFactorCode.length !== 6 || isLoading">
+      <input name="twoFactorCode" [(ngModel)]="twoFactorCode" class="form-control me-2"
+        [ngClass]="{'is-invalid': invalidCode}" placeholder="Enter 6-digit code" required minlength="6" maxlength="6"
+        pattern="\d{6}" />
+      <button class="btn btn-outline-primary d-flex align-items-center" type="submit"
+        [disabled]="twoFactorCode.length !== 6 || isLoading">
         @if(isLoading){
-          <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-          Sending...
+        <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+        Sending...
         } @else {
-          Verify
+        Verify
         }
       </button>
-  </form>
-  <div *ngIf="invalidCode" class="popup-overlay" (click)="closePopup()">
-    <div class="popup-content" (click)="$event.stopPropagation()">
-      <p>Invalid code. Please try again.</p>
-      <button (click)="closePopup()" class="btn btn-sm btn-secondary">Close</button>
+    </form>
+    <div *ngIf="invalidCode" class="popup-overlay" (click)="closePopup()">
+      <div class="popup-content" (click)="$event.stopPropagation()">
+        <p>Invalid code. Please try again.</p>
+        <button (click)="closePopup()" class="btn btn-sm btn-secondary">Close</button>
+      </div>
     </div>
-  </div>
-  
-  }
+
+    }
     }
     <div class="d-flex flex-column align-items-center ps-5">
-      <a href="/set-language/bosnian" class="d-block">
-        <img
-          src="bosnia-and-herzegovina-flag.png"
-          alt="Bosnian Flag"
-          style="width: 30px; height: 20px;"
-        />
-      </a>
-      <a href="/set-language/english" class="d-block">
-        <img
-          src="united-kingdom-flag.png"
-          alt="UK Flag"
-          style="width: 30px; height: 20px;"
-        />
-      </a>
+      <button class="btn btn-link" (click)="setLanguage('bs')">
+        <img src="bosnia-and-herzegovina-flag.png" alt="Bosnian Flag" style="width: 30px; height: 20px;" />
+      </button>
+      <button class="btn btn-link" (click)="setLanguage('en')">
+        <img src="united-kingdom-flag.png" alt="UK Flag" style="width: 30px; height: 20px;" />
+      </button>
     </div>
-    </div>
+  </div>
 </nav>
