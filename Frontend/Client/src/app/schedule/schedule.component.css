@@ -44,6 +44,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 3px; /* Reduced gap between items */
+  margin-bottom: 3px;
 }
 
 .custom-col-width .d-flex {

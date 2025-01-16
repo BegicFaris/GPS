@@ -1,9 +1,9 @@
 <div class="container mt-3">
   <!-- Container for the two columns (64%) -->
   <div class="columns-container">
-    <div class="row">
+    <div class="row custom-row">
       @for (line of lines; track $index) {
-        <div class="col-md-6 col-12 mb-2 custom-col-width">
+        <div class="col-md-4 col-12 custom-col-width">
           <div class="d-flex align-items-center border rounded p-2" (click)="selectLine(line)">
             <div class="me-2">
               <i class="bi bi-bus-front fs-5"></i> 
