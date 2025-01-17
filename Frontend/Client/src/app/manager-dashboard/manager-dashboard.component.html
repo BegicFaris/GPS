@@ -4,9 +4,9 @@
     [style.width]="isSidebarCollapsed ? '60px' : '250px'">
     <div class="vertical-menu">
       <div class="d-flex justify-content-between align-items-center">
-        @if(!isSidebarCollapsed){
-        <h3 class="mb-0">Manage</h3>
-        }
+        <ng-container *ngIf="!isSidebarCollapsed">
+          <h3 class="mb-0">Manage</h3>
+        </ng-container>
         <button (click)="toggleSidebar()" class="btn btn-outline-light border">
           <i class="bi" [ngClass]="{
               'bi-chevron-left': !isSidebarCollapsed,
@@ -16,6 +16,7 @@
       </div>
       <hr />
       <ul class="nav flex-column">
+        <!-- Manage Data Section -->
         <li class="nav-item">
           <a class="nav-link text-light" data-bs-toggle="collapse" href="#manageDataMenu" role="button"
             aria-expanded="false" aria-controls="manageDataMenu">
@@ -30,19 +31,31 @@
               <li><a [routerLink]="'managers'" class="nav-link text-light">Manager</a></li>
               <li><a [routerLink]="'passengers'" class="nav-link text-light">Passenger</a></li>
               <li><a [routerLink]="'routes'" routerLinkActive="router-link-active" class="nav-link text-light">Route</a></li>
-              <li><a [routerLink]="'schedules'" class="nav-link text-light">Schedule</a></li> 
+              <li><a [routerLink]="'schedules'" class="nav-link text-light">Schedule</a></li>
               <li><a [routerLink]="'shifts'" class="nav-link text-light">Shift</a></li>
               <li><a [routerLink]="'stations'" class="nav-link text-light">Station</a></li>
             </ul>
           </div>
         </li>
+
+        <!-- Analytics Section -->
         <li class="nav-item">
-          <a href="#" class="nav-link text-light">
-            <i class="bi bi-bar-chart"></i> Generate Reports
+          <a href="#" class="nav-link text-light" data-bs-toggle="collapse" href="#analyticsMenu" role="button"
+            aria-expanded="false" aria-controls="analyticsMenu">
+            <i class="bi bi-bar-chart"></i> Analytics
           </a>
+          <div class="collapse" id="analyticsMenu">
+            <ul class="list-unstyled ps-2">
+              <li>
+                <a [routerLink]="'ticket-graph'" routerLinkActive="router-link-active" class="nav-link text-light">Ticket graph</a>
+              </li>
+            </ul>
+          </div>
         </li>
+
+        <!-- Notifications Section -->
         <li class="nav-item">
-          <li><a [routerLink]="'notifications'" routerLinkActive="router-link-active" class="nav-link text-light">
+          <a [routerLink]="'notifications'" routerLinkActive="router-link-active" class="nav-link text-light">
             <i class="bi bi-bell"></i> Notifications and Alerts
           </a>
         </li>
