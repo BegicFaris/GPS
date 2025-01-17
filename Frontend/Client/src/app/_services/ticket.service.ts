@@ -12,11 +12,15 @@ export class TicketService {
   private baseUrl = 'https://localhost:5001/api/tickets';
   tickets: Ticket[] = [];
 
- 
 
   getAllTickets() {
     return this.http.get<Ticket[]>(this.baseUrl);
   }
+
+  getTicketsOverTime(): Observable<{ month: string; count: number }[]> {
+    return this.http.get<{ month: string; count: number }[]>(`${this.baseUrl}/tickets-over-time`);
+  }  
+
   getTicketByEmail(email: string): Observable<any>{
         return this.http.get(this.baseUrl + `/get/${email}`).pipe(
           catchError(error => {

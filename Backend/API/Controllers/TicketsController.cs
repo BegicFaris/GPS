@@ -25,6 +25,13 @@ namespace GPS.API.Controllers
         public async Task<IActionResult> GetAllTickets() =>
             Ok(await _ticketService.GetAllTicketsAsync());
 
+        [HttpGet("tickets-over-time")]
+        public async Task<IActionResult> GetTicketsOverTime()
+        {
+            var data = await _ticketService.GetTicketsOverTimeAsync();
+            return Ok(data);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTicket(int id)
         {
@@ -32,8 +39,6 @@ namespace GPS.API.Controllers
             if (ticket == null) return NotFound();
             return Ok(ticket);
         }
-
-
 
         [HttpGet("get/{email}")]
         public async Task<IActionResult> GetTicketsByEmail(string email)
