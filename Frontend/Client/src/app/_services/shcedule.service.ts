@@ -15,13 +15,12 @@ export class ScheduleService {
     return this.http.get<Schedule[]>(this.baseUrl);
   }
 
+  getAllSchedulesByLineId(lineId:number) {
+    return this.http.get<Schedule[]>(this.baseUrl+ `/line/${lineId}`);
+  }
+
   getSchedule(id: number) {
-    return this.http.get<Schedule>(this.baseUrl + `/${id}`).pipe(
-      catchError(error => {
-        console.error('Error fetching schedule:', error);
-        return (error);
-      })
-    );
+    return this.http.get<Schedule>(this.baseUrl + `/${id}`);
   }
 
   createSchedule(schedule: any) {

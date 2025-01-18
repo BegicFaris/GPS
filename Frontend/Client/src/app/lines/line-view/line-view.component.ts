@@ -26,7 +26,7 @@ export class LineViewComponent {
     this.titleService.setTitle('Lines');
     this.loadLines();
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && event.url === '/lines') {
+      if (event instanceof NavigationEnd && event.url === '/manager-dashboard/lines') {
         this.loadLines();
       }
     });

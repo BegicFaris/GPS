@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Line } from '../_models/line';
-import { catchError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +11,19 @@ export class LineService {
   private baseUrl = 'https://localhost:5001/api/lines';
   lines: Line[] = [];
 
-  getAllLines() {
-    return this.http.get<Line[]>(this.baseUrl);
+  getAllLines(lineName?: string|null, stationName?: string|null) {
+    // Create query parameters based on input
+    let params = new HttpParams();
+    if (lineName) {
+      params = params.append('lineName', lineName);
+    }
+    if (stationName) {
+      params = params.append('stationName', stationName);
+    }
+  
+    // Make the GET request with query parameters
+    return this.http.get<Line[]>(this.baseUrl, { params });
   }
-
   getAllLinesByStationId(stationId: number) {
     return this.http.get<Line[]>(this.baseUrl + `/station/${stationId}`);
   }
@@ -55,4 +64,9 @@ export class LineService {
       })
     );
   }
+
+  getSchedulePDF():Observable<Blob>{
+    return this.http.get<Blob>(`${this.baseUrl}/generate-pdf`, { responseType: 'blob' as 'json' });
+  }
+
 }

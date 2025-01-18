@@ -146,96 +146,149 @@ namespace GPS.API.Data.DbContexts
                 );
 
             modelBuilder.Entity<Line>().HasData(
-                new Line { Id = 1, CompleteDistance = "10", IsActive = true, Name = "21", TenantId = "mostar" },
-                new Line { Id = 3, CompleteDistance = "10", IsActive = true, Name = "22", TenantId = "mostar" },
-                new Line { Id = 4, CompleteDistance = "10", IsActive = true, Name = "23", TenantId = "mostar" },
-                new Line { Id = 5, CompleteDistance = "10", IsActive = true, Name = "24", TenantId = "mostar" },
-                new Line { Id = 6, CompleteDistance = "10", IsActive = true, Name = "25", TenantId = "mostar" },
-                new Line { Id = 7, CompleteDistance = "10", IsActive = true, Name = "26", TenantId = "mostar" },
-                new Line { Id = 8, CompleteDistance = "10", IsActive = true, Name = "1", TenantId = "mostar" },
-                new Line { Id = 9, CompleteDistance = "10", IsActive = true, Name = "2", TenantId = "mostar" },
-                new Line { Id = 10, CompleteDistance = "10", IsActive = true, Name = "6", TenantId = "mostar" },
-                new Line { Id = 11, CompleteDistance = "10", IsActive = true, Name = "10", TenantId = "mostar" },
-                new Line { Id = 12, CompleteDistance = "10", IsActive = true, Name = "11", TenantId = "mostar" },
-                new Line { Id = 2, CompleteDistance = "10", IsActive = true, Name = "48", TenantId = "mostar" }
+                new Line { Id = 1, CompleteDistance = "12", IsActive = true, Name = "21: Bijeli Brijeg - Zalik", TenantId = "mostar" },
+                new Line { Id = 2, CompleteDistance = "20", IsActive = true, Name = "48: Vrapčići - Tekija", TenantId = "mostar" },
+                new Line { Id = 3, CompleteDistance = "10", IsActive = true, Name = "22: Buna - Donja Mahala", TenantId = "mostar" },
+                new Line { Id = 4, CompleteDistance = "7", IsActive = true, Name = "23: Centar - Bijeli Brijeg", TenantId = "mostar" },
+                new Line { Id = 5, CompleteDistance = "11", IsActive = true, Name = "24: Vrapčići - Raštani", TenantId = "mostar" },
+                new Line { Id = 6, CompleteDistance = "2", IsActive = true, Name = "25: Raštani - Donja Mahala", TenantId = "mostar" },
+                new Line { Id = 7, CompleteDistance = "13", IsActive = true, Name = "26: Blagaj - Jasenica", TenantId = "mostar" },
+                new Line { Id = 8, CompleteDistance = "25", IsActive = true, Name = "1: Tekija - Raštani", TenantId = "mostar" },
+                new Line { Id = 9, CompleteDistance = "12", IsActive = true, Name = "2: Zalik - Centar", TenantId = "mostar" },
+                new Line { Id = 10, CompleteDistance = "45", IsActive = true, Name = "6: Rondo - Bijeli Brijeg", TenantId = "mostar" },
+                new Line { Id = 11, CompleteDistance = "17", IsActive = true, Name = "10: Bijeli Brijeg Centar", TenantId = "mostar" },
+                new Line { Id = 12, CompleteDistance = "2", IsActive = true, Name = "11: Buna - Orlac", TenantId = "mostar" }
              );
             modelBuilder.Entity<Models.Route>().HasData(
 
-                new Models.Route { Id = 1, LineId = 1, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 2, LineId = 1, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 3, LineId = 1, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 4, LineId = 1, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 4, TenantId = "mostar" },
-                
+                new Models.Route { Id = 1, LineId = 1, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 10, 0), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 2, LineId = 1, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 15, 0), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 3, LineId = 1, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 8, 0), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 4, LineId = 1, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 11, 0), Order = 4, TenantId = "mostar" },
+
                 // Line 2 - "48"
-                new Models.Route { Id = 5, LineId = 2, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 6, LineId = 2, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 7, LineId = 2, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 3, TenantId = "mostar" },
-                
+                new Models.Route { Id = 5, LineId = 2, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 7, 0), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 6, LineId = 2, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 13, 0), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 7, LineId = 2, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 10, 0), Order = 3, TenantId = "mostar" },
+
                 // Line 3 - "22"
-                new Models.Route { Id = 8, LineId = 3, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 9, LineId = 3, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 10, LineId = 3, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 11, LineId = 3, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 4, TenantId = "mostar" },
-                
+                new Models.Route { Id = 8, LineId = 3, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 15, 0), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 9, LineId = 3, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 8, 0), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 10, LineId = 3, StationId = 10, DistanceFromTheNextStation = new TimeOnly(012, 0), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 11, LineId = 3, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 9, 0), Order = 4, TenantId = "mostar" },
+
                 // Line 4 - "23"
-                new Models.Route { Id = 12, LineId = 4, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 16), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 13, LineId = 4, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 14, LineId = 4, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 53, LineId = 4, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 4, TenantId = "mostar" },
-                
+                new Models.Route { Id = 12, LineId = 4, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 16), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 13, LineId = 4, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 14), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 14, LineId = 4, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 11), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 53, LineId = 4, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 8), Order = 4, TenantId = "mostar" },
+
                 // Line 5 - "24"
-                new Models.Route { Id = 54, LineId = 5, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 49, LineId = 5, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 50, LineId = 5, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 51, LineId = 5, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 6), Order = 4, TenantId = "mostar" },
-                new Models.Route { Id = 52, LineId = 5, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+                new Models.Route { Id = 54, LineId = 5, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 13), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 49, LineId = 5, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 7), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 50, LineId = 5, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 10), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 51, LineId = 5, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 6), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 52, LineId = 5, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 5, TenantId = "mostar" },
 
-                new Models.Route { Id = 15, LineId = 6, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 16, LineId = 6, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 17, LineId = 6, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 18, LineId = 6, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 4, TenantId = "mostar" },
-                new Models.Route { Id = 19, LineId = 6, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 5, TenantId = "mostar" },
 
-                new Models.Route { Id = 20, LineId = 7, StationId = 13, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 21, LineId = 7, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 22, LineId = 7, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 23, LineId = 7, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 4, TenantId = "mostar" },
-                new Models.Route { Id = 24, LineId = 7, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+
+                new Models.Route { Id = 15, LineId = 6, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 16, LineId = 6, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 8), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 17, LineId = 6, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 12), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 18, LineId = 6, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 15), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 19, LineId = 6, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 10), Order = 5, TenantId = "mostar" },
+
+                new Models.Route { Id = 20, LineId = 7, StationId = 13, DistanceFromTheNextStation = new TimeOnly(0, 14), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 21, LineId = 7, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 7), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 22, LineId = 7, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 11), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 23, LineId = 7, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 10), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 24, LineId = 7, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 5, TenantId = "mostar" },
 
                 // Line 8 - "1"
-                new Models.Route { Id = 25, LineId = 8, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 26, LineId = 8, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 27, LineId = 8, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 28, LineId = 8, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 4, TenantId = "mostar" },
-                new Models.Route { Id = 29, LineId = 8, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 5, TenantId = "mostar" },
+                new Models.Route { Id = 25, LineId = 8, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 10), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 26, LineId = 8, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 15), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 27, LineId = 8, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 28, LineId = 8, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 8), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 29, LineId = 8, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 12), Order = 5, TenantId = "mostar" },
+                new Models.Route { Id = 55, LineId = 8, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 12), Order = 5, TenantId = "mostar" },
 
                 // Line 9 - "2"
-                new Models.Route { Id = 30, LineId = 9, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 31, LineId = 9, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 32, LineId = 9, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 33, LineId = 9, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 4, TenantId = "mostar" },
-                new Models.Route { Id = 34, LineId = 9, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 5, TenantId = "mostar" },
+                new Models.Route { Id = 30, LineId = 9, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 14), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 31, LineId = 9, StationId = 10, DistanceFromTheNextStation = new TimeOnly(0, 8), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 32, LineId = 9, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 11), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 33, LineId = 9, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 34, LineId = 9, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 13), Order = 5, TenantId = "mostar" },
 
                 // Line 10 - "6"
-                new Models.Route { Id = 35, LineId = 10, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 0, 11), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 36, LineId = 10, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 0, 6), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 37, LineId = 10, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 14), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 38, LineId = 10, StationId = 13, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 4, TenantId = "mostar" },
-                new Models.Route { Id = 39, LineId = 10, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+                new Models.Route { Id = 35, LineId = 10, StationId = 4, DistanceFromTheNextStation = new TimeOnly(0, 11), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 36, LineId = 10, StationId = 9, DistanceFromTheNextStation = new TimeOnly(0, 6), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 37, LineId = 10, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 14), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 38, LineId = 10, StationId = 13, DistanceFromTheNextStation = new TimeOnly(0, 7), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 39, LineId = 10, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 5, TenantId = "mostar" },
 
                 // Line 11 - "10"
-                new Models.Route { Id = 40, LineId = 11, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 0, 13), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 41, LineId = 11, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 42, LineId = 11, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 0, 12), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 43, LineId = 11, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 8), Order = 4, TenantId = "mostar" },
-                new Models.Route { Id = 44, LineId = 11, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 5, TenantId = "mostar" },
+                new Models.Route { Id = 40, LineId = 11, StationId = 5, DistanceFromTheNextStation = new TimeOnly(0, 13), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 41, LineId = 11, StationId = 11, DistanceFromTheNextStation = new TimeOnly(0, 10), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 42, LineId = 11, StationId = 6, DistanceFromTheNextStation = new TimeOnly(0, 12), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 43, LineId = 11, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 8), Order = 4, TenantId = "mostar" },
+                new Models.Route { Id = 44, LineId = 11, StationId = 3, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 5, TenantId = "mostar" },
 
                 // Line 12 - "11"
-                new Models.Route { Id = 45, LineId = 12, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 0, 7), Order = 1, TenantId = "mostar" },
-                new Models.Route { Id = 46, LineId = 12, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 0, 9), Order = 2, TenantId = "mostar" },
-                new Models.Route { Id = 47, LineId = 12, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 0, 15), Order = 3, TenantId = "mostar" },
-                new Models.Route { Id = 48, LineId = 12, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 0, 10), Order = 4, TenantId = "mostar" }
+                new Models.Route { Id = 45, LineId = 12, StationId = 14, DistanceFromTheNextStation = new TimeOnly(0, 7), Order = 1, TenantId = "mostar" },
+                new Models.Route { Id = 46, LineId = 12, StationId = 12, DistanceFromTheNextStation = new TimeOnly(0, 9), Order = 2, TenantId = "mostar" },
+                new Models.Route { Id = 47, LineId = 12, StationId = 7, DistanceFromTheNextStation = new TimeOnly(0, 15), Order = 3, TenantId = "mostar" },
+                new Models.Route { Id = 48, LineId = 12, StationId = 8, DistanceFromTheNextStation = new TimeOnly(0, 10), Order = 4, TenantId = "mostar" }
             );
+
+            modelBuilder.Entity<Schedule>().HasData(
+                new Schedule { Id = 1, LineId = 1, DepartureTime = new TimeOnly(6, 0), TenantId = "mostar" },
+                new Schedule { Id = 2, LineId = 1, DepartureTime = new TimeOnly(12, 30), TenantId = "mostar" },
+                new Schedule { Id = 3, LineId = 1, DepartureTime = new TimeOnly(18, 45), TenantId = "mostar" },
+
+                new Schedule { Id = 4, LineId = 3, DepartureTime = new TimeOnly(5, 15), TenantId = "mostar" },
+                new Schedule { Id = 5, LineId = 3, DepartureTime = new TimeOnly(9, 30), TenantId = "mostar" },
+                new Schedule { Id = 6, LineId = 3, DepartureTime = new TimeOnly(14, 0), TenantId = "mostar" },
+                new Schedule { Id = 7, LineId = 3, DepartureTime = new TimeOnly(20, 20), TenantId = "mostar" },
+
+                new Schedule { Id = 8, LineId = 4, DepartureTime = new TimeOnly(7, 10), TenantId = "mostar" },
+                new Schedule { Id = 9, LineId = 4, DepartureTime = new TimeOnly(13, 25), TenantId = "mostar" },
+                new Schedule { Id = 10, LineId = 4, DepartureTime = new TimeOnly(17, 55), TenantId = "mostar" },
+
+                new Schedule { Id = 11, LineId = 5, DepartureTime = new TimeOnly(8, 0), TenantId = "mostar" },
+                new Schedule { Id = 12, LineId = 5, DepartureTime = new TimeOnly(10, 45), TenantId = "mostar" },
+                new Schedule { Id = 13, LineId = 5, DepartureTime = new TimeOnly(15, 30), TenantId = "mostar" },
+                new Schedule { Id = 14, LineId = 5, DepartureTime = new TimeOnly(22, 10), TenantId = "mostar" },
+
+                new Schedule { Id = 15, LineId = 6, DepartureTime = new TimeOnly(6, 20), TenantId = "mostar" },
+                new Schedule { Id = 16, LineId = 6, DepartureTime = new TimeOnly(11, 50), TenantId = "mostar" },
+                new Schedule { Id = 17, LineId = 6, DepartureTime = new TimeOnly(19, 35), TenantId = "mostar" },
+
+                new Schedule { Id = 18, LineId = 7, DepartureTime = new TimeOnly(5, 50), TenantId = "mostar" },
+                new Schedule { Id = 19, LineId = 7, DepartureTime = new TimeOnly(12, 10), TenantId = "mostar" },
+                new Schedule { Id = 20, LineId = 7, DepartureTime = new TimeOnly(16, 45), TenantId = "mostar" },
+                new Schedule { Id = 21, LineId = 7, DepartureTime = new TimeOnly(21, 5), TenantId = "mostar" },
+
+                new Schedule { Id = 22, LineId = 8, DepartureTime = new TimeOnly(6, 40), TenantId = "mostar" },
+                new Schedule { Id = 23, LineId = 8, DepartureTime = new TimeOnly(10, 20), TenantId = "mostar" },
+                new Schedule { Id = 24, LineId = 8, DepartureTime = new TimeOnly(14, 55), TenantId = "mostar" },
+
+                new Schedule { Id = 25, LineId = 9, DepartureTime = new TimeOnly(7, 0), TenantId = "mostar" },
+                new Schedule { Id = 26, LineId = 9, DepartureTime = new TimeOnly(12, 15), TenantId = "mostar" },
+                new Schedule { Id = 27, LineId = 9, DepartureTime = new TimeOnly(18, 30), TenantId = "mostar" },
+                new Schedule { Id = 28, LineId = 9, DepartureTime = new TimeOnly(23, 50), TenantId = "mostar" },
+
+                new Schedule { Id = 29, LineId = 10, DepartureTime = new TimeOnly(5, 35), TenantId = "mostar" },
+                new Schedule { Id = 30, LineId = 10, DepartureTime = new TimeOnly(9, 50), TenantId = "mostar" },
+                new Schedule { Id = 31, LineId = 10, DepartureTime = new TimeOnly(15, 10), TenantId = "mostar" },
+
+                new Schedule { Id = 32, LineId = 11, DepartureTime = new TimeOnly(8, 25), TenantId = "mostar" },
+                new Schedule { Id = 33, LineId = 11, DepartureTime = new TimeOnly(13, 40), TenantId = "mostar" },
+                new Schedule { Id = 34, LineId = 11, DepartureTime = new TimeOnly(20, 15), TenantId = "mostar" },
+
+                new Schedule { Id = 35, LineId = 12, DepartureTime = new TimeOnly(6, 5), TenantId = "mostar" },
+                new Schedule { Id = 36, LineId = 12, DepartureTime = new TimeOnly(11, 30), TenantId = "mostar" },
+                new Schedule { Id = 37, LineId = 12, DepartureTime = new TimeOnly(16, 50), TenantId = "mostar" }
+             );
 
 
             modelBuilder.Entity<NotificationType>().HasData(

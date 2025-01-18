@@ -25,6 +25,9 @@ namespace GPS.API.Controllers
             if (schedule == null) return NotFound();
             return Ok(schedule);
         }
+        [HttpGet("line/{lineId}")]
+        public async Task<IActionResult> GetAllSchedulesByLineId(int lineId) =>
+            Ok(await _scheduleService.GetAllSchedulesByLineIdAsync(lineId));
 
         [HttpPost]
         public async Task<IActionResult> CreateSchedule(ScheduleCreateDto scheduleCreateDto)
