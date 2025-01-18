@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MyAppUserService } from '../_services/my-app-user.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MyAppUser } from '../_models/my-app-user';
 import { ThemeService } from '../_services/theme.service';
@@ -61,11 +61,11 @@ export class NavComponent implements OnInit {
     public themeService: ThemeService,
     private translateService: TranslateService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(){
     this.userEmail(); // Get email after login
-    this.loadName();
+    await this.loadName();
     this.loadNotifications();
   }
 
@@ -104,13 +104,11 @@ export class NavComponent implements OnInit {
     this.groupedNotifications = Object.values(grouped);
   }
 
-  loadName() {
-    this.myAppUserService.getMyAppUserByEmail(this.email).subscribe((data) => {
-      this.user = data; // or data.routes if it's nested
-    });
+  async loadName() {
+    this.user = await firstValueFrom(this.myAppUserService.getMyAppUserByEmail(this.email));
   }
 
-  userEmail() {
+  async userEmail() {
     this.email = this.accountService.getUserEmail();
   }
 

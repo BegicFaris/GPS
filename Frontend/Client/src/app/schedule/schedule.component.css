@@ -1,74 +1,145 @@
 .bi {
   font-size: 1.25rem;
 }
-
-.d-flex {
-  cursor: pointer;
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 3px; /* Reduced padding further to minimize height */
+.btn {
+  display: inline-flex;
+  align-items: center; /* Vertically aligns the text and icon */
 }
 
+.btn i {
+  margin-left: 8px; /* Adds some space between text and icon */
+  font-size: 1.25rem;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  gap: 20px;
+  width: 100%;
+}
+.search-group {
+  flex: 1;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; 
+}
+.favorites-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px; 
+  flex: 0;
+}
+.form-check {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+}
+.form-check-input {
+  width: 60px;  
+  height: 34px; 
+  cursor: pointer;
+  border-radius: 34px; 
+  transition: all 0.3s ease; 
+}
+.form-check-label {
+  font-size: 1.2rem;  
+  margin-left: 10px;   
+}
+.bi-star,
+.bi-star-fill {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.btn-primary {
+  flex: 0;
+  max-width: 200px;
+}
 .container {
-  padding-top: 20px;
+  padding-top: 40px;
   margin-left: 10%;
   width: 100%;
   display: flex;
-  justify-content: space-between; /* Space between columns */
-  gap: 10px; /* Reduced gap between columns */
+  justify-content: space-between;
+  gap: 10px;
 }
-
 .columns-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 3px; /* Reduced gap between items */
-  flex: 0 0 64%; /* Take 64% of the container width */
+  gap: 6px;
+  flex: 0 0 64%;
+  height: fit-content;
 }
-
 .images-container {
-  flex: 0 0 36%; /* Take 36% of the container width */
+  flex: 0 0 36%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px; /* Reduced gap between images */
-  height: 100%; /* Ensure it takes the full height */
+  gap: 3px;
+  height: 100%;
 }
-
 .custom-col-width {
-  width: 100%; /* Ensure it's 100% of the container width */
-  margin-bottom: 3px; /* Reduced margin between items */
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px; /* Reduced gap between items */
+  width: 50%;
   margin-bottom: 3px;
+  max-width: 400px;
+  min-width: 200px;
+  padding: 2px;
+  padding-left: 0px;
 }
 
 .custom-col-width .d-flex {
-  padding: 3px; /* Reduced padding to match target container */
+  padding: 3px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  width: 100%; /* Ensure it's the same width */
+  width: 100%;
 }
 
+
 .col-md-6 {
-  width: 48%; /* Ensures each column takes up roughly 50% of the row width */
-  margin-bottom: 3px; 
+  width: 48%;
+  margin-bottom: 3px;
   padding: 0;
 }
 
-@media (max-width: 768px) {
-  .col-md-6 {
-    width: 100%; /* Make it full width on smaller screens */
-  }
-}
-
 .images-container img {
-  width: 100%; /* Ensure images stretch to container width */
+  width: 100%;
   max-width: 100%;
   object-fit: cover;
-  height: auto; /* Allow images to adjust their height naturally */
+  height: auto;
+}
+
+.route-container {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 8px;
+  margin-top: 7px;
+  border: solid 1px #ccc;
+}
+
+.route-row {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 3px;
+  margin: 0px;
+}
+
+.route {
+  
+  flex: 1 1 45%; /* Adjust the width as needed */
+  margin-right: 10px;
+  margin-bottom: 0px;
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: #ddd; /* Style the separator as needed */
+  margin-top: 10px;
+}
+
+p{
+  margin-bottom: 0;
 }

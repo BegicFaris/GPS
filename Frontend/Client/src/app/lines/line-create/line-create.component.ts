@@ -21,9 +21,6 @@ export class LineCreateComponent {
   stations: Station[] = [];
   lineCreate: any = {};
 
-
-
-
   ngOnInit() {
     this.titleService.setTitle('Add line');
     this.loadStations();
