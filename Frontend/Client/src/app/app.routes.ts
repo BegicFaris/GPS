@@ -124,7 +124,6 @@ export const routes: Routes = [
         path: 'passengers',
         loadComponent: () => import('./passengers/passenger-view/passenger-view.component').then(m => m.PassengerViewComponent)
       },
-      
       {
         path: 'schedules/add',
         loadComponent: () => import('./schedules/schedule-create/schedule-create.component').then(m => m.ScheduleCreateComponent)
@@ -140,6 +139,10 @@ export const routes: Routes = [
       {
         path: 'stations',
         loadComponent: () => import('./stations/station-view/station-view.component').then(m => m.StationViewComponent)
+      },
+      {
+        path: 'ticket-graph',
+        loadComponent: () => import('./ticket-graph/ticket-graph.component').then(m => m.TicketGraphComponent)
       },
     ],
   },

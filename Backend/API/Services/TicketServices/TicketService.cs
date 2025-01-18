@@ -6,6 +6,7 @@ using QRCoder;
 using System.Drawing.Imaging;
 using System.Drawing;
 using static QRCoder.PayloadGenerator;
+using System.Globalization;
 
 namespace GPS.API.Services.TicketServices
 {
@@ -20,6 +21,23 @@ namespace GPS.API.Services.TicketServices
         }
         public async Task<IEnumerable<Ticket>> GetAllTicketsAsync() =>
             await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).ToListAsync();
+        public async Task<object> GetTicketsOverTimeAsync()
+        {
+            var tickets = await _context.Tickets.ToListAsync();
+
+            // Group tickets by month (or customize as needed)
+            var groupedData = tickets
+                .GroupBy(t => t.CreatedDate.ToString("MMMM", CultureInfo.InvariantCulture)) // Month names
+                .Select(group => new
+                {
+                    Month = group.Key,
+                    Count = group.Count()
+                })
+                .OrderBy(data => DateTime.ParseExact(data.Month, "MMMM", CultureInfo.InvariantCulture))
+                .ToList();
+
+            return groupedData;
+        }
         public async Task<Ticket> GetTicketByIdAsync(int id) =>
           await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).SingleOrDefaultAsync(x => x.Id == id);
         public async Task<List<Ticket>> GetAllTicketsForUserEmail(string email)
