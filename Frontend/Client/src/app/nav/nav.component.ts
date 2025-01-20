@@ -64,9 +64,17 @@ export class NavComponent implements OnInit {
   ) { }
 
   async ngOnInit(){
-    this.userEmail(); // Get email after login
-    await this.loadName();
+
     this.loadNotifications();
+    if (localStorage.getItem('user')) {
+      this.userEmail(); // Get email after login
+      this.loadName();  // Load user name
+    }
+  }
+
+  afterLogin(){
+    this.userEmail(); // Get email after login
+    this.loadName();
   }
 
   get userRole(): string | null {

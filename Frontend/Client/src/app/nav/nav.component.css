@@ -25,3 +25,10 @@
   .popup-content p {
     margin-bottom: 15px;
   }
+  
+  .navbar-nav {
+    display: flex;
+    justify-content: center; /* Centers the list items horizontally */
+    align-items: center;    /* Aligns items vertically if needed */
+    width: 100%;            /* Ensures the container takes full width */
+  }

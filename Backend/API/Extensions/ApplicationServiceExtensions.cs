@@ -2,7 +2,6 @@
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using GPS.API.Services.BusServices;
-using GPS.API.Services.CreditCardServices;
 using GPS.API.Services.DriverServices;
 using GPS.API.Services.DiscountServices;
 using GPS.API.Services.FeedbackServices;
@@ -100,7 +99,6 @@ namespace GPS.API.Extensions
             services.AddScoped<ILineService, LineService>();
             services.AddScoped<IBusService, BusService>();
             services.AddScoped<IRouteService, RouteService>();
-            services.AddScoped<ICreditCardService, CreditCardService>();
             services.AddScoped<ITenantService, TenantService>();
             services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IZoneService,ZoneService>();

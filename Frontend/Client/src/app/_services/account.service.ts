@@ -115,6 +115,7 @@ export class AccountService {
   
   logout(){
     localStorage.removeItem('user');
+    localStorage.removeItem('_grecaptcha');
     this.currentUser.set(null);
   }
 

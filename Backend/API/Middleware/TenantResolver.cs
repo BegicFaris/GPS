@@ -15,16 +15,16 @@ namespace GPS.API.Middleware
 
         public async Task InvokeAsync(HttpContext context, ICurrentTenantService currentTenantService)
         {
-            if (
-                context.Request.Path.StartsWithSegments("/api/Account/Register/Passenger") ||
-                context.Request.Path.StartsWithSegments("/api/Account/Login") ||
-                context.Request.Path.StartsWithSegments("/api/AAGetTokenTest/GetToken") ||
-                context.Request.Path.StartsWithSegments("/api/Token") ||
-                context.Request.Path.StartsWithSegments("/api/Tenants"))
-            {
-                await _next(context); // Continue without doing tenant resolution
-                return;
-            }
+            //if (
+            //    context.Request.Path.StartsWithSegments("/api/Account/Register/Passenger") ||
+            //    context.Request.Path.StartsWithSegments("/api/Account/Login") ||
+            //    context.Request.Path.StartsWithSegments("/api/AAGetTokenTest/GetToken") ||
+            //    context.Request.Path.StartsWithSegments("/api/Token") ||
+            //    context.Request.Path.StartsWithSegments("/api/Tenants"))
+            //{
+            //    await _next(context); // Continue without doing tenant resolution
+            //    return;
+            //}
 
             // Extract the TenantId from the JWT token (from the claims)
             string tenantId = "";

@@ -24,8 +24,12 @@ namespace GPS.API.Services.TenantServices
                 TenantId = tenantInfo.Id;
                 return true;
             }
+            else
+            {
+                throw new Exception("Invalid tenant ID");
+            }
 
-            throw new Exception("Invalid tenant ID");
+           
         }
 
     }

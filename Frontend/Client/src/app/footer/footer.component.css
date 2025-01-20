@@ -1,11 +1,7 @@
 
 /* Footer Styling */
 footer {
-    background: linear-gradient(
-      90deg,
-      rgba(50, 50, 50, 1) 0%,
-      rgba(75, 75, 75, 1) 100%
-    ); /* Dark gray gradient */
+    background-color: #212529;
     color: white;
     font-size: 14px; /* Smaller font size */
     padding-top: 30px; /* Smaller top padding */
@@ -269,7 +265,6 @@ footer {
 .page-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Full viewport height */
   }
   
   /* Allow content to grow, pushing footer to the bottom if needed */
@@ -279,11 +274,6 @@ footer {
   
   /* Footer Styling */
   footer {
-    background: linear-gradient(
-      90deg,
-      rgba(50, 50, 50, 1) 0%,
-      rgba(75, 75, 75, 1) 100%
-    ); /* Dark gray gradient */
     color: white;
     padding: 30px 0;
     text-align: center;

@@ -8,7 +8,7 @@
     <div class="d-flex flex-column search-group">
       <label class="fw-bold mb-1">Search by:</label>
 
-      <input type="text" class="form-control mb-2" matInput [formControl]="lineAutocompleteFormControl"
+      <input type="text" class="form-control mb-2 dark" matInput [formControl]="lineAutocompleteFormControl"
         [matAutocomplete]="lineAuto" placeholder="Search by line..." (change)="listenToSearchFields()">
       <mat-autocomplete #lineAuto="matAutocomplete">
         @for (line of filteredLines$ | async; track line.id) {
@@ -17,7 +17,7 @@
       </mat-autocomplete>
 
 
-      <input type="text" class="form-control" matInput [formControl]="stationAutocompleteFormControl"
+      <input type="text" class="form-control dark" matInput [formControl]="stationAutocompleteFormControl"
         [matAutocomplete]="stationAuto" placeholder="Search by station..." (change)="listenToSearchFields()">
       <mat-autocomplete #stationAuto="matAutocomplete">
         @for (station of filteredStations$ | async; track station.id) {
@@ -29,7 +29,7 @@
 
     <!-- Toggle Switch -->
     <div class="form-check form-switch text-center align-items-center justify-content-center">
-      <input class="form-check-input toggle-lg" type="checkbox" id="favoriteToggle"
+      <input class="form-check-input toggle-lg black" type="checkbox" id="favoriteToggle"
         (change)="onFavoritesToggleChange($event)">
       <label class="form-check-label" for="favoriteToggle">Favorites Only</label>
     </div>
@@ -86,7 +86,7 @@
                 <p class="m-0 p-1">{{ route.station.name }} - {{
                   calculateDepartureTime(route.distanceFromTheNextStation, $index) }}</p>
               </div>
-              @if ($index % 2 === 1) {
+              @if ($index % 2 === 1 && routes.length-2>=$index) {
               <div class="separator"></div> <!-- Adds a separator between pairs -->
               }
               }
@@ -102,7 +102,7 @@
     <!-- Container for the images (36%) -->
     <div class="images-container">
       <img src="Zone.jpg" alt="Image 1" style="width: 100%; max-width: 100%; object-fit: cover;">
-      <img src="Zone.jpg" alt="Image 2" style="width: 100%; max-width: 100%; object-fit: cover;">
+      <img src="grafikon-linija-boje.png" alt="Image 2" style="width: 100%; max-width: 100%; object-fit: cover;">
     </div>
   </div>
 </div>

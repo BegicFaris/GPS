@@ -91,13 +91,13 @@ namespace GPS.API.Controllers
         [HttpPost("register/passenger")]
         public async Task<ActionResult<UserDto>> RegisterPassenger(RegisterPassengerDto dto)
         {
-            if (!await VerifyCaptcha(dto.CaptchaResponse))
-            {
-                return BadRequest("CAPTCHA verification failed");
-            }
+            //if (!await VerifyCaptcha(dto.CaptchaResponse))
+            //{
+            //    return BadRequest("CAPTCHA verification failed");
+            //}
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
-            var tenant= await _context.Tenants.Where(t=>t.Id==dto.TenantId).FirstOrDefaultAsync();
+            var tenant = await _context.Tenants.Where(t => t.Id == dto.TenantId).FirstOrDefaultAsync();
             currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Passenger

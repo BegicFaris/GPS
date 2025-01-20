@@ -1,4 +1,6 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="padding: 0%;">
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  
   @if (accountService.currentUser()) {
   <div class="d-flex align-items-center ms-2">
     @for (group of groupedNotifications; track group.type) {
@@ -14,7 +16,7 @@
   @for (group of groupedNotifications; track group.type) {
   @if(group['showDetails']){
   <div class="notification-details bg-dark text-light p-2 rounded"
-    style="position: absolute; top: 50px; left: 50px; width: 250px; max-height: 300px; overflow-y: auto;">
+    style="position: absolute; top: 84px; left: 50px; width: 250px; max-height: 300px; overflow-y: auto;">
     <h6 class="mb-2">{{ group.type }} ({{ group.count }})</h6>
     @for (notification of group.notifications; track notification.id) {
     <div class="mb-2 pb-2 border-bottom">
@@ -30,7 +32,7 @@
     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <i class="bi bi-geo-alt" style="font-size: 24px; color: white; margin-left: 20%;"></i>
+  <i class="bi bi-geo-alt" style="font-size: 24px; color: white; margin-left: 10%;"></i>
   <a class="navbar-brand" href="/home">GPS</a>
   @if(accountService.currentUser()){
   <div class="collapse navbar-collapse" id="navbarCollapse">

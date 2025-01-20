@@ -46,6 +46,20 @@
   font-size: 1.2rem;  
   margin-left: 10px;   
 }
+.dark{
+  background-color: var(--input-background);
+  
+  border-color:var(--input-border);
+}
+.black{
+  background-color: var(--button-primary);
+}
+.black:hover{
+  background-color: var(--button-primary-hover);
+}
+.dark::placeholder{
+  color: var(--text-color);
+}
 .bi-star,
 .bi-star-fill {
   font-size: 1.25rem;
@@ -113,6 +127,7 @@
   flex-wrap: wrap;
   border-radius: 8px;
   margin-top: 7px;
+  background-color: var(--table-body-background);
   border: solid 1px #ccc;
 }
 

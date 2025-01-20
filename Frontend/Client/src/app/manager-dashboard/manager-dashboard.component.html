@@ -18,11 +18,11 @@
       <ul class="nav flex-column">
         <!-- Manage Data Section -->
         <li class="nav-item">
-          <a class="nav-link text-light" data-bs-toggle="collapse" href="#manageDataMenu" role="button"
+          <a class="nav-link text-light" (click)="toggleMenu('manageData')" role="button"
             aria-expanded="false" aria-controls="manageDataMenu">
             <i class="bi bi-table"></i> Manage Data
           </a>
-          <div class="collapse" id="manageDataMenu">
+          <div class="submenu" [ngClass]="{'show': expandedMenus['manageData']}">
             <ul class="list-unstyled ps-2">
               <li><a [routerLink]="'buses'" routerLinkActive="router-link-active" class="nav-link text-light">Bus</a></li>
               <li><a [routerLink]="'discounts'" routerLinkActive="router-link-active" class="nav-link text-light">Discount</a></li>
@@ -40,11 +40,11 @@
 
         <!-- Analytics Section -->
         <li class="nav-item">
-          <a href="#" class="nav-link text-light" data-bs-toggle="collapse" href="#analyticsMenu" role="button"
+          <a class="nav-link text-light" (click)="toggleMenu('analytics')" role="button"
             aria-expanded="false" aria-controls="analyticsMenu">
             <i class="bi bi-bar-chart"></i> Analytics
           </a>
-          <div class="collapse" id="analyticsMenu">
+          <div class="submenu" [ngClass]="{'show': expandedMenus['analytics']}">
             <ul class="list-unstyled ps-2">
               <li>
                 <a [routerLink]="'ticket-graph'" routerLinkActive="router-link-active" class="nav-link text-light">Ticket graph</a>
