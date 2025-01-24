@@ -3,7 +3,7 @@
 
   <div class="mb-3">
     <label class="form-label">Registration number</label>
-    <input type="text" name="registrationNumber" class="form-control" required [(ngModel)]="busCreate.registrationNumber" #registrationNumber="ngModel" placeholder="Name">
+    <input type="text" name="registrationNumber" class="form-control" required [(ngModel)]="busCreate.registrationNumber" #registrationNumber="ngModel" placeholder="Registration number">
     @if(registrationNumber.invalid && (registrationNumber.dirty || registrationNumber.touched)) {
       @if(registrationNumber.errors?.['required']) {<div class="text-danger">Registration number is required.</div>}
     }
@@ -11,7 +11,7 @@
 
   <div class="mb-3">
     <label class="form-label">Manufacturer</label>
-    <input type="text" name="manufacturer" class="form-control" required [(ngModel)]="busCreate.manufacturer" #manufacturer="ngModel" placeholder="Name">
+    <input type="text" name="manufacturer" class="form-control" required [(ngModel)]="busCreate.manufacturer" #manufacturer="ngModel" placeholder="Manufacturer">
     @if(manufacturer.invalid && (manufacturer.dirty || manufacturer.touched)) {
       @if(manufacturer.errors?.['required']) {<div class="text-danger">Manufacturer is required.</div>}
     }
@@ -19,7 +19,7 @@
 
   <div class="mb-3">
     <label class="form-label">Model</label>
-    <input type="text" name="model" class="form-control" required [(ngModel)]="busCreate.model" #model="ngModel" placeholder="Name">
+    <input type="text" name="model" class="form-control" required [(ngModel)]="busCreate.model" #model="ngModel" placeholder="Model">
     @if(model.invalid && (model.dirty || model.touched)) {
       @if(model.errors?.['required']) {<div class="text-danger">Model is required.</div>}
     }
@@ -27,7 +27,7 @@
 
   <div class="mb-3">
     <label class="form-label">Capacity</label>
-    <input type="text" name="capacity" class="form-control" required [(ngModel)]="busCreate.capacity" #capacity="ngModel" placeholder="Name">
+    <input type="text" name="capacity" class="form-control" required [(ngModel)]="busCreate.capacity" #capacity="ngModel" placeholder="Capacity">
     @if(capacity.invalid && (capacity.dirty || capacity.touched)) {
       @if(capacity.errors?.['required']) {<div class="text-danger">Capacity is required.</div>}
     }
@@ -35,7 +35,7 @@
 
   <div class="mb-3">
     <label class="form-label">Manufacture year</label>
-    <input type="text" name="manufactureYear" class="form-control" required [(ngModel)]="busCreate.manufactureYear" #manufactureYear="ngModel" placeholder="Name">
+    <input type="text" name="manufactureYear" class="form-control" required [(ngModel)]="busCreate.manufactureYear" #manufactureYear="ngModel" placeholder="Manufacture year">
     @if(manufactureYear.invalid && (manufactureYear.dirty || manufactureYear.touched)) {
       @if(manufactureYear.errors?.['required']) {<div class="text-danger">Manufacture year is required.</div>}
     }

@@ -91,8 +91,8 @@ namespace GPS.API.Controllers
                 existingNotification.NotificationTypeId = notificationUpdateDto.NotificationTypeId.Value;
             if (notificationUpdateDto.CreationDate != null)
                 existingNotification.CreationDate = notificationUpdateDto.CreationDate.Value;
-            if (notificationUpdateDto.LineId != null)
-                existingNotification.LineId = notificationUpdateDto.LineId.Value;
+
+            existingNotification.LineId = notificationUpdateDto.LineId == null ? null: notificationUpdateDto.LineId.Value;
             if(notificationUpdateDto.ManagerId != null)
                 existingNotification.ManagerId= notificationUpdateDto.ManagerId.Value;
 

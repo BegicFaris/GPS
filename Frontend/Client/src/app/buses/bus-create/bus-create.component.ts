@@ -3,6 +3,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { BusService } from '../../_services/bus.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-bus-create',
@@ -15,6 +17,7 @@ export class BusCreateComponent {
   private router = inject(Router);
   private busService = inject(BusService);
   private titleService = inject(Title);
+  private snackBar=inject(MatSnackBar);
 
 
 
@@ -32,6 +35,11 @@ export class BusCreateComponent {
       this.busService.createBus(this.busCreate).subscribe({
         next: (response) => {
           console.log(response);
+          this.snackBar.open('Bus added successfully!', 'Close', {
+            duration: 3000, // Duration in milliseconds
+            horizontalPosition: 'center', // Can be 'start', 'center', 'end', 'left', 'right'
+            verticalPosition: 'top', // Can be 'top' or 'bottom'
+          });
           this.cancel();
         },
       });
