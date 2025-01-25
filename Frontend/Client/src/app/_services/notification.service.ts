@@ -46,6 +46,11 @@ export class NotificationService {
   }
 
   updateNotification(notification: any) {
+    console.log("Trying to update");
+    console.log(notification);
+    const parsedLineId = parseInt(notification.lineId, 10);
+    notification.lineId = Number.isNaN(parsedLineId) ? null : parsedLineId;
+ 
     return this.http.put<Notification>(this.baseUrl + `/${notification.id}`, notification).pipe(
       catchError(error => {
         console.error('Error updating notification:', error);

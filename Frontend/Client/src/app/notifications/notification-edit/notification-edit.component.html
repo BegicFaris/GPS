@@ -1,4 +1,4 @@
-<h5 class="modal-title text-center">Add New Notification</h5>
+<h5 class="modal-title text-center">Edit Notification</h5>
 <form #newNotifForm="ngForm" (ngSubmit)="saveChanges(newNotifForm)" style="width: 70%; max-width: 600px; margin: 0 auto;">
 
     <!-- Image Upload Section -->
@@ -66,9 +66,9 @@
     <div class="mb-3">
         <label class="form-label">Line</label>
         <select class="form-select" name="lineId" [(ngModel)]="notificationUpdate.lineId" #lineId="ngModel">
-            <option value="" selected>No line</option>
+            <option [value] = null selected>No line</option>
             @for (line of lines; track line.id) {
-                <option [value]="line.id">{{ line.name }}</option>
+                <option [value]="+line.id">{{ line.name }}</option>
             }
         </select>
     </div>

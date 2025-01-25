@@ -30,6 +30,7 @@ export class NotificationViewComponent {
     await this.loadNotifications();
     await lastValueFrom(this.router.events);
     this.router.events.subscribe(async (event) => {
+      console.log
       if (event instanceof NavigationEnd && event.url === '/manager-dashboard/notifications') {
         await this.loadNotifications();
       }
@@ -57,7 +58,7 @@ export class NotificationViewComponent {
 
   openEditDialog(notification: Notification) {
     const dialogRef = this.dialog.open(NotificationEditComponent, {
-      height: '800px',
+      height: '850px',
       width: '1000px',  
       data: {
         id:notification.id,
@@ -70,8 +71,8 @@ export class NotificationViewComponent {
         managerId:notification.managerId
       },  
     });
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadNotifications();
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.loadNotifications();
       if (result) {
         console.log('Updated Notification:', result);
       }

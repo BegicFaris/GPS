@@ -7,6 +7,7 @@ import { NotificationType } from '../../_models/notification-type';
 import { Title } from '@angular/platform-browser';
 import { Line } from '../../_models/line';
 import { FormsModule, NgForm } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-notification-edit',
@@ -28,7 +29,7 @@ export class NotificationEditComponent {
       notificationTypeId: number,
       creationDate: string,
       lineId: number
-    }) {}
+    }) { }
 
   private notificationService = inject(NotificationService);
   private lineService = inject(LineService);
@@ -47,15 +48,10 @@ export class NotificationEditComponent {
     }
   }
 
-  saveChanges(updateNotificationForm: NgForm) {
+  async saveChanges(updateNotificationForm: NgForm) {
     if (updateNotificationForm.valid) {
-      this.notificationService.updateNotification(this.notificationUpdate).subscribe({
-        next: response => {
-          console.log('Notification updated successfully', response);
-        }
-      });
+      await firstValueFrom(this.notificationService.updateNotification(this.notificationUpdate));
       this.dialogRef.close(this.notificationUpdate);
-      window.location.reload(); 
     }
   }
 
@@ -86,37 +82,37 @@ export class NotificationEditComponent {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-  
+
     if (input.files && input.files[0]) {
       const file = input.files[0];
       const validImageTypes = ['image/jpeg', 'image/png']; // Add allowed types
-  
+
       // Check if the file type is valid
       if (!validImageTypes.includes(file.type)) {
         alert('Please upload a valid image file (JPEG, PNG, or GIF).');
-        this.fileInput.nativeElement=this.notificationUpdate.image; // Automatically clear the file input
+        this.fileInput.nativeElement = this.notificationUpdate.image; // Automatically clear the file input
         return;
       }
-  
+
       // Set the file name to the file input
       this.fileName = file.name;
-  
+
       // Create a FileReader to read the image file
       const reader = new FileReader();
-  
+
       reader.onload = () => {
         // Ensure the base64 string is stored in notificationCreate.image
         const base64Image = reader.result?.toString().split(',')[1]; // Extract base64 part
-  
+
         if (base64Image) {
           this.notificationUpdate.image = base64Image; // Assign base64 image to model
         }
-        
+
         // Store the full base64 image for previewing (the complete data URL, including header)
         this.imagePreview = reader.result as string; // Directly use the full result for preview
         console.log(this.notificationUpdate.image);
       };
-  
+
       // Read the image file as base64
       reader.readAsDataURL(file);
     }
@@ -125,22 +121,22 @@ export class NotificationEditComponent {
   onDragOver(event: DragEvent): void {
     event.preventDefault(); // Necessary for drag events
   }
-  
+
   // Handle the drop event to process the dropped file
   onDrop(event: DragEvent): void {
     event.preventDefault(); // Prevent default behavior (Prevent opening the file)
-  
+
     const file = event.dataTransfer?.files[0]; // Get the first dropped file
-  
+
     if (file && file.type.startsWith('image/')) {
       // Set the file name to the file input
       this.fileName = file.name;
-  
+
       const reader = new FileReader();
       reader.onload = () => {
         // Set the imagePreview to the base64 result
         this.imagePreview = reader.result?.toString() || '';
-  
+
         // Set notificationCreate.image with the base64 image part
         const base64Image = reader.result?.toString().split(',')[1]; // Extract the base64 part
         if (base64Image) {
@@ -153,5 +149,5 @@ export class NotificationEditComponent {
     }
   }
 
-  
+
 }
