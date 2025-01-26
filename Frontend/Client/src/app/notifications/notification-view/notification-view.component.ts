@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-notification-view',
   standalone: true,
-  imports: [RouterLink,CommonModule],
+  imports: [RouterLink, CommonModule],
   templateUrl: './notification-view.component.html',
   styleUrl: './notification-view.component.css'
 })
@@ -22,11 +22,13 @@ export class NotificationViewComponent {
   private dialog = inject(MatDialog)
   notifications: Notification[] = [];
 
+  sortColumn: string = '';
+  sortAsc: boolean = true;
 
   async ngOnInit() {
     this.titleService.setTitle("Notifications");
 
-  
+
     await this.loadNotifications();
     await lastValueFrom(this.router.events);
     this.router.events.subscribe(async (event) => {
@@ -37,7 +39,7 @@ export class NotificationViewComponent {
     });
   }
   async loadNotifications() {
-    this.notifications=await lastValueFrom(this.notificationService.getAllNotifications());
+    this.notifications = await lastValueFrom(this.notificationService.getAllNotifications());
   }
 
   deleteNotificatiom(id: number) {
@@ -47,7 +49,7 @@ export class NotificationViewComponent {
           this.loadNotifications();
           console.log('Notification deleted successfully', response);
           this.cancel();
-          window.location.reload() 
+          window.location.reload()
         },
         error: error => {
           console.error('Error deleting notification', error);
@@ -59,17 +61,17 @@ export class NotificationViewComponent {
   openEditDialog(notification: Notification) {
     const dialogRef = this.dialog.open(NotificationEditComponent, {
       height: '850px',
-      width: '1000px',  
+      width: '1000px',
       data: {
-        id:notification.id,
-        title:notification.title,
-        description:notification.description,
-        image:notification.image,
-        notificationTypeId:notification.notificationTypeId,
-        creationDate:notification.creationDate,
-        lineId:notification.lineId,
-        managerId:notification.managerId
-      },  
+        id: notification.id,
+        title: notification.title,
+        description: notification.description,
+        image: notification.image,
+        notificationTypeId: notification.notificationTypeId,
+        creationDate: notification.creationDate,
+        lineId: notification.lineId,
+        managerId: notification.managerId
+      },
     });
     dialogRef.afterClosed().subscribe(async result => {
       await this.loadNotifications();
@@ -82,6 +84,50 @@ export class NotificationViewComponent {
   cancel() {
     this.router.navigate(['/manager-dashboard/notifications']);
   }
+
+  sortTable(column: keyof Notification) {
+    if (this.sortColumn === column) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortColumn = column;
+      this.sortAsc = true;
+    }
+  
+    this.notifications.sort((a, b) => {
+      let valueA = a[column];
+      let valueB = b[column];
+  
+      // Handle nested properties like notificationType.name
+      if (column === 'notificationType' && a.notificationType && b.notificationType) {
+        valueA = a.notificationType.name;
+        valueB = b.notificationType.name;
+      }
+  
+      if (column === 'line' && a.line && b.line) {
+        valueA = a.line.name;
+        valueB = b.line.name;
+      }
+  
+      // Convert to lowercase if values are strings
+      if (typeof valueA === 'string') valueA = valueA.toLowerCase();
+      if (typeof valueB === 'string') valueB = valueB.toLowerCase();
+  
+      // Handle null or undefined values to avoid returning undefined
+      if (valueA == null) return this.sortAsc ? -1 : 1;
+      if (valueB == null) return this.sortAsc ? 1 : -1;
+  
+      return this.sortAsc ? (valueA > valueB ? 1 : valueA < valueB ? -1 : 0) : (valueA < valueB ? 1 : valueA > valueB ? -1 : 0);
+    });
+  }
+
+  getSortIcon(column: keyof Notification) {
+    if (this.sortColumn === column) {
+      return this.sortAsc ? 'sort-asc' : 'sort-desc';
+    }
+    return '';
+  }
+
+
 }
 
 
