@@ -5,13 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GPS.API.Services.ScheduleServices
 {
-    public class ScheduleService : IScheduleService
+    public class ScheduleService(ApplicationDbContext _context) : IScheduleService
     {
-        private readonly ApplicationDbContext _context;
-        public ScheduleService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
         public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync() =>
             await _context.Schedules.Include(x => x.Line).OrderBy(x=>x.DepartureTime).ToListAsync();
 

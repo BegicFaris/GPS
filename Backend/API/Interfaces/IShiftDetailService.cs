@@ -1,4 +1,5 @@
 ﻿using GPS.API.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Interfaces
 {
@@ -10,5 +11,6 @@ namespace GPS.API.Interfaces
         Task<bool> DeleteShiftDetail(int id);
         Task<bool> DeleteShiftDetailsByShiftId(int shiftId);
         Task<ShiftDetail> CreateShiftDetailAsync(ShiftDetail shiftDetail);
+        Task<byte[]> GeneratePdfAsync(int shiftId);
     }
 }

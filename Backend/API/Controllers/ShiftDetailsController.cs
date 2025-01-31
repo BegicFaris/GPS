@@ -11,10 +11,11 @@ using iText.Kernel.Font;
 using Table = iText.Layout.Element.Table;
 using iText.Layout.Properties;
 using iText.IO.Image;
+using GPS.API.Services.ShiftDetailServices;
 
 namespace GPS.API.Controllers
 {
-    public class ShiftDetailsController(IShiftDetailService shiftDetailService, IShiftService shiftService) : MyControllerBase
+    public class ShiftDetailsController(IShiftDetailService shiftDetailService, IShiftService shiftService, IEmailService emailService) : MyControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAllShiftDetails() =>
@@ -86,101 +87,118 @@ namespace GPS.API.Controllers
             if (shift == null)
                 return NotFound(new { message = "Shift not found." });
 
-
+          
             var shiftDetailList = await shiftDetailService.GetShiftDetailsByShiftIdAsync(shiftId);
             if (shiftDetailList == null || !shiftDetailList.Any())
                 return NotFound(new { message = "Shift details not found." });
             try
             {
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    PdfWriter writer = new PdfWriter(memoryStream);
-                    PdfDocument pdf = new PdfDocument(writer);
-                    Document document = new Document(pdf);
-
-                    PdfFont headingFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
-                    PdfFont bodyFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
-
-                    string logoPath = "Resources\\GPSIcon.png"; // Replace with the correct path to the logo
-                    Image logo = new Image(ImageDataFactory.Create(logoPath));
-                    logo.SetWidth(100f); // Set logo width, adjust as needed
-                    logo.SetHeight(50f); // Set logo height, adjust as needed
-                    document.Add(logo.SetTextAlignment(TextAlignment.CENTER)); // Center the logo
-
-                    // Add company details (name, address, etc.)
-                    document.Add(new Paragraph("Mostar bus")
-                        .SetFont(headingFont).SetFontSize(16).SetTextAlignment(TextAlignment.CENTER));
-                    document.Add(new Paragraph("Bišće polje bb")
-                        .SetFont(bodyFont).SetFontSize(12).SetTextAlignment(TextAlignment.CENTER));
-                    document.Add(new Paragraph("+387 (0)36 123-456")
-                        .SetFont(bodyFont).SetFontSize(12).SetTextAlignment(TextAlignment.CENTER));
-
-                    document.Add(new Paragraph("\n"));
-
-                    // Add Shift Overview Title
-                    document.Add(new Paragraph("Shift Overview Report")
-                        .SetFont(headingFont).SetFontSize(18).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
-
-                    // Add Shift Details
-                    document.Add(new Paragraph($"Driver: {shift.Driver.FirstName} {shift.Driver.LastName}")
-                        .SetFont(bodyFont).SetFontSize(12));
-                    document.Add(new Paragraph($"Bus: {shift.Bus.RegistrationNumber}")
-                        .SetFont(bodyFont).SetFontSize(12));
-                    document.Add(new Paragraph($"Date: {shift.ShiftDate:yyyy-MM-dd}")
-                        .SetFont(bodyFont).SetFontSize(12));
-                    document.Add(new Paragraph($"Duration: {shift.ShiftStartingTime:HH:mm} - {shift.ShiftEndingTime:HH:mm}")
-                        .SetFont(bodyFont).SetFontSize(12));
-
-                    document.Add(new Paragraph("\n")); // Space between shift details and table
-
-                    // Create a Table for Shift Details (Line, Start, End) - 3 columns
-                    Table table = new Table(3);
-
-                    // Set table width percentage to 70% (wider table)
-                    float pageWidth = pdf.GetDefaultPageSize().GetWidth();
-                    float tableWidth = pageWidth * 0.5f; // 50% of the page width
-
-                    // Set column widths as equal parts of the table's total width
-                    table.SetWidth(tableWidth);
-
-                    // Set table header cells with bold text
-                    table.AddHeaderCell(new Cell().Add(new Paragraph("Line").SetFont(headingFont)));
-                    table.AddHeaderCell(new Cell().Add(new Paragraph("Start").SetFont(headingFont)));
-                    table.AddHeaderCell(new Cell().Add(new Paragraph("End").SetFont(headingFont)));
-
-                    // Add shift details to the table
-                    foreach (var s in shiftDetailList)
-                    {
-                        table.AddCell(new Cell().Add(new Paragraph(s.Line.Name).SetFont(bodyFont)));
-                        table.AddCell(new Cell().Add(new Paragraph(s.ShiftDetailStartingTime.ToShortTimeString()).SetFont(bodyFont)));
-                        table.AddCell(new Cell().Add(new Paragraph(s.ShiftDetailEndingTime.ToShortTimeString()).SetFont(bodyFont)));
-                    }
-
-                    // Center the table on the page
-                    table.SetHorizontalAlignment(HorizontalAlignment.CENTER);
-
-                    // Add table to document
-                    document.Add(table);
-
-                    // Add footer with page number
-                    document.Add(new Paragraph("\n"));
-                    document.Add(new Paragraph($"Page: {pdf.GetNumberOfPages()}")
-                        .SetFont(bodyFont).SetFontSize(10).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
-
-                    // Close the document to finalize the PDF
-                    document.Close();
-
-                    // Return the PDF as a downloadable file
-                    return File(memoryStream.ToArray(), "application/pdf", "ShiftOverviewReport.pdf");
-                }
+                var pdfBytes = await shiftDetailService.GeneratePdfAsync(shiftId);
+                await emailService.SendEmailWithPdfAsync("farisbegic9@gmail.com", "aaaaa", "aaaaa", pdfBytes);
+                return File(pdfBytes, "application/pdf", "ShiftOverviewReport.pdf");
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                // Log the exception (optional)
-                // _logger.LogError(ex, "Error generating PDF");
-
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception)
+            {
                 return StatusCode(500, new { message = "An error occurred while generating the PDF." });
             }
+
+
+
+            //try
+            //{
+            //    using (MemoryStream memoryStream = new MemoryStream())
+            //    {
+            //        PdfWriter writer = new PdfWriter(memoryStream);
+            //        PdfDocument pdf = new PdfDocument(writer);
+            //        Document document = new Document(pdf);
+
+            //        PdfFont headingFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+            //        PdfFont bodyFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+
+            //        string logoPath = "Resources\\GPSIcon.png"; // Replace with the correct path to the logo
+            //        Image logo = new Image(ImageDataFactory.Create(logoPath));
+            //        logo.SetWidth(100f); // Set logo width, adjust as needed
+            //        logo.SetHeight(50f); // Set logo height, adjust as needed
+            //        document.Add(logo.SetTextAlignment(TextAlignment.CENTER)); // Center the logo
+
+            //        // Add company details (name, address, etc.)
+            //        document.Add(new Paragraph("Mostar bus")
+            //            .SetFont(headingFont).SetFontSize(16).SetTextAlignment(TextAlignment.CENTER));
+            //        document.Add(new Paragraph("Bišće polje bb")
+            //            .SetFont(bodyFont).SetFontSize(12).SetTextAlignment(TextAlignment.CENTER));
+            //        document.Add(new Paragraph("+387 (0)36 123-456")
+            //            .SetFont(bodyFont).SetFontSize(12).SetTextAlignment(TextAlignment.CENTER));
+
+            //        document.Add(new Paragraph("\n"));
+
+            //        // Add Shift Overview Title
+            //        document.Add(new Paragraph("Shift Overview Report")
+            //            .SetFont(headingFont).SetFontSize(18).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+
+            //        // Add Shift Details
+            //        document.Add(new Paragraph($"Driver: {shift.Driver.FirstName} {shift.Driver.LastName}")
+            //            .SetFont(bodyFont).SetFontSize(12));
+            //        document.Add(new Paragraph($"Bus: {shift.Bus.RegistrationNumber}")
+            //            .SetFont(bodyFont).SetFontSize(12));
+            //        document.Add(new Paragraph($"Date: {shift.ShiftDate:yyyy-MM-dd}")
+            //            .SetFont(bodyFont).SetFontSize(12));
+            //        document.Add(new Paragraph($"Duration: {shift.ShiftStartingTime:HH:mm} - {shift.ShiftEndingTime:HH:mm}")
+            //            .SetFont(bodyFont).SetFontSize(12));
+
+            //        document.Add(new Paragraph("\n")); // Space between shift details and table
+
+            //        // Create a Table for Shift Details (Line, Start, End) - 3 columns
+            //        Table table = new Table(3);
+
+            //        // Set table width percentage to 70% (wider table)
+            //        float pageWidth = pdf.GetDefaultPageSize().GetWidth();
+            //        float tableWidth = pageWidth * 0.5f; // 50% of the page width
+
+            //        // Set column widths as equal parts of the table's total width
+            //        table.SetWidth(tableWidth);
+
+            //        // Set table header cells with bold text
+            //        table.AddHeaderCell(new Cell().Add(new Paragraph("Line").SetFont(headingFont)));
+            //        table.AddHeaderCell(new Cell().Add(new Paragraph("Start").SetFont(headingFont)));
+            //        table.AddHeaderCell(new Cell().Add(new Paragraph("End").SetFont(headingFont)));
+
+            //        // Add shift details to the table
+            //        foreach (var s in shiftDetailList)
+            //        {
+            //            table.AddCell(new Cell().Add(new Paragraph(s.Line.Name).SetFont(bodyFont)));
+            //            table.AddCell(new Cell().Add(new Paragraph(s.ShiftDetailStartingTime.ToShortTimeString()).SetFont(bodyFont)));
+            //            table.AddCell(new Cell().Add(new Paragraph(s.ShiftDetailEndingTime.ToShortTimeString()).SetFont(bodyFont)));
+            //        }
+
+            //        // Center the table on the page
+            //        table.SetHorizontalAlignment(HorizontalAlignment.CENTER);
+
+            //        // Add table to document
+            //        document.Add(table);
+
+            //        // Add footer with page number
+            //        document.Add(new Paragraph("\n"));
+            //        document.Add(new Paragraph($"Page: {pdf.GetNumberOfPages()}")
+            //            .SetFont(bodyFont).SetFontSize(10).SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+
+            //        // Close the document to finalize the PDF
+            //        document.Close();
+
+            //        // Return the PDF as a downloadable file
+            //        return File(memoryStream.ToArray(), "application/pdf", "ShiftOverviewReport.pdf");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Log the exception (optional)
+            //    // _logger.LogError(ex, "Error generating PDF");
+
+            //    return StatusCode(500, new { message = "An error occurred while generating the PDF." });
+            //}
         }
     }
 }

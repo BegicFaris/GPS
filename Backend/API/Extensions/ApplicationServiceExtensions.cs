@@ -36,7 +36,7 @@ namespace GPS.API.Extensions
 {
     public static class ApplicationServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration config)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
 
             // Add services to the container.
@@ -47,6 +47,9 @@ namespace GPS.API.Extensions
             services.AddDbContext<TenantDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("db1")));
             services.AddHttpClient();
+
+
+        
 
             services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -101,9 +104,9 @@ namespace GPS.API.Extensions
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<ITenantService, TenantService>();
             services.AddScoped<IDiscountService, DiscountService>();
-            services.AddScoped<IZoneService,ZoneService>();
+            services.AddScoped<IZoneService, ZoneService>();
             services.AddScoped<IGalleryService, GalleryService>();
-            services.AddScoped<IFavoriteLineService,FavoriteLineService>();
+            services.AddScoped<IFavoriteLineService, FavoriteLineService>();
             // Adding the scpoped service CurrentTenantService
             services.AddScoped<ICurrentTenantService, CurrentTenantService>();
             services.AddScoped<IPasswordHasher<MyAppUser>, PasswordHasher<MyAppUser>>();
@@ -115,6 +118,7 @@ namespace GPS.API.Extensions
             services.AddScoped<ITicketTypeService, TicketTypeService>();
             services.AddScoped<IStripeService, StripeService>();
 
+            services.AddHostedService<ShiftDetailBackgroundService>();
 
             return services;
         }
