@@ -3,7 +3,6 @@
     public class RegisterPassengerDto: RegisterDto
     {
         public int? DiscountId { get; set; }
-        public string TenantId { get; set; }
         public string CaptchaResponse { get; set; }
 
     }
