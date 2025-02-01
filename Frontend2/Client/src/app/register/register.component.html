@@ -1,0 +1,179 @@
+<div class="container">
+<form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+    <h2 class="text-center text-primary">Sign up</h2>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3 form-floating">
+          <input
+            type="text"
+            class="form-control"
+            name="firstName"
+            [(ngModel)]="model.firstName"
+            #firstName="ngModel"
+            required
+            placeholder="First Name"
+          />
+          <label>First Name</label>
+          @if (firstName.invalid && (firstName.dirty || firstName.touched)) {
+            <div class="text-danger">
+              First Name is required.
+            </div>
+          }
+        </div>
+  
+        <div class="mb-3 form-floating">
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            [(ngModel)]="model.email"
+            #email="ngModel"
+            required
+            email
+            placeholder="Email"
+          />
+          <label>Email</label>
+          @if (email.invalid && (email.dirty || email.touched)) {
+            <div class="text-danger">
+              @if (email.errors?.['required']) {
+                Email is required.
+              }
+              @if (email.errors?.['email']) {
+                Invalid email format.
+              }
+            </div>
+          }
+        </div>
+  
+        <div class="mb-3 form-floating">
+          <input
+            type="date"
+            class="form-control"
+            name="birthDate"
+            [(ngModel)]="model.birthDate"
+            #birthDate="ngModel"
+            required
+            [max]="maxDate"
+            placeholder="Birth Date"
+          />
+          <label>Birth Date</label>
+          @if (birthDate.invalid && (birthDate.dirty || birthDate.touched)) {
+            <div class="text-danger">
+              Birth Date is required.
+            </div>
+          }
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="mb-3 form-floating">
+          <input
+            type="text"
+            class="form-control"
+            name="lastName"
+            [(ngModel)]="model.lastName"
+            #lastName="ngModel"
+            required
+            placeholder="Last Name"
+          />
+          <label>Last Name</label>
+          @if (lastName.invalid && (lastName.dirty || lastName.touched)) {
+            <div class="text-danger">
+              Last Name is required.
+            </div>
+          }
+        </div>
+  
+        <div class="mb-3 form-floating position-relative">
+            <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            name="password"
+            id="passwordInput"
+            [(ngModel)]="model.password"
+            #password="ngModel"
+            #passwordInput
+            required
+            placeholder="Password"
+            data-bs-toggle="popover" 
+            data-bs-trigger="focus"
+            (input)="onPasswordInput()"
+            (focus)="onPasswordFocus()"
+            (blur)="onPasswordBlur()"
+            />
+            <label>Password</label>
+            <button type="button" 
+            class="position-absolute end-0 top-50 translate-middle-y"
+            style="width: 30px !important; height: 30px !important; padding: 0 !important; font-size: 18px !important; border-radius: 50% !important; display: flex; align-items: center; justify-content: center; border: none !important; background-color: transparent !important;" 
+            (click)="togglePasswordVisibility()">
+              <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </button>
+            @if (password.dirty || password.touched) {
+              <div class="text-danger">
+                @if (password.errors?.['required']) {
+                  Password is required.
+                }
+              </div>
+            }
+            <app-password-strength-indicator
+            [show]="showPasswordStrength"
+            [hasUpperCase]="hasUpperCase"
+            [hasLowerCase]="hasLowerCase"
+            [hasNumber]="hasNumber"
+            [hasSpecialChar]="hasSpecialChar"
+            [hasMinLength]="hasMinLength"
+            ></app-password-strength-indicator>
+          </div>    
+        
+        <div class="mb-3 form-floating">
+          <input
+            type="text"
+            class="form-control"
+            name="address"
+            [(ngModel)]="model.address"
+            #address="ngModel"
+            required
+            placeholder="Address"
+          />
+          <label>Address</label>
+          @if (address.invalid && (address.dirty || address.touched)) {
+            <div class="text-danger">
+              Address is required.
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label">Upload Profile Image</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)" #fileInput/>
+    </div>
+    <div class="mb-3 d-flex justify-content-center">
+      <ngx-recaptcha2 
+      #captchaElem
+      [siteKey]="siteKey"
+      (success)="handleSuccess($event)"
+      (reset)="handleReset()"
+      (expire)="handleExpire()"
+      (load)="handleLoad()"
+      formControlName="recaptcha">
+    </ngx-recaptcha2>
+    </div>
+  
+    <div class="form-group text-center mb-1">
+      <button class="btn btn-success me-2" type="submit" [disabled]="!registerForm.form.valid || !captchaResponse">
+        Register
+      </button>
+      <button class="btn btn-default me-2" type="button" [routerLink]="'/home'">
+        Cancel
+      </button>
+    </div>
+  </form>
+  @if (errorMessage) {
+    <div class="alert alert-danger mt-2">
+      {{ errorMessage }}
+    </div>
+  }
+</div>

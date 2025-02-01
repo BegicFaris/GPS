@@ -1,0 +1,108 @@
+<div class="container mt-4 flex-column">
+  <!-- Title -->
+  <h2 class="text-center mb-4">Schedule Overview</h2>
+
+  <!-- Search and Filter Controls -->
+  <div class="search-container d-flex justify-content-between align-items-center mb-4">
+    <!-- Search Fields -->
+    <div class="d-flex flex-column search-group">
+      <label class="fw-bold mb-1">Search by:</label>
+
+      <input type="text" class="form-control mb-2 dark" matInput [formControl]="lineAutocompleteFormControl"
+        [matAutocomplete]="lineAuto" placeholder="Search by line..." (change)="listenToSearchFields()">
+      <mat-autocomplete #lineAuto="matAutocomplete">
+        @for (line of filteredLines$ | async; track line.id) {
+        <mat-option [value]="line.name">{{ line.name }}</mat-option>
+        }
+      </mat-autocomplete>
+
+
+      <input type="text" class="form-control dark" matInput [formControl]="stationAutocompleteFormControl"
+        [matAutocomplete]="stationAuto" placeholder="Search by station..." (change)="listenToSearchFields()">
+      <mat-autocomplete #stationAuto="matAutocomplete">
+        @for (station of filteredStations$ | async; track station.id) {
+        <mat-option [value]="station.name">{{ station.name }}</mat-option>
+        }
+      </mat-autocomplete>
+
+    </div>
+
+    <!-- Toggle Switch -->
+    <div class="form-check form-switch text-center align-items-center justify-content-center">
+      <input class="form-check-input toggle-lg black" type="checkbox" id="favoriteToggle"
+        (change)="onFavoritesToggleChange($event)">
+      <label class="form-check-label" for="favoriteToggle">Favorites Only</label>
+    </div>
+
+    <!-- Download Button -->
+    <button class="btn btn-primary" (click)="downloadSchedule()">
+      Download Schedule
+      <i class="bi bi-download ms-2"></i> <!-- Bootstrap Icons -->
+    </button>
+  </div>
+
+  <!-- Main Content Container -->
+  <div class="d-flex justify-content-between gap-10">
+    <!-- Container for the two columns (64%) -->
+    <div class="columns-container">
+      @for (line of displayLines; track $index) {
+      <div class="col-md-4 col-12 custom-col-width">
+        <div class="d-flex align-items-center border rounded p-2" (click)="selectLine(line)">
+          <div class="me-2">
+            <i class="bi bi-bus-front fs-5"></i>
+          </div>
+          <div class="flex-grow-1">
+            <strong>Line {{ line.name }}:</strong>
+          </div>
+          @if (currentUser != null) {
+          <div>
+            <i class="bi" [ngClass]="isFavorite(line.id) ? 'bi-star-fill' : 'bi-star'"
+              (click)="toggleFavorite(line.id, $event)" style="cursor: pointer"></i>
+          </div>
+          }
+        </div>
+        @if (selectedLine && selectedLine.id === line.id) {
+        <div class="mt-2 border rounded p-2">
+          <p><strong>Line Details:</strong></p>
+          <div class="d-flex justify-content-center align-items-center" style="width: 70%; border: none;">
+
+            <p class="mr-5 mb-0" style="margin-right: 20px;">Departure time:</p>
+
+
+            <select class="form-control" id="Schedule" name="schedule" style="width: 100px;"
+              (change)="schedulesTimeChange($event)">
+              @for (schedule of schedules; track schedule.id) {
+              <option [value]="schedule.id">
+                {{schedule.departureTime}}
+              </option>
+              }
+            </select>
+          </div>
+          @if (selectedSchedule){
+          <div class="route-container">
+            <div class="route-row">
+              @for (route of routes; track $index) {
+              <div class="route">
+                <p class="m-0 p-1">{{ route.station.name }} - {{
+                  calculateDepartureTime(route.distanceFromTheNextStation, $index) }}</p>
+              </div>
+              @if ($index % 2 === 1 && routes.length-2>=$index) {
+              <div class="separator"></div> <!-- Adds a separator between pairs -->
+              }
+              }
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Container for the images (36%) -->
+    <div class="images-container">
+      <img src="Zone.jpg" alt="Image 1" style="width: 100%; max-width: 100%; object-fit: cover;">
+      <img src="grafikon-linija-boje.png" alt="Image 2" style="width: 100%; max-width: 100%; object-fit: cover;">
+    </div>
+  </div>
+</div>

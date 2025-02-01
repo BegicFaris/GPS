@@ -1,0 +1,17 @@
+.sortable {
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .sortable:hover {
+    text-decoration: underline;
+  }
+  
+  .sort-asc::after {
+    content: " ▲"; /* Up Arrow */
+  }
+  
+  .sort-desc::after {
+    content: " ▼"; /* Down Arrow */
+  }
+  

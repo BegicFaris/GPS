@@ -1,0 +1,46 @@
+<div class="gallery-container">
+  <h2 class="gallery-title">Photo Gallery</h2>
+
+  <!-- Photo Upload Section -->
+  <div *ngIf="accountService.getUserRole() === 'Manager'" class="upload-container">
+    <label class="file-input-label">
+      <input type="file" (change)="onFileSelected($event)" #fileInput class="file-input" />
+    </label>
+    <button (click)="onUpload()" class="upload-button">Upload Photo</button>
+  </div>
+
+ <!-- Display Photos -->
+<div class="gallery-grid">
+  <div *ngFor="let photo of photos; trackBy: trackByPhotoId" class="gallery-item"
+       [attr.draggable]="accountService.getUserRole() === 'Manager' ? 'true' : null"
+       (dragstart)="accountService.getUserRole() === 'Manager' ? onDragStart($event, photo) : null"
+       (dragover)="accountService.getUserRole() === 'Manager' ? onDragOver($event) : null"
+       (drop)="accountService.getUserRole() === 'Manager' ? onDrop($event, photo) : null">
+    <div class="image-container">
+      <!-- Use the lazy load directive -->
+      <img appLazyLoad="{{ photo.photoData }}" alt="Gallery Photo" (click)="openModal(photo)" class="gallery-image" />
+
+      <!-- Manager Only: Delete button -->
+      <button *ngIf="accountService.getUserRole() === 'Manager'" (click)="onDelete(photo.id)" class="delete-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20">
+          <path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" fill="white" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal for Enlarged Image -->
+  <div *ngIf="isModalOpen && selectedPhoto" class="modal-overlay" (click)="onModalClick($event)" [class.modal-entering]="isModalAnimating">
+    <div class="modal-content">
+      <button class="close-button" (click)="closeModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <img [src]="selectedPhoto.photoData" alt="Enlarged photo" class="modal-image" [class.image-entering]="isModalAnimating" />
+    </div>
+  </div>
+</div>

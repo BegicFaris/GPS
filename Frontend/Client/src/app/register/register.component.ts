@@ -1,8 +1,6 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import {AfterViewInit,Component,ElementRef,inject,OnDestroy,OnInit,output,ViewChild,} from '@angular/core';
 import {FormBuilder,FormGroup,FormsModule,NgForm,ReactiveFormsModule,Validators,} from '@angular/forms';
-import { TenantService } from '../_services/tenant.service';
-import { Tenant } from '../_models/tenant';
 import { AccountService } from '../_services/account.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -57,14 +55,11 @@ export class RegisterComponent implements OnInit {
     birthDate: '',
     address: '',
     discountId: null,
-    tenantId: null,
     image: null,
   };
 
   private router = inject(Router);
-  tenantService = inject(TenantService);
   private titleService = inject(Title);
-  tenants: Tenant[] = []; // Array to hold tenant data
   errorMessage: string = '';
   showPassword: boolean = false;
   showPasswordStrength: boolean = false;
@@ -85,33 +80,14 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       birthDate: ['', Validators.required],
       address: ['', Validators.required],
-      tenantId: [null, Validators.required],
       image: [null],
     });
   }
   ngOnInit(): void {
     this.titleService.setTitle('Register');
-    this.fetchTenants();
   }
 
-  fetchTenants(): void {
-    this.tenantService.fetchTenants().subscribe({
-      next: (data) => {
-        if (Array.isArray(data)) {
-          this.tenants = data;
-        } else {
-          console.error('Unexpected data format:', data);
-          this.errorMessage = 'Received unexpected data format from server.';
-        }
-      },
-      error: (error) => {
-        console.error('Error fetching tenants:', error);
-        this.errorMessage =
-          error.message || 'Failed to load tenants. Please try again later.';
-      },
-    });
-  }
-
+  
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {

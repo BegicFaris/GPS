@@ -1,0 +1,81 @@
+<h5 class="modal-title">Add new shift</h5>
+<form #newShiftForm="ngForm" (ngSubmit)="addNewShift(newShiftForm)">
+
+    <div class="mb-3">
+        <label class="form-label">Bus</label>
+        <select class="form-select" name="busId" required [(ngModel)]="shiftCreate.busId" #busId="ngModel">
+            @for (bus of buses; track bus.id) {
+            <option [value]="bus.id">
+                {{ bus.registrationNumber }}
+            </option>
+            }
+        </select>
+        @if(busId.invalid && (busId.dirty || busId.touched)) {
+        @if(busId.errors?.['required']) {<div class="text-danger">Bus is required</div>}
+        }
+
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Driver</label>
+        <select class="form-select" name="driverId" required [(ngModel)]="shiftCreate.driverId" #driverId="ngModel">
+            @for (driver of drivers; track driver.id) {
+            <option [value]="driver.id">
+                {{ driver.firstName +" "+ driver.lastName }}
+            </option>
+            }
+        </select>
+        @if(driverId.invalid && (driverId.dirty || driverId.touched)) {
+        @if(driverId.errors?.['required']) {<div class="text-danger">Driver is required.</div>}
+        }
+    </div>
+
+
+    <div class="mb-3">
+        <label>Shift date</label>
+        <input type="date" class="form-control" name="shiftDate" [(ngModel)]="shiftCreate.shiftDate"
+            #shiftDate="ngModel" required placeholder="Shift date" />
+        @if (shiftDate.invalid && (shiftDate.dirty || shiftDate.touched)) {
+        <div class="text-danger">
+            Shift date is required.
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Starting time</label>
+        <input type="time" id="timepicker" class="form-control" name="shiftStartingTime"
+            [(ngModel)]="shiftCreate.shiftStartingTime" #shiftStartingTime="ngModel" required
+            placeholder="Shift starting time">
+        @if (shiftStartingTime.invalid && (shiftStartingTime.dirty || shiftStartingTime.touched)) {
+        <div class="text-danger">
+            Shift starting time is required.
+        </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Ending time</label>
+        <input type="time" id="timepicker" class="form-control" name="shiftEndingTime"
+            [(ngModel)]="shiftCreate.shiftEndingTime" #shiftEndingTime="ngModel" required
+            placeholder="Shift ending time">
+        @if (shiftEndingTime.invalid && (shiftEndingTime.dirty || shiftEndingTime.touched)) {
+        <div class="text-danger">
+            Shift ending time is required.
+        </div>
+        }
+        @if (isEndingTimeInvalid()) {
+        <div class="text-danger">
+            Shift ending time cant be earlier than the starting time.
+        </div>
+        }
+    </div>
+
+
+
+    <div class="button-container">
+        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="button" class="btn btn-danger" (click)="cancel()">Cancel</button>
+    </div>
+</form>

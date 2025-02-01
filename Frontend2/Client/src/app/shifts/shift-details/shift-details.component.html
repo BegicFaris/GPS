@@ -1,0 +1,63 @@
+<h5 class="modal-title">Manage shift details.</h5>
+<h5 class="modal-title">Date: {{shift.shiftDate}} Time: {{shift.shiftStartingTime}} - {{shift.shiftEndingTime}}</h5>
+<div class="button-container d-flex gap-2 me-5" style="margin-bottom: 30px; margin-top: 10px;">
+    <button class="btn btn-success" (click)="finishAddingShiftDetails()">Finish adding</button>
+    <button class="btn btn-danger" (click)="cancel()">Cancel adding shift details</button>
+</div>
+
+<table class="table table-borderless align-middle">
+    <thead>
+        <tr>
+            <th>Line</th>
+            <th>Starting Time</th>
+            <th>Ending Time</th>
+            <th class="text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let shiftDetail of shiftDetails; let i = index" [formGroup]="shiftDetail">
+            <td>
+                <select class="form-select" formControlName="lineId">
+                    <option *ngFor="let line of lines" [value]="line.id">{{ line.name }}</option>
+                </select>
+                <div *ngIf="shiftDetail.get('lineId')?.invalid && shiftDetail.get('lineId')?.touched"
+                    class="text-danger validation-message">
+                    Line is required
+                </div>
+            </td>
+
+            <td>        
+                <input type="time" class="form-control" formControlName="shiftDetailStartingTime" />
+                <div *ngIf="shiftDetail.get('shiftDetailStartingTime')?.errors?.['required']" class="text-danger validation-message">
+                    Starting time is required
+                </div>
+                <div *ngIf="shiftDetail.get('shiftDetailStartingTime')?.errors?.['validStartTime']" class="text-danger validation-message">
+                    Starting time can't be earlier than the shift starting time.
+                </div>
+            </td>
+
+            <td>
+                <input type="time" class="form-control" formControlName="shiftDetailEndingTime" />
+                <div>
+                    <div *ngIf="shiftDetail.get('shiftDetailEndingTime')?.errors?.['required'] && shiftDetail.get('shiftDetailEndingTime')?.touched" class="text-danger validation-message">
+                    Ending time is required 
+                </div>
+                <div *ngIf="shiftDetail.get('shiftDetailEndingTime')?.errors?.['timeComparison']" class="text-danger validation-message">
+                    Ending time can't be earlier than the starting time.
+                </div>
+                <div *ngIf="shiftDetail.get('shiftDetailEndingTime')?.errors?.['validEndTime']"  class="text-danger validation-message">
+                    Ending time can't be later than the shift ending time.
+                </div>
+                </div>  
+            </td>
+
+            <td class="text-center">
+                <button *ngIf="!shiftDetail.get('isEditMode')?.value" class="btn btn-primary"
+                    (click)="addShiftDetail(i)">Add</button>
+                <button *ngIf="shiftDetail.get('isEditMode')?.value" class="btn btn-danger"
+                (click)="deleteShiftDetail(i)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+
+</table>

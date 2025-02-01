@@ -145,23 +145,7 @@
         </div>
       </div>
     </div>
-  
-    <div class="mb-3 form-floating">
-      <select class="form-select" name="tenantId" [(ngModel)]="model.tenantId" #tenantId="ngModel" required>
-        @for (tenant of tenants; track tenant.id) {
-          <option [value]="tenant.id">
-            {{ tenant.name }}
-          </option>
-        }
-      </select>
-      <label>Select City</label>
-      @if (tenantId.invalid && (tenantId.dirty || tenantId.touched)) {
-        <div class="text-danger">
-          Tenant selection is required.
-        </div>
-      }
-    </div>
-  
+
     <div class="mb-3">
       <label class="form-label">Upload Profile Image</label>
       <input type="file" class="form-control" (change)="onFileSelected($event)" #fileInput/>

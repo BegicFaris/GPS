@@ -48,7 +48,7 @@ app.UseSwaggerUI();
 
 //KURS
 app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod()
-            .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+            .WithOrigins("http://localhost:4200", "https://localhost:4200", "https://localhost:4202", "https://localhost:4202"));
 
 app.UseAuthentication();
 app.UseAuthorization();

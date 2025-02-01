@@ -1,0 +1,49 @@
+<button
+  [routerLink]="'/manager-dashboard/creditCards/add'"
+  type="button"
+  class="btn btn-success"
+>
+  Add a new credit card
+</button>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Card number</th>
+      <th scope="col">Expiration date</th>
+      <th scope="col">Card name</th>
+      <th scope="col">CCV</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (creditCard of creditCards; track $index) {
+    <tr>
+      <th scope="row">{{ $index + 1 }}</th>
+      <td>{{ creditCard.cardNumber }}</td>
+      <td>{{ creditCard.expirationDate }}</td>
+      <td>{{ creditCard.cardName }}</td>
+      <td>{{ creditCard.ccv }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="openEditDialog(creditCard)"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteCreditCard(creditCard.id)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

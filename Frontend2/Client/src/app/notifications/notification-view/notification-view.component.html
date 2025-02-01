@@ -1,0 +1,33 @@
+<button routerLink="/manager-dashboard/notifications/add" type="button" class="btn btn-success">Add new
+  notification</button>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th (click)="sortTable('title')" class="sortable">Title <span [class]="getSortIcon('title')"></span></th>
+      <th (click)="sortTable('description')" class="sortable">Description <span [class]="getSortIcon('description')"></span></th>
+      <th (click)="sortTable('notificationType')" class="sortable">Notification Type <span [class]="getSortIcon('notificationType')"></span></th>
+      <th (click)="sortTable('creationDate')" class="sortable">Created Date <span [class]="getSortIcon('creationDate')"></span></th>
+      <th (click)="sortTable('line')" class="sortable">Line <span [class]="getSortIcon('line')"></span></th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+
+
+    @for (notification of notifications; track $index) {
+    <tr>
+      <th scope="row">{{$index + 1}}</th>
+      <td>{{notification.title}}</td>
+      <td>{{notification.description}}</td>
+      <td>{{notification.notificationType.name}}</td>
+      <td>{{notification.creationDate| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>{{notification.line!=null?notification.line.name:"No line"}}</td>
+      <td>
+        <button type="button" class="btn btn-primary" style="margin-right: 20px;" (click)="openEditDialog(notification)">Edit</button>
+        <button type="button" class="btn btn-danger" (click)="deleteNotificatiom(notification.id)">Delete</button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

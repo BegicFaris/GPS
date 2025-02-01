@@ -17,7 +17,7 @@ using System.Text;
 
 namespace GPS.API.Controllers
 {
-    public class AccountController(ApplicationDbContext _context, ITokenService tokenService, ICurrentTenantService currentTenantService, IHttpClientFactory _httpClientFactory, ITwoFactorAuthService _twoFactorAuthService) : MyControllerBase
+    public class AccountController(ApplicationDbContext _context, ITokenService tokenService    , IHttpClientFactory _httpClientFactory, ITwoFactorAuthService _twoFactorAuthService) : MyControllerBase
     {
 
         [HttpPost("register/driver")]
@@ -97,8 +97,6 @@ namespace GPS.API.Controllers
             //}
             if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest("Email is already in use.");
-            var tenant = await _context.Tenants.Where(t => t.Id == dto.TenantId).FirstOrDefaultAsync();
-            currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Passenger
             {
@@ -112,7 +110,6 @@ namespace GPS.API.Controllers
                 Image = dto.Image,
                 Address = dto.Address,
                 DiscountID = dto.DiscountId,
-                TenantId = dto.TenantId
             };
 
             _context.MyAppUsers.Add(user);
@@ -171,8 +168,6 @@ namespace GPS.API.Controllers
                 Passenger => "Passenger",
                 _ => "Unknown"
             };
-
-            currentTenantService.SetTenant(user.TenantId);
             return new UserDto
             {
                 Email = user.Email,
