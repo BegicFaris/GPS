@@ -1,4 +1,5 @@
 ﻿using GPS.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
@@ -12,14 +13,16 @@ namespace GPS.API.Controllers
             _notificationTypeService = notificationTypeService;
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllNotifications() =>
-            Ok(await _notificationTypeService.GetAllNotificationTypesAsync());
+        public async Task<IActionResult> GetAllNotifications(CancellationToken cancellationToken) =>
+            Ok(await _notificationTypeService.GetAllNotificationTypesAsync(cancellationToken));
 
+        [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetNotification(int id)
+        public async Task<IActionResult> GetNotification(int id, CancellationToken cancellationToken)
         {
-            var notificationType = await _notificationTypeService.GetNotificationTypeByIdAsync(id);
+            var notificationType = await _notificationTypeService.GetNotificationTypeByIdAsync(id, cancellationToken);
             if (notificationType == null) return NotFound();
             return Ok(notificationType);
         }

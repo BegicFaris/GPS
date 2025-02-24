@@ -7,7 +7,7 @@ namespace GPS.API.Data.Models
     {
         [Key] 
         public int Id { get; set; }
-        public byte[] PhotoData { get; set; }
+        public byte[]? PhotoData { get; set; }
         public DateTime UploadDate { get; set; } = DateTime.Now;
         public int Position { get; set; }
         public string? TenantId { get; set; }

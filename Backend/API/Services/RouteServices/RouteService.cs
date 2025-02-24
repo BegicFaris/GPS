@@ -2,59 +2,87 @@
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GPS.API.Services.RouteServices
 {
     public class RouteService : IRouteService
     {
         private readonly ApplicationDbContext _context;
+
         public RouteService(ApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesAsync() =>
-            await _context.Routes.Include(x => x.Line).Include(x => x.Station).ToListAsync();
-        public async Task<Data.Models.Route> GetRouteByIdAsync(int id) =>
-          await _context.Routes.Include(x => x.Line).Include(x => x.Station).SingleOrDefaultAsync(x => x.Id == id);
 
-        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesByLineIdAsync(int lineId) =>
-            await _context.Routes.Include(x => x.Line).Include(x => x.Station).Where(x=> x.LineId == lineId).OrderBy(x=>x.Order).ToListAsync();
+        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesAsync(CancellationToken cancellationToken) =>
+             await _context.Routes
+                .Include(x => x.Line)
+                .Include(x => x.Station)
+                .ToListAsync(cancellationToken);
 
-        public async Task<int> GetStationCountByLineIdAsync(int lineId) =>
-          await _context.Routes.Where(r => r.Line.Id == lineId && r.Station != null).CountAsync();
+        public async Task<Data.Models.Route?> GetRouteByIdAsync(int id, CancellationToken cancellationToken) =>
+             await _context.Routes
+                .Include(x => x.Line)
+                .Include(x => x.Station)
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<bool> DeleteAllRoutesByLineIdAsync(int lineId)
+        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesByLineIdAsync(int lineId, CancellationToken cancellationToken)
+        {
+            return await _context.Routes
+                .Include(x => x.Line)
+                .Include(x => x.Station)
+                .Where(x => x.LineId == lineId)
+                .OrderBy(x => x.Order)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<int> GetStationCountByLineIdAsync(int lineId, CancellationToken cancellationToken)
+        {
+
+            return await _context.Routes
+                .Include(x => x.Line)
+                .Where(r => r.Line!=null && r.Line.Id == lineId && r.Station != null )
+                .CountAsync(cancellationToken);
+        }
+
+        public async Task<bool> DeleteAllRoutesByLineIdAsync(int lineId, CancellationToken cancellationToken)
         {
             var routes = await _context.Routes
                 .Where(r => r.LineId == lineId)
-                .ToListAsync();
-            if (routes == null || !routes.Any())
+                .ToListAsync(cancellationToken);
+
+            if (routes == null || routes.Count == 0)
                 return false;
+
             _context.Routes.RemoveRange(routes);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
 
-        public async Task<Data.Models.Route> CreateRouteAsync(Data.Models.Route route)
+        public async Task<Data.Models.Route> CreateRouteAsync(Data.Models.Route route, CancellationToken cancellationToken)
         {
             _context.Routes.Add(route);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return route;
         }
 
-        public async Task<Data.Models.Route> UpdateRouteAsync(Data.Models.Route route)
+        public async Task<Data.Models.Route> UpdateRouteAsync(Data.Models.Route route, CancellationToken cancellationToken)
         {
             _context.Routes.Update(route);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return route;
         }
 
-        public async Task<bool> DeleteRouteAsync(int id)
+        public async Task<bool> DeleteRouteAsync(int id, CancellationToken cancellationToken)
         {
-            var route = await _context.Routes.FindAsync(id);
+            var route = await _context.Routes.SingleOrDefaultAsync(r => r.Id == id,cancellationToken);
             if (route == null) return false;
             _context.Routes.Remove(route);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

@@ -12,20 +12,16 @@ namespace GPS.API.Controllers
     public class AAGetTokenTestController(ApplicationDbContext _context, ITokenService tokenService) : MyControllerBase
     {
         [HttpPost("GetToken")]
-        public async Task<ActionResult<UserDto>> Login(string? tenantId, ICurrentTenantService currentTenantService)
+        public async Task<ActionResult<UserDto>> Login(string? tenantId, ICurrentTenantService currentTenantService, CancellationToken cancellationToken)
         {
+          await  currentTenantService.SetTenant(tenantId==null?"mostar":tenantId,cancellationToken);
             var user = await _context.MyAppUsers.FirstOrDefaultAsync();
-
-            if (String.IsNullOrEmpty(tenantId))
-                tenantId = "mostar";
-
-            user.TenantId = tenantId;
-
-            currentTenantService.SetTenant(user.TenantId);
+            if (user == null) { return NotFound(); }
+            var token = "Bearer " + await tokenService.CreateToken(user,cancellationToken);
             return new UserDto
             {
                 Email = user.Email,
-                Token = "Bearer " + tokenService.CreateToken(user),
+                Token = token,
                 Role = "Manager"
             };
 

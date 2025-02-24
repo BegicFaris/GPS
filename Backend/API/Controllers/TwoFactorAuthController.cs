@@ -2,6 +2,7 @@
 using GPS.API.Dtos.TwoFactorDtos;
 using GPS.API.Interfaces;
 using GPS.API.Services.PasswordresetServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -21,25 +22,27 @@ namespace GPS.API.Controllers
         }
 
 
+  
         [HttpGet("get-2fa-status")]
-        public async Task<IActionResult> Get2FAStatus([FromQuery] string email)
+        public async Task<IActionResult> Get2FAStatus([FromQuery] string email, CancellationToken cancellationToken)
         {
-            var twoFactorStatus = await _twoFactorAuthService.IsUsingTwoFactor(email);
+            var twoFactorStatus = await _twoFactorAuthService.IsUsingTwoFactorAsync(email, cancellationToken);
             return Ok(new { twoFactorStatus });
         }
 
-
+  
         [HttpPost("send-code")]
-        public async Task<IActionResult> SendResetCode(emailTwoFactorDto e)
+        public async Task<IActionResult> SendResetCode(EmailTwoFactorDto e, CancellationToken cancellationToken)
         {
-            await _twoFactorAuthService.GenerateTwoFactorCode(e.email);
+            await _twoFactorAuthService.GenerateTwoFactorCodeAsync(e.Email, cancellationToken);
             return Ok();
         }
 
+      
         [HttpPost("verify-code")]
-        public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeRequestDto request)
+        public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeRequestDto request, CancellationToken cancellationToken)
         {
-            var isValid = await _twoFactorAuthService.VerifyTwoFactorCode(request.Email, request.Code);
+            var isValid = await _twoFactorAuthService.VerifyTwoFactorCodeAsync(request.Email, request.Code, cancellationToken);
             return isValid ? Ok() : BadRequest("Invalid code")  ;
         }
 

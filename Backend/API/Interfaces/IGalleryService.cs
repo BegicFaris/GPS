@@ -5,11 +5,11 @@ namespace GPS.API.Interfaces
 {
     public interface IGalleryService
     {
-        Task<IEnumerable<Gallery>> GetAllPhotosAsync();
-        Task<Gallery> UploadPhotoAsync(Gallery gallery);
-        Task<Gallery> GetPhotoByIdAsync(int id);
-        Task<bool> DeletePhotoAsync(int id);
-        Task<bool> UpdatePhotoOrderAsync(List<PhotoOrderDto> updatedOrder);
+        Task<Gallery> UploadPhotoAsync(Gallery gallery, CancellationToken cancellationToken);
+        Task<Gallery?> GetPhotoByIdAsync(int id, CancellationToken cancellationToken);
+        Task<IEnumerable<Gallery>> GetAllPhotosAsync(CancellationToken cancellationToken);
+        Task<bool> DeletePhotoAsync(int id, CancellationToken cancellationToken);
+        Task<bool> UpdatePhotoOrderAsync(List<PhotoOrderDto> updatedOrder, CancellationToken cancellationToken);
     }
 }
 

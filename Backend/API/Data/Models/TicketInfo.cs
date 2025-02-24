@@ -15,7 +15,7 @@ namespace GPS.API.Data.Models
         [ForeignKey(nameof(TicketType))]
         public required int TicketTypeId { get; set; }
         public TicketType? TicketType { get; set; }
-        public string TenantId { get; set; }
+        public string? TenantId { get; set; }
 
     }
 }

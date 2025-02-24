@@ -25,7 +25,7 @@ import { PassengerService } from '../_services/passenger.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ManagerService } from '../_services/manager.service';
 import { DriverService } from '../_services/driver.service';
-import { debounceTime, first, Observable, of, switchMap } from 'rxjs';
+import { debounceTime, first, firstValueFrom, Observable, of, switchMap } from 'rxjs';
 import { Ticket } from '../_models/ticket';
 import { ThemeService } from '../_services/theme.service';
 
@@ -136,19 +136,24 @@ export class UserProfileComponent implements OnInit {
   async loadUserTickets(): Promise<void> {
     const email = this.accountService.getUserEmail();
     if (email) {
-      try {
-        const data = await this.ticketService
-          .getUserTicketsPaginated(email, this.pageNumber, this.pageSize)
-          .toPromise();
-        if (data) {
-          this.tickets = data.tickets;
-          this.totalPages = data.totalPages;
-          this.hasTickets = true;
-          await this.generatePagination();
-        }
-      } catch (error) {
-        console.error('Error loading tickets:', error);
-      }
+       const data = await firstValueFrom(this.ticketService.getUserTicketsPaginated(email,this.pageNumber,this.pageSize));
+       this.tickets=data.tickets;
+       this.totalPages = data.totalPages;
+       this.hasTickets = true;
+        return;
+      // try {
+      //   const data = await this.ticketService
+      //     .getUserTicketsPaginated(email, this.pageNumber, this.pageSize)
+      //     .toPromise();
+      //   if (data) {
+      //     this.tickets = data.tickets;
+      //     this.totalPages = data.totalPages;
+      //     this.hasTickets = true;
+      //     await this.generatePagination();
+      //   }
+      // } catch (error) {
+      //   console.error('Error loading tickets:', error);
+      // }
     }
   }
 

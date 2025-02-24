@@ -7,6 +7,9 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using static QRCoder.PayloadGenerator;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
+using iText.Forms.Fields.Merging;
 
 namespace GPS.API.Services.TicketServices
 {
@@ -14,20 +17,27 @@ namespace GPS.API.Services.TicketServices
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<TicketService> _logger;
+
         public TicketService(ApplicationDbContext context, ILogger<TicketService> logger)
         {
             _context = context;
             _logger = logger;
         }
-        public async Task<IEnumerable<Ticket>> GetAllTicketsAsync() =>
-            await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).ToListAsync();
-        public async Task<object> GetTicketsOverTimeAsync()
-        {
-            var tickets = await _context.Tickets.ToListAsync();
 
-            // Group tickets by month (or customize as needed)
+        public async Task<IEnumerable<Ticket>> GetAllTicketsAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Tickets
+                .Include(x => x.TicketInfo)
+                .Include(x => x.User)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<object> GetTicketsOverTimeAsync(CancellationToken cancellationToken)
+        {
+            var tickets = await _context.Tickets.ToListAsync(cancellationToken);
+
             var groupedData = tickets
-                .GroupBy(t => t.CreatedDate.ToString("MMMM", CultureInfo.InvariantCulture)) // Month names
+                .GroupBy(t => t.CreatedDate.ToString("MMMM", CultureInfo.InvariantCulture))
                 .Select(group => new
                 {
                     Month = group.Key,
@@ -38,79 +48,91 @@ namespace GPS.API.Services.TicketServices
 
             return groupedData;
         }
-        public async Task<Ticket> GetTicketByIdAsync(int id) =>
-          await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).SingleOrDefaultAsync(x => x.Id == id);
-        public async Task<List<Ticket>> GetAllTicketsForUserEmail(string email)
+
+        public async Task<Ticket?> GetTicketByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _context.Tickets
+                .Include(x => x.TicketInfo)
+                .Include(x => x.User)
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<List<Ticket>> GetAllTicketsForUserEmail(string email, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
                 throw new ArgumentException("Email cannot be null or empty", nameof(email));
             }
 
-            return await _context.Tickets.Include(x => x.TicketInfo).Include(x => x.User).Include(x => x.TicketInfo.Zone).Include(x => x.TicketInfo.TicketType)
-                .Where(t => t.User.Email == email)
-                .ToListAsync();
+
+            return await _context.Tickets
+                .Include(x => x.TicketInfo)
+                .Include(x => x.TicketInfo != null ? x.TicketInfo.Zone : null)
+                .Include(x => x.TicketInfo != null ? x.TicketInfo.Zone : null)
+                .Include(x => x.User)
+                .Where(t => t.User != null && t.User.Email == email)
+                .ToListAsync(cancellationToken);
         }
-        public async Task<Ticket> CreateTicketAsync(Ticket ticket)
+
+        public async Task<Ticket> CreateTicketAsync(Ticket ticket, CancellationToken cancellationToken)
         {
             _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return ticket;
         }
 
-
-        public async Task<Ticket> UpdateTicketAsync(Ticket ticket)
+        public async Task<Ticket> UpdateTicketAsync(Ticket ticket, CancellationToken cancellationToken)
         {
             _context.Tickets.Update(ticket);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return ticket;
         }
 
-        public async Task<bool> DeleteTicketAsync(int id)
+        public async Task<bool> DeleteTicketAsync(int id, CancellationToken cancellationToken)
         {
             var ticket = await _context.Tickets.FindAsync(id);
             if (ticket == null) return false;
             _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
 
-        public async Task<Ticket> CreateTicketOnBuying(int ticketInfoId, string userEmail)
+        public async Task<Ticket> CreateTicketOnBuying(int ticketInfoId, string userEmail, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Creating ticket for user: {userEmail}, TicketInfoId: {ticketInfoId}");
-            var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email == userEmail);
+            var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email == userEmail, cancellationToken);
             if (user == null)
             {
                 _logger.LogError($"User not found: {userEmail}");
                 throw new Exception("User not found");
             }
 
-            var ticketInfo = await _context.TicketInfos.Include(ti => ti.TicketType).FirstOrDefaultAsync(ti => ti.Id == ticketInfoId);
+            var ticketInfo = await _context.TicketInfos.Include(ti => ti.TicketType)
+                .FirstOrDefaultAsync(ti => ti.Id == ticketInfoId, cancellationToken);
             if (ticketInfo == null)
             {
                 _logger.LogError($"Ticket info not found: {ticketInfoId}");
                 throw new Exception("Ticket info not found");
             }
-            int expirationDays;
-            if (ticketInfo.TicketType.Name == "Monthly")
+            if (ticketInfo.TicketType == null)
             {
-                expirationDays = 30;
+                _logger.LogError($"Ticket type for ticket not found: {ticketInfoId}");
+                throw new Exception("Ticket type for ticket not found");
             }
-            else
-            {
-                expirationDays = 1;
-            }
+
+            int expirationDays = ticketInfo.TicketType.Name == "Monthly" ? 30 : 1;
+
             var ticket = new Ticket
             {
                 UserId = user.Id,
                 TicketInfoId = ticketInfoId,
                 CreatedDate = DateTime.UtcNow,
-                ExpirationDate = DateTime.UtcNow.AddDays(expirationDays), // Adjust as needed
-                QrCode = GenerateQrCode() // Implement this method
+                ExpirationDate = DateTime.UtcNow.AddDays(expirationDays),
+                QrCode = GenerateQrCode()
             };
 
             _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation($"Ticket created successfully. TicketId: {ticket.Id}");
             return ticket;
@@ -126,9 +148,25 @@ namespace GPS.API.Services.TicketServices
                 {
                     using (Bitmap qrCodeImage = qrCode.GetGraphic(20))
                     {
-                        using (var memoryStream = new MemoryStream())
+                        using (MemoryStream memoryStream = new MemoryStream())
                         {
-                            qrCodeImage.Save(memoryStream, ImageFormat.Png);
+                            try
+                            {
+
+
+                                #pragma warning disable CA1416 // Validate platform compatibility
+                                qrCodeImage.Save(memoryStream, ImageFormat.Png);
+                                #pragma warning restore CA1416 // Validate platform compatibility
+
+
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log the error and throw an exception if saving fails
+                                _logger.LogError(ex, "Failed to save QR code image to memory stream.");
+                                throw new Exception("Failed to save QR code image.", ex);
+                            }
+
                             return memoryStream.ToArray();
                         }
                     }
@@ -136,7 +174,8 @@ namespace GPS.API.Services.TicketServices
             }
         }
 
-        public async Task<object> GetUserTicketsPaginatedAsync(string email, int pageNumber, int pageSize)
+
+        public async Task<object> GetUserTicketsPaginatedAsync(string email, int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -147,18 +186,21 @@ namespace GPS.API.Services.TicketServices
             var take = pageSize;
 
             var tickets = await _context.Tickets
-            .Include(x => x.TicketInfo)
-            .Include(x => x.User)
-            .Include(x => x.TicketInfo.Zone)
-            .Include(x => x.TicketInfo.TicketType)
-            .Where(t => t.User.Email == email)
-            .OrderByDescending(t => t.CreatedDate)  // Order by creation date in descending order
-            .Skip(skip)
-            .Take(take)
-            .ToListAsync();
+                .Include(x => x.TicketInfo)
+                .Include(x => x.User)
+                .Include(x => x.TicketInfo != null ? x.TicketInfo.TicketType     : null)
+                .Include(x => x.TicketInfo != null ? x.TicketInfo.Zone : null)
+                .Where(t => t.User!=null && t.User.Email == email)
+                .OrderByDescending(t => t.CreatedDate)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync(cancellationToken);
 
+            var totalTickets = await _context.Tickets
+                .Include(x => x.User)
+                .Where(x => x.User!=null && x.User.Email == email)
+                .CountAsync(cancellationToken);
 
-            var totalTickets = await _context.Tickets.Include(x=>x.User).Where(x=>x.User.Email==email).CountAsync();
             var totalPages = (int)Math.Ceiling(totalTickets / (double)pageSize);
             return new
             {
@@ -168,7 +210,6 @@ namespace GPS.API.Services.TicketServices
                 PageSize = pageSize,
                 Tickets = tickets
             };
-
         }
     }
 }

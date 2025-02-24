@@ -1,10 +1,6 @@
 ﻿using GPS.API.Data.DbContexts;
-using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using System.Runtime.CompilerServices;
-using System.Xml;
 
 namespace GPS.API.Services.ShiftDetailServices
 {
@@ -59,7 +55,6 @@ namespace GPS.API.Services.ShiftDetailServices
 
         private async Task SendEmailToAllDrivers(CancellationToken stoppingToken)
         {
-
             // Use the service scope to resolve scoped services
             using (var scope = _serviceProvider.CreateScope())
             {
@@ -70,14 +65,17 @@ namespace GPS.API.Services.ShiftDetailServices
 
                 var today = DateOnly.FromDateTime(DateTime.Now);
 
-                var tenants = await context.Tenants.ToListAsync();
+                var tenants = await context.Tenants.ToListAsync(stoppingToken);
 
                 foreach (var tenant in tenants)
                 {
-                    await tenantService.SetTenant(tenant.Id);
+                    await tenantService.SetTenant(tenant.Id, stoppingToken);
 
-                    var shifts = await context.Shifts.Include(s => s.Driver)
-                        .Where(s => (s.ShiftDate.Day == today.Day && s.ShiftDate.Month == today.Month && s.ShiftDate.Year == today.Year))
+                    var shifts = await context.Shifts
+                        .Include(s => s.Driver)
+                        .Where(s => s.ShiftDate.Day == today.Day &&
+                                    s.ShiftDate.Month == today.Month &&
+                                    s.ShiftDate.Year == today.Year)
                         .ToListAsync(stoppingToken);
 
                     foreach (var shift in shifts)
@@ -95,8 +93,8 @@ namespace GPS.API.Services.ShiftDetailServices
                         email = shift.Driver.Email;
                         try
                         {
-                            var pdfBytes = await shiftDetailService.GeneratePdfAsync(shift.Id);
-                            await emailService.SendEmailWithPdfAsync(email, subject, message, pdfBytes);
+                            var pdfBytes = await shiftDetailService.GeneratePdfAsync(shift.Id, stoppingToken);
+                            await emailService.SendEmailWithPdfAsync(email, subject, message, pdfBytes, stoppingToken);
                         }
                         catch (ArgumentException ex)
                         {

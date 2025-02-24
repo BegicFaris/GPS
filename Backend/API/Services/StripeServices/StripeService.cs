@@ -1,13 +1,16 @@
 ﻿using GPS.API.Interfaces;
-using static GPS.API.Interfaces.IStripeService;
 using Stripe;
 using Microsoft.EntityFrameworkCore;
 using GPS.API.Data.DbContexts;
 using GPS.API.Controllers;
+using System.Threading;
+using System.Threading.Tasks;
+using static GPS.API.Interfaces.IStripeService;
+using System.Configuration;
 
 namespace GPS.API.Services.StripeServices
 {
-    public class StripeService: IStripeService
+    public class StripeService : IStripeService
     {
         private readonly string _apiKey;
         private readonly ApplicationDbContext _context;
@@ -15,13 +18,14 @@ namespace GPS.API.Services.StripeServices
 
         public StripeService(IConfiguration configuration, ApplicationDbContext context, ILogger<StripeService> logger)
         {
-            _apiKey = configuration["Stripe:SecretKey"];
+            _apiKey = configuration["Stripe:SecretKey"]??"";
+            if (string.IsNullOrWhiteSpace(_apiKey)) { throw new ConfigurationErrorsException("API key is not configured"); }
             StripeConfiguration.ApiKey = _apiKey;
             _context = context;
             _logger = logger;
         }
 
-        public async Task<PaymentResult> ProcessPayment(string token, decimal amount)
+        public async Task<PaymentResult> ProcessPayment(string token, decimal amount, CancellationToken cancellationToken)
         {
             var options = new ChargeCreateOptions
             {
@@ -30,11 +34,10 @@ namespace GPS.API.Services.StripeServices
                 Source = token,
                 Description = "Ticket purchase"
             };
-
             var service = new ChargeService();
             try
             {
-                var charge = await service.CreateAsync(options);
+                var charge = await service.CreateAsync(options,null,cancellationToken);
                 return new PaymentResult { Succeeded = charge.Paid };
             }
             catch (StripeException e)
@@ -42,7 +45,5 @@ namespace GPS.API.Services.StripeServices
                 return new PaymentResult { Succeeded = false, ErrorMessage = e.Message };
             }
         }
-
-  
     }
 }

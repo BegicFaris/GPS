@@ -5,10 +5,10 @@ namespace GPS.API.Interfaces
 {
     public interface IDriverService
     {
-        Task<IEnumerable<Driver>> GetAllDriversAsync();
-        Task<Driver> GetDriverByIdAsync(int id);
-        Task<Driver> CreateDriverAsync(Driver driver);
-        Task<Driver> UpdateDriverAsync(Driver driver);
-        Task<bool> DeleteDriverAsync(int id);
+        Task<IEnumerable<Driver>> GetAllDriversAsync(CancellationToken cancellationToken);
+        Task<Driver?> GetDriverByIdAsync(int id, CancellationToken cancellationToken);
+        Task<Driver> CreateDriverAsync(Driver driver, CancellationToken cancellationToken);
+        Task<Driver> UpdateDriverAsync(Driver driver, CancellationToken cancellationToken);
+        Task<bool> DeleteDriverAsync(int id, CancellationToken cancellationToken);
     }
 }

@@ -5,14 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GPS.API.Services.TenantServices
 {
-    public class TenantService:ITenantService
+    public class TenantService : ITenantService
     {
         private readonly ApplicationDbContext _context;
+
         public TenantService(ApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<Tenant>> GetAllTenantsAsync() =>
-            await _context.Tenants.ToListAsync();
+
+        public async Task<IEnumerable<Tenant>> GetAllTenantsAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Tenants
+                .ToListAsync(cancellationToken);
+        }
     }
 }

@@ -3,6 +3,9 @@ using GPS.API.Data.Models;
 using GPS.API.Dtos.PhotoDtos;
 using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace GPS.API.Services
 {
@@ -15,57 +18,55 @@ namespace GPS.API.Services
             _context = context;
         }
 
-        public async Task<Gallery> UploadPhotoAsync(Gallery gallery)
+        public async Task<Gallery> UploadPhotoAsync(Gallery gallery, CancellationToken cancellationToken)
         {
             if (gallery == null) throw new ArgumentNullException(nameof(gallery));
 
             // Assign default position as the next highest position
-            var maxPosition = await _context.Galleries.MaxAsync(g => (int?)g.Position) ?? 0;
+            var maxPosition = await _context.Galleries.MaxAsync(g => (int?)g.Position, cancellationToken) ?? 0;
             gallery.Position = maxPosition + 1;
 
             _context.Galleries.Add(gallery);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return gallery;
         }
 
         // Retrieve photo by ID
-        public async Task<Gallery> GetPhotoByIdAsync(int id)
+        public async Task<Gallery?> GetPhotoByIdAsync(int id, CancellationToken cancellationToken)
         {
             var gallery = await _context.Galleries
-                .FirstOrDefaultAsync(g => g.Id == id);
-
+                .FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
             return gallery;
         }
 
-        public async Task<IEnumerable<Gallery>> GetAllPhotosAsync()
+        public async Task<IEnumerable<Gallery>> GetAllPhotosAsync(CancellationToken cancellationToken)
         {
             return await _context.Galleries
                 .OrderBy(g => g.Position) // Ensure photos are ordered by position
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
         }
 
-
         // Delete photo by ID
-        public async Task<bool> DeletePhotoAsync(int id)
+        public async Task<bool> DeletePhotoAsync(int id, CancellationToken cancellationToken)
         {
-            var gallery = await _context.Galleries.FirstOrDefaultAsync(g => g.Id == id);
+            var gallery = await _context.Galleries.FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
             if (gallery == null)
             {
                 return false;
             }
 
             _context.Galleries.Remove(gallery);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
 
-        public async Task<bool> UpdatePhotoOrderAsync(List<PhotoOrderDto> updatedOrder)
+        public async Task<bool> UpdatePhotoOrderAsync(List<PhotoOrderDto> updatedOrder, CancellationToken cancellationToken)
         {
             // Fetch photos based on the provided IDs
             var photoIds = updatedOrder.Select(o => o.Id).ToList();
             var photosToUpdate = await _context.Galleries
                 .Where(p => photoIds.Contains(p.Id))
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             if (photosToUpdate.Count != updatedOrder.Count)
             {
@@ -80,7 +81,7 @@ namespace GPS.API.Services
             }
 
             // Save the changes
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return true;
         }

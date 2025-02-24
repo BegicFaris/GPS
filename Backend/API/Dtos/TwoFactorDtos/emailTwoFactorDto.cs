@@ -1,7 +1,7 @@
 ﻿namespace GPS.API.Dtos.TwoFactorDtos
 {
-    public class emailTwoFactorDto
+    public class EmailTwoFactorDto
     {
-        public string email { get; set; }
+        public required string Email { get; set; }
     }
 }

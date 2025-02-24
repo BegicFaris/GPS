@@ -1,6 +1,7 @@
 ﻿using GPS.API.Data.Models;
 using GPS.API.Dtos.ShiftDtos;
 using GPS.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
@@ -14,21 +15,29 @@ namespace GPS.API.Controllers
             _shiftService = shiftService;
         }
 
+        [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet]
-        public async Task<IActionResult> GetAllShifts() =>
-            Ok(await _shiftService.GetAllShiftsAsync());
+        public async Task<IActionResult> GetAllShifts(CancellationToken cancellationToken) =>
+            Ok(await _shiftService.GetAllShiftsAsync(cancellationToken));
 
+        [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetShift(int id)
+        public async Task<IActionResult> GetShift(int id, CancellationToken cancellationToken)
         {
-            var shift = await _shiftService.GetShiftByIdAsync(id);
+            var shift = await _shiftService.GetShiftByIdAsync(id, cancellationToken);
             if (shift == null) return NotFound();
             return Ok(shift);
         }
 
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<IActionResult> CreateShift(ShiftCreateDto shiftCreateDto)
+        public async Task<IActionResult> CreateShift(ShiftCreateDto shiftCreateDto, CancellationToken cancellationToken)
         {
+            var role = User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value;
+            if (role != UserRole.Manager.ToString())
+                return Unauthorized();
+
             var shift = new Shift
             {
                 BusId = shiftCreateDto.BusId,
@@ -38,16 +47,17 @@ namespace GPS.API.Controllers
                 ShiftStartingTime = shiftCreateDto.ShiftStartingTime,
             };
 
-            var createdShift = await _shiftService.CreateShiftAsync(shift);
+            var createdShift = await _shiftService.CreateShiftAsync(shift, cancellationToken);
             return CreatedAtAction(nameof(CreateShift), new { id = createdShift.Id }, createdShift);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateShift(int id, ShiftUpdateDto shiftUpdateDto)
+        public async Task<IActionResult> UpdateShift(int id, ShiftUpdateDto shiftUpdateDto, CancellationToken cancellationToken)
         {
             if (id != shiftUpdateDto.Id) return BadRequest();
 
-            var existingShift = await _shiftService.GetShiftByIdAsync(id);
+            var existingShift = await _shiftService.GetShiftByIdAsync(id, cancellationToken);
             if (existingShift == null) return NotFound($"Shift with Id:{id} not found!");
 
             if (shiftUpdateDto.BusId != null)
@@ -61,14 +71,16 @@ namespace GPS.API.Controllers
             if (shiftUpdateDto.ShiftEndingTime != null)
                 existingShift.ShiftEndingTime = shiftUpdateDto.ShiftEndingTime.Value;
 
-            var updatedShift = await _shiftService.UpdateShiftAsync(existingShift);
+            var updatedShift = await _shiftService.UpdateShiftAsync(existingShift, cancellationToken);
             return Ok(updatedShift);
         }
 
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShift(int id)
+        public async Task<IActionResult> DeleteShift(int id, CancellationToken cancellationToken)
         {
-            var success = await _shiftService.DeleteShiftAsync(id);
+            var success = await _shiftService.DeleteShiftAsync(id, cancellationToken);
             if (!success) return NotFound();
             return NoContent();
         }

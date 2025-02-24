@@ -17,35 +17,36 @@ namespace GPS.API.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Passenger>>> GetAllPassengers()
+        public async Task<ActionResult<IEnumerable<Passenger>>> GetAllPassengers(CancellationToken cancellationToken)
         {
-            var passengers = await _passengerService.GetAllPassengersAsync();
+            var passengers = await _passengerService.GetAllPassengersAsync(cancellationToken);
             return Ok(passengers);
         }
 
-        [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Passenger>> GetPassenger(int id)
+        public async Task<ActionResult<Passenger>> GetPassenger(int id, CancellationToken cancellationToken)
         {
-            var passenger = await _passengerService.GetPassengerByIdAsync(id);
+            var passenger = await _passengerService.GetPassengerByIdAsync(id, cancellationToken);
             if (passenger == null)
                 return NotFound();
             return Ok(passenger);
         }
 
+
         [HttpPost]
-        public async Task<ActionResult<Passenger>> CreatePassenger(Passenger passenger)
+        public async Task<ActionResult<Passenger>> CreatePassenger(Passenger passenger, CancellationToken cancellationToken)
         {
-            var createdPassenger = await _passengerService.CreatePassengerAsync(passenger);
+            var createdPassenger = await _passengerService.CreatePassengerAsync(passenger, cancellationToken);
             return CreatedAtAction(nameof(GetPassenger), new { id = createdPassenger.Id }, createdPassenger);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePassenger(int id, Passenger passenger)
+        public async Task<IActionResult> UpdatePassenger(int id, Passenger passenger, CancellationToken cancellationToken)
         {
             if (id != passenger.Id) return BadRequest();
-            var existingPassenger = await _passengerService.GetPassengerByIdAsync(id);
-
+            var existingPassenger = await _passengerService.GetPassengerByIdAsync(id, cancellationToken);
+            if(existingPassenger == null) return NotFound();
             if (passenger.FirstName != null)
                 existingPassenger.FirstName = passenger.FirstName;
 
@@ -76,17 +77,18 @@ namespace GPS.API.Controllers
 
 
 
-            var updatedPassenger = await _passengerService.UpdatePassengerAsync(existingPassenger);
+            var updatedPassenger = await _passengerService.UpdatePassengerAsync(existingPassenger, cancellationToken);
             if (updatedPassenger == null)
                 return NotFound();
 
             return Ok(updatedPassenger);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePassenger(int id)
+        public async Task<IActionResult> DeletePassenger(int id, CancellationToken cancellationToken)
         {
-            var result = await _passengerService.DeletePassengerAsync(id);
+            var result = await _passengerService.DeletePassengerAsync(id, cancellationToken);
             if (!result)
                 return NotFound();
 

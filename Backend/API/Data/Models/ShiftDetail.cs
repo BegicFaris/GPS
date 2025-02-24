@@ -17,6 +17,6 @@ namespace GPS.API.Data.Models
         public Line? Line { get; set; }
         public required TimeOnly ShiftDetailStartingTime { get; set; }
         public required TimeOnly ShiftDetailEndingTime { get; set; }
-        public string TenantId { get; set; }
+        public string? TenantId { get; set; }
     }
 }

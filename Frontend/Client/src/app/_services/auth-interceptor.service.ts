@@ -38,9 +38,12 @@ export class AuthInterceptor implements HttpInterceptor {
           });
           return next.handle(authRequest);
         }
-        // else if(base url == sarajevo){
-        // tenant=sarajevo
-        // }
+        else if (baseUrl == 'https://localhost:4202') {
+          const authRequest = request.clone({
+            headers: request.headers.set('Tenant', `sarajevo`),
+          });
+          return next.handle(authRequest);
+        }
       }
       return next.handle(request);
     }

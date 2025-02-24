@@ -14,17 +14,20 @@ using System.Data;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace GPS.API.Controllers
 {
-    public class AccountController(ApplicationDbContext _context, ITokenService tokenService, ICurrentTenantService currentTenantService, IHttpClientFactory _httpClientFactory, ITwoFactorAuthService _twoFactorAuthService) : MyControllerBase
+    public class AccountController(IDriverService driverService, IPassengerService passengerService, IManagerService managerService, IMyAppUserService myAppUserService, ITokenService tokenService, IHttpClientFactory _httpClientFactory) : MyControllerBase
     {
 
         [HttpPost("register/driver")]
-        public async Task<ActionResult<UserDto>> RegisterDriver(RegisterDriverDto dto)
+        public async Task<ActionResult<UserDto>> RegisterDriver(RegisterDriverDto dto, CancellationToken cancellationToken)
         {
-            if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
+
+            if (await myAppUserService.EmailExistsAsync(dto.Email, cancellationToken))
                 return BadRequest("Email is already in use.");
+
             using var hmac = new HMACSHA512();
             var user = new Driver
             {
@@ -43,22 +46,21 @@ namespace GPS.API.Controllers
                 WorkingHoursInAWeek = dto.WorkingHoursInAWeek,
 
             };
-
-            _context.MyAppUsers.Add(user);
-            await _context.SaveChangesAsync();
+            await driverService.CreateDriverAsync(user, cancellationToken);
             string role = "Driver";
+            var token = await tokenService.CreateToken(user, cancellationToken);
             return new UserDto
             {
                 Email = user.Email,
-                Token = tokenService.CreateToken(user),
+                Token = token,
                 Role = role
             };
         }
 
         [HttpPost("register/manager")]
-        public async Task<ActionResult<UserDto>> RegisterManager(RegisterManagerDto dto)
+        public async Task<ActionResult<UserDto>> RegisterManager(RegisterManagerDto dto, CancellationToken cancellationToken)
         {
-            if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
+            if (await myAppUserService.EmailExistsAsync(dto.Email, cancellationToken))
                 return BadRequest("Email is already in use.");
             using var hmac = new HMACSHA512();
             var user = new Manager
@@ -77,28 +79,28 @@ namespace GPS.API.Controllers
                 ManagerLevel = dto.ManagerLevel,
             };
 
-            _context.MyAppUsers.Add(user);
-            await _context.SaveChangesAsync();
+            await managerService.CreateManagerAsync(user, cancellationToken);
             string role = "Manager";
+            var token = await tokenService.CreateToken(user, cancellationToken);
             return new UserDto
             {
                 Email = user.Email,
-                Token = tokenService.CreateToken(user),
+                Token = token,
                 Role = role
             };
         }
 
         [HttpPost("register/passenger")]
-        public async Task<ActionResult<UserDto>> RegisterPassenger(RegisterPassengerDto dto)
+        public async Task<ActionResult<UserDto>> RegisterPassenger(RegisterPassengerDto dto, CancellationToken cancellationToken)
         {
             //if (!await VerifyCaptcha(dto.CaptchaResponse))
             //{
             //    return BadRequest("CAPTCHA verification failed");
             //}
-            if (await _context.MyAppUsers.AnyAsync(u => u.Email == dto.Email))
+
+
+            if (await myAppUserService.EmailExistsAsync(dto.Email, cancellationToken))
                 return BadRequest("Email is already in use.");
-            var tenant = await _context.Tenants.Where(t => t.Id == dto.TenantId).FirstOrDefaultAsync();
-            currentTenantService.SetTenant(tenant.Id);
             using var hmac = new HMACSHA512();
             var user = new Passenger
             {
@@ -112,20 +114,19 @@ namespace GPS.API.Controllers
                 Image = dto.Image,
                 Address = dto.Address,
                 DiscountID = dto.DiscountId,
-                TenantId = dto.TenantId
             };
 
-            _context.MyAppUsers.Add(user);
-            await _context.SaveChangesAsync();
+            await passengerService.CreatePassengerAsync(user, cancellationToken);
             string role = "Passenger";
+            var token = await tokenService.CreateToken(user, cancellationToken);
             return new UserDto
             {
                 Email = user.Email,
-                Token = tokenService.CreateToken(user),
+                Token = token,
                 Role = role
             };
         }
-        private async Task<bool> VerifyCaptcha(string captchaResponse)
+        private async Task<bool> VerifyCaptcha(string captchaResponse, CancellationToken cancellationToken)
         {
             var client = _httpClientFactory.CreateClient();
             var response = await client.PostAsync(
@@ -134,12 +135,13 @@ namespace GPS.API.Controllers
                 {
                     new KeyValuePair<string, string>("secret", "6LfSlaEqAAAAAJzr4xo8VNya1a7-JGP7PXqqgWp6"),
                     new KeyValuePair<string, string>("response", captchaResponse)
-                })
+                }),
+                cancellationToken
             );
 
             if (response.IsSuccessStatusCode)
             {
-                var jsonString = await response.Content.ReadAsStringAsync();
+                var jsonString = await response.Content.ReadAsStringAsync(cancellationToken);
                 var jsonData = JObject.Parse(jsonString);
                 return jsonData.Value<bool>("success");
             }
@@ -148,41 +150,47 @@ namespace GPS.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto dto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto dto, CancellationToken cancellationToken)
         {
             try
             {
-            var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email.Equals(dto.Email)); //dodati provjeru
+                var user = await myAppUserService.GetUserByEmailAsync(dto.Email, cancellationToken);
                 if (user == null)
                     return Unauthorized("Invalid email or password");
-                using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i])
+
+                if (user.PasswordSalt == null || user.PasswordHash==null)
                 {
                     return Unauthorized("Invalid email or password");
                 }
-            }
-            string role = user switch
-            {
-                Driver => "Driver",
-                Manager => "Manager",
-                Passenger => "Passenger",
-                _ => "Unknown"
-            };
 
-            currentTenantService.SetTenant(user.TenantId);
-            return new UserDto
-            {
-                Email = user.Email,
-                Token = tokenService.CreateToken(user),
-                Role = role
-            };
+                using var hmac = new HMACSHA512(user.PasswordSalt);
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {            
+                    if (computedHash[i] != user.PasswordHash[i])
+                    {
+                        return Unauthorized("Invalid email or password");
+                    }
+                }
+                string role = user switch
+                {
+                    Driver => "Driver",
+                    Manager => "Manager",
+                    Passenger => "Passenger",
+                    _ => "Unknown"
+                };
+
+                var token = await tokenService.CreateToken(user, cancellationToken);
+                return new UserDto
+                {
+                    Email = user.Email,
+                    Token = token,
+                    Role = role
+                };
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An internal server error occurred"+ex);
+                return StatusCode(500, "An internal server error occurred" + ex);
             }
         }
     }

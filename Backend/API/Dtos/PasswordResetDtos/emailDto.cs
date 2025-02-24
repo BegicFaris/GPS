@@ -1,7 +1,7 @@
 ﻿namespace GPS.API.Dtos.PasswordResetDtos
 {
-    public class emailDto
+    public class EmailDto
     {
-        public string email { get; set; }
+        public required string Email { get; set; }
     }
 }

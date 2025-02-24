@@ -6,12 +6,12 @@ namespace GPS.API.Interfaces
 {
     public interface INotificationService
     {
-        Task<IEnumerable<Notification>> GetAllNotificationsAsync();
-        Task<IEnumerable<Notification>> GetRecentNotificationsAsync(string tenantId, int hours = 48);
-        Task<Notification> GetNotificationByIdAsync(int id);
-        Task<PagedResult<Notification>> GetNotificationsAsync(int page, int pageSize);
-        Task<Notification> CreateNotificationAsync(Notification notification);
-        Task<Notification> UpdateNotificationAsync(Notification notification  );
-        Task<bool> DeleteNotificationAsync(int id);
+        Task<IEnumerable<Notification>> GetAllNotificationsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<Notification>> GetRecentNotificationsAsync(string tenantId, int? hours, CancellationToken cancellationToken);
+        Task<Notification?> GetNotificationByIdAsync(int id, CancellationToken cancellationToken);
+        Task<Notification> CreateNotificationAsync(Notification notification, CancellationToken cancellationToken);
+        Task<PagedResult<Notification>> GetNotificationsAsync(int page, int pageSize, CancellationToken cancellationToken);
+        Task<Notification> UpdateNotificationAsync(Notification notification, CancellationToken cancellationToken);
+        Task<bool> DeleteNotificationAsync(int id, CancellationToken cancellationToken);
     }
 }

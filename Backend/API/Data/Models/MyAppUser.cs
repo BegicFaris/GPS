@@ -29,5 +29,11 @@ namespace GPS.API.Data.Models
         public string? TwoFactorCode { get; set; }
         public DateTime? TwoFactorCodeExpiry { get; set; }
     }
-
+    public enum UserRole
+    {
+        Driver,
+        Passenger,
+        Manager,
+        None
+    }
 }

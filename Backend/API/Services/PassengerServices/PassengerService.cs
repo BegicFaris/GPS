@@ -2,10 +2,13 @@
 using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GPS.API.Services.PassengerServices
 {
-    public class PassengerService: IPassengerService
+    public class PassengerService : IPassengerService
     {
         private readonly ApplicationDbContext _context;
 
@@ -14,32 +17,32 @@ namespace GPS.API.Services.PassengerServices
             _context = context;
         }
 
-        public async Task<IEnumerable<Passenger>> GetAllPassengersAsync() =>
-            await _context.Passengers.Include(x => x.Discount).ToListAsync();
+        public async Task<IEnumerable<Passenger>> GetAllPassengersAsync(CancellationToken cancellationToken) =>
+            await _context.Passengers.Include(x => x.Discount).ToListAsync(cancellationToken);
 
-        public async Task<Passenger> GetPassengerByIdAsync(int id) =>
-            await _context.Passengers.Include(x => x.Discount).SingleOrDefaultAsync(x => x.Id == id);
+        public async Task<Passenger?> GetPassengerByIdAsync(int id, CancellationToken cancellationToken) =>
+            await _context.Passengers.Include(x => x.Discount).SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<Passenger> CreatePassengerAsync(Passenger passenger)
+        public async Task<Passenger> CreatePassengerAsync(Passenger passenger, CancellationToken cancellationToken)
         {
             _context.Passengers.Add(passenger);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return passenger;
         }
 
-        public async Task<Passenger> UpdatePassengerAsync(Passenger passenger)
+        public async Task<Passenger> UpdatePassengerAsync(Passenger passenger, CancellationToken cancellationToken)
         {
             _context.Passengers.Update(passenger);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return passenger;
         }
 
-        public async Task<bool> DeletePassengerAsync(int id)
+        public async Task<bool> DeletePassengerAsync(int id, CancellationToken cancellationToken)
         {
-            var passenger = await _context.Passengers.FindAsync(id);
+            var passenger = await _context.Passengers.FindAsync(new object[] { id }, cancellationToken);
             if (passenger == null) return false;
             _context.Passengers.Remove(passenger);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

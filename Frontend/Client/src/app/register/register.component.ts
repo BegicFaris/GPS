@@ -85,31 +85,12 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       birthDate: ['', Validators.required],
       address: ['', Validators.required],
-      tenantId: [null, Validators.required],
       image: [null],
     });
   }
   ngOnInit(): void {
     this.titleService.setTitle('Register');
-    this.fetchTenants();
-  }
-
-  fetchTenants(): void {
-    this.tenantService.fetchTenants().subscribe({
-      next: (data) => {
-        if (Array.isArray(data)) {
-          this.tenants = data;
-        } else {
-          console.error('Unexpected data format:', data);
-          this.errorMessage = 'Received unexpected data format from server.';
-        }
-      },
-      error: (error) => {
-        console.error('Error fetching tenants:', error);
-        this.errorMessage =
-          error.message || 'Failed to load tenants. Please try again later.';
-      },
-    });
+  
   }
 
   onFileSelected(event: Event): void {

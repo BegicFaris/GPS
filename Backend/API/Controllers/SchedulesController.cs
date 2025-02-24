@@ -2,6 +2,7 @@
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using GPS.API.Dtos.ScheduleDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GPS.API.Controllers
 {
@@ -14,39 +15,47 @@ namespace GPS.API.Controllers
             _scheduleService = scheduleService;
         }
 
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllSchedules() =>
-            Ok(await _scheduleService.GetAllSchedulesAsync());
+        public async Task<IActionResult> GetAllSchedules(CancellationToken cancellationToken) =>
+            Ok(await _scheduleService.GetAllSchedulesAsync(cancellationToken));
 
+        [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSchedule(int id)
+        public async Task<IActionResult> GetSchedule(int id, CancellationToken cancellationToken)
         {
-            var schedule = await _scheduleService.GetScheduleByIdAsync(id);
+            var schedule = await _scheduleService.GetScheduleByIdAsync(id, cancellationToken);
             if (schedule == null) return NotFound();
             return Ok(schedule);
         }
-        [HttpGet("line/{lineId}")]
-        public async Task<IActionResult> GetAllSchedulesByLineId(int lineId) =>
-            Ok(await _scheduleService.GetAllSchedulesByLineIdAsync(lineId));
 
+        [Authorize]
+        [HttpGet("line/{lineId}")]
+        public async Task<IActionResult> GetAllSchedulesByLineId(int lineId, CancellationToken cancellationToken) =>
+            Ok(await _scheduleService.GetAllSchedulesByLineIdAsync(lineId, cancellationToken));
+
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<IActionResult> CreateSchedule(ScheduleCreateDto scheduleCreateDto)
+        public async Task<IActionResult> CreateSchedule(ScheduleCreateDto scheduleCreateDto, CancellationToken cancellationToken)
         {
             var schedule = new Schedule
             {
                 DepartureTime = scheduleCreateDto.DepartureTime,
                 LineId = scheduleCreateDto.LineId,
             };
-            var createdSchedule = await _scheduleService.CreateScheduleAsync(schedule);
+            var createdSchedule = await _scheduleService.CreateScheduleAsync(schedule, cancellationToken);
             return CreatedAtAction(nameof(GetSchedule), new { id = createdSchedule.Id }, createdSchedule);
         }
 
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSchedule(int id, ScheduleUpdateDto scheduleUpdateDto)
+        public async Task<IActionResult> UpdateSchedule(int id, ScheduleUpdateDto scheduleUpdateDto, CancellationToken cancellationToken)
         {
             if (id != scheduleUpdateDto.Id) return BadRequest();
 
-            var existingSchedule = await _scheduleService.GetScheduleByIdAsync(id);
+            var existingSchedule = await _scheduleService.GetScheduleByIdAsync(id, cancellationToken);
             if (existingSchedule == null) return BadRequest($"Schedule with Id:{id} not found!");
 
             if (scheduleUpdateDto.LineId != null)
@@ -54,14 +63,15 @@ namespace GPS.API.Controllers
             if (scheduleUpdateDto.DepartureTime != null)
                 existingSchedule.DepartureTime = scheduleUpdateDto.DepartureTime.Value;
 
-            var updatedSchedule = await _scheduleService.UpdateScheduleAsync(existingSchedule);
+            var updatedSchedule = await _scheduleService.UpdateScheduleAsync(existingSchedule, cancellationToken);
             return Ok(updatedSchedule);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSchedule(int id)
+        public async Task<IActionResult> DeleteSchedule(int id, CancellationToken cancellationToken)
         {
-            var success = await _scheduleService.DeleteScheduleAsync(id);
+            var success = await _scheduleService.DeleteScheduleAsync(id, cancellationToken);
             if (!success) return NotFound();
             return NoContent();
         }

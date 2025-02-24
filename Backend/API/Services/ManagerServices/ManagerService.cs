@@ -2,10 +2,13 @@
 using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GPS.API.Services.ManagerServices
 {
-    public class ManagerService: IManagerService
+    public class ManagerService : IManagerService
     {
         private readonly ApplicationDbContext _context;
 
@@ -14,32 +17,34 @@ namespace GPS.API.Services.ManagerServices
             _context = context;
         }
 
-        public async Task<IEnumerable<Manager>> GetAllManagersAsync() =>
-            await _context.Managers.ToListAsync();
+        public async Task<IEnumerable<Manager>> GetAllManagersAsync(CancellationToken cancellationToken = default) =>
+            await _context.Managers.ToListAsync(cancellationToken);
 
-        public async Task<Manager> GetManagerByIdAsync(int id) =>
-            await _context.Managers.FindAsync(id);
+        public async Task<Manager?> GetManagerByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Managers.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
 
-        public async Task<Manager> CreateManagerAsync(Manager manager)
+        public async Task<Manager> CreateManagerAsync(Manager manager, CancellationToken cancellationToken = default)
         {
             _context.Managers.Add(manager);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return manager;
         }
 
-        public async Task<Manager> UpdateManagerAsync(Manager manager)
-        { 
-            _context.Managers.Update(manager);
-            await _context.SaveChangesAsync();
-            return manager;
-        }
-
-        public async Task<bool> DeleteManagerAsync(int id)
+        public async Task<Manager> UpdateManagerAsync(Manager manager, CancellationToken cancellationToken = default)
         {
-            var manager = await _context.Managers.FindAsync(id);
+            _context.Managers.Update(manager);
+            await _context.SaveChangesAsync(cancellationToken);
+            return manager;
+        }
+
+        public async Task<bool> DeleteManagerAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var manager = await _context.Managers.FindAsync(new object[] { id }, cancellationToken);
             if (manager == null) return false;
             _context.Managers.Remove(manager);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

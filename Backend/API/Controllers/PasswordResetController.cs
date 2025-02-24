@@ -6,34 +6,33 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-public class PasswordResetController : MyControllerBase
+namespace GPS.API.Controllers
 {
-    private readonly IPasswordResetService _passwordResetService;
 
-    public PasswordResetController(IPasswordResetService passwordResetService)
+
+    public class PasswordResetController(IPasswordResetService passwordResetService) : MyControllerBase
     {
-        _passwordResetService = passwordResetService;
-    }
+        private readonly IPasswordResetService _passwordResetService = passwordResetService;
 
+        [HttpPost("send-code")]
+        public async Task<IActionResult> SendResetCode(EmailDto e, CancellationToken cancellationToken)
+        {
+            await _passwordResetService.GenerateResetCode(e.Email, cancellationToken);
+            return Ok();
+        }
 
-    [HttpPost("send-code")]
-    public async Task<IActionResult> SendResetCode(emailDto e)
-    {
-        await _passwordResetService.GenerateResetCode(e.email);
-        return Ok();
-    }
+        [HttpPost("verify-code")]
+        public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeRequestDto request, CancellationToken cancellationToken)
+        {
+            var isValid = await _passwordResetService.VerifyResetCode(request.Email, request.Code, cancellationToken);
+            return isValid ? Ok() : BadRequest("Invalid code");
+        }
 
-    [HttpPost("verify-code")]
-    public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeRequestDto request)
-    {
-        var isValid = await _passwordResetService.VerifyResetCode(request.Email, request.Code);
-        return isValid ? Ok() : BadRequest("Invalid code");
-    }
-
-    [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request)
-    {
-        var success = await _passwordResetService.ResetPassword(request.Email, request.Code, request.NewPassword);
-        return success ? Ok() : BadRequest("Unable to reset password");
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto request, CancellationToken cancellationToken)
+        {
+            var success = await _passwordResetService.ResetPassword(request.Email, request.Code, request.NewPassword, cancellationToken);
+            return success ? Ok() : BadRequest("Unable to reset password");
+        }
     }
 }

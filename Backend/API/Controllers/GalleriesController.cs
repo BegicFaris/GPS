@@ -1,6 +1,7 @@
 ﻿using GPS.API.Data.Models;
 using GPS.API.Dtos.PhotoDtos;
 using GPS.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GPS.API.Controllers
@@ -14,24 +15,24 @@ namespace GPS.API.Controllers
             _galleryService = galleryService;
         }
 
-        // POST: api/gallery/upload
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadPhoto([FromBody] Gallery gallery)
+        public async Task<IActionResult> UploadPhoto([FromBody] Gallery gallery, CancellationToken cancellationToken)
         {
             if (gallery == null || gallery.PhotoData == null || gallery.PhotoData.Length == 0)
             {
                 return BadRequest("Invalid photo data.");
             }
 
-            var uploadedGallery = await _galleryService.UploadPhotoAsync(gallery);
+            var uploadedGallery = await _galleryService.UploadPhotoAsync(gallery, cancellationToken);
             return CreatedAtAction(nameof(GetPhotoById), new { id = uploadedGallery.Id }, uploadedGallery);
         }
 
-        // GET: api/gallery/5
+        [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPhotoById(int id)
+        public async Task<IActionResult> GetPhotoById(int id, CancellationToken cancellationToken)
         {
-            var gallery = await _galleryService.GetPhotoByIdAsync(id);
+            var gallery = await _galleryService.GetPhotoByIdAsync(id, cancellationToken);
             if (gallery == null)
             {
                 return NotFound();
@@ -40,19 +41,19 @@ namespace GPS.API.Controllers
             return Ok(gallery);
         }
 
-        // GET: api/gallery
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllPhotos()
+        public async Task<IActionResult> GetAllPhotos(CancellationToken cancellationToken)
         {
-            var galleries = await _galleryService.GetAllPhotosAsync();
+            var galleries = await _galleryService.GetAllPhotosAsync(cancellationToken);
             return Ok(galleries);
         }
 
-        // DELETE: api/gallery/5
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePhoto(int id)
+        public async Task<IActionResult> DeletePhoto(int id, CancellationToken cancellationToken)
         {
-            var success = await _galleryService.DeletePhotoAsync(id);
+            var success = await _galleryService.DeletePhotoAsync(id, cancellationToken);
             if (!success)
             {
                 return NotFound();
@@ -61,9 +62,9 @@ namespace GPS.API.Controllers
             return NoContent();
         }
 
-        // PUT: api/gallery/order
+        [Authorize]
         [HttpPut("order")]
-        public async Task<IActionResult> UpdatePhotoOrder([FromBody] List<PhotoOrderDto> updatedOrder)
+        public async Task<IActionResult> UpdatePhotoOrder([FromBody] List<PhotoOrderDto> updatedOrder, CancellationToken cancellationToken)
         {
             if (updatedOrder == null || !updatedOrder.Any())
             {
@@ -71,7 +72,7 @@ namespace GPS.API.Controllers
             }
 
             // Update the photo order
-            var success = await _galleryService.UpdatePhotoOrderAsync(updatedOrder);
+            var success = await _galleryService.UpdatePhotoOrderAsync(updatedOrder, cancellationToken);
             if (!success)
             {
                 return NotFound("Some photos were not found.");

@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { BusEditComponent } from '../bus-edit/bus-edit.component';
 import { Title } from '@angular/platform-browser';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-bus-view',
@@ -21,16 +22,18 @@ export class BusViewComponent {
   private titleService = inject(Title);
   buses: Bus[] = [];
 
-  ngOnInit() {
-    this.titleService.setTitle('buss');
-    this.loadBuses();
-    this.router.events.subscribe((event) => {
+  async ngOnInit() {
+    this.titleService.setTitle('buses');
+    await this.loadBuses();
+    this.router.events.subscribe( async (event) => {
       if (event instanceof NavigationEnd && event.url === '/buses') {
-        this.loadBuses();
+        await this.loadBuses();
       }
     });
   }
-  loadBuses() {
+  async loadBuses() {
+    this.buses=await firstValueFrom(this.busService.getAllBuses());
+  
     this.busService.getAllBuses().subscribe((data) => {
       this.buses = data; // or data.buss if it's nested
       console.log(this.buses)

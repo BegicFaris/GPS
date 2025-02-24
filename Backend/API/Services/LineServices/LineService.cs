@@ -2,7 +2,9 @@
 using GPS.API.Data.DbContexts;
 using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.Xml;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GPS.API.Services.LineServices
 {
@@ -15,19 +17,19 @@ namespace GPS.API.Services.LineServices
             _context = context;
         }
 
-        public async Task<IEnumerable<Line>> GetAllLinesAsync(string? lineName = "", string? stationName="")
+        public async Task<IEnumerable<Line>> GetAllLinesAsync(string? lineName = "", string? stationName = "", CancellationToken cancellationToken = default)
         {
-
-            var lines = await _context.Lines.ToListAsync();
+            var lines = await _context.Lines.ToListAsync(cancellationToken);
             string? normalizedLineName = !string.IsNullOrEmpty(lineName) ? NormalizeString(lineName) : null;
             string? normalizedStationName = !string.IsNullOrEmpty(stationName) ? NormalizeString(stationName) : null;
+
             if (!string.IsNullOrEmpty(normalizedLineName))
                 lines = lines.Where(x => NormalizeString(x.Name).Contains(normalizedLineName)).ToList();
 
             if (!string.IsNullOrEmpty(normalizedStationName))
             {
-                var r = await _context.Routes.Include(x => x.Station).ToListAsync();
-                var routes = r.Where(x => NormalizeString(x.Station.Name).Contains(normalizedStationName)).ToList();
+                var r = await _context.Routes.Include(x => x.Station).ToListAsync(cancellationToken);
+                var routes = r.Where(x => NormalizeString(x.Station?.Name??"").Contains(normalizedStationName)).ToList();
                 var matchingLineIds = routes.Select(route => route.LineId).Distinct().ToList();
 
                 return lines
@@ -39,6 +41,7 @@ namespace GPS.API.Services.LineServices
             return lines.OrderBy(line => ExtractLeadingNumber(line.Name))
                      .ThenBy(line => line.Name);
         }
+
         private string NormalizeString(string str)
         {
             if (string.IsNullOrEmpty(str))
@@ -63,10 +66,10 @@ namespace GPS.API.Services.LineServices
             return match.Success ? int.Parse(match.Value) : (int?)null; // Return null if no leading number
         }
 
-        public async Task<IEnumerable<Line>> GetAllLinesByStationIdAsync(int stationId)
+        public async Task<IEnumerable<Line>> GetAllLinesByStationIdAsync(int stationId, CancellationToken cancellationToken = default)
         {
-            var routes = await _context.Routes.Where(x => x.StationId == stationId).ToListAsync();
-            var allLines = await _context.Lines.ToListAsync();
+            var routes = await _context.Routes.Where(x => x.StationId == stationId).ToListAsync(cancellationToken);
+            var allLines = await _context.Lines.ToListAsync(cancellationToken);
 
             var lines = new List<Line>();
 
@@ -81,33 +84,33 @@ namespace GPS.API.Services.LineServices
                     }
                 }
             }
+
             return lines.GroupBy(line => line.Id).Select(group => group.First()).ToList();
         }
 
+        public async Task<Line?> GetLineByIdAsync(int id, CancellationToken cancellationToken = default) =>
+            await _context.Lines.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<Line> GetLineByIdAsync(int id) =>
-            await _context.Lines.SingleOrDefaultAsync(x => x.Id == id);
-
-        public async Task<Line> CreateLineAsync(Line line)
+        public async Task<Line> CreateLineAsync(Line line, CancellationToken cancellationToken = default)
         {
             _context.Lines.Add(line);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return line;
         }
 
-        public async Task<Line> UpdateLineAsync(Line line)
+        public async Task<Line> UpdateLineAsync(Line line, CancellationToken cancellationToken = default)
         {
             _context.Lines.Update(line);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return line;
         }
 
-        public async Task<bool> DeleteLineAsync(int id)
+        public async Task<bool> DeleteLineAsync(int id, CancellationToken cancellationToken = default)
         {
-            var line = await _context.Lines.FindAsync(id);
+            var line = await _context.Lines.FindAsync(id, cancellationToken);
             if (line == null) return false;
             _context.Lines.Remove(line);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

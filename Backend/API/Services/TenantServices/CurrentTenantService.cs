@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using GPS.API.Data.DbContexts;
 using GPS.API.Interfaces;
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace GPS.API.Services.TenantServices
 {
-    //The service responsible for setting the current tenant, also the reason we needed an additional DbContext
-    //It has a String type Id as well as a method that sets the current tenant
-    public class CurrentTenantService :ICurrentTenantService
+    // The service responsible for setting the current tenant, also the reason we needed an additional DbContext
+    // It has a String type Id as well as a method that sets the current tenant
+    public class CurrentTenantService : ICurrentTenantService
     {
         private readonly TenantDbContext _context;
 
@@ -13,11 +16,13 @@ namespace GPS.API.Services.TenantServices
         {
             _context = context;
         }
-        public string? TenantId { get;  set; }
 
-        public async Task<bool> SetTenant(string tenantId)
+        public string? TenantId { get; set; }
+
+        public async Task<bool> SetTenant(string tenantId, CancellationToken cancellationToken)
         {
-            var tenantInfo = await _context.Tenants.FirstOrDefaultAsync(x => x.Id == tenantId);
+            var tenantInfo = await _context.Tenants
+                .FirstOrDefaultAsync(x => x.Id == tenantId, cancellationToken);
 
             if (tenantInfo != null)
             {
@@ -28,11 +33,6 @@ namespace GPS.API.Services.TenantServices
             {
                 throw new Exception("Invalid tenant ID");
             }
-
-           
         }
-
     }
-
-
 }

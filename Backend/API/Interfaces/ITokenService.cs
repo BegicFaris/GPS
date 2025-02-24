@@ -4,7 +4,6 @@ namespace GPS.API.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(MyAppUser user);
-        public string CreateTenantOnlyToket(string tenantId);
+        Task<string> CreateToken(MyAppUser user, CancellationToken cancellationToken);
     }
 }

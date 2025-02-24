@@ -4,6 +4,6 @@ namespace GPS.API.Interfaces
 {
     public interface ITenantService
     {
-        Task<IEnumerable<Tenant>> GetAllTenantsAsync();
+        Task<IEnumerable<Tenant>> GetAllTenantsAsync(CancellationToken cancellationToken);
     }
 }

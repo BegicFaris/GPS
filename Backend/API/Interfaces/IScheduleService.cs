@@ -4,11 +4,11 @@ namespace GPS.API.Interfaces
 {
     public interface IScheduleService
     {
-        Task<IEnumerable<Schedule>> GetAllSchedulesAsync();
-        Task<Schedule?> GetScheduleByIdAsync(int id);
-        Task<IEnumerable<Schedule>> GetAllSchedulesByLineIdAsync(int lineId);
-        Task<Schedule> CreateScheduleAsync(Schedule schedule);
-        Task<Schedule> UpdateScheduleAsync(Schedule schedule);
-        Task<bool> DeleteScheduleAsync(int id);
+        Task<IEnumerable<Schedule>> GetAllSchedulesAsync(CancellationToken cancellationToken);
+        Task<Schedule?> GetScheduleByIdAsync(int id, CancellationToken cancellationToken);
+        Task<Schedule> CreateScheduleAsync(Schedule schedule, CancellationToken cancellationToken);
+        Task<Schedule> UpdateScheduleAsync(Schedule schedule, CancellationToken cancellationToken);
+        Task<bool> DeleteScheduleAsync(int id, CancellationToken cancellationToken);
+        Task<IEnumerable<Schedule>> GetAllSchedulesByLineIdAsync(int lineId, CancellationToken cancellationToken);
     }
 }

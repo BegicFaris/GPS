@@ -15,66 +15,74 @@ namespace GPS.API.Services.UserServices
         {
             _context = context;
         }
-        public async Task<IEnumerable<MyAppUser>> GetAllUsersAsync() =>
-            await _context.MyAppUsers.ToListAsync();
 
-        public async Task<MyAppUser> GetUserByIdAsync(int id) =>
-            await _context.MyAppUsers.FindAsync(id);
-        public async Task<MyAppUser> GetUserByEmailAsync(string email)
+        public async Task<IEnumerable<MyAppUser>> GetAllUsersAsync(CancellationToken cancellationToken) =>
+            await _context.MyAppUsers.ToListAsync(cancellationToken);
+
+        public async Task<MyAppUser?> GetUserByIdAsync(int id, CancellationToken cancellationToken) =>
+            await _context.MyAppUsers.SingleOrDefaultAsync(c => c.Id == id,cancellationToken);
+
+        public async Task<MyAppUser?> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
         {
-            var user = await _context.MyAppUsers
-                                 .FirstOrDefaultAsync(u => u.Email == email);
             if (string.IsNullOrWhiteSpace(email))
             {
                 throw new ArgumentException("Email cannot be null or empty", nameof(email));
             }
+
+            var user = await _context.MyAppUsers
+                .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+
             if (user == null)
             {
-                return null;  // or throw exception if user not found
+                return null; // or throw exception if user not found
             }
 
             if (user is Manager)
             {
-                return await _context.Managers.FirstOrDefaultAsync(m => m.Email == email);
+                return await _context.Managers
+                    .FirstOrDefaultAsync(m => m.Email == email, cancellationToken);
             }
             else if (user is Passenger)
             {
-                return await _context.Passengers.Include(d=>d.Discount).FirstOrDefaultAsync(p => p.Email == email);
+                return await _context.Passengers
+                    .Include(d => d.Discount)
+                    .FirstOrDefaultAsync(p => p.Email == email, cancellationToken);
             }
             else if (user is Driver)
             {
-                return await _context.Drivers.FirstOrDefaultAsync(d => d.Email == email);
+                return await _context.Drivers
+                    .FirstOrDefaultAsync(d => d.Email == email, cancellationToken);
             }
+
             return user;
         }
 
-        public async Task<bool> EmailExistsAsync(string email)
-        {
-            return await _context.MyAppUsers.AnyAsync(u => u.Email == email);
-        }
+        public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken) =>
+            await _context.MyAppUsers
+                .AnyAsync(u => u.Email == email, cancellationToken);
 
-
-        public async Task<MyAppUser> CreateUserAsync(MyAppUser user)
+        public async Task<MyAppUser> CreateUserAsync(MyAppUser user, CancellationToken cancellationToken)
         {
             _context.MyAppUsers.Add(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return user;
         }
 
-        public async Task<MyAppUser> UpdateUserAsync(MyAppUser user)
+        public async Task<MyAppUser> UpdateUserAsync(MyAppUser user, CancellationToken cancellationToken)
         {
             _context.MyAppUsers.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return user;
         }
 
-        public async Task<bool> DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
-            var user = await _context.MyAppUsers.FindAsync(id);
+            var user = await _context.MyAppUsers.FindAsync(new object[] { id }, cancellationToken);
             if (user == null) return false;
             _context.MyAppUsers.Remove(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
     }
+
 }

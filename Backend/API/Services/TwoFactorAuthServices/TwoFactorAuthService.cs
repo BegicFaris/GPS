@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GPS.API.Services.TwoFactorAuthServices
 {
-    public class TwoFactorAuthService: ITwoFactorAuthService
+    public class TwoFactorAuthService : ITwoFactorAuthService
     {
         private readonly ApplicationDbContext _context;
         private readonly IEmailService _emailService;
@@ -17,19 +17,17 @@ namespace GPS.API.Services.TwoFactorAuthServices
             _emailService = emailService;
         }
 
-        public async Task<bool> IsUsingTwoFactor(string email)
+        public async Task<bool> IsUsingTwoFactorAsync(string email, CancellationToken cancellationToken)
         {
-            var user =  await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email == email);
-            if (user != null)
-            {
-                return user.TwoFactorEnabled;
-            }
-            return false;
+            var user = await _context.MyAppUsers
+                .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+            return user?.TwoFactorEnabled ?? false;
         }
 
-        public async Task GenerateTwoFactorCode(string email)
+        public async Task GenerateTwoFactorCodeAsync(string email, CancellationToken cancellationToken)
         {
-            var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _context.MyAppUsers
+                .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
             if (user == null)
             {
                 throw new ArgumentException("User not found");
@@ -39,21 +37,16 @@ namespace GPS.API.Services.TwoFactorAuthServices
             user.TwoFactorCode = code;
             user.TwoFactorCodeExpiry = DateTime.UtcNow.AddMinutes(15);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
-            await _emailService.SendEmailAsync(email, "Two factor authentification", $"Your 2FA verification code is: {code}");
+            await _emailService.SendEmailAsync(email, "Two-factor authentication", $"Your 2FA verification code is: {code}", cancellationToken);
         }
 
-        public async Task<bool> VerifyTwoFactorCode(string email, string code)
+        public async Task<bool> VerifyTwoFactorCodeAsync(string email, string code, CancellationToken cancellationToken)
         {
-            var user = await _context.MyAppUsers.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null)
-            {
-                return false;
-            }
-
-            return user.TwoFactorCode == code && user.TwoFactorCodeExpiry > DateTime.UtcNow;
+            var user = await _context.MyAppUsers
+                .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+            return user?.TwoFactorCode == code && user.TwoFactorCodeExpiry > DateTime.UtcNow;
         }
-
     }
 }

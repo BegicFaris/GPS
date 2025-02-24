@@ -6,7 +6,7 @@ using GPS.API.Services.ManagerServices;
 
 namespace GPS.API.Controllers
 {
-    public class DriversController: MyControllerBase
+    public class DriversController : MyControllerBase
     {
         private readonly IDriverService _driverService;
 
@@ -15,32 +15,36 @@ namespace GPS.API.Controllers
             _driverService = driverService;
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllDrivers() =>
-            Ok(await _driverService.GetAllDriversAsync());
+        public async Task<IActionResult> GetAllDrivers(CancellationToken cancellationToken) =>
+            Ok(await _driverService.GetAllDriversAsync(cancellationToken));
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDriver(int id)
+        public async Task<IActionResult> GetDriver(int id, CancellationToken cancellationToken)
         {
-            var driver = await _driverService.GetDriverByIdAsync(id);
+            var driver = await _driverService.GetDriverByIdAsync(id, cancellationToken);
             if (driver == null) return NotFound();
             return Ok(driver);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<IActionResult> CreateDriver(Driver driver)
+        public async Task<IActionResult> CreateDriver(Driver driver, CancellationToken cancellationToken)
         {
-            var createdDriver = await _driverService.CreateDriverAsync(driver);
+            var createdDriver = await _driverService.CreateDriverAsync(driver, cancellationToken);
             return CreatedAtAction(nameof(GetDriver), new { id = createdDriver.Id }, createdDriver);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDriver(int id, Driver driver)
+        public async Task<IActionResult> UpdateDriver(int id, Driver driver, CancellationToken cancellationToken)
         {
             if (id != driver.Id) return BadRequest();
-            var existingDriver = await _driverService.GetDriverByIdAsync(id);
+            var existingDriver = await _driverService.GetDriverByIdAsync(id, cancellationToken);
+
+            if (existingDriver == null) return NotFound();
 
             if (driver.FirstName != null)
                 existingDriver.FirstName = driver.FirstName;
@@ -80,18 +84,33 @@ namespace GPS.API.Controllers
 
             existingDriver.TwoFactorEnabled = driver.TwoFactorEnabled;
 
-            var updatedDriver = await _driverService.UpdateDriverAsync(existingDriver);
+            var updatedDriver = await _driverService.UpdateDriverAsync(existingDriver, cancellationToken);
             if (updatedDriver == null)
                 return NotFound();
             return Ok(updatedDriver);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDriver(int id)
+        public async Task<IActionResult> DeleteDriver(int id, CancellationToken cancellationToken)
         {
-            var success = await _driverService.DeleteDriverAsync(id);
-            if (!success) return NotFound();
-            return NoContent();
+            try
+            {
+                var success = await _driverService.DeleteDriverAsync(id, cancellationToken);
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while deleting the driver", details = ex.Message });
+            }
         }
     }
 }

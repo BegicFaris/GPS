@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
+using System.Configuration;
 
-namespace GPS.API.Services
+namespace GPS.API.Services.ReCaptchaService
 {
     public class ReCaptchaService
     {
@@ -13,11 +11,12 @@ namespace GPS.API.Services
         public ReCaptchaService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _secretKey = configuration["ReCaptcha:SecretKey"];
+            _secretKey = configuration["ReCaptcha:SecretKey"]??"";
         }
 
         public async Task<bool> VerifyCaptcha(string token)
         {
+            if(string.IsNullOrEmpty(_secretKey)) throw new ConfigurationErrorsException("Secret key not found!");
             var response = await _httpClient.PostAsync(
                 $"https://www.google.com/recaptcha/api/siteverify?secret={_secretKey}&response={token}",
                 null
@@ -32,7 +31,7 @@ namespace GPS.API.Services
         public class ReCaptchaResponse
         {
             public bool Success { get; set; }
-            public string[] Errors { get; set; }
+            public string[]? Errors { get; set; } 
         }
     }
 }

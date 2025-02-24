@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Driver } from '../_models/driver';
-import { catchError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -42,11 +42,10 @@ export class DriverService {
     );
   }
 
-  deleteDriver(id: number) {
+  deleteDriver(id: number) : Observable<any> {
     return this.http.delete(this.baseUrl + `/${id}`).pipe(
       catchError(error => {
-        console.error('Error deleting driver:', error);
-        return (error);
+        return throwError(() => new Error(error.error?.message || 'An error occurred'));
       })
     );
   }

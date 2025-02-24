@@ -50,6 +50,7 @@ export class DriverViewComponent {
         },
         error: (error) => {
           console.error('Error deleting driver', error);
+          alert(`Error: ${error.message || 'An error occurred while deleting the driver.'}`);
         },
       });
     }

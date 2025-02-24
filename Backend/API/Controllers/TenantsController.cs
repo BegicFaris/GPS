@@ -14,7 +14,7 @@ namespace GPS.API.Controllers
 
 
         [HttpGet("tenant")]
-        public async Task<IActionResult> GetAllTenants() =>
-            Ok(await _tenantService.GetAllTenantsAsync());
+        public async Task<IActionResult> GetAllTenants(CancellationToken cancellationToken) =>
+            Ok(await _tenantService.GetAllTenantsAsync(cancellationToken));
     }
 }

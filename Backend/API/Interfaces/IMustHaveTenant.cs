@@ -2,6 +2,6 @@
 {
     public interface IMustHaveTenant
     {
-        public string TenantId { get; set; }
+        public string? TenantId { get; set; }
     }
 }

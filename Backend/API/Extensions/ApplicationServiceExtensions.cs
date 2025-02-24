@@ -31,6 +31,9 @@ using GPS.API.Services.TicketInfoServices;
 using GPS.API.Services.TicketTypeServices;
 using GPS.API.Services.StripeServices;
 using GPS.API.Services.ShiftDetailServices;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using GPS.API.Validators.RegisterValidators;
 
 namespace GPS.API.Extensions
 {
@@ -49,7 +52,7 @@ namespace GPS.API.Extensions
             services.AddHttpClient();
 
 
-        
+
 
             services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -119,6 +122,10 @@ namespace GPS.API.Extensions
             services.AddScoped<IStripeService, StripeService>();
 
             services.AddHostedService<ShiftDetailBackgroundService>();
+
+
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<RegisterDtoValidator>();
 
             return services;
         }

@@ -12,35 +12,39 @@ using Table = iText.Layout.Element.Table;
 using iText.Layout.Properties;
 using iText.IO.Image;
 using GPS.API.Services.ShiftDetailServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GPS.API.Controllers
 {
-    public class ShiftDetailsController(IShiftDetailService shiftDetailService, IShiftService shiftService, IEmailService emailService) : MyControllerBase
+    public class ShiftDetailsController(IShiftDetailService shiftDetailService, IShiftService shiftService) : MyControllerBase
     {
+        [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet]
-        public async Task<IActionResult> GetAllShiftDetails() =>
-          Ok(await shiftDetailService.GetAllShiftDetailsAsync());
+        public async Task<IActionResult> GetAllShiftDetails(CancellationToken cancellationToken) =>
+          Ok(await shiftDetailService.GetAllShiftDetailsAsync(cancellationToken));
 
+        [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet("shift/{shiftId}")]
-        public async Task<IActionResult> GetAllShiftDetailsBYShiftId(int shiftId)
+        public async Task<IActionResult> GetAllShiftDetailsBYShiftId(int shiftId, CancellationToken cancellationToken)
         {
-            var favoriteLines = await shiftDetailService.GetShiftDetailsByShiftIdAsync(shiftId);
+            var favoriteLines = await shiftDetailService.GetShiftDetailsByShiftIdAsync(shiftId,cancellationToken);
             if (favoriteLines == null) return NotFound();
             return Ok(favoriteLines);
         }
 
 
-
+        [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetShiftDetailById(int id)
+        public async Task<IActionResult> GetShiftDetailById(int id, CancellationToken cancellationToken)
         {
-            var shiftDetail = await shiftDetailService.GetShiftDetailByIdAsync(id);
+            var shiftDetail = await shiftDetailService.GetShiftDetailByIdAsync(id, cancellationToken);
             if (shiftDetail == null) return NotFound();
             return Ok(shiftDetail);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<IActionResult> CreateShiftDetail(ShiftDetailCreateDto shiftDetailCreateDto)
+        public async Task<IActionResult> CreateShiftDetail(ShiftDetailCreateDto shiftDetailCreateDto, CancellationToken cancellationToken)
         {
 
             if (!TimeOnly.TryParse(shiftDetailCreateDto.ShiftDetailStartingTime, out var shiftDetailStartingTime))
@@ -58,43 +62,52 @@ namespace GPS.API.Controllers
                 ShiftDetailStartingTime = shiftDetailStartingTime,
                 ShiftDetailEndingTime = shiftDetailEndingTime,
             };
-            var createdShiftDetail = await shiftDetailService.CreateShiftDetailAsync(shiftDetail);
+            var createdShiftDetail = await shiftDetailService.CreateShiftDetailAsync(shiftDetail, cancellationToken);
 
 
             return Ok(createdShiftDetail);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShiftDetail(int id)
+        public async Task<IActionResult> DeleteShiftDetail(int id, CancellationToken cancellationToken)
         {
-            var success = await shiftDetailService.DeleteShiftDetail(id);
+            var role = User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value;
+            if (role != UserRole.Manager.ToString())
+                return Unauthorized();
+
+            var success = await shiftDetailService.DeleteShiftDetail(id, cancellationToken);
             if (!success) return NotFound();
             return NoContent();
         }
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("shift/{shiftId}")]
-        public async Task<IActionResult> DeleteShiftDetailsByShiftId(int shiftId)
+        public async Task<IActionResult> DeleteShiftDetailsByShiftId(int shiftId, CancellationToken cancellationToken)
         {
-            var success = await shiftDetailService.DeleteShiftDetailsByShiftId(shiftId);
+ 
+
+            var success = await shiftDetailService.DeleteShiftDetailsByShiftId(shiftId, cancellationToken);
             if (!success) return NotFound();
             return NoContent();
         }
 
+        
 
+        [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet("generate-pdf/{shiftId}")]
-        public async Task<IActionResult> GeneratePdf(int shiftId)
+        public async Task<IActionResult> GeneratePdf(int shiftId, CancellationToken cancellationToken)
         {
-            var shift = await shiftService.GetShiftByIdAsync(shiftId);
+            var shift = await shiftService.GetShiftByIdAsync(shiftId, cancellationToken);
             if (shift == null)
                 return NotFound(new { message = "Shift not found." });
 
           
-            var shiftDetailList = await shiftDetailService.GetShiftDetailsByShiftIdAsync(shiftId);
+            var shiftDetailList = await shiftDetailService.GetShiftDetailsByShiftIdAsync(shiftId, cancellationToken);
             if (shiftDetailList == null || !shiftDetailList.Any())
                 return NotFound(new { message = "Shift details not found." });
             try
             {
-                var pdfBytes = await shiftDetailService.GeneratePdfAsync(shiftId);
-                await emailService.SendEmailWithPdfAsync("farisbegic9@gmail.com", "aaaaa", "aaaaa", pdfBytes);
+                var pdfBytes = await shiftDetailService.GeneratePdfAsync(shiftId, cancellationToken);
                 return File(pdfBytes, "application/pdf", "ShiftOverviewReport.pdf");
             }
             catch (ArgumentException ex)

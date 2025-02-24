@@ -13,6 +13,7 @@ using iText.Layout.Borders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Text;
 using Route = GPS.API.Data.Models.Route;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GPS.API.Controllers
 {
@@ -31,48 +32,53 @@ namespace GPS.API.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> GetAllLines([FromQuery] string? lineName = null, [FromQuery] string? stationName = null)
+        public async Task<IActionResult> GetAllLines([FromQuery] string? lineName=null, [FromQuery] string? stationName=null, CancellationToken cancellationToken=default)
         {
-            return Ok(await _lineService.GetAllLinesAsync(lineName, stationName));
+            return Ok(await _lineService.GetAllLinesAsync(lineName, stationName,cancellationToken));
         }
 
         [HttpGet("station/{stationId}")]
-        public async Task<IActionResult> GetAllLinesByStationId(int stationId) =>
-            Ok(await _lineService.GetAllLinesByStationIdAsync(stationId));
+        public async Task<IActionResult> GetAllLinesByStationId(int stationId, CancellationToken cancellationToken) =>
+            Ok(await _lineService.GetAllLinesByStationIdAsync(stationId, cancellationToken));
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetLine(int id)
+        public async Task<IActionResult> GetLine(int id, CancellationToken cancellationToken)
         {
-            var line = await _lineService.GetLineByIdAsync(id);
+            var line = await _lineService.GetLineByIdAsync(id, cancellationToken);
             if (line == null) return NotFound();
             return Ok(line);
         }
 
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<IActionResult> CreateLine(Line line)
+        public async Task<IActionResult> CreateLine(Line line, CancellationToken cancellationToken)
         {
-            var createdLine = await _lineService.CreateLineAsync(line);
+            var createdLine = await _lineService.CreateLineAsync(line, cancellationToken);
             return CreatedAtAction(nameof(GetLine), new { id = createdLine.Id }, createdLine);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateLine(int id, Line line)
+        public async Task<IActionResult> UpdateLine(int id, Line line, CancellationToken cancellationToken)
         {
             if (id != line.Id) return BadRequest();
-            var updatedLine = await _lineService.UpdateLineAsync(line);
+            var updatedLine = await _lineService.UpdateLineAsync(line, cancellationToken);
             return Ok(updatedLine);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLine(int id)
+        public async Task<IActionResult> DeleteLine(int id, CancellationToken cancellationToken)
         {
-            var success = await _lineService.DeleteLineAsync(id);
+            var success = await _lineService.DeleteLineAsync(id, cancellationToken);
             if (!success) return NotFound();
             return NoContent();
         }
 
+        [Authorize]
         [HttpGet("generate-pdf")]
-        public async Task<IActionResult> GeneratePdf()
+        public async Task<IActionResult> GeneratePdf(CancellationToken cancellationToken)
         {
             try
             {
@@ -109,7 +115,7 @@ namespace GPS.API.Controllers
                     document.Add(new Paragraph(NormalizeText("Line Information Report"))
                         .SetFont(headingFont).SetFontSize(18).SetTextAlignment(TextAlignment.CENTER));
 
-                    var lineList = await _lineService.GetAllLinesAsync();
+                    var lineList = await _lineService.GetAllLinesAsync(null,null,cancellationToken);
 
                     // Create a table with 2 columns per row: one for line names, one for details (routes & times)
                     Table lineTable = new Table(2); // 2 columns
@@ -120,6 +126,10 @@ namespace GPS.API.Controllers
                     // Loop through lines in pairs (Line 1, Line 2)
                     for (int i = 0; i < lineListIndexed.Count; i += 2)
                     {
+                        if (cancellationToken.IsCancellationRequested)
+                            return StatusCode(499,"Cancelled by user");
+
+
                         var line1 = lineListIndexed[i];
                         var line2 = i + 1 < lineListIndexed.Count ? lineListIndexed[i + 1] : null;
 
@@ -136,22 +146,25 @@ namespace GPS.API.Controllers
                             .SetFont(headingFont).SetFontSize(12)));
 
                         // Add routes for Line 1
-                        var routes1 = await _routeService.GetAllRoutesByLineIdAsync(line1.Id);
-                        string routeString1 = string.Join(" | ", routes1.Select(r => NormalizeText(r.Station.Name)));
+                        var routes1 = await _routeService.GetAllRoutesByLineIdAsync(line1.Id,cancellationToken);
+                        string routeString1 = string.Join(" | ", routes1.Select(r => NormalizeText(r.Station?.Name??"")));
                         var routeLines1 = SplitTextIntoMultipleLines(routeString1, 70);
 
                         // Add routes for Line 2
                         List<Route> routes2 = new List<Route>();
                         if (line2 != null)
                         {
-                            routes2 = (await _routeService.GetAllRoutesByLineIdAsync(line2.Id)).ToList();
+                            routes2 = (await _routeService.GetAllRoutesByLineIdAsync(line2.Id, cancellationToken)).ToList();
                         }
-                        string routeString2 = string.Join(" | ", routes2.Select(r => NormalizeText(r.Station.Name)));
+                        string routeString2 = string.Join(" | ", routes2.Select(r => NormalizeText(r.Station?.Name ?? "")));
                         var routeLines2 = SplitTextIntoMultipleLines(routeString2, 70);
 
                         // Add routes in columns, side-by-side for Line 1 and Line 2
                         for (int j = 0; j < Math.Max(routeLines1.Count(), routeLines2.Count()); j++)
                         {
+                            if (cancellationToken.IsCancellationRequested)
+                                return StatusCode(499, "Cancelled by user");
+
                             lineTable.AddCell(new Cell().Add(new Paragraph(j < routeLines1.Count() ? routeLines1[j] : string.Empty)
                                 .SetFont(bodyFont).SetFontSize(12)));
                             lineTable.AddCell(new Cell().Add(new Paragraph(j < routeLines2.Count() ? routeLines2[j] : string.Empty)
@@ -165,7 +178,7 @@ namespace GPS.API.Controllers
                             .SetFont(headingFont).SetFontSize(12)));
 
                         // Add departure times for Line 1
-                        var schedules1 = await _scheduleService.GetAllSchedulesByLineIdAsync(line1.Id);
+                        var schedules1 = await _scheduleService.GetAllSchedulesByLineIdAsync(line1.Id, cancellationToken);
                         string departureTimesString1 = string.Join(" | ", schedules1.Select(s => NormalizeText(s.DepartureTime.ToString("HH:mm"))));
                         var departureTimes1 = SplitTextIntoMultipleLines(departureTimesString1, 70);
 
@@ -173,7 +186,7 @@ namespace GPS.API.Controllers
                         List<Schedule> schedules2 = new List<Schedule>();
                         if (line2 != null)
                         {
-                            schedules2 = (await _scheduleService.GetAllSchedulesByLineIdAsync(line2.Id)).ToList();
+                            schedules2 = (await _scheduleService.GetAllSchedulesByLineIdAsync(line2.Id, cancellationToken)).ToList();
                         }
                         string departureTimesString2 = string.Join(" | ", schedules2.Select(s => NormalizeText(s.DepartureTime.ToString("HH:mm"))));
                         var departureTimes2 = SplitTextIntoMultipleLines(departureTimesString2, 70);
@@ -181,6 +194,9 @@ namespace GPS.API.Controllers
                         // Add departure times in columns, side-by-side for Line 1 and Line 2
                         for (int j = 0; j < Math.Max(departureTimes1.Count(), departureTimes2.Count()); j++)
                         {
+                            if (cancellationToken.IsCancellationRequested)
+                                return StatusCode(499, "Cancelled by user");
+
                             lineTable.AddCell(new Cell().Add(new Paragraph(j < departureTimes1.Count() ? departureTimes1[j] : string.Empty)
                                 .SetFont(bodyFont).SetFontSize(12)));
                             lineTable.AddCell(new Cell().Add(new Paragraph(j < departureTimes2.Count() ? departureTimes2[j] : string.Empty)
@@ -207,7 +223,7 @@ namespace GPS.API.Controllers
                 // Log the exception (optional)
                 // _logger.LogError(ex, "Error generating PDF");
 
-                return StatusCode(500, new { message = "An error occurred while generating the PDF." });
+                return StatusCode(500, new { message = $"An error occurred while generating the PDF. Exception: {ex}" });
             }
         }
         private List<string> SplitTextIntoMultipleLines(string text, int maxLength)

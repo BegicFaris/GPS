@@ -19,6 +19,6 @@ namespace GPS.API.Data.Models
         public required int LineId { get; set; }
         public Line? Line { get; set; }
 
-        public string TenantId { get; set; }
+        public string? TenantId { get; set; }
     }
 }

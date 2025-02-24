@@ -5,12 +5,12 @@ namespace GPS.API.Interfaces
 {
     public interface IShiftDetailService
     {
-        Task<IEnumerable<ShiftDetail>> GetAllShiftDetailsAsync();
-        Task<IEnumerable<ShiftDetail>> GetShiftDetailsByShiftIdAsync(int shiftId);
-        Task<ShiftDetail> GetShiftDetailByIdAsync(int id);
-        Task<bool> DeleteShiftDetail(int id);
-        Task<bool> DeleteShiftDetailsByShiftId(int shiftId);
-        Task<ShiftDetail> CreateShiftDetailAsync(ShiftDetail shiftDetail);
-        Task<byte[]> GeneratePdfAsync(int shiftId);
+        Task<IEnumerable<ShiftDetail>> GetAllShiftDetailsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<ShiftDetail>> GetShiftDetailsByShiftIdAsync(int shiftId, CancellationToken cancellationToken);
+        Task<ShiftDetail?> GetShiftDetailByIdAsync(int id, CancellationToken cancellationToken);
+        Task<bool> DeleteShiftDetail(int id, CancellationToken cancellationToken);
+        Task<bool> DeleteShiftDetailsByShiftId(int shiftId, CancellationToken cancellationToken);
+        Task<ShiftDetail> CreateShiftDetailAsync(ShiftDetail shiftDetail, CancellationToken cancellationToken);
+        Task<byte[]> GeneratePdfAsync(int shiftId, CancellationToken cancellationToken);
     }
 }

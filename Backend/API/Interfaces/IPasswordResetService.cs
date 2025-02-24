@@ -2,8 +2,8 @@
 {
     public interface IPasswordResetService
     {
-            Task GenerateResetCode(string email);
-            Task<bool> VerifyResetCode(string email, string code);
-            Task<bool> ResetPassword(string email, string code, string newPassword);
+        Task GenerateResetCode(string email, CancellationToken cancellationToken);
+        Task<bool> VerifyResetCode(string email, string code, CancellationToken cancellationToken);
+        Task<bool> ResetPassword(string email, string code, string newPassword, CancellationToken cancellationToken);
     }
 }

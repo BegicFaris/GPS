@@ -2,8 +2,8 @@
 {
     public interface ITwoFactorAuthService
     {
-        Task GenerateTwoFactorCode(string email);
-        Task<bool> VerifyTwoFactorCode(string email, string code);
-        Task<bool> IsUsingTwoFactor(string email);
+        Task<bool> IsUsingTwoFactorAsync(string email, CancellationToken cancellationToken);
+        Task GenerateTwoFactorCodeAsync(string email, CancellationToken cancellationToken);
+        Task<bool> VerifyTwoFactorCodeAsync(string email, string code, CancellationToken cancellationToken);
     }
 }

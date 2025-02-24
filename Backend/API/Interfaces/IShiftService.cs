@@ -4,10 +4,10 @@ namespace GPS.API.Interfaces
 {
     public interface IShiftService
     {
-        Task<IEnumerable<Shift>> GetAllShiftsAsync();
-        Task<Shift> GetShiftByIdAsync(int id);
-        Task<Shift> CreateShiftAsync(Shift shift);
-        Task<Shift> UpdateShiftAsync(Shift shift);
-        Task<bool> DeleteShiftAsync(int id);
+        Task<IEnumerable<Shift>> GetAllShiftsAsync(CancellationToken cancellationToken);
+        Task<Shift?> GetShiftByIdAsync(int id, CancellationToken cancellationToken);
+        Task<Shift> CreateShiftAsync(Shift shift, CancellationToken cancellationToken);
+        Task<Shift> UpdateShiftAsync(Shift shift, CancellationToken cancellationToken);
+        Task<bool> DeleteShiftAsync(int id, CancellationToken cancellationToken);
     }
 }

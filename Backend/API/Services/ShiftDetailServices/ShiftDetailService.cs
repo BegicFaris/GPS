@@ -6,67 +6,75 @@ using iText.IO.Font.Constants;
 using iText.IO.Image;
 using iText.Kernel.Font;
 using iText.Kernel.Pdf;
-using iText.Layout.Element;
-using iText.Layout.Properties;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using iText.IO.Font.Constants;
-using iText.Kernel.Font;
-using Table = iText.Layout.Element.Table;
 using iText.Layout.Properties;
-using iText.IO.Image;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GPS.API.Services.ShiftDetailServices
 {
     public class ShiftDetailService(ApplicationDbContext context, IShiftService _shiftService) : IShiftDetailService
     {
-        public async Task<IEnumerable<ShiftDetail>> GetAllShiftDetailsAsync() =>
-     await context.ShiftDetails.Include(x => x.Shift).Include(x => x.Line).ToListAsync();
+        public async Task<IEnumerable<ShiftDetail>> GetAllShiftDetailsAsync(CancellationToken cancellationToken)
+            => await context.ShiftDetails
+                .Include(x => x.Shift)
+                .Include(x => x.Line)
+                .ToListAsync(cancellationToken);
 
-        public async Task<IEnumerable<ShiftDetail>> GetShiftDetailsByShiftIdAsync(int shiftId) =>
-           await context.ShiftDetails.Include(x => x.Shift).Include(x => x.Line).Where(x => x.ShiftId == shiftId).ToListAsync();
+        public async Task<IEnumerable<ShiftDetail>> GetShiftDetailsByShiftIdAsync(int shiftId, CancellationToken cancellationToken)
+            => await context.ShiftDetails
+                .Include(x => x.Shift)
+                .Include(x => x.Line)
+                .Where(x => x.ShiftId == shiftId)
+                .ToListAsync(cancellationToken);
 
-        public async Task<ShiftDetail> GetShiftDetailByIdAsync(int id) =>
-          await context.ShiftDetails.Include(x => x.Shift).SingleOrDefaultAsync(x => x.Id == id);
+        public async Task<ShiftDetail?> GetShiftDetailByIdAsync(int id, CancellationToken cancellationToken)
+            => await context.ShiftDetails
+                .Include(x => x.Shift)
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<bool> DeleteShiftDetail(int id)
+        public async Task<bool> DeleteShiftDetail(int id, CancellationToken cancellationToken)
         {
-            var shiftDetail = await context.ShiftDetails.FindAsync(id);
-            if (shiftDetail == null) return false;
+            var shiftDetail = await context.ShiftDetails.SingleOrDefaultAsync(x=>x.Id==id,cancellationToken);
+            if (shiftDetail == null)
+                return false;
             context.ShiftDetails.Remove(shiftDetail);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
             return true;
         }
 
-        public async Task<bool> DeleteShiftDetailsByShiftId(int shiftId)
+        public async Task<bool> DeleteShiftDetailsByShiftId(int shiftId, CancellationToken cancellationToken)
         {
             var shiftDetails = await context.ShiftDetails
                 .Where(sd => sd.ShiftId == shiftId)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
             if (shiftDetails == null || !shiftDetails.Any())
                 return false;
             context.ShiftDetails.RemoveRange(shiftDetails);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
             return true;
         }
-        public async Task<ShiftDetail> CreateShiftDetailAsync(ShiftDetail shiftDetail)
+
+        public async Task<ShiftDetail> CreateShiftDetailAsync(ShiftDetail shiftDetail, CancellationToken cancellationToken)
         {
             context.ShiftDetails.Add(shiftDetail);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
             return shiftDetail;
         }
 
-        public async Task<byte[]> GeneratePdfAsync(int shiftId)
+        public async Task<byte[]> GeneratePdfAsync(int shiftId, CancellationToken cancellationToken)
         {
-            var shift = await _shiftService.GetShiftByIdAsync(shiftId);
+            var shift = await _shiftService.GetShiftByIdAsync(shiftId, cancellationToken);
             if (shift == null)
                 throw new ArgumentException("Shift not found.");
 
-            var shiftDetailList = await GetShiftDetailsByShiftIdAsync(shiftId);
+            var shiftDetailList = await GetShiftDetailsByShiftIdAsync(shiftId, cancellationToken);
             if (shiftDetailList == null || !shiftDetailList.Any())
                 throw new ArgumentException("Shift details not found.");
 
@@ -90,25 +98,37 @@ namespace GPS.API.Services.ShiftDetailServices
                     document.Add(logo);
 
                     document.Add(new Paragraph("Mostar bus")
-                        .SetFont(headingFont).SetFontSize(16).SetTextAlignment(TextAlignment.CENTER));
+                        .SetFont(headingFont)
+                        .SetFontSize(16)
+                        .SetTextAlignment(TextAlignment.CENTER));
                     document.Add(new Paragraph("Bišće polje bb")
-                        .SetFont(bodyFont).SetFontSize(12).SetTextAlignment(TextAlignment.CENTER));
+                        .SetFont(bodyFont)
+                        .SetFontSize(12)
+                        .SetTextAlignment(TextAlignment.CENTER));
                     document.Add(new Paragraph("+387 (0)36 123-456")
-                        .SetFont(bodyFont).SetFontSize(12).SetTextAlignment(TextAlignment.CENTER));
+                        .SetFont(bodyFont)
+                        .SetFontSize(12)
+                        .SetTextAlignment(TextAlignment.CENTER));
 
                     document.Add(new Paragraph("\n"));
 
                     document.Add(new Paragraph("Shift Overview Report")
-                        .SetFont(headingFont).SetFontSize(18).SetTextAlignment(TextAlignment.CENTER));
+                        .SetFont(headingFont)
+                        .SetFontSize(18)
+                        .SetTextAlignment(TextAlignment.CENTER));
 
-                    document.Add(new Paragraph($"Driver: {shift.Driver.FirstName} {shift.Driver.LastName}")
-                        .SetFont(bodyFont).SetFontSize(12));
-                    document.Add(new Paragraph($"Bus: {shift.Bus.RegistrationNumber}")
-                        .SetFont(bodyFont).SetFontSize(12));
+                    document.Add(new Paragraph($"Driver: {shift.Driver?.FirstName ?? ""} {shift.Driver?.LastName ?? ""}")
+                        .SetFont(bodyFont)
+                        .SetFontSize(12));
+                    document.Add(new Paragraph($"Bus: {shift.Bus?.RegistrationNumber ?? ""}")
+                        .SetFont(bodyFont)
+                        .SetFontSize(12));
                     document.Add(new Paragraph($"Date: {shift.ShiftDate:yyyy-MM-dd}")
-                        .SetFont(bodyFont).SetFontSize(12));
+                        .SetFont(bodyFont)
+                        .SetFontSize(12));
                     document.Add(new Paragraph($"Duration: {shift.ShiftStartingTime:HH:mm} - {shift.ShiftEndingTime:HH:mm}")
-                        .SetFont(bodyFont).SetFontSize(12));
+                        .SetFont(bodyFont)
+                        .SetFontSize(12));
 
                     document.Add(new Paragraph("\n"));
 
@@ -123,7 +143,7 @@ namespace GPS.API.Services.ShiftDetailServices
 
                     foreach (var s in shiftDetailList)
                     {
-                        table.AddCell(new Cell().Add(new Paragraph(s.Line.Name).SetFont(bodyFont)));
+                        table.AddCell(new Cell().Add(new Paragraph(s.Line?.Name ?? "").SetFont(bodyFont)));
                         table.AddCell(new Cell().Add(new Paragraph(s.ShiftDetailStartingTime.ToShortTimeString()).SetFont(bodyFont)));
                         table.AddCell(new Cell().Add(new Paragraph(s.ShiftDetailEndingTime.ToShortTimeString()).SetFont(bodyFont)));
                     }
@@ -131,7 +151,9 @@ namespace GPS.API.Services.ShiftDetailServices
                     document.Add(table);
                     document.Add(new Paragraph("\n"));
                     document.Add(new Paragraph($"Page: {pdf.GetNumberOfPages()}")
-                        .SetFont(bodyFont).SetFontSize(10).SetTextAlignment(TextAlignment.CENTER));
+                        .SetFont(bodyFont)
+                        .SetFontSize(10)
+                        .SetTextAlignment(TextAlignment.CENTER));
 
                     document.Close();
 
@@ -142,7 +164,6 @@ namespace GPS.API.Services.ShiftDetailServices
             {
                 throw new Exception("An error occurred while generating the PDF.");
             }
-
         }
     }
 }

@@ -6,45 +6,43 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GPS.API.Controllers
 {
-    public class ManagersController: MyControllerBase
+    public class ManagersController(IManagerService managerService) : MyControllerBase
     {
-        private readonly IManagerService _managerService;
+        private readonly IManagerService _managerService = managerService;
 
-        public ManagersController(IManagerService managerService)
-        {
-            _managerService = managerService;
-        }
-
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Manager>>> GetAllManagers()
+        public async Task<ActionResult<IEnumerable<Manager>>> GetAllManagers(CancellationToken cancellationToken)
         {
-            var managers = await _managerService.GetAllManagersAsync();
+            var managers = await _managerService.GetAllManagersAsync(cancellationToken);
             return Ok(managers);
         }
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Manager>> GetManager(int id)
+        public async Task<ActionResult<Manager>> GetManager(int id, CancellationToken cancellationToken)
         {
-            var manager = await _managerService.GetManagerByIdAsync(id);
+            var manager = await _managerService.GetManagerByIdAsync(id,cancellationToken);
             if (manager == null)
                 return NotFound();
             return Ok(manager);
         }
 
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<ActionResult<Manager>> CreateManager(Manager manager)
+        public async Task<ActionResult<Manager>> CreateManager(Manager manager, CancellationToken cancellationToken)
         {
-            var createdManager = await _managerService.CreateManagerAsync(manager);
+            var createdManager = await _managerService.CreateManagerAsync(manager, cancellationToken);
             return CreatedAtAction(nameof(GetManager), new { id = createdManager.Id }, createdManager);
         }
 
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateManager(int id, Manager manager)
+        public async Task<IActionResult> UpdateManager(int id, Manager manager, CancellationToken cancellationToken)
         {
             if (id != manager.Id) return BadRequest();
-            var existingManager = await _managerService.GetManagerByIdAsync(id);
+            var existingManager = await _managerService.GetManagerByIdAsync(id, cancellationToken);
             if (existingManager == null) return NotFound($"Manager with Id:{id} not found!");
 
 
@@ -82,17 +80,20 @@ namespace GPS.API.Controllers
                 existingManager.ManagerLevel = manager.ManagerLevel;
 
             existingManager.TwoFactorEnabled = manager.TwoFactorEnabled;
-            var updatedManager = await _managerService.UpdateManagerAsync(existingManager);
+            var updatedManager = await _managerService.UpdateManagerAsync(existingManager, cancellationToken);
             if (updatedManager == null)
                 return NotFound();
 
             return Ok(updatedManager);
         }
 
+
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteManager(int id)
+        public async Task<IActionResult> DeleteManager(int id, CancellationToken cancellationToken)
         {
-            var result = await _managerService.DeleteManagerAsync(id);
+            var result = await _managerService.DeleteManagerAsync(id, cancellationToken);
             if (!result)
                 return NotFound();
 

@@ -12,14 +12,15 @@ namespace GPS.API.Controllers
             _zoneService = zoneService;
         }
 
+        
         [HttpGet]
-        public async Task<IActionResult> GetAllZones() =>
-            Ok(await _zoneService.GetAllZonesAsync());
+        public async Task<IActionResult> GetAllZones(CancellationToken cancellationToken) =>
+            Ok(await _zoneService.GetAllZonesAsync(cancellationToken));
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetZone(int id)
+        public async Task<IActionResult> GetZone(int id, CancellationToken cancellationToken)
         {
-            var zone = await _zoneService.GetZoneByIdAsync(id);
+            var zone = await _zoneService.GetZoneByIdAsync(id, cancellationToken);
             if (zone == null) return NotFound();
             return Ok(zone);
         }
