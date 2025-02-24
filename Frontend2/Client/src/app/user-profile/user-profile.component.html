@@ -1,0 +1,197 @@
+<div class="container mt-5" *ngIf="userProfile">
+  <div class="card">
+    <div class="card-header">
+      <h5>User Profile</h5>
+    </div>
+    <div class="card-body">
+      <div class="d-flex align-items-start">
+        <!-- Profile Picture Section -->
+        <div class="me-4 text-center">
+          <img [src]="profileImageUrl || 'default-profile-image.jpg'" alt="Profile Picture" class="rounded-circle mb-3"
+            style="width: 150px; height: 150px; object-fit: cover;" (error)="handleImageError($event)"
+            (load)="handleImageLoad($event)">
+          <div>
+            <label for="profile-image-input" class="btn btn-primary btn-sm">
+              Change Profile Picture
+            </label>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" id="profile-image-input"
+              style="display: none;">
+          </div>
+        </div>
+
+        <!-- User Information Section -->
+        <div class="flex-grow-1">
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 col-sm-12 mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" id="firstName" class="form-control form-control-sm" formControlName="firstName">
+                <div
+                  *ngIf="profileForm.get('firstName')?.invalid && (profileForm.get('firstName')?.dirty || profileForm.get('firstName')?.touched)"
+                  class="text-danger">
+                  <small *ngIf="profileForm.get('firstName')?.errors?.['required']">First name is required.</small>
+                  <small *ngIf="profileForm.get('firstName')?.errors?.['minlength']">First name must be at least 2
+                    characters long.</small>
+                </div>
+
+              </div>
+
+              <div class="col-md-6 col-sm-12 mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" id="lastName" class="form-control form-control-sm" formControlName="lastName">
+                <div
+                  *ngIf="profileForm.get('lastName')?.invalid && (profileForm.get('lastName')?.dirty || profileForm.get('lastName')?.touched)"
+                  class="text-danger">
+                  <small *ngIf="profileForm.get('lastName')?.errors?.['required']">Last name is required.</small>
+                  <small *ngIf="profileForm.get('lastName')?.errors?.['minlength']">Last name must be at least 2
+                    characters long.</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control form-control-sm" formControlName="email">
+                <div
+                  *ngIf="profileForm.get('email')?.invalid && (profileForm.get('email')?.dirty || profileForm.get('email')?.touched)"
+                  class="text-danger">
+                  <small *ngIf="profileForm.get('email')?.errors?.['required']">Email is required.</small>
+                  <small *ngIf="profileForm.get('email')?.errors?.['email']">Please enter a valid email address.</small>
+                  <small *ngIf="profileForm.get('email')?.errors?.['emailExists']">This email is already in use.</small>
+                </div>
+              </div>
+
+              <div class="col-md-6 col-sm-12 mb-3">
+                <label for="birthDate" class="form-label">Birth Date</label>
+                <input type="date" id="birthDate" class="form-control form-control-sm" formControlName="birthDate"
+                  [max]="maxDate">
+                <div
+                  *ngIf="profileForm.get('birthDate')?.invalid && (profileForm.get('birthDate')?.dirty || profileForm.get('birthDate')?.touched)"
+                  class="text-danger">
+                  <small *ngIf="profileForm.get('birthDate')?.errors?.['required']">Birth date is required.</small>
+                </div>
+
+              </div>
+
+              <div class="col-md-6 col-sm-12 mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" id="address" class="form-control form-control-sm" formControlName="address">
+                <div
+                  *ngIf="profileForm.get('address')?.invalid && (profileForm.get('address')?.dirty || profileForm.get('address')?.touched)"
+                  class="text-danger">
+                  <small *ngIf="profileForm.get('address')?.errors?.['required']">Address is required.</small>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 mb-3">
+                <div class="form-check form-switch">
+                  <input type="checkbox" id="twoFactorEnabled" class="form-check-input"
+                    formControlName="twoFactorEnabled">
+                  <label class="form-check-label" for="twoFactorEnabled">Enable Two-Factor Authentication</label>
+                </div>
+              </div>
+              <div *ngIf="userType === 'Manager'" class="mt-3">
+                <h6>Manager Information</h6>
+                <div class="col-md-6 col-sm-12 mb-3">
+                  <label for="department" class="form-label">Department</label>
+                  <input type="text" id="department" class="form-control form-control-sm"
+                    [value]="userProfile.department" readonly>
+                </div>
+              </div>
+
+              <div *ngIf="userType === 'Driver'" class="mt-3">
+                <h6>Driver Information</h6>
+                <div class="col-md-6 col-sm-12 mb-3">
+                  <label for="license" class="form-label">License</label>
+                  <input type="text" id="license" class="form-control form-control-sm" [value]="userProfile.license"
+                    readonly>
+                </div>
+              </div>
+
+              <div *ngIf="userType === 'Passenger' && userProfile.discount" class="mt-3">
+                <h6>Passenger Information</h6>
+                <div class="col-md-6 col-sm-12 mb-3">
+                  <label for="discountID" class="form-label">Discount </label>
+                  <input type="text" id="discountID" class="form-control form-control-sm"
+                    [value]="userProfile.discount?.discountName" readonly>
+                </div>
+              </div>
+
+              <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-success" [disabled]="!profileForm.valid">Update Profile</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="card mt-5">
+    <div class="card-header">
+      <h5>Ticket History</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <!-- Check if there are tickets -->
+        <div *ngIf="hasTickets;">
+          <div class="ticket-table-wrapper">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Zone</th>
+                  <th>Type</th>
+                  <th>Created</th>
+                  <th>Expires</th>
+                  <th>QR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ticket of tickets">
+                  <td>{{ ticket.ticketInfo.zone.name }}</td>
+                  <td>{{ ticket.ticketInfo.ticketType.name }}</td>
+                  <td>{{ ticket.createdDate | date }}</td>
+                  <td>{{ ticket.expirationDate | date }}</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" (click)="showQrCode(ticket.qrCode)">
+                      Show QR Code
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-wrapper">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="pageNumber === 1">
+                <button class="page-link" (click)="changePage(pageNumber - 1)">
+                  <i class="bi bi-chevron-left"></i> Previous
+                </button>
+              </li>
+              <li class="page-item" *ngFor="let page of pageNumbers" [class.active]="page === pageNumber">
+                <button class="page-link" (click)="changePage(page)">{{ page }}</button>
+              </li>
+              <li class="page-item" [class.disabled]="pageNumber === totalPages">
+                <button class="page-link" (click)="changePage(pageNumber + 1)">
+                  Next <i class="bi bi-chevron-right"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- No tickets message -->
+        <ng-template #noTickets>
+          <div class="text-center mt-4 no-tickets-message">
+            <p>No tickets yet</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>

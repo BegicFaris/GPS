@@ -1,0 +1,125 @@
+<div class="container mt-2">
+<h5 class="modal-title">Update bus data</h5>
+<form #updateDriverForm="ngForm" (ngSubmit)="saveChanges()">
+    <div class="mb-3">
+      <label class="form-label" for="firstName">First Name:</label>
+      <input class="form-control" id="firstName" name="firstName" [(ngModel)]="driverUpdate.firstName" #firstName="ngModel" required minlength="2" maxlength="50" type="text">
+      @if (formSubmitted && firstName.invalid) {
+        @if (firstName.errors?.['required']) {
+          <small>First name is required.</small>
+        }
+        @if (firstName.errors?.['minlength']) {
+          <small>First name must be at least 2 characters long.</small>
+        }
+        @if (firstName.errors?.['maxlength']) {
+          <small>First name cannot exceed 50 characters.</small>
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="lastName">Last Name:</label>
+      <input class="form-control" id="lastName" name="lastName" [(ngModel)]="driverUpdate.lastName" #lastName="ngModel" required minlength="2" maxlength="50" type="text">
+      @if (formSubmitted && lastName.invalid) {
+        @if (lastName.errors?.['required']) {
+          <small>Last name is required.</small>
+        }
+        @if (lastName.errors?.['minlength']) {
+          <small>Last name must be at least 2 characters long.</small>
+        }
+        @if (lastName.errors?.['maxlength']) {
+          <small>Last name cannot exceed 50 characters.</small>
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="email">Email:</label>
+      <input class="form-control" id="email" name="email" [(ngModel)]="driverUpdate.email" #email="ngModel" required email type="email">
+      @if (formSubmitted && email.invalid) {
+        @if (email.errors?.['required']) {
+          <small>Email is required.</small>
+        }
+        @if (email.errors?.['email']) {
+          <small>Please enter a valid email address.</small>
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="birthDate">Birth Date:</label>
+      <input class="form-control" id="birthDate" name="birthDate" [(ngModel)]="driverUpdate.birthDate" #birthDate="ngModel" required type="date" [max]="maxDate">
+      @if (formSubmitted) {
+        @if (birthDate.invalid) {
+          @if (birthDate.errors?.['required']) {
+            <small>Birth date is required.</small>
+          }
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="address">Address:</label>
+      <input class="form-control" id="address" name="address" [(ngModel)]="driverUpdate.address" #address="ngModel" required minlength="5" maxlength="100" type="text">
+      @if (formSubmitted && address.invalid) {
+        @if (address.errors?.['required']) {
+          <small>Address is required.</small>
+        }
+        @if (address.errors?.['minlength']) {
+          <small>Address must be at least 5 characters long.</small>
+        }
+        @if (address.errors?.['maxlength']) {
+          <small>Address cannot exceed 100 characters.</small>
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="hireDate">Hire Date:</label>
+      <input class="form-control" id="hireDate" name="hireDate" [(ngModel)]="driverUpdate.hireDate" #hireDate="ngModel" required type="date" [max]="maxDate">
+      @if (formSubmitted) {
+        @if (hireDate.invalid) {
+          @if (hireDate.errors?.['required']) {
+            <small>Hire date is required.</small>
+          }
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="license">License:</label>
+      <input class="form-control" id="license" name="license" [(ngModel)]="driverUpdate.license" #license="ngModel" required type="text">
+      @if (formSubmitted && license.invalid) {
+        @if (license.errors?.['required']) {
+          <small>License is required.</small>
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="driversLicenseNumber">Driver's License Number:</label>
+      <input class="form-control" id="driversLicenseNumber" name="driversLicenseNumber" [(ngModel)]="driverUpdate.driversLicenseNumber" #driversLicenseNumber="ngModel" required type="text">
+      @if (formSubmitted && driversLicenseNumber.invalid) {
+        @if (driversLicenseNumber.errors?.['required']) {
+          <small>Driver's license number is required.</small>
+        }
+      }
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="workingHoursInAWeek">Working Hours in a Week:</label>
+      <input class="form-control" id="workingHoursInAWeek" name="workingHoursInAWeek" [(ngModel)]="driverUpdate.workingHoursInAWeek" #workingHoursInAWeek="ngModel" type="number" min="0" max="168">
+      @if (formSubmitted && workingHoursInAWeek.invalid) {
+        @if (workingHoursInAWeek.errors?.['min']) {
+          <small>Working hours cannot be negative.</small>
+        }
+        @if (workingHoursInAWeek.errors?.['max']) {
+          <small>Working hours cannot exceed 168 per week.</small>
+        }
+      }
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button>
+  </form>
+</div>

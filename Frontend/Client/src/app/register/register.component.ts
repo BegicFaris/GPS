@@ -1,8 +1,6 @@
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import {AfterViewInit,Component,ElementRef,inject,OnDestroy,OnInit,output,ViewChild,} from '@angular/core';
 import {FormBuilder,FormGroup,FormsModule,NgForm,ReactiveFormsModule,Validators,} from '@angular/forms';
-import { TenantService } from '../_services/tenant.service';
-import { Tenant } from '../_models/tenant';
 import { AccountService } from '../_services/account.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -57,14 +55,11 @@ export class RegisterComponent implements OnInit {
     birthDate: '',
     address: '',
     discountId: null,
-    tenantId: null,
     image: null,
   };
 
   private router = inject(Router);
-  tenantService = inject(TenantService);
   private titleService = inject(Title);
-  tenants: Tenant[] = []; // Array to hold tenant data
   errorMessage: string = '';
   showPassword: boolean = false;
   showPasswordStrength: boolean = false;

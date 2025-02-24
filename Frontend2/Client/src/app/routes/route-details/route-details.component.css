@@ -1,0 +1,20 @@
+.validation-message {
+    position: absolute;   /* Keep it outside of the normal flow */
+    top: 100%;            /* Place the error message just below the input field */
+    left: 0;
+    width: 100%;          /* Take up the full width */
+    font-size: 0.875rem;  /* Adjust text size */
+    color: #dc3545;       /* Bootstrap's red color for validation errors */
+  }
+  
+  td {
+    position: relative;   /* Needed to position the error message relative to the table cell */
+  }
+  
+  select.ng-invalid.ng-touched{
+    border-color: #dc3545;
+  }
+  input.ng-invalid.ng-touched {
+    border-color: #dc3545; /* Add red border on invalid fields */
+  }
+  
