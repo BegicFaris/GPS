@@ -25,11 +25,12 @@
             <div class="row">
               <div class="col-md-6 col-sm-12 mb-3">
                 <label for="firstName" class="form-label">First Name</label>
-                <input type="text" id="firstName" class="form-control form-control-sm" formControlName="firstName">
+                <input type="text" id="firstName" class="form-control form-control-sm" formControlName="firstName" lettersOnly>
                 <div
                   *ngIf="profileForm.get('firstName')?.invalid && (profileForm.get('firstName')?.dirty || profileForm.get('firstName')?.touched)"
                   class="text-danger">
                   <small *ngIf="profileForm.get('firstName')?.errors?.['required']">First name is required.</small>
+                  <small *ngIf="profileForm.get('firstName')?.errors?.['lettersOnly']">First name must contain only letters.</small>
                   <small *ngIf="profileForm.get('firstName')?.errors?.['minlength']">First name must be at least 2
                     characters long.</small>
                 </div>
@@ -38,11 +39,12 @@
 
               <div class="col-md-6 col-sm-12 mb-3">
                 <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" id="lastName" class="form-control form-control-sm" formControlName="lastName">
+                <input type="text" id="lastName" class="form-control form-control-sm" formControlName="lastName" lettersOnly>
                 <div
                   *ngIf="profileForm.get('lastName')?.invalid && (profileForm.get('lastName')?.dirty || profileForm.get('lastName')?.touched)"
                   class="text-danger">
                   <small *ngIf="profileForm.get('lastName')?.errors?.['required']">Last name is required.</small>
+                  <small *ngIf="profileForm.get('lastName')?.errors?.['lettersOnly']">Last name must contain only letters.</small>
                   <small *ngIf="profileForm.get('lastName')?.errors?.['minlength']">Last name must be at least 2
                     characters long.</small>
                 </div>
@@ -62,12 +64,14 @@
 
               <div class="col-md-6 col-sm-12 mb-3">
                 <label for="birthDate" class="form-label">Birth Date</label>
-                <input type="date" id="birthDate" class="form-control form-control-sm" formControlName="birthDate"
-                  [max]="maxDate">
+                <input type="date" id="birthDate" class="form-control form-control-sm" formControlName="birthDate" appValidDate [minDate]="'1900-1-1'" >
                 <div
                   *ngIf="profileForm.get('birthDate')?.invalid && (profileForm.get('birthDate')?.dirty || profileForm.get('birthDate')?.touched)"
                   class="text-danger">
                   <small *ngIf="profileForm.get('birthDate')?.errors?.['required']">Birth date is required.</small>
+                  <small *ngIf="profileForm.get('birthDate')?.errors?.['maxDate']">{{profileForm.get('birthDate')?.errors?.['maxDate']}}</small>
+                  <small *ngIf="profileForm.get('birthDate')?.errors?.['minDate']">{{profileForm.get('birthDate')?.errors?.['minDate']}}</small>
+                  <small *ngIf="profileForm.get('birthDate')?.errors?.['invalidDate']">{{profileForm.get('birthDate')?.errors?.['invalidDate']}}</small>
                 </div>
 
               </div>
@@ -81,6 +85,7 @@
                   <small *ngIf="profileForm.get('address')?.errors?.['required']">Address is required.</small>
                 </div>
               </div>
+              
               <div class="col-md-6 col-sm-12 mb-3">
                 <div class="form-check form-switch">
                   <input type="checkbox" id="twoFactorEnabled" class="form-check-input"
@@ -88,6 +93,8 @@
                   <label class="form-check-label" for="twoFactorEnabled">Enable Two-Factor Authentication</label>
                 </div>
               </div>
+
+
               <div *ngIf="userType === 'Manager'" class="mt-3">
                 <h6>Manager Information</h6>
                 <div class="col-md-6 col-sm-12 mb-3">

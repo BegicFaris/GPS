@@ -7,12 +7,16 @@ import { CommonModule } from '@angular/common';
 import { PasswordStrengthIndicatorComponent } from "../../register/password-strenght-indicator";
 import { Driver } from '../../_models/driver';
 import { DriverService } from '../../_services/driver.service';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
+import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
+import { DateValidatorDirective } from '../../validators/date.validator';
+import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
 
 
 @Component({
   selector: 'app-driver-create',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink, PasswordStrengthIndicatorComponent],
+  imports: [FormsModule,DateValidatorDirective,LettersNumbersDashesValidatorDirective,LettersNumbersValidatorDirective,LettersOnlyValidatorDirective,CommonModule, RouterLink, PasswordStrengthIndicatorComponent],
   templateUrl: './driver-create.component.html',
   styleUrl: './driver-create.component.css',
 })
@@ -35,7 +39,7 @@ export class DriverCreateComponent {
   hasSpecialChar = false;
   hasMinLength = false;
   emailExists: boolean = false;
-  maxDate: string;
+  maxDate: string = new Date().toISOString().split('T')[0];
 
 
   togglePasswordVisibility() {
@@ -56,7 +60,6 @@ export class DriverCreateComponent {
       managerLevel: [null, Validators.required],
       image: [null],
     });
-    this.maxDate = new Date().toISOString().split('T')[0];
   }
   ngOnInit() {
     this.titleService.setTitle('Add driver');

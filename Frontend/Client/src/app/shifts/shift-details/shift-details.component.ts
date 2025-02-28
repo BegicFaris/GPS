@@ -115,13 +115,7 @@ export class ShiftDetailsComponent implements OnInit {
         await firstValueFrom(this.shiftDetailsService.DeleteShiftDetailsByShiftId(this.shift.id));
         const newShiftDetails = this.mapFormGroupsToShiftDetails();
         console.log(newShiftDetails);
-        newShiftDetails.forEach(
-          (sd) => {
-            if (sd.id == null) {
-              this.shiftDetailsService.CreateShiftDetail(sd).subscribe();
-            }
-          }
-        );
+        this.shiftDetailsService.CreateShiftDetail(newShiftDetails).subscribe();
         this.router.navigate(['/manager-dashboard/shifts']);
       }
       else {
@@ -225,12 +219,10 @@ export class ShiftDetailsComponent implements OnInit {
         const startDate = new Date('1970-01-01T' + startTime + 'Z');
         const endDate = new Date('1970-01-01T' + endTime + 'Z');
 
-
         const isTimeValid = endDate.getTime() > startDate.getTime();
 
         return isTimeValid ? null : { timeComparison : true };
       }
-
       return null;
     }
   }

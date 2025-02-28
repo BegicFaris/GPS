@@ -45,8 +45,8 @@ export class RouteService {
     );
   }
   
-  createRoute(route: any) {
-    return this.http.post<Route>(this.baseUrl, route).pipe(
+  createRoute(routes: Route[]) {
+    return this.http.post<Route>(this.baseUrl, routes).pipe(
       catchError(error => {
         console.error('Error creating route:', error);
         return (error);

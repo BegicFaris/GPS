@@ -28,6 +28,8 @@ import { DriverService } from '../_services/driver.service';
 import { debounceTime, first, firstValueFrom, Observable, of, switchMap } from 'rxjs';
 import { Ticket } from '../_models/ticket';
 import { ThemeService } from '../_services/theme.service';
+import { DateValidatorDirective } from '../validators/date.validator';
+import { LettersOnlyValidatorDirective } from '../validators/only-letters.validator';
 
 @Component({
   selector: 'app-user-profile',
@@ -36,6 +38,8 @@ import { ThemeService } from '../_services/theme.service';
   standalone: true,
   imports: [
     CommonModule,
+    LettersOnlyValidatorDirective, 
+    DateValidatorDirective,
     ReactiveFormsModule,
     MatCardModule,
     MatInputModule,

@@ -23,7 +23,7 @@ import { StationService } from '../_services/station.service';
 @Component({
   selector: 'app-schedule',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatAutocompleteModule, MatInputModule, ReactiveFormsModule],
+  imports: [CommonModule, MatAutocompleteModule, MatInputModule, ReactiveFormsModule],
   templateUrl: './schedule.component.html',
   styleUrl: './schedule.component.css'
 })

@@ -24,8 +24,8 @@ export class ShiftDetailService {
     return this.http.get<ShiftDetail>(`${this.baseUrl}/${id}`);
   }
 
-  CreateShiftDetail(shiftDetail: ShiftDetail) {
-    return this.http.post<ShiftDetail>(this.baseUrl, shiftDetail).pipe(
+  CreateShiftDetail(shiftDetails: ShiftDetail[]) {
+    return this.http.post<ShiftDetail>(this.baseUrl, shiftDetails).pipe(
       catchError(error => {
         console.error('Error creating shift detail:', error);
         return error;

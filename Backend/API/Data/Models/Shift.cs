@@ -4,7 +4,7 @@ using GPS.API.Interfaces;
 
 namespace GPS.API.Data.Models
 {
-    public class Shift:IMustHaveTenant
+    public class  Shift:IMustHaveTenant
     {
         [Key]
         public int Id { get; set; }

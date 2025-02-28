@@ -5,11 +5,12 @@ import { StationService } from '../../_services/station.service';
 import { Router } from '@angular/router';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
+import { LineNameValidatorDirective } from '../../validators/line-name.validator';
 
 @Component({
   selector: 'app-line-create',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,LineNameValidatorDirective],
   templateUrl: './line-create.component.html',
   styleUrl: './line-create.component.css',
 })

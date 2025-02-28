@@ -22,28 +22,22 @@
     <!-- Form Fields Section -->
     <div class="mb-3">
         <label class="form-label">Title</label>
-        <input type="text" name="title" class="form-control" required [(ngModel)]="notificationUpdate.title"
+        <input type="text" name="title" class="form-control" required lettersNumbers [(ngModel)]="notificationUpdate.title"
             #title="ngModel" placeholder="Title">
-        @if (title.invalid && (title.dirty || title.touched)) {
-            <div class="text-danger">
-                @if (title.errors?.['required']) {
-                    <div>Title is required.</div>
+            @if(title.invalid && (title.dirty || title.touched)) {
+                @if(title.errors?.['required']) {<div class="text-danger">Title is required.</div>}
+                @if(title.errors?.['lettersNumbers']) {<div class="text-danger">Title can only contain letters and numbers.</div>}
                 }
-            </div>
-        }
     </div>
 
     <div class="mb-3">
         <label class="form-label">Description</label>
-        <textarea name="description" class="form-control" rows="4" required [(ngModel)]="notificationUpdate.description" 
+        <textarea name="description" class="form-control" rows="4" required minlength="10" [(ngModel)]="notificationUpdate.description" 
             #description="ngModel" placeholder="Description"></textarea>
-        @if (description.invalid && (description.dirty || description.touched)) {
-            <div class="text-danger">
-                @if (description.errors?.['required']) {
-                    <div>Description is required.</div>
+            @if(description.invalid && (description.dirty || description.touched)) {
+                @if(description.errors?.['required']) {<div class="text-danger">Description is required.</div>}
+                @if(description.errors?.['minlength']) {<div class="text-danger">Must have at least 10 characters.</div>}
                 }
-            </div>
-        }
     </div>
 
     <div class="mb-3">

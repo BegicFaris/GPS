@@ -28,14 +28,10 @@ namespace GPS.API.Controllers
             return Ok(station);
         }
 
-        [Authorize]
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
         public async Task<IActionResult> CreateStation(StationCreateDto stationCreateDto, CancellationToken cancellationToken)
         {
-            var role = User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value;
-            if (role != UserRole.Manager.ToString())
-                return Unauthorized();
-
             var station = new Station
             {
                 ZoneId = stationCreateDto.ZoneId,
@@ -48,13 +44,10 @@ namespace GPS.API.Controllers
             return CreatedAtAction(nameof(CreateStation), new { id = createdStation.Id }, createdStation);
         }
 
-        [Authorize]
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPut("{id}")]
         public async Task<IActionResult> StationUpdate(int id, StationUpdateDto stationUpdateDto, CancellationToken cancellationToken)
         {
-            var role = User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value;
-            if (role != UserRole.Manager.ToString())
-                return Unauthorized();
 
             if (id != stationUpdateDto.Id) return BadRequest();
 
@@ -74,14 +67,11 @@ namespace GPS.API.Controllers
             return Ok(updatedStation);
         }
 
-        [Authorize] 
+
+        [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStation(int id, CancellationToken cancellationToken)
         {
-            var role = User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value;
-            if (role != UserRole.Manager.ToString())
-                return Unauthorized();
-
             var success = await _stationService.DeleteStationAsync(id, cancellationToken);
             if (!success) return NotFound();
             return NoContent();

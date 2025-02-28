@@ -10,7 +10,7 @@ namespace GPS.API.Interfaces
         Task<ShiftDetail?> GetShiftDetailByIdAsync(int id, CancellationToken cancellationToken);
         Task<bool> DeleteShiftDetail(int id, CancellationToken cancellationToken);
         Task<bool> DeleteShiftDetailsByShiftId(int shiftId, CancellationToken cancellationToken);
-        Task<ShiftDetail> CreateShiftDetailAsync(ShiftDetail shiftDetail, CancellationToken cancellationToken);
+        Task<IReadOnlyList<ShiftDetail>> CreateShiftDetailAsync(ShiftDetail[] shiftDetail, CancellationToken cancellationToken);
         Task<byte[]> GeneratePdfAsync(int shiftId, CancellationToken cancellationToken);
     }
 }

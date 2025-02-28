@@ -10,7 +10,7 @@ namespace GPS.API.Validators.BusValidators
         {
             RuleFor(x => x.RegistrationNumber)
                 .NotEmpty().WithMessage("Registration number is required.")
-                .Matches(@"^[\p{L}\p{N}-]+$").WithMessage("Registration number can only contain letters, numbers, and dashes.");
+                .Matches(@"^[\p{L}\p{N}]+(?:[ -]*[\p{L}\p{N}]+)*$").WithMessage("Registration number can only contain letters, numbers, and dashes.");
 
             RuleFor(x => x.Manufacturer)
                 .NotEmpty().WithMessage("Manufacturer is required.");

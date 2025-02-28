@@ -9,12 +9,14 @@ import { Department } from '../../_models/department';
 import { ManagerLevel } from '../../_models/manager-level';
 import { PasswordStrengthIndicatorComponent } from "../../register/password-strenght-indicator";
 import { ManagerService } from '../../_services/manager.service';
+import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
+import { DateValidatorDirective } from '../../validators/date.validator';
 
 
 @Component({
   selector: 'app-manager-create',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink, PasswordStrengthIndicatorComponent],
+  imports: [FormsModule,LettersOnlyValidatorDirective, DateValidatorDirective, CommonModule, RouterLink, PasswordStrengthIndicatorComponent],
   templateUrl: './manager-create.component.html',
   styleUrl: './manager-create.component.css',
 })
@@ -26,7 +28,7 @@ export class ManagerCreateComponent {
   private titleService = inject(Title);
   managers: Manager[] = [];
   errorMessage: string = '';
-  registerForm: FormGroup;
+
   showPassword: boolean = false;
   showPasswordStrength: boolean = false;
   hasUpperCase = false;
@@ -53,21 +55,7 @@ export class ManagerCreateComponent {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
-
-
-
   constructor(private fb: FormBuilder) {
-    this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      birthDate: ['', Validators.required],
-      hireDate: ['', Validators.required],
-      address: ['', Validators.required],
-      department: [null, Validators.required],
-      managerLevel: [null, Validators.required],
-      image: [null],
-    });
     this.maxDate = new Date().toISOString().split('T')[0];
   }
   ngOnInit() {
@@ -88,7 +76,10 @@ export class ManagerCreateComponent {
 
   managerCreate: any = {};
   addNewManager(newManagerForm: NgForm) {
-
+    console.log("Entered" + this.emailExists);
+    console.log("Form" + newManagerForm.valid)
+    console.log(newManagerForm)
+    console.log(this.managerCreate)
     if (newManagerForm.valid && !this.emailExists) {
       if (this.managerCreate.isActive === undefined) {
         this.managerCreate.isActive = false;
@@ -100,7 +91,6 @@ export class ManagerCreateComponent {
           this.cancel();
         },  
       });
-      this.router.navigate(['/manager-dashboard/managers']);
     }
     else{
       Object.keys(newManagerForm.controls).forEach(field => {

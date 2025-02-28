@@ -8,15 +8,19 @@ import { Title } from '@angular/platform-browser';
 import { Bus } from '../../_models/bus';
 import { Driver } from '../../_models/driver';
 import { Shift } from '../../_models/shift';
+import { DateValidatorDirective } from '../../validators/date.validator';
 
 @Component({
   selector: 'app-shift-create',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DateValidatorDirective],
   templateUrl: './shift-create.component.html',
   styleUrl: './shift-create.component.css'
 })
 export class ShiftCreateComponent {
+
+  today: string = new Date().toISOString().split('T')[0];  // Today's date
+  futureDate: string = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]; 
 
   private router = inject(Router);
   private shiftService = inject(ShiftService);

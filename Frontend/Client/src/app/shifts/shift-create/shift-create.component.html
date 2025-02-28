@@ -35,11 +35,12 @@
     <div class="mb-3">
         <label>Shift date</label>
         <input type="date" class="form-control" name="shiftDate" [(ngModel)]="shiftCreate.shiftDate"
-            #shiftDate="ngModel" required placeholder="Shift date" />
+            #shiftDate="ngModel" required appValidDate [minDate]="today" [maxDate]="futureDate" placeholder="Shift date"  />
         @if (shiftDate.invalid && (shiftDate.dirty || shiftDate.touched)) {
-        <div class="text-danger">
-            Shift date is required.
-        </div>
+       @if(shiftDate.errors?.['required']){<div class="text-danger">Shift date is required.</div>}
+       @if(shiftDate.errors?.['minDate']){<div class="text-danger">Shift date cannot be in the past.</div>}
+       @if(shiftDate.errors?.['maxDate']){<div class="text-danger">Shift date cannot be more than one year in the future.</div>}
+       @if(shiftDate.errors?.['invalidDate']){<div class="text-danger">Invalid date format.</div>}
         }
     </div>
 

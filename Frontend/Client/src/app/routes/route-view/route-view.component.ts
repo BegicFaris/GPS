@@ -18,7 +18,7 @@ interface LineWithStationCount extends Line {
 @Component({
   selector: 'app-route-view',
   standalone: true,
-  imports: [RouterLink, MatDialogModule, MatButtonModule, CommonModule],
+  imports: [MatDialogModule, MatButtonModule, CommonModule],
   templateUrl: './route-view.component.html',
   styleUrl: './route-view.component.css',
 })
@@ -42,21 +42,19 @@ export class RouteViewComponent {
   }
   async loadLines() {
     try {
-      // Fetch all lines
+      // Fetch all lines first
       const data = await firstValueFrom(this.lineService.getAllLines());
       this.lines = data; // Assuming data contains the lines
-
-      // Create a new array of lines with station counts
-      for (let line of this.lines) {
-        const response = await firstValueFrom(this.routeService.getStationCountByLineId(line.id));
-        const lineWithStationCount: LineWithStationCount = {
+  
+      const stationCountPromises = this.lines.map(line =>
+        firstValueFrom(this.routeService.getStationCountByLineId(line.id)).then(response => ({
           ...line, // Copy all properties from the original line
-          stationCount: response.count // Add the stationCount property
-        };
-        this.linesWithStationCount.push(lineWithStationCount); // Add it to a new array
-      }
-
-      console.log(this.linesWithStationCount); // Now, linesWithStationCount contains the new objects with stationCount
+          stationCount: response.count // Add station count property
+        }))
+      );
+      this.linesWithStationCount = await Promise.all(stationCountPromises);
+  
+      console.log(this.linesWithStationCount); // Now contains the new objects with stationCount
     } catch (error) {
       console.error('Error loading lines:', error);
     }

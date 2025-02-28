@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 
-namespace GPS.API.Services.PasswordresetServices
+namespace GPS.API.Services.PasswordResetServices
 {
     public class PasswordResetService : IPasswordResetService
     {
@@ -44,7 +44,6 @@ namespace GPS.API.Services.PasswordresetServices
             {
                 return false;
             }
-
             return user.ResetCode == code && user.ResetCodeExpiration > DateTime.UtcNow;
         }
 
@@ -55,7 +54,6 @@ namespace GPS.API.Services.PasswordresetServices
             {
                 return false;
             }
-
             using var hmac = new HMACSHA512();
             user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(newPassword));
             user.PasswordSalt = hmac.Key;

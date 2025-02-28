@@ -4,17 +4,19 @@
 
   <div class="mb-3">
     <label class="form-label">Name</label>
-    <input type="text" name="name" class="form-control" required [(ngModel)]="lineCreate.name" #name="ngModel" placeholder="Name">
+    <input type="text" name="name" class="form-control" required lineName [(ngModel)]="lineCreate.name" #name="ngModel" placeholder="Name">
     @if(name.invalid && (name.dirty || name.touched)) {
       @if(name.errors?.['required']) {<div class="text-danger">Name is required.</div>}
+      @if(name.errors?.['lineName']) {<div class="text-danger">Name must be in the format 'number: text - text'.</div>}
     }
   </div>
 
   <div class="mb-3">
     <label class="form-label">Complete distance</label>
-    <input type="text" class="form-control" name="completeDistance" required [(ngModel)]="lineCreate.completeDistance"  #completeDistance="ngModel" placeholder="0km">
+    <input type="number" min="0" class="form-control" name="completeDistance" required [(ngModel)]="lineCreate.completeDistance"  #completeDistance="ngModel" placeholder="0km">
     @if(completeDistance.invalid && (completeDistance.dirty || completeDistance.touched)) {
       @if(completeDistance.errors?.['required']) {<div class="text-danger">Complete distance is required.</div>}
+      @if(completeDistance.errors?.['min']) {<div class="text-danger">Complete distance must be a positive number.</div>}
     }
   </div>
 

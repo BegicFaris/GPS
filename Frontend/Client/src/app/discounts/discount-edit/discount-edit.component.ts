@@ -4,11 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DiscountService } from '../../_services/discount.service';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
 
 @Component({
   selector: 'app-discount-edit',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, LettersNumbersValidatorDirective,CommonModule],
   templateUrl: './discount-edit.component.html',
   styleUrl: './discount-edit.component.css'
 })

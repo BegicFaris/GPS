@@ -8,11 +8,13 @@
       name="discountName" 
       class="form-control" 
       required 
+      lettersNumbers
       [(ngModel)]="discountUpdate.discountName" 
       #discountName="ngModel" 
       placeholder="Name">
     <div *ngIf="discountName.invalid && (discountName.dirty || discountName.touched)" class="text-danger">
       <div *ngIf="discountName.errors?.['required']">Discount name is required.</div>
+      <div *ngIf="discountName.errors?.['lettersNumbers']">Discount name can only contain letters and numbers..</div>
     </div>
   </div>
 
@@ -24,7 +26,7 @@
       name="discountValue" 
       class="form-control" 
       required 
-      min="0" 
+      min="0.01" 
       max="1" 
       step="0.01" 
       [(ngModel)]="discountUpdate.discountValue" 
@@ -33,7 +35,7 @@
     <div *ngIf="discountValue.invalid && (discountValue.dirty || discountValue.touched)" class="text-danger">
       <div *ngIf="discountValue.errors?.['required']">Discount value is required.</div>
       <div *ngIf="discountValue.errors?.['max']">Discount value must be less than 1.</div>
-      <div *ngIf="discountValue.errors?.['min']">Discount value must be at least 0.</div>
+      <div *ngIf="discountValue.errors?.['min']">Discount value must be at least 0.01.</div>
     </div>
   </div>
 

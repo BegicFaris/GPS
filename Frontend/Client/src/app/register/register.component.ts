@@ -7,6 +7,8 @@ import { Router, RouterLink } from '@angular/router';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { PasswordStrengthIndicatorComponent } from './password-strenght-indicator';
 import { NgxCaptchaModule, ReCaptcha2Component } from 'ngx-captcha';
+import { LettersOnlyValidatorDirective } from '../validators/only-letters.validator';
+import { DateValidatorDirective } from '../validators/date.validator';
 
 class UserComponent {
   password: string = '';
@@ -26,6 +28,8 @@ interface PasswordModel {
   standalone: true,
   imports: [
     FormsModule,
+    LettersOnlyValidatorDirective,
+    DateValidatorDirective,
     CommonModule,
     RouterLink,
     ReactiveFormsModule,

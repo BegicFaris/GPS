@@ -41,7 +41,7 @@ namespace GPS.API.Services.ShiftDetailServices
 
         public async Task<bool> DeleteShiftDetail(int id, CancellationToken cancellationToken)
         {
-            var shiftDetail = await context.ShiftDetails.SingleOrDefaultAsync(x=>x.Id==id,cancellationToken);
+            var shiftDetail = await context.ShiftDetails.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
             if (shiftDetail == null)
                 return false;
             context.ShiftDetails.Remove(shiftDetail);
@@ -61,11 +61,52 @@ namespace GPS.API.Services.ShiftDetailServices
             return true;
         }
 
-        public async Task<ShiftDetail> CreateShiftDetailAsync(ShiftDetail shiftDetail, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<ShiftDetail>> CreateShiftDetailAsync(ShiftDetail[] shiftDetails, CancellationToken cancellationToken)
         {
-            context.ShiftDetails.Add(shiftDetail);
+            bool isValidTime = await IsValidTime(shiftDetails, cancellationToken);
+            if (!isValidTime) throw new InvalidOperationException("Invalid shift detail time!");
+
+            await context.ShiftDetails.AddRangeAsync(shiftDetails, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
-            return shiftDetail;
+            return shiftDetails;
+        }
+
+        private async Task<bool> IsValidTime(ShiftDetail[] shiftDetails, CancellationToken cancellationToken)
+        {
+            if (shiftDetails.Length == 0) return false;
+
+            var shiftId = shiftDetails[0].ShiftId;
+
+            for (int i = 1; i < shiftDetails.Length; i++)
+                if (shiftId != shiftDetails[i].ShiftId) return false;
+
+
+            var shift = await context.Shifts.SingleOrDefaultAsync(x => x.Id == shiftId, cancellationToken);
+            if (shift == null) return false;
+
+            ShiftDetail[] orderedShiftDetails = ShiftDetailsOrderByTime(shiftDetails);
+
+            for (int i = 0; i < orderedShiftDetails.Length; i++)
+            {
+                if (i == 0)
+                {
+                    if (orderedShiftDetails[i].ShiftDetailStartingTime != shift.ShiftStartingTime) return false;
+                }
+                else
+                {
+                    if (orderedShiftDetails[i].ShiftDetailStartingTime < orderedShiftDetails[i-1].ShiftDetailEndingTime) return false;
+                }
+                if (i == orderedShiftDetails.Length - 1)
+                    if (orderedShiftDetails[i].ShiftDetailEndingTime != shift.ShiftEndingTime) return false;
+            }
+
+            return true;
+
+        }
+
+        private ShiftDetail[] ShiftDetailsOrderByTime(ShiftDetail[] shiftDetails)
+        {
+            return shiftDetails.OrderBy(s => s.ShiftDetailStartingTime).ToArray();
         }
 
         public async Task<byte[]> GeneratePdfAsync(int shiftId, CancellationToken cancellationToken)

@@ -2,18 +2,20 @@ import { Component, inject, Inject, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineService } from '../../_services/line.service';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { StationService } from '../../_services/station.service';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
 import { ManagerService } from '../../_services/manager.service';
 import { ManagerLevel } from '../../_models/manager-level';
 import { Department } from '../../_models/department';
+import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
+import { DateValidatorDirective } from '../../validators/date.validator';
 
 @Component({
   selector: 'app-manager-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,LettersOnlyValidatorDirective, DateValidatorDirective, CommonModule],
   templateUrl: './manager-edit.component.html',
   styleUrl: './manager-edit.component.css'
 })

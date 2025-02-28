@@ -8,11 +8,12 @@ import { Title } from '@angular/platform-browser';
 import { Line } from '../../_models/line';
 import { FormsModule, NgForm } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
 
 @Component({
   selector: 'app-notification-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,LettersNumbersValidatorDirective],
   templateUrl: './notification-edit.component.html',
   styleUrl: './notification-edit.component.css'
 })

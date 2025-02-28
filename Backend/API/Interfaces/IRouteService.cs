@@ -9,7 +9,7 @@ namespace GPS.API.Interfaces
         Task<IEnumerable<Data.Models.Route>> GetAllRoutesByLineIdAsync(int lineId, CancellationToken cancellationToken);
         Task<int> GetStationCountByLineIdAsync(int lineId, CancellationToken cancellationToken);
         Task<bool> DeleteAllRoutesByLineIdAsync(int lineId, CancellationToken cancellationToken);
-        Task<Data.Models.Route> CreateRouteAsync(Data.Models.Route route, CancellationToken cancellationToken);
+        Task<Data.Models.Route[]> CreateRouteAsync(Data.Models.Route[] routes, CancellationToken cancellationToken);
         Task<Data.Models.Route> UpdateRouteAsync(Data.Models.Route route, CancellationToken cancellationToken);
         Task<bool> DeleteRouteAsync(int id, CancellationToken cancellationToken);
     }

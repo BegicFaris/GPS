@@ -8,12 +8,14 @@ import { StationService } from '../../_services/station.service';
 import { Station } from '../../_models/station';
 import { ZoneService } from '../../_services/zone.service';
 import { Zone } from '../../_models/zone';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
+import { GpsCodeValidatorDirective } from '../../validators/gps-code.validator';
 
 
 @Component({
   selector: 'app-station-create',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink],
+  imports: [FormsModule,LettersNumbersValidatorDirective,GpsCodeValidatorDirective, CommonModule, RouterLink],
   templateUrl: './station-create.component.html',
   styleUrl: './station-create.component.css',
 })

@@ -62,7 +62,7 @@ export class StationViewComponent {
         id: station.id,
         name: station.name,
         location: station.location,
-        gosCode: station.gpsCode,
+        gpsCode: station.gpsCode,
         zoneId: station.zoneId,
       }, // Pass the current data to the dialog
     });

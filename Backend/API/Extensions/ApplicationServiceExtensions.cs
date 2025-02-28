@@ -23,7 +23,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using GPS.API.Services.ZoneServices;
 using GPS.API.Services.EmailServices;
-using GPS.API.Services.PasswordresetServices;
+using GPS.API.Services.PasswordResetServices;
 using GPS.API.Services;
 using GPS.API.Services.TwoFactorAuthServices;
 using GPS.API.Services.FavoriteLineService;

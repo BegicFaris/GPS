@@ -11,13 +11,13 @@
               [(ngModel)]="stationCreate.name"
               #name="ngModel"
               required
+              lettersNumbers
               placeholder="Musala"
             />
             <label>Name</label>
             @if (name.invalid && (name.dirty || name.touched)) {
-              <div class="text-danger">
-                Name is required.
-              </div>
+              @if (name.errors?.['required']) {<div class="text-danger">Name is required. </div>}
+              @if (name.errors?.['lettersNumbers']) {<div class="text-danger">Name can only contain letters and numbers</div>}
             }
             @if (stationExists) {
               <div class="text-danger">
@@ -33,13 +33,13 @@
               [(ngModel)]="stationCreate.location"
               #location="ngModel"
               required
+              lettersNumbers
               placeholder="Location"
             />
             <label>Location</label>
             @if (location.invalid && (location.dirty || location.touched)) {
-              <div class="text-danger">
-                Location is required.
-              </div>
+              @if (location.errors?.['required']) {<div class="text-danger"> Location is required.</div>}
+              @if (location.errors?.['lettersNumbers']) {<div class="text-danger">Location can only contain letters and numbers</div>}
             }
           </div>
           <div class="mb-3 form-floating">
@@ -50,13 +50,13 @@
               [(ngModel)]="stationCreate.gpsCode"
               #gpsCode="ngModel"
               required
+              appGpsCodeValidator
               placeholder="gpsCode"
             />
             <label>GPS code</label>
             @if (gpsCode.invalid && (gpsCode.dirty || gpsCode.touched)) {
-              <div class="text-danger">
-                GPS code is required.
-              </div>
+              @if (gpsCode.errors?.['required']) {<div class="text-danger"> GPS code is required.</div>}
+              @if (gpsCode.errors?.['invalidGpsCode']) {<div class="text-danger">GPS Code must be in the correct format (e.g., 1.12, 9.78).</div>}
             }
           </div>
           <div class="mb-3 form-floating">

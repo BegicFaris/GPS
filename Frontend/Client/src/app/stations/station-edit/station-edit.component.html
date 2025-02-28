@@ -1,45 +1,31 @@
 <div class="container mt-2">
 <h5 class="modal-title">Update station data</h5>
 <form #updateStationForm="ngForm" (ngSubmit)="saveChanges()">
+  
     <div class="mb-3">
       <label class="form-label" for="name">Name:</label>
-      <input class="form-control" id="name" name="name" [(ngModel)]="stationUpdate.name" #name="ngModel" required minlength="2" maxlength="50" type="text">
-      @if (formSubmitted && name.invalid) {
-        @if (name.errors?.['required']) {
-          <small>Name is required.</small>
-        }
-        @if (name.errors?.['minlength']) {
-          <small>Name must be at least 2 characters long.</small>
-        }
-        @if (name.errors?.['maxlength']) {
-          <small>Name cannot exceed 50 characters.</small>
-        }
+      <input class="form-control" id="name" name="name" [(ngModel)]="stationUpdate.name" #name="ngModel" required lettersNumbers type="text">
+      @if (name.invalid && (name.dirty || name.touched)) {
+        @if (name.errors?.['required']) {<div class="text-danger">Name is required. </div>}
+        @if (name.errors?.['lettersNumbers']) {<div class="text-danger">Name can only contain letters and numbers</div>}
       }
     </div>
   
     <div class="mb-3">
       <label class="form-label" for="location">Location:</label>
-      <input class="form-control" id="location" name="location" [(ngModel)]="stationUpdate.location" #location="ngModel" required minlength="2" maxlength="50" type="text">
-      @if (formSubmitted && location.invalid) {
-        @if (location.errors?.['required']) {
-          <small>Location is required.</small>
-        }
-        @if (location.errors?.['minlength']) {
-          <small>Location must be at least 2 characters long.</small>
-        }
-        @if (location.errors?.['maxlength']) {
-          <small>Location cannot exceed 50 characters.</small>
-        }
+      <input class="form-control" id="location" name="location" [(ngModel)]="stationUpdate.location" #location="ngModel" required lettersNumbers type="text">
+      @if (location.invalid && (location.dirty || location.touched)) {
+        @if (location.errors?.['required']) {<div class="text-danger"> Location is required.</div>}
+        @if (location.errors?.['lettersNumbers']) {<div class="text-danger">Location can only contain letters and numbers</div>}
       }
     </div>
   
     <div class="mb-3">
       <label class="form-label" for="gpsCode">GPS code:</label>
-      <input class="form-control" id="gpsCode" name="gpsCode" [(ngModel)]="stationUpdate.gpsCode" #gpsCode="ngModel" required type="text">
-      @if (formSubmitted && gpsCode.invalid) {
-        @if (gpsCode.errors?.['required']) {
-          <small>GPS code is required.</small>
-        }
+      <input class="form-control" id="gpsCode" name="gpsCode" [(ngModel)]="stationUpdate.gpsCode" #gpsCode="ngModel" required appGpsCodeValidator type="text">
+      @if (gpsCode.invalid && (gpsCode.dirty || gpsCode.touched)) {
+        @if (gpsCode.errors?.['required']) {<div class="text-danger"> GPS code is required.</div>}
+        @if (gpsCode.errors?.['invalidGpsCode']) {<div class="text-danger">GPS Code must be in the correct format (e.g., 1.12, 9.78).</div>}
       }
     </div>
   

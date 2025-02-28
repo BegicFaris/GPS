@@ -4,16 +4,19 @@ import { BusService } from '../../_services/bus.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
 
 
 @Component({
   selector: 'app-bus-create',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, LettersNumbersDashesValidatorDirective],
   templateUrl: './bus-create.component.html',
   styleUrl: './bus-create.component.css',
 })
 export class BusCreateComponent {
+  currentYear: number = new Date().getFullYear();
+  
   private router = inject(Router);
   private busService = inject(BusService);
   private titleService = inject(Title);

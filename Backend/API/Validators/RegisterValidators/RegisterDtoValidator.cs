@@ -10,11 +10,11 @@ namespace GPS.API.Validators.RegisterValidators
         {
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("First name is required.")
-                .Matches(@"^[\p{L}]+$").WithMessage("First name can only contain letters.");
+                .Matches(@"^[\p{L}]+(?:\s+[\p{L}]+)*$").WithMessage("First name can only contain letters.");
 
             RuleFor(x => x.LastName)
                 .NotEmpty().WithMessage("Last name is required.")
-                .Matches(@"^[\p{L}]+$").WithMessage("Last name can only contain letters.");
+               .Matches(@"^[\p{L}]+(?:\s+[\p{L}]+)*$").WithMessage("Last name can only contain letters.");
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required.")

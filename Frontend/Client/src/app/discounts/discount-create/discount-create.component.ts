@@ -4,11 +4,12 @@ import { DiscountService } from '../../_services/discount.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
 
 @Component({
   selector: 'app-discount-create',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule,LettersNumbersValidatorDirective, CommonModule],
   templateUrl: './discount-create.component.html',
   styleUrls: ['./discount-create.component.css'],
 })

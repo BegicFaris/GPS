@@ -72,8 +72,6 @@ export class RouteDetailsComponent implements OnInit {
         order: new FormControl(er.order, [
           Validators.required]),
         isEditMode: new FormControl(true),
-
-
       }));
     });
 
@@ -140,16 +138,11 @@ export class RouteDetailsComponent implements OnInit {
   async finishAddingRoutes() {
     if (this.isValidForm()) {
       if (this.isValidOrder()) {
-        if (this.existingRoutes.length != undefined)
+        console.log("Len: " + this.existingRoutes.length);
+        if (this.existingRoutes.length != undefined || this.existingRoutes.length==0)
           await firstValueFrom(this.routeService.deleteAllRoutesByLineIdAsync(this.line.id));
         const newRoutes = this.mapFormGroupsToRoutes();
-        newRoutes.forEach(
-          (r) => {
-            if (r.id == null) {
-              this.routeService.createRoute(r).subscribe();
-            }
-          }
-        );
+        await firstValueFrom(this.routeService.createRoute(newRoutes));
         this.router.navigate(['/manager-dashboard/routes']);
       }
       else{
@@ -163,7 +156,6 @@ export class RouteDetailsComponent implements OnInit {
       for (let j = 0; j < routes.length; j++) {
         if(i!=j)
           if(routes[i].order==routes[j].order || routes[i].order>=this.routeCountArr.length){
-
             return false;
           }
       }
@@ -206,8 +198,6 @@ export class RouteDetailsComponent implements OnInit {
   cancel() {
     this.router.navigate(['/manager-dashboard/routes']);
   }
-
-
 
   populateArray() {
     this.routeCountArr = [];

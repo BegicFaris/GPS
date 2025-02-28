@@ -12,13 +12,17 @@
             [(ngModel)]="model.firstName"
             #firstName="ngModel"
             required
+            lettersOnly 
             placeholder="First Name"
           />
-          <label>First Name</label>
+          <label>First Name</label> 
           @if (firstName.invalid && (firstName.dirty || firstName.touched)) {
-            <div class="text-danger">
-              First Name is required.
-            </div>
+            @if (firstName.errors?.['required']) {
+              <div class="text-danger">First Name is required.</div>
+            }
+            @if (firstName.errors?.['lettersOnly']) {
+              <div class="text-danger">First Name must only contain letters.</div>
+            }
           }
         </div>
   
@@ -54,14 +58,24 @@
             [(ngModel)]="model.birthDate"
             #birthDate="ngModel"
             required
-            [max]="maxDate"
+            [minDate]="'1900-01-01'" 
+            appValidDate
             placeholder="Birth Date"
           />
           <label>Birth Date</label>
           @if (birthDate.invalid && (birthDate.dirty || birthDate.touched)) {
-            <div class="text-danger">
-              Birth Date is required.
-            </div>
+            @if (birthDate.errors?.['required']) {
+            <div class="text-danger">Birth Date is required.</div>
+            }
+            @if (birthDate.errors?.['minDate']) {
+            <div class="text-danger">{{ birthDate.errors?.['minDate'] }}</div>
+            }
+            @if (birthDate.errors?.['maxDate']) {
+            <div class="text-danger">{{ birthDate.errors?.['maxDate'] }}</div>
+            }
+            @if (birthDate.errors?.['invalidDate']) {
+            <div class="text-danger">Invalid date format.</div>
+            }
           }
         </div>
       </div>
@@ -75,13 +89,17 @@
             [(ngModel)]="model.lastName"
             #lastName="ngModel"
             required
+            lettersOnly
             placeholder="Last Name"
           />
           <label>Last Name</label>
           @if (lastName.invalid && (lastName.dirty || lastName.touched)) {
-            <div class="text-danger">
-              Last Name is required.
-            </div>
+            @if (lastName.errors?.['required']) {
+              <div class="text-danger">Last Name is required.</div>
+            }
+            @if (lastName.errors?.['lettersOnly']) {
+              <div class="text-danger">Last Name must only contain letters.</div>
+            }
           }
         </div>
   

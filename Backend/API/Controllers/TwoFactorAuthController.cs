@@ -1,7 +1,7 @@
 ﻿using GPS.API.Dtos.PasswordResetDtos;
 using GPS.API.Dtos.TwoFactorDtos;
 using GPS.API.Interfaces;
-using GPS.API.Services.PasswordresetServices;
+using GPS.API.Services.PasswordResetServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

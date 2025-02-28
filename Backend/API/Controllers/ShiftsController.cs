@@ -34,9 +34,7 @@ namespace GPS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateShift(ShiftCreateDto shiftCreateDto, CancellationToken cancellationToken)
         {
-            var role = User.Claims.FirstOrDefault(c => c.Type == "Role")?.Value;
-            if (role != UserRole.Manager.ToString())
-                return Unauthorized();
+
 
             var shift = new Shift
             {

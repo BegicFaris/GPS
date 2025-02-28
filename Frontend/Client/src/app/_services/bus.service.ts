@@ -25,6 +25,8 @@ export class BusService {
   }
 
   createBus(bus: any) {
+    bus.capacity=bus.capacity.toString();
+    bus.manufactureYear=bus.manufactureYear.toString();
     return this.http.post<Bus>(this.baseUrl, bus).pipe(
       catchError(error => {
         console.error('Error creating bus:', error);
@@ -34,6 +36,8 @@ export class BusService {
   }
 
   updateBus(bus: any) {
+    bus.capacity=bus.capacity.toString();
+    bus.manufactureYear=bus.manufactureYear.toString();
     return this.http.put<Bus>(this.baseUrl + `/${bus.id}`, bus).pipe(
       catchError(error => {
         console.error('Error updating bus:', error);

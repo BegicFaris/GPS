@@ -15,11 +15,11 @@ namespace GPS.API.Validators.RegisterValidators
 
             RuleFor(x => x.Department)
                 .NotEmpty().WithMessage("Department is required.")
-                .Matches(@"^[\p{L}]+$").WithMessage("Department can only contain letters.");
+                .Matches(@"^[\p{L}]+(?:\s+[\p{L}]+)*$").WithMessage("Department can only contain letters.");
 
             RuleFor(x => x.ManagerLevel)
                 .NotEmpty().WithMessage("Manager level is required.")
-                .Matches(@"^[\p{L}]+$").WithMessage("Manager level can only contain letters.");
+                .Matches(@"^[\p{L}]+(?:\s+[\p{L}]+)*$").WithMessage("Manager level can only contain letters.");
         }
     }
 }

@@ -7,15 +7,19 @@ import { ShiftService } from '../../_services/shift.service';
 import { Bus } from '../../_models/bus';
 import { Driver } from '../../_models/driver';
 import { FormsModule, NgForm } from '@angular/forms';
+import { DateValidatorDirective } from '../../validators/date.validator';
 
 @Component({
   selector: 'app-shift-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DateValidatorDirective],
   templateUrl: './shift-edit.component.html',
   styleUrl: './shift-edit.component.css'
 })
 export class ShiftEditComponent {
+  today: string = new Date().toISOString().split('T')[0];  // Today's date
+  futureDate: string = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]; 
+
   constructor(public dialogRef: MatDialogRef<ShiftEditComponent>, @Inject(MAT_DIALOG_DATA) public shiftUpdate:
     {
       id: number,

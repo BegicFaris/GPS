@@ -10,17 +10,21 @@ import { ManagerService } from '../../_services/manager.service';
 import { ManagerLevel } from '../../_models/manager-level';
 import { Department } from '../../_models/department';
 import { DriverService } from '../../_services/driver.service';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
+import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
+import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
+import { DateValidatorDirective } from '../../validators/date.validator';
 
 @Component({
   selector: 'app-driver-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,LettersNumbersValidatorDirective,LettersOnlyValidatorDirective,LettersNumbersDashesValidatorDirective, DateValidatorDirective],
   templateUrl: './driver-edit.component.html',
   styleUrl: './driver-edit.component.css'
 })
 export class DriverEditComponent {
   @ViewChild('updateDriverForm') updateDriverForm!: NgForm;
-  formSubmitted = false;
+  emailExists: boolean = false;
   
   constructor(public dialogRef: MatDialogRef<DriverEditComponent>, @Inject(MAT_DIALOG_DATA) public driverUpdate: { id: number, firstName: string, lastName: string, email:string, birthDate: Date, address: string, hireDate:Date, license: string, driversLicenseNumber: string, workingHoursInAWeek: number  }) {}
 
@@ -34,7 +38,6 @@ export class DriverEditComponent {
   }
 
   saveChanges() {
-    this.formSubmitted = true;
     if (this.updateDriverForm.form.valid) {
       this.driverService.updateDriver(this.driverUpdate).subscribe({
         next: response => {

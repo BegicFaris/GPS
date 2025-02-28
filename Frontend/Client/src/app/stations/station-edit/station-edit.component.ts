@@ -2,7 +2,7 @@ import { Component, inject, Inject, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineService } from '../../_services/line.service';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { StationService } from '../../_services/station.service';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
@@ -11,11 +11,13 @@ import { ManagerLevel } from '../../_models/manager-level';
 import { Department } from '../../_models/department';
 import { ZoneService } from '../../_services/zone.service';
 import { Zone } from '../../_models/zone';
+import { GpsCodeValidatorDirective } from '../../validators/gps-code.validator';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
 
 @Component({
   selector: 'app-station-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,LettersNumbersValidatorDirective,GpsCodeValidatorDirective,CommonModule],
   templateUrl: './station-edit.component.html',
   styleUrl: './station-edit.component.css'
 })
@@ -29,11 +31,11 @@ export class StationEditComponent {
   private titleService = inject(Title);
   private stationService = inject(StationService);
   private zoneService= inject(ZoneService);
-  stations: Station[] = [];
   zones:Zone[]=[];
 
   ngOnInit(): void {
     this.titleService.setTitle("Update station");
+    console.log(this.stationUpdate)
     this.loadExistingZones();
   }
   loadExistingZones() {

@@ -44,28 +44,50 @@ namespace GPS.API.Controllers
 
         [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<IActionResult> CreateShiftDetail(ShiftDetailCreateDto shiftDetailCreateDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateShiftDetail(ShiftDetailCreateDto[] shiftDetailCreateDtos, CancellationToken cancellationToken)
         {
-
-            if (!TimeOnly.TryParse(shiftDetailCreateDto.ShiftDetailStartingTime, out var shiftDetailStartingTime))
+            if (shiftDetailCreateDtos == null || !shiftDetailCreateDtos.Any())
             {
-                return BadRequest(new { message = "Invalid starting time format." });
+                return BadRequest(new { message = "Shift details cannot be empty." });
             }
-            if (!TimeOnly.TryParse(shiftDetailCreateDto.ShiftDetailEndingTime, out var shiftDetailEndingTime))
+
+            var shiftDetails = new List<ShiftDetail>();
+
+            foreach (var dto in shiftDetailCreateDtos)
             {
-                return BadRequest(new { message = "Invalid ending time format." });
+                if (!TimeOnly.TryParse(dto.ShiftDetailStartingTime, out var shiftDetailStartingTime))
+                {
+                    return BadRequest(new { message = $"Invalid starting time format for shift with ShiftId {dto.ShiftId}." });
+                }
+
+                if (!TimeOnly.TryParse(dto.ShiftDetailEndingTime, out var shiftDetailEndingTime))
+                {
+                    return BadRequest(new { message = $"Invalid ending time format for shift with ShiftId {dto.ShiftId}." });
+                }
+
+                shiftDetails.Add(new ShiftDetail
+                {
+                    ShiftId = dto.ShiftId,
+                    LineId = dto.LineId,
+                    ShiftDetailStartingTime = shiftDetailStartingTime,
+                    ShiftDetailEndingTime = shiftDetailEndingTime,
+                });
             }
-            var shiftDetail = new ShiftDetail
+
+
+            try
             {
-                ShiftId = shiftDetailCreateDto.ShiftId,
-                LineId = shiftDetailCreateDto.LineId,
-                ShiftDetailStartingTime = shiftDetailStartingTime,
-                ShiftDetailEndingTime = shiftDetailEndingTime,
-            };
-            var createdShiftDetail = await shiftDetailService.CreateShiftDetailAsync(shiftDetail, cancellationToken);
-
-
-            return Ok(createdShiftDetail);
+                var createdShiftDetails = await shiftDetailService.CreateShiftDetailAsync(shiftDetails.ToArray(), cancellationToken);
+                return Ok(createdShiftDetails);
+            }
+            catch (InvalidOperationException ex)  
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred.", details = ex.Message });
+            }
         }
 
         [Authorize(Roles = nameof(UserRole.Manager))]

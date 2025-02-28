@@ -1,5 +1,6 @@
 ﻿using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
+using GPS.API.Dtos.RouteDtos;
 using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -63,11 +64,27 @@ namespace GPS.API.Services.RouteServices
             return true;
         }
 
-        public async Task<Data.Models.Route> CreateRouteAsync(Data.Models.Route route, CancellationToken cancellationToken)
+        public async Task<Data.Models.Route[]> CreateRouteAsync(Data.Models.Route[] routes, CancellationToken cancellationToken)
         {
-            _context.Routes.Add(route);
+
+            if (routes.Length == 0) throw new ArgumentException("Routes cannot be empty.");
+
+            var lineId = routes[0].LineId;
+
+            for (int i = 1; i < routes.Length; i++)
+                if (lineId != routes[i].LineId) throw new InvalidOperationException("All routes must be from the same line!");
+
+
+
+            var expectedOrder = Enumerable.Range(1, routes.Length).ToArray();
+            var actualOrder = routes.Select(r => r.Order).OrderBy(o => o).ToArray();
+
+            if (!expectedOrder.SequenceEqual(actualOrder))
+                throw new InvalidOperationException("Invalid route order. RouteOrder must be consecutive and start from 1.");
+
+            _context.Routes.AddRange(routes);
             await _context.SaveChangesAsync(cancellationToken);
-            return route;
+            return routes;
         }
 
         public async Task<Data.Models.Route> UpdateRouteAsync(Data.Models.Route route, CancellationToken cancellationToken)

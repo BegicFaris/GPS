@@ -10,11 +10,11 @@ public class RegisterDriverDtoValidator : AbstractValidator<RegisterDriverDto>
 
         RuleFor(x => x.License)
             .NotEmpty().WithMessage("License is required.")
-            .Matches(@"^[\p{L}\p{N}]+$").WithMessage("License can only contain letters and numbers.");
+            .Matches(@"^[\p{L}\p{N}]+(?:\s+[\p{L}\p{N}]+)*$").WithMessage("License can only contain letters and numbers.");
             
         RuleFor(x => x.DriversLicenseNumber)
             .NotEmpty().WithMessage("Driver's license number is required.")
-            .Matches(@"^[\p{L}\p{N}]+$").WithMessage("Driver's license number can only contain letters and numbers.");
+            .Matches(@"^[\p{L}\p{N}]+(?:[ -]*[\p{L}\p{N}]+)*$").WithMessage("Driver's license number can only contain letters, numbers and dashes.");
 
         RuleFor(x => x.HireDate)
             .GreaterThanOrEqualTo(new DateOnly(2000, 1, 1))

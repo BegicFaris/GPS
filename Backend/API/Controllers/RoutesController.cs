@@ -3,6 +3,8 @@ using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using GPS.API.Dtos.RouteDtos;
 using Microsoft.AspNetCore.Authorization;
+using Stripe.Climate;
+using GPS.API.Services.ShiftDetailServices;
 
 namespace GPS.API.Controllers
 {
@@ -44,8 +46,7 @@ namespace GPS.API.Controllers
         public async Task<IActionResult> DeleteAllRoutesByLineIdAsync(int lineId, CancellationToken cancellationToken)
         {
             var success = await _routeService.DeleteAllRoutesByLineIdAsync(lineId, cancellationToken);
-            if (!success) return NotFound();
-            return NoContent();
+            return Ok(success);
         }
 
 
@@ -59,17 +60,38 @@ namespace GPS.API.Controllers
         }
         [Authorize(Roles = nameof(UserRole.Manager))]
         [HttpPost]
-        public async Task<IActionResult> CreateRoute(RouteCreateDto routeCreateDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateRoute(RouteCreateDto[] routeCreateDtos, CancellationToken cancellationToken)
         {
-            var route = new Data.Models.Route
+            if (routeCreateDtos == null || !routeCreateDtos.Any())
+                return BadRequest("Route details can not be empty!");
+
+
+            var routes = new List<Data.Models.Route>();
+            foreach (var routeCreateDto in routeCreateDtos)
             {
-                LineId = routeCreateDto.LineId,
-                StationId = routeCreateDto.StationId,
-                DistanceFromTheNextStation = routeCreateDto.DistanceFromTheNextStation,
-                Order = routeCreateDto.Order,
-            };
-            var createdRoute = await _routeService.CreateRouteAsync(route, cancellationToken);
-            return CreatedAtAction(nameof(GetRoute), new { id = createdRoute.Id }, createdRoute);
+
+                routes.Add(new Data.Models.Route
+                {
+                    LineId = routeCreateDto.LineId,
+                    StationId = routeCreateDto.StationId,
+                    DistanceFromTheNextStation = routeCreateDto.DistanceFromTheNextStation,
+                    Order = routeCreateDto.Order,
+                });
+            }
+
+            try
+            {
+                var createdRoutes = await _routeService.CreateRouteAsync(routes.ToArray(), cancellationToken);
+                return Ok(createdRoutes);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred.", details = ex.Message });
+            }
         }
 
 
@@ -78,7 +100,7 @@ namespace GPS.API.Controllers
         public async Task<IActionResult> UpdateRoute(int id, RouteUpdateDto routeUpdateDto, CancellationToken cancellationToken)
         {
             if (id != routeUpdateDto.Id) return BadRequest();
-            var existingRoute = await _routeService.GetRouteByIdAsync(id,cancellationToken);
+            var existingRoute = await _routeService.GetRouteByIdAsync(id, cancellationToken);
             if (existingRoute == null) return NotFound($"Route with Id:{id} not found!");
 
             if (routeUpdateDto.LineId != null)

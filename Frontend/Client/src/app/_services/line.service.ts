@@ -39,6 +39,7 @@ export class LineService {
   }
 
   createLine(line: any) {
+    line.completeDistance=line.completeDistance.toString();
     return this.http.post<Line>(this.baseUrl, line).pipe(
       catchError(error => {
         console.error('Error creating line:', error);
@@ -48,6 +49,7 @@ export class LineService {
   }
 
   updateLine(line: any) {
+    line.completeDistance=line.completeDistance.toString();
     return this.http.put<Line>(this.baseUrl + `/${line.id}`, line).pipe(
       catchError(error => {
         console.error('Error updating line:', error);

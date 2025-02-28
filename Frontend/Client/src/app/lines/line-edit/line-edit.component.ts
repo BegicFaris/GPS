@@ -6,11 +6,12 @@ import { NgIf } from '@angular/common';
 import { StationService } from '../../_services/station.service';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
+import { LineNameValidatorDirective } from '../../validators/line-name.validator';
 
 @Component({
   selector: 'app-line-edit',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,LineNameValidatorDirective],
   templateUrl: './line-edit.component.html',
   styleUrl: './line-edit.component.css'
 })

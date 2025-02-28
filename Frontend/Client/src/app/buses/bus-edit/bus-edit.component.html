@@ -1,35 +1,62 @@
 <div class="container mt-2">
-<h5 class="modal-title">Update bus data</h5>
-<form #updatebusForm="ngForm" (ngSubmit)="saveChanges()">
+    <h5 class="modal-title">Update bus data</h5>
+    <form #updatebusForm="ngForm" (ngSubmit)="saveChanges()">
 
-    <div class="mb-3">
-        <label class="form-label">Registration number</label>
-        <input id="registrationNumber" type="text" class="form-control" [(ngModel)]="busUpdate.registrationNumber" name="registrationNumber" required />
-    </div>
+        <div class="mb-3">
+            <label class="form-label">Registration number</label>
+            <input id="registrationNumber" type="text" class="form-control" [(ngModel)]="busUpdate.registrationNumber"
+                name="registrationNumber" #registrationNumber="ngModel"  required lettersNumbersDashes/>
+                @if(registrationNumber.invalid && (registrationNumber.dirty || registrationNumber.touched)) {
+                    @if(registrationNumber.errors?.['required']) {<div class="text-danger">Registration number is required.</div>}
+                    @if (registrationNumber.errors?.['lettersNumbersDashes']) {<div class="text-danger">Registration number can only contain letters,
+                      numbers, and dashes.</div> }
+                    }
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label">Manufacturer</label>
-        <input id="manufacturer" type="text" class="form-control" [(ngModel)]="busUpdate.manufacturer" name="manufacturer" required />
-    </div>
-    
-    <div class="mb-3">
-        <label class="form-label">Model</label>
-        <input id="model" type="text" class="form-control" [(ngModel)]="busUpdate.model" name="model" required />
-    </div>
+        <div class="mb-3">
+            <label class="form-label">Manufacturer</label>
+            <input type="text" name="manufacturer" class="form-control" required [(ngModel)]="busUpdate.manufacturer"
+              #manufacturer="ngModel" placeholder="Manufacturer">
+            @if(manufacturer.invalid && (manufacturer.dirty || manufacturer.touched)) {
+            @if(manufacturer.errors?.['required']) {<div class="text-danger">Manufacturer is required.</div>}
+            }
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label">Capacity</label>
-        <input id="capacity" type="text" class="form-control" [(ngModel)]="busUpdate.capacity" name="capacity" required />
-    </div>
+        <div class="mb-3">
+            <label class="form-label">Model</label>
+            <input type="text" name="model" class="form-control" required [(ngModel)]="busUpdate.model" #model="ngModel"
+              placeholder="Model">
+            @if(model.invalid && (model.dirty || model.touched)) {
+            @if(model.errors?.['required']) {<div class="text-danger">Model is required.</div>}
+            }
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label">Manufacture year</label>
-        <input id="manufactureYear" type="text" class="form-control" [(ngModel)]="busUpdate.manufactureYear" name="manufactureYear" required />
-    </div>
+        <div class="mb-3">
+            <label class="form-label">Capacity</label>
+            <input type="number" name="capacity" class="form-control" min="1" required [(ngModel)]="busUpdate.capacity"
+              #capacity="ngModel" placeholder="Capacity">
+            @if(capacity.invalid && (capacity.dirty || capacity.touched)) {
+            @if(capacity.errors?.['required']) {<div class="text-danger">Capacity is required.</div>}
+            @if (capacity.errors?.['min']) {<div class="text-danger">Capacity must be a positive number.</div>}
+            }
+        </div>
 
-    <div>
-        <td><button type="submit" class="btn btn-primary">Save changes</button></td>
-        <td><button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button></td>
-    </div>
-</form>
+        <div class="mb-3">
+            <label class="form-label">Manufacture year</label>
+            <input type="number" name="manufactureYear" class="form-control" required  min="1900"
+            [max]="currentYear" [(ngModel)]="busUpdate.manufactureYear"
+              #manufactureYear="ngModel" placeholder="Manufacture year">
+            @if(manufactureYear.invalid && (manufactureYear.dirty || manufactureYear.touched)) {
+            @if(manufactureYear.errors?.['required']) {<div class="text-danger">Manufacture year is required.</div>}
+            @if (manufactureYear.errors?.['min'] || manufactureYear.errors?.['max']) {
+            <div class="text-danger">Manufacture year must be between 1900 and {{ currentYear }}.</div>
+            }
+            }
+        </div>
+
+        <div>
+            <td><button type="submit" class="btn btn-primary">Save changes</button></td>
+            <td><button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button></td>
+        </div>
+    </form>
 </div>

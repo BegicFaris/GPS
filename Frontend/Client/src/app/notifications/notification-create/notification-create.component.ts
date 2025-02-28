@@ -9,14 +9,15 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { NotificationService } from '../../_services/notification.service';
 import { AccountService } from '../../_services/account.service';
 import { MyAppUserService } from '../../_services/my-app-user.service';
-import { formatDate } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
+import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
+import { DateValidatorDirective } from '../../validators/date.validator';
 
 
 @Component({
   selector: 'app-notification-create',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, LettersNumbersValidatorDirective],
   templateUrl: './notification-create.component.html',
   styleUrl: './notification-create.component.css'
 })
