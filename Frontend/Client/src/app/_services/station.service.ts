@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Station } from '../_models/station';
 
 @Injectable({
@@ -33,10 +33,18 @@ export class StationService {
     );
   }
   deleteStation(id: number) {
-    return this.http.delete(this.baseUrl + `/${id}`).pipe(
+    return this.http.delete(`${this.baseUrl}/${id}`).pipe(
       catchError(error => {
-        console.error('Error deleting station:', error);
-        return (error);
+        let errorMessage = 'An error occurred while deleting the station.';
+        
+        if (error.status === 404) {
+          errorMessage = 'Station not found.';
+        } else if (error.status === 400 && error.error?.message) {
+          errorMessage = error.error.message;
+        }
+  
+        console.error('Error deleting station:', errorMessage);
+        return throwError(() => new Error(errorMessage));
       })
     );
   }

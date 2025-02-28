@@ -72,9 +72,19 @@ namespace GPS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStation(int id, CancellationToken cancellationToken)
         {
-            var success = await _stationService.DeleteStationAsync(id, cancellationToken);
-            if (!success) return NotFound();
-            return NoContent();
+            try
+            {
+                await _stationService.DeleteStationAsync(id, cancellationToken);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

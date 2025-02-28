@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { ManagerService } from '../../_services/manager.service';
 import { CommonModule } from '@angular/common';
 import { StationService } from '../../_services/station.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-station-view',
@@ -23,6 +24,7 @@ export class StationViewComponent {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
+   private snackBar=inject(MatSnackBar);
   stations: Station[] = [];
 
   ngOnInit() {
@@ -49,7 +51,12 @@ export class StationViewComponent {
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
-          console.error('Error deleting station', error);
+          this.snackBar.open(error, 'Close', {
+            panelClass: ['.error-snackbar'],
+            duration: 3000, // Duration in milliseconds
+            horizontalPosition: 'center', // Can be 'start', 'center', 'end', 'left', 'right'
+            verticalPosition: 'bottom', // Can be 'top' or 'bottom'
+          });
         },
       });
     }

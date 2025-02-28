@@ -37,11 +37,9 @@ namespace GPS.API.Services.DriverServices
 
         public async Task<bool> DeleteDriverAsync(int id, CancellationToken cancellationToken)
         {
-            var driver = await _context.Drivers.SingleOrDefaultAsync(x=>x.Id==id,cancellationToken);  // Added cancellationToken here
+            var driver = await _context.Drivers.SingleOrDefaultAsync(x=>x.Id==id,cancellationToken); 
             if (driver == null) throw new KeyNotFoundException("Driver not found."); 
 
-            bool hasShifts = await _context.Shifts.AnyAsync(s => s.DriverId == id,cancellationToken);
-            if (hasShifts) throw new InvalidOperationException("Cannot delete driver because they are assigned to a shift."); ;
 
             _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync(cancellationToken);

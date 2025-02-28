@@ -17,13 +17,28 @@ namespace GPS.API.Services.TicketInfoServices
             _context = context;
         }
 
-        public async Task<IEnumerable<TicketInfo>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<TicketInfo>> GetAllAsync(CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            return await _context.TicketInfos
-                .Include(t => t.Zone)
-                .Include(t => t.TicketType)
-                .ToListAsync(cancellationToken);
+            var query = _context.TicketInfos.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<TicketInfo>(); 
+                }
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+            
+            query = query.Include(t => t.Zone)
+                         .Include(t => t.TicketType);
+
+            return await query.ToListAsync(cancellationToken);
         }
+
 
         public async Task<TicketInfo?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -63,13 +78,27 @@ namespace GPS.API.Services.TicketInfoServices
             return true;
         }
 
-        public async Task<IEnumerable<TicketInfo>> GetByTicketTypeIdAsync(int ticketTypeId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TicketInfo>> GetByTicketTypeIdAsync(int ticketTypeId, CancellationToken cancellationToken, bool includeDeleted=false)
         {
-            return await _context.TicketInfos
-                .Include(t => t.Zone)
-                .Include(t => t.TicketType)
-                .Where(t => t.TicketTypeId == ticketTypeId)
-                .ToListAsync(cancellationToken);
+            var query = _context.TicketInfos.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<TicketInfo>();
+                }
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query.Include(t => t.Zone)
+                         .Include(t => t.TicketType)
+                         .Where(t => t.TicketTypeId == ticketTypeId);
+
+            return await query.ToListAsync(cancellationToken);
         }
     }
 }

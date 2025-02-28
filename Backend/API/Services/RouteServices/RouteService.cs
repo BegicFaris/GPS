@@ -19,11 +19,29 @@ namespace GPS.API.Services.RouteServices
             _context = context;
         }
 
-        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesAsync(CancellationToken cancellationToken) =>
-             await _context.Routes
+        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesAsync(CancellationToken cancellationToken, bool includeDeleted = false)
+        {
+            var query = _context.Routes.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();  
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Data.Models.Route>();
+                }
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query
                 .Include(x => x.Line)
-                .Include(x => x.Station)
-                .ToListAsync(cancellationToken);
+                .Include(x => x.Station);
+
+            return await query.ToListAsync(cancellationToken);
+
+        }
+
 
         public async Task<Data.Models.Route?> GetRouteByIdAsync(int id, CancellationToken cancellationToken) =>
              await _context.Routes
@@ -31,14 +49,28 @@ namespace GPS.API.Services.RouteServices
                 .Include(x => x.Station)
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesByLineIdAsync(int lineId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Data.Models.Route>> GetAllRoutesByLineIdAsync(int lineId, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            return await _context.Routes
+            var query = _context.Routes.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Data.Models.Route>();
+                }
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query
                 .Include(x => x.Line)
                 .Include(x => x.Station)
                 .Where(x => x.LineId == lineId)
-                .OrderBy(x => x.Order)
-                .ToListAsync(cancellationToken);
+                .OrderBy(x => x.Order);
+
+            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task<int> GetStationCountByLineIdAsync(int lineId, CancellationToken cancellationToken)

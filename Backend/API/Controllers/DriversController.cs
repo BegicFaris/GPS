@@ -99,10 +99,6 @@ namespace GPS.API.Controllers
                 var success = await _driverService.DeleteDriverAsync(id, cancellationToken);
                 return NoContent();
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new { message = ex.Message });

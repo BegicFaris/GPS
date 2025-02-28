@@ -1,6 +1,7 @@
 ﻿using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using iText.Commons.Actions.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,20 +17,54 @@ namespace GPS.API.Services.FavoriteLineService
             this.context = context;
         }
 
-        public async Task<IEnumerable<FavoriteLine>> GetAllFavoriteLinesAsync(CancellationToken cancellationToken) =>
-            await context.FavoriteLines.Include(x => x.User).Include(x => x.Line).ToListAsync(cancellationToken);
+        public async Task<IEnumerable<FavoriteLine>> GetAllFavoriteLinesAsync(CancellationToken cancellationToken, bool includeDeleted = false)
+        {
+            var query = context.FavoriteLines.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<FavoriteLine>();
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query.Include(x => x.User).Include(x => x.Line);
+
+            return await query.ToListAsync(cancellationToken);
+        }
 
         public async Task<FavoriteLine?> GetFavoriteLineByIdAsync(int id, CancellationToken cancellationToken) =>
             await context.FavoriteLines.Include(x => x.User).Include(x => x.Line).SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        public async Task<IEnumerable<FavoriteLine>> GetFavoriteLineByUserIdAsync(int userId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<FavoriteLine>> GetFavoriteLineByUserIdAsync(int userId, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            var favLines = await context.FavoriteLines.Include(x => x.Line).Where(x => x.UserId == userId).ToListAsync(cancellationToken);
+            var query = context.FavoriteLines.AsQueryable();
+
+            if (!includeDeleted)
+            {
+                query = query.Where(x => x.Line != null && !x.Line.IsDeleted);
+            }
+
+            var currentTenantId = context.CurrentTenantID;
+            if (!string.IsNullOrEmpty(currentTenantId))
+            {
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            var favLines = await query.Include(x => x.Line)
+                                       .Where(x => x.UserId == userId)
+                                       .ToListAsync(cancellationToken);
+
             return favLines
-                .OrderBy(favLine => ExtractLeadingNumber(favLine?.Line?.Name?? ""))
+                .OrderBy(favLine => ExtractLeadingNumber(favLine?.Line?.Name ?? ""))
                 .ThenBy(favLine => favLine?.Line?.Name ?? "");
         }
-
         private int? ExtractLeadingNumber(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;

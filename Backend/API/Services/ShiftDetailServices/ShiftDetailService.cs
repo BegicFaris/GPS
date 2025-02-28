@@ -2,6 +2,7 @@
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using GPS.API.Services.ShiftServices;
+using iText.Commons.Actions.Contexts;
 using iText.IO.Font.Constants;
 using iText.IO.Image;
 using iText.Kernel.Font;
@@ -21,18 +22,53 @@ namespace GPS.API.Services.ShiftDetailServices
 {
     public class ShiftDetailService(ApplicationDbContext context, IShiftService _shiftService) : IShiftDetailService
     {
-        public async Task<IEnumerable<ShiftDetail>> GetAllShiftDetailsAsync(CancellationToken cancellationToken)
-            => await context.ShiftDetails
-                .Include(x => x.Shift)
-                .Include(x => x.Line)
-                .ToListAsync(cancellationToken);
+        public async Task<IEnumerable<ShiftDetail>> GetAllShiftDetailsAsync(CancellationToken cancellationToken, bool includeDeleted = false)
+        {
+            var query = context.ShiftDetails.AsQueryable();
 
-        public async Task<IEnumerable<ShiftDetail>> GetShiftDetailsByShiftIdAsync(int shiftId, CancellationToken cancellationToken)
-            => await context.ShiftDetails
-                .Include(x => x.Shift)
-                .Include(x => x.Line)
-                .Where(x => x.ShiftId == shiftId)
-                .ToListAsync(cancellationToken);
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<ShiftDetail>();
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query.Include(x => x.Shift)
+                         .Include(x => x.Line);
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
+
+        public async Task<IEnumerable<ShiftDetail>> GetShiftDetailsByShiftIdAsync(int shiftId, CancellationToken cancellationToken, bool includeDeleted = false)
+        {
+            var query = context.ShiftDetails.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<ShiftDetail>();
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query.Include(x => x.Shift)
+                         .Include(x => x.Line)
+                         .Where(x => x.ShiftId == shiftId);
+
+            return await query.ToListAsync(cancellationToken);
+        }
 
         public async Task<ShiftDetail?> GetShiftDetailByIdAsync(int id, CancellationToken cancellationToken)
             => await context.ShiftDetails
@@ -94,7 +130,7 @@ namespace GPS.API.Services.ShiftDetailServices
                 }
                 else
                 {
-                    if (orderedShiftDetails[i].ShiftDetailStartingTime < orderedShiftDetails[i-1].ShiftDetailEndingTime) return false;
+                    if (orderedShiftDetails[i].ShiftDetailStartingTime < orderedShiftDetails[i - 1].ShiftDetailEndingTime) return false;
                 }
                 if (i == orderedShiftDetails.Length - 1)
                     if (orderedShiftDetails[i].ShiftDetailEndingTime != shift.ShiftEndingTime) return false;

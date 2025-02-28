@@ -1,6 +1,7 @@
 ﻿using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
+using GPS.API.Services.TenantServices;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,9 +16,29 @@ namespace GPS.API.Services.ShiftServices
         {
             _context = context;
         }
+        public async Task<IEnumerable<Shift>> GetAllShiftsAsync(CancellationToken cancellationToken, bool includeDeleted = false)
+        {
+            var query = _context.Shifts.AsQueryable();
 
-        public async Task<IEnumerable<Shift>> GetAllShiftsAsync(CancellationToken cancellationToken) =>
-            await _context.Shifts.Include(x => x.Bus).Include(x => x.Driver).ToListAsync(cancellationToken);
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Shift>();
+                }
+                query=query.Where(x=>x.TenantId == currentTenantId);
+            }
+
+            query = query.Include(x => x.Bus)
+                         .Include(x => x.Driver);
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
+
+
 
         public async Task<Shift?> GetShiftByIdAsync(int id, CancellationToken cancellationToken) =>
             await _context.Shifts.Include(x => x.Bus).Include(x => x.Driver).SingleOrDefaultAsync(x => x.Id == id, cancellationToken);

@@ -4,7 +4,7 @@ using GPS.API.Interfaces;
 
 namespace GPS.API.Data.Models
 {
-    public class  Shift:IMustHaveTenant
+    public class  Shift:IMustHaveTenant,ISoftDeletable
     {
         [Key]
         public int Id { get; set; }
@@ -17,6 +17,8 @@ namespace GPS.API.Data.Models
         public required DateOnly ShiftDate { get; set; }
         public required TimeOnly ShiftStartingTime { get; set; }
         public required TimeOnly ShiftEndingTime { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedDate { get; set; }
         public string? TenantId { get; set; }
     }
 }

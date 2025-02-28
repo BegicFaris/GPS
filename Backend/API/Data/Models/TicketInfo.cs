@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GPS.API.Data.Models
 {
-    public class TicketInfo:IMustHaveTenant
+    public class TicketInfo:IMustHaveTenant, ISoftDeletable
     {
         [Key]
         public int Id { get; set; }
@@ -15,6 +15,8 @@ namespace GPS.API.Data.Models
         [ForeignKey(nameof(TicketType))]
         public required int TicketTypeId { get; set; }
         public TicketType? TicketType { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedDate { get; set; }
         public string? TenantId { get; set; }
 
     }

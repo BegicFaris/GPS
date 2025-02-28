@@ -3,6 +3,7 @@ using GPS.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -67,29 +68,30 @@ namespace GPS.API.Data.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
+
             modelBuilder.Entity<MyAppUser>().ToTable("MyAppUsers");
             modelBuilder.Entity<Passenger>().ToTable("Passengers");
             modelBuilder.Entity<Driver>().ToTable("Drivers");
             modelBuilder.Entity<Manager>().ToTable("Managers");
             //Ovo treba implementirati za svaku klasu koja koristi tenant
             //modelBuilder.Entity<NekaKlasa>().HasQueryFilter(a => a.TenantId == CurrentTenantID);
-            modelBuilder.Entity<MyAppUser>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<MyAppUser>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<ShiftDetail>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
-            modelBuilder.Entity<Bus>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
-            modelBuilder.Entity<Discount>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<Bus>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
+            modelBuilder.Entity<Discount>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<FavoriteLine>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Feedback>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
-            modelBuilder.Entity<Line>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<Line>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<Notification>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
-            modelBuilder.Entity<NotificationType>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<NotificationType>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<Models.Route>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Schedule>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
-            modelBuilder.Entity<Shift>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<Shift>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<Station>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Ticket>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
-            modelBuilder.Entity<TicketType>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<TicketType>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<Zone>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
-            modelBuilder.Entity<TicketInfo>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            modelBuilder.Entity<TicketInfo>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<Gallery>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
 
 
@@ -123,7 +125,7 @@ namespace GPS.API.Data.DbContexts
 
             using var hmac = new HMACSHA512();
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1990, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, Email = "1", FirstName = "Adi", HireDate = new DateOnly(2024, 12, 1), LastName = "Gosto", Address = "123 Main Street", License = "1123123", TenantId = "mostar",WorkingHoursInAWeek=21.2f, TwoFactorEnabled = false },
+                new Driver { Id = 1, DriversLicenseNumber = "a1435affaa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1990, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, Email = "1", FirstName = "Adi", HireDate = new DateOnly(2024, 12, 1), LastName = "Gosto", Address = "123 Main Street", License = "1123123", TenantId = "mostar", WorkingHoursInAWeek = 21.2f, TwoFactorEnabled = false },
                 new Driver { Id = 2, DriversLicenseNumber = "adasd43aa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1991, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, Email = "2@gmail.com", FirstName = "Nedim", HireDate = new DateOnly(2024, 12, 1), LastName = "Jugo", Address = "123 Main Street", License = "11jdfghsdjg23", TenantId = "mostar", WorkingHoursInAWeek = 21.2f, TwoFactorEnabled = false },
                 new Driver { Id = 3, DriversLicenseNumber = "a1435affaa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1992, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, Email = "3@gmail.com", FirstName = "Tarik", HireDate = new DateOnly(2024, 12, 1), LastName = "Kreso", Address = "123 Main Street", License = "1123123", TenantId = "mostar", WorkingHoursInAWeek = 21.2f, TwoFactorEnabled = false },
                 new Driver { Id = 4, DriversLicenseNumber = "adasd43aa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1993, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, Email = "4@gmail.com", FirstName = "Kebir", HireDate = new DateOnly(2024, 12, 1), LastName = "Idrizovic", Address = "123 Main Street", License = "11jdfghsdjg23", TenantId = "mostar", WorkingHoursInAWeek = 21.2f, TwoFactorEnabled = false },
@@ -131,7 +133,7 @@ namespace GPS.API.Data.DbContexts
                 new Driver { Id = 6, DriversLicenseNumber = "adasd43aa", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1995, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, Email = "6@gmail.com", FirstName = "Haris", HireDate = new DateOnly(2024, 12, 1), LastName = "Boskailo", Address = "123 Main Street", License = "11jdfghsdjg23", TenantId = "mostar", WorkingHoursInAWeek = 21.2f, TwoFactorEnabled = false }
                 );
             modelBuilder.Entity<Manager>().HasData(
-                new Manager { Id = 7, Email = "7", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1996, 5, 14), RegistrationDate = DateTime.UtcNow,PasswordSalt = hmac.Key, FirstName = "Adil", HireDate = new DateOnly(2024, 12, 1), LastName = "Joldic", Address = "123 Main Street",Department = "HR", ManagerLevel = "1", TenantId = "mostar", TwoFactorEnabled = false },
+                new Manager { Id = 7, Email = "7", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1996, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, FirstName = "Adil", HireDate = new DateOnly(2024, 12, 1), LastName = "Joldic", Address = "123 Main Street", Department = "HR", ManagerLevel = "1", TenantId = "mostar", TwoFactorEnabled = false },
                 new Manager { Id = 8, Email = "8@gmail.com", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1997, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, FirstName = "Denis", HireDate = new DateOnly(2024, 12, 1), LastName = "Music", Address = "123 Main Street", Department = "IT", ManagerLevel = "2", TenantId = "mostar", TwoFactorEnabled = false },
                 new Manager { Id = 9, Email = "9@gmail.com", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1998, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, FirstName = "Benjamina", HireDate = new DateOnly(2024, 12, 1), LastName = "Karic", Address = "123 Main Street", Department = "HR", ManagerLevel = "1", TenantId = "mostar", TwoFactorEnabled = false },
                 new Manager { Id = 10, Email = "10@gmail.com", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), BirthDate = new DateOnly(1999, 5, 14), RegistrationDate = DateTime.UtcNow, PasswordSalt = hmac.Key, FirstName = "Ivo", HireDate = new DateOnly(2024, 12, 1), LastName = "Andric", Address = "123 Main Street", Department = "IT", ManagerLevel = "2", TenantId = "mostar", TwoFactorEnabled = false },
@@ -147,9 +149,9 @@ namespace GPS.API.Data.DbContexts
                 new Passenger { Id = 18, Email = "18@gmail.com", FirstName = "Kemal", PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("123")), PasswordSalt = hmac.Key, LastName = "Monteno", TenantId = "mostar", TwoFactorEnabled = false }
                 );
             modelBuilder.Entity<Feedback>().HasData(
-                new Feedback { Id = 1,Comment="Good service", Date = new DateTime(2024, 1, 1), UserId = 7, Rating = 5, TenantId = "mostar" },
+                new Feedback { Id = 1, Comment = "Good service", Date = new DateTime(2024, 1, 1), UserId = 7, Rating = 5, TenantId = "mostar" },
                 new Feedback { Id = 2, Comment = "Mid service", Date = new DateTime(2024, 1, 1), UserId = 8, Rating = 3, TenantId = "mostar" },
-                new Feedback { Id = 3, Comment = "Good service",Date = new DateTime(2024, 1, 1), UserId = 8, Rating = 5, TenantId = "mostar" },
+                new Feedback { Id = 3, Comment = "Good service", Date = new DateTime(2024, 1, 1), UserId = 8, Rating = 5, TenantId = "mostar" },
                 new Feedback { Id = 4, Comment = "Mid service", Date = new DateTime(2024, 1, 1), UserId = 10, Rating = 3, TenantId = "mostar" },
                 new Feedback { Id = 5, Comment = "Good service", Date = new DateTime(2024, 1, 1), UserId = 11, Rating = 5, TenantId = "mostar" },
                 new Feedback { Id = 6, Comment = "Mid service", Date = new DateTime(2024, 1, 1), UserId = 12, Rating = 3, TenantId = "mostar" }
@@ -401,37 +403,46 @@ namespace GPS.API.Data.DbContexts
         //every time we save changes we also save the Id of the current tenant for every entity that implements IMustHaveTenant
         public override int SaveChanges()
         {
-
-            foreach (var entry in ChangeTracker.Entries<IMustHaveTenant>().ToList())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.TenantId = CurrentTenantID;
-                        break;
-
-                }
-
-            }
+            ApplySoftDeleteLogic();
+            ApplyTenantLogic();
 
             var result = base.SaveChanges();
             return result;
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            ApplySoftDeleteLogic();
+            ApplyTenantLogic();
+            var result = await base.SaveChangesAsync(cancellationToken);
+            return result;
+        }
+
+        private void ApplyTenantLogic()
+        {
             foreach (var entry in ChangeTracker.Entries<IMustHaveTenant>().ToList())
             {
                 switch (entry.State)
                 {
                     case EntityState.Added:
+                        entry.Entity.TenantId = CurrentTenantID;
+                        break;
                     case EntityState.Modified:
                         entry.Entity.TenantId = CurrentTenantID;
                         break;
                 }
             }
-
-            var result = await base.SaveChangesAsync(cancellationToken);
-            return result;
+        }
+        private void ApplySoftDeleteLogic()
+        {
+            foreach (var entry in ChangeTracker.Entries<ISoftDeletable>().ToList())
+            {
+                if (entry.State == EntityState.Deleted)
+                {
+                    entry.State = EntityState.Modified;
+                    entry.Entity.IsDeleted = true;
+                    entry.Entity.DeletedDate = DateTime.UtcNow;
+                }
+            }
         }
 
     }

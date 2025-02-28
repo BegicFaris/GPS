@@ -7,17 +7,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace GPS.API.Services.ScheduleServices
 {
     public class ScheduleService(ApplicationDbContext _context) : IScheduleService
     {
-        public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync(CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            return await _context.Schedules
-                .Include(x => x.Line)
-                .OrderBy(x => x.DepartureTime)
-                .ToListAsync(cancellationToken);
+            var query = _context.Schedules.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Schedule>();
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            return await query.Include(x => x.Line)
+                              .OrderBy(x => x.DepartureTime)
+                              .ToListAsync(cancellationToken);
         }
 
         public async Task<Schedule?> GetScheduleByIdAsync(int id, CancellationToken cancellationToken)
@@ -50,13 +65,37 @@ namespace GPS.API.Services.ScheduleServices
             return true;
         }
 
-        public async Task<IEnumerable<Schedule>> GetAllSchedulesByLineIdAsync(int lineId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Schedule>> GetAllSchedulesByLineIdAsync(int lineId, CancellationToken cancellationToken, bool includeDeleted=false)
         {
-            var line = await _context.Lines.FirstOrDefaultAsync(x => x.Id == lineId, cancellationToken);
+
+            var scheduleQuery = _context.Schedules.AsQueryable();
+            var lineQuery = _context.Lines.AsQueryable();
+
+
+            if (includeDeleted)
+            {
+                scheduleQuery = scheduleQuery.IgnoreQueryFilters();
+                lineQuery = lineQuery.IgnoreQueryFilters();
+
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Schedule>();
+                }
+
+                scheduleQuery = scheduleQuery.Where(x => x.TenantId == currentTenantId);
+                lineQuery = lineQuery.Where(x => x.TenantId == currentTenantId);
+            }
+
+            var line = await lineQuery.SingleOrDefaultAsync(x=>x.Id == lineId, cancellationToken);
             if (line == null)
-                throw new Exception("No line found");
-            return await _context.Schedules
-                .Where(x => x.LineId == lineId)
+                throw new KeyNotFoundException("No line found");
+
+
+
+            return await scheduleQuery
+                .Include(x => x.Line)
+                .Where(x=>x.LineId == lineId)
                 .OrderBy(x => x.DepartureTime)
                 .ToListAsync(cancellationToken);
         }

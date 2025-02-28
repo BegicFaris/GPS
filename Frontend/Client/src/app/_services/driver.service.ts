@@ -19,7 +19,7 @@ export class DriverService {
     return this.http.get<Driver>(this.baseUrl + `/${id}`).pipe(
       catchError(error => {
         console.error('Error fetching driver:', error);
-        return (error);
+        return throwError(() => error);
       })
     );
   }
@@ -28,7 +28,7 @@ export class DriverService {
     return this.http.post<Driver>(this.baseUrl, driver).pipe(
       catchError(error => {
         console.error('Error creating driver:', error);
-        return (error);
+        return throwError(() => error);
       })
     );
   }
@@ -37,15 +37,16 @@ export class DriverService {
     return this.http.put<Driver>(this.baseUrl + `/${driver.id}`, driver).pipe(
       catchError(error => {
         console.error('Error updating driver:', error);
-        return (error);
+        return throwError(() => error);
       })
     );
   }
 
-  deleteDriver(id: number) : Observable<any> {
+  deleteDriver(id: number): Observable<any> {
     return this.http.delete(this.baseUrl + `/${id}`).pipe(
       catchError(error => {
-        return throwError(() => new Error(error.error?.message || 'An error occurred'));
+        console.error('Error deleting driver:', error);
+        return throwError(() => error);
       })
     );
   }

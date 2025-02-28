@@ -6,6 +6,7 @@ using GPS.API.Services.EmailServices;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace GPS.API.Services.NotificationServices
 {
@@ -20,10 +21,30 @@ namespace GPS.API.Services.NotificationServices
             _emailService = emailService;
         }
 
-        public async Task<IEnumerable<Notification>> GetAllNotificationsAsync(CancellationToken cancellationToken = default) =>
-            await _context.Notifications.Include(x => x.NotificationType).Include(x => x.Line).ToListAsync(cancellationToken);
+        public async Task<IEnumerable<Notification>> GetAllNotificationsAsync(CancellationToken cancellationToken, bool includeDeleted = false)
+        {
+            var query = _context.Notifications.AsQueryable();
 
-        public async Task<IEnumerable<Notification>> GetRecentNotificationsAsync(string tenantId, int? hours, CancellationToken cancellationToken = default)
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Notification>();
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query.Include(x => x.NotificationType)
+                         .Include(x => x.Line);
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<Notification>> GetRecentNotificationsAsync(string tenantId, int? hours, CancellationToken cancellationToken)
         {
             int h = hours ?? 48;
 
@@ -35,11 +56,11 @@ namespace GPS.API.Services.NotificationServices
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Notification?> GetNotificationByIdAsync(int id, CancellationToken cancellationToken = default) =>
+        public async Task<Notification?> GetNotificationByIdAsync(int id, CancellationToken cancellationToken) =>
           await _context.Notifications.Include(x => x.NotificationType).Include(x => x.Line).SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
-           
 
-        public async Task<Notification> CreateNotificationAsync(Notification notification, CancellationToken cancellationToken = default)
+
+        public async Task<Notification> CreateNotificationAsync(Notification notification, CancellationToken cancellationToken)
         {
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync(cancellationToken);
@@ -68,20 +89,34 @@ namespace GPS.API.Services.NotificationServices
             }
         }
 
-        public async Task<PagedResult<Notification>> GetNotificationsAsync(int page, int pageSize, CancellationToken cancellationToken = default)
+        public async Task<PagedResult<Notification>> GetNotificationsAsync(int page, int pageSize, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            // Ensure page starts from 1
             if (page < 1) page = 1;
 
             var result = new PagedResult<Notification>();
 
-            // Get total count for pagination
-            result.TotalCount = await _context.Notifications
+
+            var query = _context.Notifications.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new PagedResult<Notification>();
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+
+            result.TotalCount = await query
                 .OrderByDescending(n => n.CreationDate)
                 .CountAsync(cancellationToken);
 
-            // Get paginated items
-            result.Items = await _context.Notifications
+            result.Items = await query
                 .OrderByDescending(n => n.CreationDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -93,16 +128,16 @@ namespace GPS.API.Services.NotificationServices
             return result;
         }
 
-        public async Task<Notification> UpdateNotificationAsync(Notification notification, CancellationToken cancellationToken = default)
+        public async Task<Notification> UpdateNotificationAsync(Notification notification, CancellationToken cancellationToken)
         {
             _context.Notifications.Update(notification);
             await _context.SaveChangesAsync(cancellationToken);
             return notification;
         }
 
-        public async Task<bool> DeleteNotificationAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteNotificationAsync(int id, CancellationToken cancellationToken)
         {
-            var notification = await _context.Notifications.FindAsync(new object[] { id }, cancellationToken);
+            var notification = await _context.Notifications.SingleOrDefaultAsync(x => x.Id == id);
             if (notification == null) return false;
             _context.Notifications.Remove(notification);
             await _context.SaveChangesAsync(cancellationToken);

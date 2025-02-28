@@ -17,29 +17,29 @@ namespace GPS.API.Services.ManagerServices
             _context = context;
         }
 
-        public async Task<IEnumerable<Manager>> GetAllManagersAsync(CancellationToken cancellationToken = default) =>
+        public async Task<IEnumerable<Manager>> GetAllManagersAsync(CancellationToken cancellationToken) =>
             await _context.Managers.ToListAsync(cancellationToken);
 
-        public async Task<Manager?> GetManagerByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Manager?> GetManagerByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _context.Managers.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<Manager> CreateManagerAsync(Manager manager, CancellationToken cancellationToken = default)
+        public async Task<Manager> CreateManagerAsync(Manager manager, CancellationToken cancellationToken)
         {
             _context.Managers.Add(manager);
             await _context.SaveChangesAsync(cancellationToken);
             return manager;
         }
 
-        public async Task<Manager> UpdateManagerAsync(Manager manager, CancellationToken cancellationToken = default)
+        public async Task<Manager> UpdateManagerAsync(Manager manager, CancellationToken cancellationToken)
         {
             _context.Managers.Update(manager);
             await _context.SaveChangesAsync(cancellationToken);
             return manager;
         }
 
-        public async Task<bool> DeleteManagerAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<bool> DeleteManagerAsync(int id, CancellationToken cancellationToken)
         {
             var manager = await _context.Managers.FindAsync(new object[] { id }, cancellationToken);
             if (manager == null) return false;

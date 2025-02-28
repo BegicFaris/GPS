@@ -6,7 +6,7 @@ using GPS.API.Interfaces;
 namespace GPS.API.Data.Models
 {
     [Table("MyAppUsers")]
-    public abstract class MyAppUser  : IMustHaveTenant
+    public abstract class MyAppUser  : IMustHaveTenant,ISoftDeletable
     {
         [Key]
         public int Id { get; set; }
@@ -22,6 +22,8 @@ namespace GPS.API.Data.Models
         public byte[]? Image { get; set; }
         public string? Address { get; set; }
         public bool? Status { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedDate { get; set; }
         public string? TenantId { get; set; }
         public string? ResetCode { get; set; }
         public DateTime? ResetCodeExpiration { get; set; }

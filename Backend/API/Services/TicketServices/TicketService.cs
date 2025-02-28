@@ -24,12 +24,27 @@ namespace GPS.API.Services.TicketServices
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Ticket>> GetAllTicketsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Ticket>> GetAllTicketsAsync(CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            return await _context.Tickets
-                .Include(x => x.TicketInfo)
-                .Include(x => x.User)
-                .ToListAsync(cancellationToken);
+            var query = _context.Tickets.AsQueryable();
+
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
+
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Ticket>(); 
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query.Include(x => x.TicketInfo)
+                         .Include(x => x.User);
+
+            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task<object> GetTicketsOverTimeAsync(CancellationToken cancellationToken)
@@ -57,21 +72,35 @@ namespace GPS.API.Services.TicketServices
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<List<Ticket>> GetAllTicketsForUserEmail(string email, CancellationToken cancellationToken)
+        public async Task<List<Ticket>> GetAllTicketsForUserEmail(string email, CancellationToken cancellationToken, bool includeDeleted)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
                 throw new ArgumentException("Email cannot be null or empty", nameof(email));
             }
+            var query = _context.Tickets.AsQueryable();
 
+            if (includeDeleted)
+            {
+                query = query.IgnoreQueryFilters();
 
-            return await _context.Tickets
+                var currentTenantId = _context.CurrentTenantID;
+                if (string.IsNullOrEmpty(currentTenantId))
+                {
+                    return new List<Ticket>();
+                }
+
+                query = query.Where(x => x.TenantId == currentTenantId);
+            }
+
+            query = query
                 .Include(x => x.TicketInfo)
                 .Include(x => x.TicketInfo != null ? x.TicketInfo.Zone : null)
                 .Include(x => x.TicketInfo != null ? x.TicketInfo.Zone : null)
                 .Include(x => x.User)
-                .Where(t => t.User != null && t.User.Email == email)
-                .ToListAsync(cancellationToken);
+                .Where(t => t.User != null && t.User.Email == email);
+
+            return await query.ToListAsync(cancellationToken);
         }
 
         public async Task<Ticket> CreateTicketAsync(Ticket ticket, CancellationToken cancellationToken)

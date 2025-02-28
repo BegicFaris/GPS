@@ -17,8 +17,8 @@ namespace GPS.API.Controllers
 
         [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet]
-        public async Task<IActionResult> GetAllShifts(CancellationToken cancellationToken) =>
-            Ok(await _shiftService.GetAllShiftsAsync(cancellationToken));
+        public async Task<IActionResult> GetAllShifts(CancellationToken cancellationToken, bool showDeleted=false) =>
+            Ok(await _shiftService.GetAllShiftsAsync(cancellationToken, showDeleted));
 
         [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet("{id}")]
