@@ -7,7 +7,7 @@
             <label class="form-label">Upload Image</label>
 
             @if (imagePreview) {
-                <div class="mt-3" style="border: 2px solid lightgray; padding: 10px; border-radius: 5px;"  (click)="onImageClick()">
+                <div class="mt-3" style="border: 2px solid lightgray; padding: 10px; border-radius: 5px;" (dragover)="onDragOver($event)" (drop)="onDrop($event)" (click)="onImageClick()">
                     <img [src]="imagePreview" alt="Image Preview" class="img-thumbnail w-100" style="max-height: 75%; object-fit: contain;">
                 </div>
             } @else {

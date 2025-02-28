@@ -134,6 +134,7 @@ onDrop(event: DragEvent): void {
 
   if (file && file.type.startsWith('image/')) {
     // Set the file name to the file input
+    this.clearFileInput();
     this.fileName = file.name;
 
     const reader = new FileReader();
@@ -155,6 +156,7 @@ onDrop(event: DragEvent): void {
   clearFileInput(): void {
     this.fileInput.nativeElement.value = '';
     this.notificationCreate.image = null;
+    this.imagePreview = ''; 
   }
 
 

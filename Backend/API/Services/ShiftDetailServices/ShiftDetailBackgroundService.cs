@@ -34,7 +34,8 @@ namespace GPS.API.Services.ShiftDetailServices
 
                 var delay = nextRun - now;
                 _logger.LogInformation($"Next run at {nextRun}. Waiting for {delay}.");
-
+                
+                
                 try
                 {
                     await Task.Delay(delay, stoppingToken);
