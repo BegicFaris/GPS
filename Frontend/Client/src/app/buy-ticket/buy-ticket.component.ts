@@ -55,7 +55,6 @@ export class BuyTicketComponent implements OnInit {
     this.ticketTypeService.getAll().subscribe(
       types => {
         this.ticketTypes = types
-        console.log(types);
       }
       ,
       error => console.error('Error loading ticket types:', error)

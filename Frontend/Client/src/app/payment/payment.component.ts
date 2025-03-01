@@ -44,7 +44,6 @@ export class PaymentComponent implements OnInit{
     });
     this.email = this.accountService.getUserEmail();
     this.loadUserDiscount();
-    console.log(this.userDiscount);
   }
 
   loadUserDiscount() {

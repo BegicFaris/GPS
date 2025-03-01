@@ -127,7 +127,6 @@ export class ScheduleComponent {
         this.myAppUserService.getMyAppUserByEmail(this.accountService.getUserEmail())
       );
       this.currentUserId = user.id;
-      console.log(this.currentUserId);
       return true;
     } catch (error) {
       console.error('Failed to set current user ID:', error);
@@ -148,9 +147,7 @@ export class ScheduleComponent {
   async LoadFavoriteLines() {
     if (this.currentUserId != null) {
       try {
-        console.log("Getting favorite lines: " + this.currentUserId);
         const data = await firstValueFrom(this.favoriteLineService.GetFavoriteLineByUserId(this.currentUserId));
-        console.log("Updated favorite lines:", data);  // Log the data received
         this.favoriteLines = data;
       } catch (error) {
         console.error('Error loading favorite lines', error);
