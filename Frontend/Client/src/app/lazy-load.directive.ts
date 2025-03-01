@@ -68,7 +68,6 @@ export class LazyLoadDirective implements OnInit, OnDestroy {
 
   private loadImage(img: HTMLImageElement) {
     if (img.src !== this.appLazyLoad) {
-      console.log(`Lazy loading image: ${this.appLazyLoad}`);
       this.renderer.setAttribute(img, 'src', this.appLazyLoad);
       this.loadedImages.add(img); // Mark as loaded
     }
