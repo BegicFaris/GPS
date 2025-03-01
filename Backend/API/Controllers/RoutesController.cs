@@ -20,15 +20,15 @@ namespace GPS.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllRoutes(CancellationToken cancellationToken) =>
-            Ok(await _routeService.GetAllRoutesAsync(cancellationToken));
+        public async Task<IActionResult> GetAllRoutes(CancellationToken cancellationToken, bool includeDeleted = false) =>
+            Ok(await _routeService.GetAllRoutesAsync(cancellationToken, includeDeleted));
 
 
         [Authorize]
         [HttpGet("line/{lineId}")]
-        public async Task<IActionResult> GetAllRoutesByLineId(int lineId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllRoutesByLineId(int lineId, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            return Ok(await _routeService.GetAllRoutesByLineIdAsync(lineId, cancellationToken));
+            return Ok(await _routeService.GetAllRoutesByLineIdAsync(lineId, cancellationToken,includeDeleted));
         }
 
 

@@ -5,11 +5,12 @@ import { DiscountService } from '../../_services/discount.service';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-discount-edit',
   standalone: true,
-  imports: [FormsModule, LettersNumbersValidatorDirective,CommonModule],
+  imports: [FormsModule, LettersNumbersValidatorDirective, CommonModule],
   templateUrl: './discount-edit.component.html',
   styleUrl: './discount-edit.component.css'
 })
@@ -25,17 +26,27 @@ export class DiscountEditComponent {
     this.titleService.setTitle("Update discount");
   }
 
-  saveChanges() {
-    this.discountService.updateDiscount(this.discountUpdate).subscribe({
-      next: response => {
-        console.log('Discount updated successfully', response);
-      },
-      error: error => {
-        console.error('Error deleting discount', error);
-      }
-    });
-    this.dialogRef.close(this.discountUpdate);
+  async saveChanges() {
+
+    try{
+
+      await firstValueFrom(this.discountService.updateDiscount(this.discountUpdate));
+      this.dialogRef.close();
+    }
+    catch(err){
+      console.error(err);
+    }
+    // this.discountService.updateDiscount(this.discountUpdate).subscribe({
+    //   next: response => {
+    //     console.log('Discount updated successfully', response);
+    //   },
+    //   error: error => {
+    //     console.error('Error deleting discount', error);
+    //   }
+    // });
+    // this.dialogRef.close(this.discountUpdate);
   }
+
   closeDialog() {
     this.dialogRef.close();
   }

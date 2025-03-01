@@ -20,14 +20,14 @@ namespace GPS.API.Controllers
     {
         [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet]
-        public async Task<IActionResult> GetAllShiftDetails(CancellationToken cancellationToken) =>
-          Ok(await shiftDetailService.GetAllShiftDetailsAsync(cancellationToken));
+        public async Task<IActionResult> GetAllShiftDetails(CancellationToken cancellationToken, bool includeDeleted = false) =>
+          Ok(await shiftDetailService.GetAllShiftDetailsAsync(cancellationToken,includeDeleted));
 
         [Authorize(Roles = $"{nameof(UserRole.Manager)},{nameof(UserRole.Driver)}")]
         [HttpGet("shift/{shiftId}")]
-        public async Task<IActionResult> GetAllShiftDetailsBYShiftId(int shiftId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllShiftDetailsBYShiftId(int shiftId, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            var favoriteLines = await shiftDetailService.GetShiftDetailsByShiftIdAsync(shiftId,cancellationToken);
+            var favoriteLines = await shiftDetailService.GetShiftDetailsByShiftIdAsync(shiftId,cancellationToken,includeDeleted);
             if (favoriteLines == null) return NotFound();
             return Ok(favoriteLines);
         }

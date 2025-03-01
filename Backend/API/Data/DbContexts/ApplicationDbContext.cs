@@ -78,7 +78,7 @@ namespace GPS.API.Data.DbContexts
             modelBuilder.Entity<MyAppUser>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
             modelBuilder.Entity<ShiftDetail>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Bus>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
-            modelBuilder.Entity<Discount>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);
+            modelBuilder.Entity<Discount>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<FavoriteLine>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Feedback>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
             modelBuilder.Entity<Line>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId && !x.IsDeleted);

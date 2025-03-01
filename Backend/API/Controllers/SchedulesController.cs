@@ -17,8 +17,8 @@ namespace GPS.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllSchedules(CancellationToken cancellationToken) =>
-            Ok(await _scheduleService.GetAllSchedulesAsync(cancellationToken));
+        public async Task<IActionResult> GetAllSchedules(CancellationToken cancellationToken, bool includeDeleted = false) =>
+            Ok(await _scheduleService.GetAllSchedulesAsync(cancellationToken,includeDeleted));
 
         [Authorize]
         [HttpGet("{id}")]
@@ -31,8 +31,8 @@ namespace GPS.API.Controllers
 
         [Authorize]
         [HttpGet("line/{lineId}")]
-        public async Task<IActionResult> GetAllSchedulesByLineId(int lineId, CancellationToken cancellationToken) =>
-            Ok(await _scheduleService.GetAllSchedulesByLineIdAsync(lineId, cancellationToken));
+        public async Task<IActionResult> GetAllSchedulesByLineId(int lineId, CancellationToken cancellationToken, bool includeDeleted = false) =>
+            Ok(await _scheduleService.GetAllSchedulesByLineIdAsync(lineId, cancellationToken,includeDeleted ));
 
 
         [Authorize(Roles = nameof(UserRole.Manager))]

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-discount-create',
@@ -28,17 +29,24 @@ export class DiscountCreateComponent {
     this.titleService.setTitle('Add discount');
   }
 
-  addNewDiscount(newDiscountForm: NgForm) {
+  async addNewDiscount(newDiscountForm: NgForm) {
     if (newDiscountForm.valid) {
-      this.discountService.createDiscount(this.discountCreate).subscribe({
-        next: (response) => {
-          console.log('Discount created successfully:', response);
-          this.router.navigate(['/manager-dashboard/discounts']);
-        },
-        error: (error) => {
-          console.error('Error creating discount:', error);
-        },
-      });
+      try{
+        await firstValueFrom(this.discountService.createDiscount(this.discountCreate));
+        this.cancel(); 
+      }
+      catch(err){
+        console.error(err);
+      }
+      // this.discountService.createDiscount(this.discountCreate).subscribe({
+      //   next: (response) => {
+      //     console.log('Discount created successfully:', response);
+      //     this.router.navigate(['/manager-dashboard/discounts']);
+      //   },
+      //   error: (error) => {
+      //     console.error('Error creating discount:', error);
+      //   },
+      // });
     } else {
       Object.keys(newDiscountForm.controls).forEach((field) => {
         const control = newDiscountForm.controls[field];

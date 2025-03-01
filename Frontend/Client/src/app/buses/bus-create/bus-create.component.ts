@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -29,25 +30,27 @@ export class BusCreateComponent {
     this.titleService.setTitle('Add bus');
   }
   busCreate: any = {};
-  addNewBus(newBusForm: NgForm) {
+  async addNewBus(newBusForm: NgForm) {
 
     if (newBusForm.valid) {
       if (this.busCreate.isActive === undefined) {
         this.busCreate.isActive = false;
       }
-      this.busService.createBus(this.busCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          // this.snackBar.open('Bus added successfully!', 'Close', {
-          //   panelClass: ['.success-snackbar'],
-          //   duration: 3000, // Duration in milliseconds
-          //   horizontalPosition: 'center', // Can be 'start', 'center', 'end', 'left', 'right'
-          //   verticalPosition: 'top', // Can be 'top' or 'bottom'
-          // });
-          this.cancel();
-        },
-      });
-      this.router.navigate(['/manager-dashboard/buses']);
+      await firstValueFrom(this.busService.createBus(this.busCreate));
+      this.cancel();
+
+      // this.busService.createBus(this.busCreate).subscribe({
+      //   next: (response) => {
+      //     console.log(response);
+      //     this.snackBar.open('Bus added successfully!', 'Close', {
+      //       panelClass: ['.success-snackbar'],
+      //       duration: 3000, // Duration in milliseconds
+      //       horizontalPosition: 'center', // Can be 'start', 'center', 'end', 'left', 'right'
+      //       verticalPosition: 'top', // Can be 'top' or 'bottom'
+      //     });
+      //     this.cancel();
+      //   },
+      // });
     }
     else{
       Object.keys(newBusForm.controls).forEach(field => {

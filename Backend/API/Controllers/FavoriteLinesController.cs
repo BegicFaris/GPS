@@ -11,13 +11,13 @@ namespace GPS.API.Controllers
     {
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllFavoriteLines(CancellationToken cancellationToken) =>
-            Ok(await favoriteLineService.GetAllFavoriteLinesAsync(cancellationToken));
+        public async Task<IActionResult> GetAllFavoriteLines(CancellationToken cancellationToken, bool includeDeleted = false) =>
+            Ok(await favoriteLineService.GetAllFavoriteLinesAsync(cancellationToken,includeDeleted));
         [Authorize]
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetFavoriteLineByUserId(int userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetFavoriteLineByUserId(int userId, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            var favoriteLines = await favoriteLineService.GetFavoriteLineByUserIdAsync(userId, cancellationToken);
+            var favoriteLines = await favoriteLineService.GetFavoriteLineByUserIdAsync(userId, cancellationToken,includeDeleted);
             if (favoriteLines == null) return NotFound();
             return Ok(favoriteLines);
         }

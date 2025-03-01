@@ -17,9 +17,9 @@ namespace GPS.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TicketInfo>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<TicketInfo>>> GetAll(CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            var result = await _service.GetAllAsync(cancellationToken);
+            var result = await _service.GetAllAsync(cancellationToken, includeDeleted);
             return Ok(result);
         }
 
@@ -61,9 +61,9 @@ namespace GPS.API.Controllers
             return NoContent();
         }
         [HttpGet("by-ticket-type/{ticketTypeId}")]
-        public async Task<ActionResult<IEnumerable<TicketInfo>>> GetByTicketTypeId(int ticketTypeId, CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<TicketInfo>>> GetByTicketTypeId(int ticketTypeId, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            var result = await _service.GetByTicketTypeIdAsync(ticketTypeId, cancellationToken);
+            var result = await _service.GetByTicketTypeIdAsync(ticketTypeId, cancellationToken, includeDeleted);
             if (result == null || !result.Any()) return NotFound();
             return Ok(result);
         }

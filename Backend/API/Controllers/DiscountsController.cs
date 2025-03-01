@@ -26,7 +26,7 @@ namespace GPS.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDiscount(int id, CancellationToken cancellationToken)
         {
-            var discount = await _discountService.GetDiscountByIdAsync(id,cancellationToken);
+            var discount = await _discountService.GetDiscountByIdAsync(id, cancellationToken);
             if (discount == null) return NotFound();
             return Ok(discount);
         }

@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BusService } from '../../_services/bus.service';
 import { Title } from '@angular/platform-browser';
 import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-bus-edit',
@@ -25,17 +26,11 @@ export class BusEditComponent {
     this.titleService.setTitle("Update bus");
   }
 
-  saveChanges() {
-    this.busService.updateBus(this.busUpdate).subscribe({
-      next: response => {
-        console.log('Bus updated successfully', response);
-      },
-      error: error => {
-        console.error('Error deleting bus', error);
-      }
-    });
+  async saveChanges() {
+    await firstValueFrom(this.busService.updateBus(this.busUpdate));
     this.dialogRef.close(this.busUpdate);
   }
+  
   closeDialog() {
     this.dialogRef.close();
   }

@@ -20,19 +20,20 @@ namespace GPS.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllNotifications(CancellationToken cancellationToken) =>
-            Ok(await _notificationService.GetAllNotificationsAsync(cancellationToken));
+        public async Task<IActionResult> GetAllNotifications(CancellationToken cancellationToken, bool includeDeleted = false) =>
+            Ok(await _notificationService.GetAllNotificationsAsync(cancellationToken,includeDeleted));
 
         [Authorize]
         [HttpGet("paged")]
         public async Task<ActionResult<PagedResult<Notification>>> GetNotifications(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 7,
-        CancellationToken cancellationToken=default)
+        CancellationToken cancellationToken=default,
+        bool includeDeleted = false)
         {
             try
             {
-                var result = await _notificationService.GetNotificationsAsync(page, pageSize, cancellationToken);
+                var result = await _notificationService.GetNotificationsAsync(page, pageSize, cancellationToken,includeDeleted);
                 return Ok(result);
             }
             catch (Exception ex)

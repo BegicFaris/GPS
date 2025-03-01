@@ -17,31 +17,26 @@ namespace GPS.API.Services.PassengerServices
             _context = context;
         }
 
-        public async Task<IEnumerable<Passenger>> GetAllPassengersAsync(CancellationToken cancellationToken, bool includeDeleted = false)
+        public async Task<IEnumerable<Passenger>> GetAllPassengersAsync(CancellationToken cancellationToken)
         {
             var query = _context.Passengers.AsQueryable();
+            query = query.IgnoreQueryFilters();
 
-            if (includeDeleted)
+            var currentTenantId = _context.CurrentTenantID;
+
+            if (string.IsNullOrEmpty(currentTenantId))
             {
-                query = query.IgnoreQueryFilters();
-
-                var currentTenantId = _context.CurrentTenantID;
-
-                if (string.IsNullOrEmpty(currentTenantId))
-                {
-                    return new List<Passenger>(); 
-                }
-
-                query = query.Where(x => x.TenantId == currentTenantId);
+                return new List<Passenger>();
             }
 
-            query = query.Include(x => x.Discount);
+            query = query.Where(x => x.TenantId == currentTenantId);
+            query = query.Include(x => x.DiscountID==null?null:x.Discount);
 
             return await query.ToListAsync(cancellationToken);
 
 
         }
-           
+
 
         public async Task<Passenger?> GetPassengerByIdAsync(int id, CancellationToken cancellationToken) =>
             await _context.Passengers.Include(x => x.Discount).SingleOrDefaultAsync(x => x.Id == id, cancellationToken);

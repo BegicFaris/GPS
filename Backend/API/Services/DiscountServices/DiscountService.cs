@@ -38,12 +38,32 @@ namespace GPS.API.Services.DiscountServices
 
         public async Task<bool> DeleteDiscountAsync(int id, CancellationToken cancellationToken)
         {
-            var discount = await _context.Discounts.FindAsync(new object[] { id }, cancellationToken);  // Added cancellationToken here
+            var discount = await _context.Discounts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
             if (discount == null) return false;
 
-            _context.Discounts.Remove(discount);
-            await _context.SaveChangesAsync(cancellationToken);
-            return true;
+            await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                var hasPassengers = await _context.Passengers.AnyAsync(x => x.DiscountID == id, cancellationToken);
+                if (hasPassengers)
+                {
+                    await _context.Passengers
+                        .Where(x => x.DiscountID == id)
+                        .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.DiscountID, (int?)null), cancellationToken);
+                }
+
+                _context.Discounts.Remove(discount);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
     }
 }

@@ -34,16 +34,16 @@ export class BusViewComponent {
   async loadBuses() {
     this.buses=await firstValueFrom(this.busService.getAllBuses());
   
-    this.busService.getAllBuses().subscribe((data) => {
-      this.buses = data; // or data.buss if it's nested
-      console.log(this.buses)
-    });
+    // this.busService.getAllBuses().subscribe((data) => {
+    //   this.buses = data; // or data.buss if it's nested
+    //   console.log(this.buses)
+    // });
   }
   deleteBus(id: number) {
     if (confirm('Are you sure you want to delete this bus?')) {
       this.busService.deleteBus(id).subscribe({
-        next: (response) => {
-          this.loadBuses();
+        next: async (response) => {
+          await this.loadBuses();
           console.log('Bus deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -66,8 +66,8 @@ export class BusViewComponent {
         manufactureYear: bus.manufactureYear,
       }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadBuses();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.loadBuses();
       if (result) {
         console.log('Updated bus:', result);
       }

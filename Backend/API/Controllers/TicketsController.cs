@@ -24,8 +24,8 @@ namespace GPS.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetAllTickets(CancellationToken cancellationToken) =>
-            Ok(await _ticketService.GetAllTicketsAsync(cancellationToken));
+        public async Task<IActionResult> GetAllTickets(CancellationToken cancellationToken, bool includeDeleted = false) =>
+            Ok(await _ticketService.GetAllTicketsAsync(cancellationToken,includeDeleted));
 
         [Authorize]
         [HttpGet("tickets-over-time")]
@@ -46,10 +46,10 @@ namespace GPS.API.Controllers
 
         [Authorize]
         [HttpGet("get/{email}")]
-        public async Task<IActionResult> GetTicketsByEmail(string email, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetTicketsByEmail(string email, CancellationToken cancellationToken, bool includeDeleted = false)
         {
-            var tickets = await _ticketService.GetAllTicketsForUserEmail(email, cancellationToken);
-            if (tickets == null || !tickets.Any())
+            var tickets = await _ticketService.GetAllTicketsForUserEmail(email, cancellationToken,includeDeleted);
+            if (tickets == null || tickets.Count == 0)
             {
                 return NoContent();
             }
