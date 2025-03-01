@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { LineEditComponent } from '../line-edit/line-edit.component';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-line-view',
@@ -22,26 +23,28 @@ export class LineViewComponent {
   private titleService = inject(Title);
   lines: Line[] = [];
 
-  ngOnInit() {
-    this.titleService.setTitle('Lines');
+  async ngOnInit() {
+    await this.titleService.setTitle('Lines');
     this.loadLines();
-    this.router.events.subscribe((event) => {
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/manager-dashboard/lines') {
-        this.loadLines();
+        await this.loadLines();
       }
     });
   }
-  loadLines() {
-    this.lineService.getAllLines().subscribe((data) => {
-      this.lines = data; // or data.lines if it's nested
-      console.log(this.lines);
-    });
+  async loadLines() {
+    try{
+      this.lines = await firstValueFrom(this.lineService.getAllLines());
+    }
+    catch(err){
+      console.error(err);
+    }
   }
   deleteLine(id: number) {
     if (confirm('Are you sure you want to delete this line?')) {
       this.lineService.deleteLine(id).subscribe({
-        next: (response) => {
-          this.loadLines();
+        next: async (response) => {
+          await this.loadLines();
           console.log('Line deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -64,8 +67,8 @@ export class LineViewComponent {
       autoFocus: true,
       restoreFocus: true, 
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadLines();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await  this.loadLines();
       if (result) {
         console.log('Updated Line:', result);
       }

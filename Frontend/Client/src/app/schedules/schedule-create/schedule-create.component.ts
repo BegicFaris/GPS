@@ -12,6 +12,7 @@ import { ScheduleService } from '../../_services/shcedule.service';
 import { LineService } from '../../_services/line.service';
 import { Schedule } from '../../_models/schedule';
 import { Line } from '../../_models/line';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -67,20 +68,19 @@ export class ScheduleCreateComponent {
   }
 
   scheduleCreate: any = {};
-  addNewSchedule(newScheduleForm: NgForm) {
+ async  addNewSchedule(newScheduleForm: NgForm) {
 
     if (newScheduleForm.valid) {
       if (this.scheduleCreate.isActive === undefined) {
         this.scheduleCreate.isActive = false;
       }
-      console.log(this.scheduleCreate);
-      this.scheduleService.createSchedule(this.scheduleCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.cancel();
-        },  
-      });
-      this.router.navigate(['/manager-dashboard/schedules']);
+      try{
+        await firstValueFrom(this.scheduleService.createSchedule(this.scheduleCreate));
+        this.cancel();
+      }
+      catch(err){
+          console.error(err);
+      }
     }
     else{
       Object.keys(newScheduleForm.controls).forEach(field => {

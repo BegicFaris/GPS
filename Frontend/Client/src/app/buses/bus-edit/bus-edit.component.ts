@@ -27,8 +27,13 @@ export class BusEditComponent {
   }
 
   async saveChanges() {
-    await firstValueFrom(this.busService.updateBus(this.busUpdate));
-    this.dialogRef.close(this.busUpdate);
+    try{
+      await firstValueFrom(this.busService.updateBus(this.busUpdate));
+      this.dialogRef.close(this.busUpdate);
+    }
+    catch(err){
+      console.error(err);
+    }
   }
   
   closeDialog() {

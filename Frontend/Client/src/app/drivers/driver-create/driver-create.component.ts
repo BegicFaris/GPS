@@ -11,22 +11,23 @@ import { LettersNumbersValidatorDirective } from '../../validators/letters-numbe
 import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
 import { DateValidatorDirective } from '../../validators/date.validator';
 import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
   selector: 'app-driver-create',
   standalone: true,
-  imports: [FormsModule,DateValidatorDirective,LettersNumbersDashesValidatorDirective,LettersNumbersValidatorDirective,LettersOnlyValidatorDirective,CommonModule, RouterLink, PasswordStrengthIndicatorComponent],
+  imports: [FormsModule, DateValidatorDirective, LettersNumbersDashesValidatorDirective, LettersNumbersValidatorDirective, LettersOnlyValidatorDirective, CommonModule, RouterLink, PasswordStrengthIndicatorComponent],
   templateUrl: './driver-create.component.html',
   styleUrl: './driver-create.component.css',
 })
 export class DriverCreateComponent {
-    @ViewChild('fileInput') fileInput!: ElementRef;
-  
-  
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
+
   private driverService = inject(DriverService);
   private router = inject(Router);
-  private accountService= inject(AccountService);
+  private accountService = inject(AccountService);
   private titleService = inject(Title);
   drivers: Driver[] = [];
   errorMessage: string = '';
@@ -78,22 +79,22 @@ export class DriverCreateComponent {
   }
 
   driverCreate: any = {};
-  addNewDriver(newDriverForm: NgForm) {
-
+  async addNewDriver(newDriverForm: NgForm) {
     if (newDriverForm.valid && !this.emailExists) {
       if (this.driverCreate.isActive === undefined) {
         this.driverCreate.isActive = false;
       }
-      console.log(this.driverCreate);
-      this.accountService.registerDriver(this.driverCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.cancel();
-        },  
-      });
-      this.router.navigate(['/manager-dashboard/drivers']);
+      try{
+      await firstValueFrom(this.accountService.registerDriver(this.driverCreate));
+      this.cancel();
+      }
+      catch(err){
+        console.error(err);
+      }
+
+      
     }
-    else{
+    else {
       Object.keys(newDriverForm.controls).forEach(field => {
         const control = newDriverForm.controls[field];
         control.markAsTouched({ onlySelf: true });
@@ -128,7 +129,7 @@ export class DriverCreateComponent {
     this.fileInput.nativeElement.value = ''; // Clear the file input value
     this.driverCreate.image = null; // Reset the model's image property
   }
-  
+
   checkPasswordStrength(): void {
     const password = this.driverCreate.password;
     this.hasUpperCase = /[A-Z]/.test(password);

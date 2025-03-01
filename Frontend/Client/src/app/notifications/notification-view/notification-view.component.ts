@@ -39,17 +39,21 @@ export class NotificationViewComponent {
     });
   }
   async loadNotifications() {
-    this.notifications = await lastValueFrom(this.notificationService.getAllNotifications());
+    try {
+      this.notifications = await lastValueFrom(this.notificationService.getAllNotifications());
+    }
+    catch (err) {
+      console.error(err);
+    }
   }
 
   deleteNotificatiom(id: number) {
     if (confirm('Are you sure you want to delete this notification?')) {
       this.notificationService.deleteNotification(id).subscribe({
-        next: response => {
-          this.loadNotifications();
+        next: async response => {
+          await this.loadNotifications();
           console.log('Notification deleted successfully', response);
           this.cancel();
-          window.location.reload()
         },
         error: error => {
           console.error('Error deleting notification', error);
@@ -92,30 +96,30 @@ export class NotificationViewComponent {
       this.sortColumn = column;
       this.sortAsc = true;
     }
-  
+
     this.notifications.sort((a, b) => {
       let valueA = a[column];
       let valueB = b[column];
-  
+
       // Handle nested properties like notificationType.name
       if (column === 'notificationType' && a.notificationType && b.notificationType) {
         valueA = a.notificationType.name;
         valueB = b.notificationType.name;
       }
-  
+
       if (column === 'line' && a.line && b.line) {
         valueA = a.line.name;
         valueB = b.line.name;
       }
-  
+
       // Convert to lowercase if values are strings
       if (typeof valueA === 'string') valueA = valueA.toLowerCase();
       if (typeof valueB === 'string') valueB = valueB.toLowerCase();
-  
+
       // Handle null or undefined values to avoid returning undefined
       if (valueA == null) return this.sortAsc ? -1 : 1;
       if (valueB == null) return this.sortAsc ? 1 : -1;
-  
+
       return this.sortAsc ? (valueA > valueB ? 1 : valueA < valueB ? -1 : 0) : (valueA < valueB ? 1 : valueA > valueB ? -1 : 0);
     });
   }

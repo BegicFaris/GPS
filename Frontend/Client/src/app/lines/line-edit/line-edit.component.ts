@@ -7,6 +7,7 @@ import { StationService } from '../../_services/station.service';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
 import { LineNameValidatorDirective } from '../../validators/line-name.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-line-edit',
@@ -21,33 +22,25 @@ export class LineEditComponent {
 
   }
   private lineService = inject(LineService);
-  private stationService = inject(StationService);
   private titleService = inject(Title);
-  stations: Station[] = [];
 
   ngOnInit(): void {
     this.titleService.setTitle("Update line");
-    this.loadStations();
   }
-  saveChanges(updateLineForm: NgForm) {
+  async saveChanges(updateLineForm: NgForm) {
     if(updateLineForm.valid){
-      this.lineService.updateLine(this.lineUpdate).subscribe({
-        next: response => {
-          console.log('Line update successfully', response);
-        }
-      });
-      this.dialogRef.close(this.lineUpdate);
+      try {
+        await firstValueFrom(this.lineService.updateLine(this.lineUpdate));
+        this.dialogRef.close(this.lineUpdate);
+      }
+      catch (err) {
+        console.error(err);
+      }
     }
   }
   closeDialog() {
     this.dialogRef.close();
   }
-  loadStations() {
-    this.stationService.getAllStations().subscribe(
-      (data) => {
-        this.stations = data; // or data.lines if it's nested
-      },
-    );
-  }
+  
 }
 

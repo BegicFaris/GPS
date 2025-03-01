@@ -36,8 +36,13 @@ export class BusCreateComponent {
       if (this.busCreate.isActive === undefined) {
         this.busCreate.isActive = false;
       }
-      await firstValueFrom(this.busService.createBus(this.busCreate));
-      this.cancel();
+      try{
+        await firstValueFrom(this.busService.createBus(this.busCreate));
+        this.cancel();
+      }
+      catch(err){
+        console.error(err);
+      }
 
       // this.busService.createBus(this.busCreate).subscribe({
       //   next: (response) => {

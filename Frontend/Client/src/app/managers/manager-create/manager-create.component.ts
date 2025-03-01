@@ -11,6 +11,7 @@ import { PasswordStrengthIndicatorComponent } from "../../register/password-stre
 import { ManagerService } from '../../_services/manager.service';
 import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
 import { DateValidatorDirective } from '../../validators/date.validator';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -75,22 +76,18 @@ export class ManagerCreateComponent {
   }
 
   managerCreate: any = {};
-  addNewManager(newManagerForm: NgForm) {
-    console.log("Entered" + this.emailExists);
-    console.log("Form" + newManagerForm.valid)
-    console.log(newManagerForm)
-    console.log(this.managerCreate)
+  async addNewManager(newManagerForm: NgForm) {
     if (newManagerForm.valid && !this.emailExists) {
       if (this.managerCreate.isActive === undefined) {
         this.managerCreate.isActive = false;
       }
-      console.log(this.managerCreate);
-      this.accountService.registerManager(this.managerCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.cancel();
-        },  
-      });
+      try{
+        await firstValueFrom(this.accountService.registerManager(this.managerCreate));
+        this.cancel();
+      }
+      catch(err){
+        console.error(err);
+      }
     }
     else{
       Object.keys(newManagerForm.controls).forEach(field => {

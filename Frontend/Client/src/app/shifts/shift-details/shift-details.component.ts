@@ -54,16 +54,16 @@ export class ShiftDetailsComponent implements OnInit {
         shiftId: new FormControl(this.shift.id),
         lineId: new FormControl(esd.lineId, [Validators.required]),
         shiftDetailStartingTime: new FormControl(esd.shiftDetailStartingTime, [Validators.required, this.startTimeValidator()]),
-        shiftDetailEndingTime: new FormControl(esd.shiftDetailEndingTime, [Validators.required,this.endingTimeValidator(),this.timeComparrisonValidator()]),
+        shiftDetailEndingTime: new FormControl(esd.shiftDetailEndingTime, [Validators.required, this.endingTimeValidator(), this.timeComparrisonValidator()]),
         isEditMode: new FormControl(true),
       }));
     });
     this.shiftDetails.push(new FormGroup({
       shiftId: new FormControl(this.shift.id),
       lineId: new FormControl(null, [Validators.required]),
-      shiftDetailStartingTime: new FormControl((this.existingShiftDetails.length == 0) ? this.shift.shiftStartingTime : this.existingShiftDetails[this.existingShiftDetails.length - 1].shiftDetailEndingTime, 
-      [Validators.required, this.startTimeValidator()]),
-      shiftDetailEndingTime: new FormControl('',[Validators.required,this.endingTimeValidator(),this.timeComparrisonValidator()]),
+      shiftDetailStartingTime: new FormControl((this.existingShiftDetails.length == 0) ? this.shift.shiftStartingTime : this.existingShiftDetails[this.existingShiftDetails.length - 1].shiftDetailEndingTime,
+        [Validators.required, this.startTimeValidator()]),
+      shiftDetailEndingTime: new FormControl('', [Validators.required, this.endingTimeValidator(), this.timeComparrisonValidator()]),
       isEditMode: new FormControl(false),
     }));
   }
@@ -81,7 +81,7 @@ export class ShiftDetailsComponent implements OnInit {
           this.shiftDetails[index].get('shiftDetailEndingTime')?.value,
           [Validators.required, this.startTimeValidator()]  // Start time validator added
         ],
-        shiftDetailEndingTime: ['', [Validators.required,this.endingTimeValidator(),this.timeComparrisonValidator()]],
+        shiftDetailEndingTime: ['', [Validators.required, this.endingTimeValidator(), this.timeComparrisonValidator()]],
         isEditMode: new FormControl(false),
       });
 
@@ -111,11 +111,21 @@ export class ShiftDetailsComponent implements OnInit {
   async finishAddingShiftDetails() {
     if (this.isValidForm()) {
       if (this.isValidShiftTime()) {
-        if(this.existingShiftDetails.length!=0)
-        await firstValueFrom(this.shiftDetailsService.DeleteShiftDetailsByShiftId(this.shift.id));
+        if (this.existingShiftDetails.length != 0) {
+          try {
+            await firstValueFrom(this.shiftDetailsService.DeleteShiftDetailsByShiftId(this.shift.id));
+          }
+          catch (err) {
+            console.error(err);
+          }
+        }
         const newShiftDetails = this.mapFormGroupsToShiftDetails();
-        console.log(newShiftDetails);
-        this.shiftDetailsService.CreateShiftDetail(newShiftDetails).subscribe();
+        try {
+          await firstValueFrom(this.shiftDetailsService.CreateShiftDetail(newShiftDetails));
+        }
+        catch (err) {
+          console.error(err);
+        }
         this.router.navigate(['/manager-dashboard/shifts']);
       }
       else {
@@ -175,19 +185,19 @@ export class ShiftDetailsComponent implements OnInit {
 
   startTimeValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-    
+
       const shiftDetailStartTimeValue = control.value;
-  
+
       if (!shiftDetailStartTimeValue) {
-        return null;  
+        return null;
       }
-  
+
       const shiftStartTime = this.parseTime(this.shift.shiftStartingTime);
       const startTime = this.parseTime(shiftDetailStartTimeValue);
-  
-      const tooEarly = startTime < shiftStartTime; 
-  
-      return tooEarly ? { validStartTime: true } : null; 
+
+      const tooEarly = startTime < shiftStartTime;
+
+      return tooEarly ? { validStartTime: true } : null;
     };
   }
   endingTimeValidator(): ValidatorFn {
@@ -221,7 +231,7 @@ export class ShiftDetailsComponent implements OnInit {
 
         const isTimeValid = endDate.getTime() > startDate.getTime();
 
-        return isTimeValid ? null : { timeComparison : true };
+        return isTimeValid ? null : { timeComparison: true };
       }
       return null;
     }

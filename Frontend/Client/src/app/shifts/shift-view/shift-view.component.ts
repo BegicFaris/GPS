@@ -7,6 +7,7 @@ import { Shift } from '../../_models/shift';
 import { ShiftEditComponent } from '../shift-edit/shift-edit.component';
 import { FormsModule } from '@angular/forms';
 import { ShiftDetailService } from '../../_services/shift-detail.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-shift-view',
@@ -17,37 +18,38 @@ import { ShiftDetailService } from '../../_services/shift-detail.service';
 })
 export class ShiftViewComponent {
   private shiftService = inject(ShiftService);
-  private shiftDetailService=inject(ShiftDetailService);
+  private shiftDetailService = inject(ShiftDetailService);
   private router = inject(Router);
   private titleService = inject(Title);
   private dialog = inject(MatDialog)
   shifts: Shift[] = [];
 
 
- ngOnInit() {
-
+  async ngOnInit() {
     this.titleService.setTitle("Shifts");
-    this.loadShifts();
-    this.router.events.subscribe((event) => {
+    await this.loadShifts();
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/manager-dashboard/notifications') {
-        this.loadShifts();
+        await this.loadShifts();
       }
     });
   }
-  loadShifts() {
-    this.shiftService.getAllShifts().subscribe(
-      (data) => {
-        this.shifts = data; 
-      },
-    );
+  async loadShifts() {
+    try {
+      this.shifts = await firstValueFrom(this.shiftService.getAllShifts());
+    }
+    catch (err) {
+      console.error(err);
+    }
+
   }
   deleteShift(id: number) {
     if (confirm('Are you sure you want to delete this shift?')) {
       this.shiftService.deleteShift(id).subscribe({
-        next: response => {
-          this.loadShifts();
+        next: async (response) => {
+          await this.loadShifts();
           console.log('Shift deleted successfully', response);
-          this.cancel(); 
+          this.cancel();
         },
         error: error => {
           console.error('Error deleting shift', error);
@@ -56,31 +58,31 @@ export class ShiftViewComponent {
     }
   }
 
-    openEditDialog(shift: Shift) {
-      const dialogRef = this.dialog.open(ShiftEditComponent, {
-        height: '800px',
-        width: '1000px',  
-        data: {
-          id:shift.id,
-          busId:shift.busId,
-          driverId:shift.driverId,
-          shiftDate:shift.shiftDate,
-          shiftStartingTime:shift.shiftStartingTime,
-          shiftEndingTime:shift.shiftEndingTime
-        },  
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.loadShifts();
-      });
-    }
+  openEditDialog(shift: Shift) {
+    const dialogRef = this.dialog.open(ShiftEditComponent, {
+      height: '800px',
+      width: '1000px',
+      data: {
+        id: shift.id,
+        busId: shift.busId,
+        driverId: shift.driverId,
+        shiftDate: shift.shiftDate,
+        shiftStartingTime: shift.shiftStartingTime,
+        shiftEndingTime: shift.shiftEndingTime
+      },
+    });
+    dialogRef.afterClosed().subscribe(async () => {
+      await this.loadShifts();
+    });
+  }
   cancel() {
     this.router.navigate(['/manager-dashboard/shifts']);
   }
-  goToAddForm(){
+  goToAddForm() {
     this.router.navigate(['/manager-dashboard/shifts/add']);
   }
-  openShiftDetails(shift:Shift){
-    this.router.navigate(['/manager-dashboard/shifts/details'],  { queryParams: shift });
+  openShiftDetails(shift: Shift) {
+    this.router.navigate(['/manager-dashboard/shifts/details'], { queryParams: shift });
   }
 
   downloadShiftDetails(shiftId: number) {

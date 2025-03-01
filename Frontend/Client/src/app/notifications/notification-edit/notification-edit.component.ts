@@ -13,7 +13,7 @@ import { LettersNumbersValidatorDirective } from '../../validators/letters-numbe
 @Component({
   selector: 'app-notification-edit',
   standalone: true,
-  imports: [FormsModule,LettersNumbersValidatorDirective],
+  imports: [FormsModule, LettersNumbersValidatorDirective],
   templateUrl: './notification-edit.component.html',
   styleUrl: './notification-edit.component.css'
 })
@@ -51,8 +51,13 @@ export class NotificationEditComponent {
 
   async saveChanges(updateNotificationForm: NgForm) {
     if (updateNotificationForm.valid) {
-      await firstValueFrom(this.notificationService.updateNotification(this.notificationUpdate));
-      this.dialogRef.close(this.notificationUpdate);
+      try {
+        await firstValueFrom(this.notificationService.updateNotification(this.notificationUpdate));
+        this.dialogRef.close(this.notificationUpdate);
+      }
+      catch(err){
+        console.error(err);
+      }
     }
   }
 

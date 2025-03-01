@@ -11,6 +11,7 @@ import { ManagerLevel } from '../../_models/manager-level';
 import { Department } from '../../_models/department';
 import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
 import { DateValidatorDirective } from '../../validators/date.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-manager-edit',
@@ -49,18 +50,16 @@ export class ManagerEditComponent {
     this.titleService.setTitle("Update manager");
   }
 
-  saveChanges() {
+  async saveChanges() {
     this.formSubmitted = true;
     if (this.updateManagerForm.form.valid) {
-      this.managerService.updateManager(this.managerUpdate).subscribe({
-        next: response => {
-          console.log('Manager updated successfully', response);
-          this.dialogRef.close(this.managerUpdate);
-        },
-        error: error => {
-          console.error('Error updating manager', error);
-        }
-      });
+      try{
+      await firstValueFrom(this.managerService.updateManager(this.managerUpdate));
+      this.dialogRef.close(this.managerUpdate);
+      }
+      catch(err){
+        console.error(err);
+      }
     } else {
       console.log('Form is invalid. Please check the errors.');
     }

@@ -8,6 +8,7 @@ import { Bus } from '../../_models/bus';
 import { Driver } from '../../_models/driver';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DateValidatorDirective } from '../../validators/date.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-shift-edit',
@@ -18,7 +19,7 @@ import { DateValidatorDirective } from '../../validators/date.validator';
 })
 export class ShiftEditComponent {
   today: string = new Date().toISOString().split('T')[0];  // Today's date
-  futureDate: string = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]; 
+  futureDate: string = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0];
 
   constructor(public dialogRef: MatDialogRef<ShiftEditComponent>, @Inject(MAT_DIALOG_DATA) public shiftUpdate:
     {
@@ -45,44 +46,45 @@ export class ShiftEditComponent {
     this.LoadDrivers();
   }
 
-  saveChanges(updateShiftForm: NgForm) {
-      if(updateShiftForm.valid && !this.isEndingTimeInvalid()){
-        this.shiftService.updateShift(this.shiftUpdate).subscribe({
-          next: response => {
-            console.log('Notification update successfully', response);
-          }
-        });
+  async saveChanges(updateShiftForm: NgForm) {
+    if (updateShiftForm.valid && !this.isEndingTimeInvalid()) {
+      try {
+        await firstValueFrom(this.shiftService.updateShift(this.shiftUpdate));
         this.dialogRef.close(this.shiftUpdate);
       }
+      catch (err) {
+        console.error(err);
+      }
     }
-  
-    closeDialog() {
-      this.dialogRef.close();
-    }
+  }
 
-    LoadDrivers() {
-      this.driverService.getAllDrivers().subscribe(
-        (data) => {
-          this.drivers = data;
-        });
-    }
-    LoadBuses() {
-      this.busService.getAllBuses().subscribe(
-        (data) => {
-          this.buses = data;
-        });
-    }
+  closeDialog() {
+    this.dialogRef.close();
+  }
 
-    isEndingTimeInvalid(): boolean {
-      const startTime = this.parseTime(this.shiftUpdate.shiftStartingTime);
-      const endTime = this.parseTime(this.shiftUpdate.shiftEndingTime);
-      return endTime < startTime;
-    }
-  
-    parseTime(time: string): Date {
-      const [hours, minutes, seconds] = time.split(':').map(Number);
-      const date = new Date();
-      date.setHours(hours, minutes, seconds || 0, 0); // Set time on current date
-      return date;
-    }
+  LoadDrivers() {
+    this.driverService.getAllDrivers().subscribe(
+      (data) => {
+        this.drivers = data;
+      });
+  }
+  LoadBuses() {
+    this.busService.getAllBuses().subscribe(
+      (data) => {
+        this.buses = data;
+      });
+  }
+
+  isEndingTimeInvalid(): boolean {
+    const startTime = this.parseTime(this.shiftUpdate.shiftStartingTime);
+    const endTime = this.parseTime(this.shiftUpdate.shiftEndingTime);
+    return endTime < startTime;
+  }
+
+  parseTime(time: string): Date {
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, seconds || 0, 0); // Set time on current date
+    return date;
+  }
 }

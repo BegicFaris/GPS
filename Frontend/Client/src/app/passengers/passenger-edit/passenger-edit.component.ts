@@ -13,6 +13,7 @@ import { DriverService } from '../../_services/driver.service';
 import { PassengerService } from '../../_services/passenger.service';
 import { DiscountService } from '../../_services/discount.service';
 import { Discount } from '../../_models/discount';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-passenger-edit',
@@ -28,8 +29,8 @@ export class PassengerEditComponent {
   constructor(
     public dialogRef: MatDialogRef<PassengerEditComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public passengerUpdate: { id: number; firstName: string, lastName: string, email:string, birthDate: Date, address: string, registrationDate: Date, discountId: number }
-  ) {}
+    public passengerUpdate: { id: number; firstName: string, lastName: string, email: string, birthDate: Date, address: string, registrationDate: Date, discountId: number }
+  ) { }
 
   private titleService = inject(Title);
   private passengerService = inject(PassengerService);
@@ -43,20 +44,19 @@ export class PassengerEditComponent {
 
   loadDiscounts() {
     this.discountService.getAllDiscounts().subscribe((data) => {
-      this.discounts = data; // or data.lines if it's nested
+      this.discounts = data // or data.lines if it's nested
     });
     console.log(this.discounts);
   }
-  saveChanges() {
-    this.passengerService.updatePassenger(this.passengerUpdate).subscribe({
-      next: (response) => {
-        console.log('Passenger updated successfully', response);
-        this.dialogRef.close(this.passengerUpdate);
-      },
-      error: (error) => {
-        console.error('Error updating passenger', error);
-      },
-    });
+  async saveChanges() {
+    try {
+      await firstValueFrom(this.passengerService.updatePassenger(this.passengerUpdate));
+      this.dialogRef.close(this.passengerUpdate);
+    }
+    catch (err) {
+      console.error(err);
+    }
+
   }
   closeDialog() {
     this.dialogRef.close();

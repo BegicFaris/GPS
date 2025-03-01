@@ -13,6 +13,7 @@ import { ZoneService } from '../../_services/zone.service';
 import { Zone } from '../../_models/zone';
 import { GpsCodeValidatorDirective } from '../../validators/gps-code.validator';
 import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-station-edit',
@@ -49,18 +50,16 @@ export class StationEditComponent {
     });
   }
 
-  saveChanges() {
+  async saveChanges() {
     this.formSubmitted = true;
     if (this.updateStationForm.form.valid) {
-      this.stationService.updateStation(this.stationUpdate).subscribe({
-        next: response => {
-          console.log('Station updated successfully', response);
-          this.dialogRef.close(this.stationUpdate);
-        },
-        error: error => {
-          console.error('Error updating station', error);
-        }
-      });
+      try{
+        await firstValueFrom(this.stationService.updateStation(this.stationUpdate));
+        this.dialogRef.close(this.stationUpdate);
+      }
+      catch(err){
+        console.error(err);
+      }
     } else {
       console.log('Form is invalid. Please check the errors.');
     }

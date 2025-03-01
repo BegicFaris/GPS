@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ScheduleService } from '../../_services/shcedule.service';
 import { Schedule } from '../../_models/schedule';
 import { ScheduleEditComponent } from '../schedule-edit/schedule-edit.component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-schedule-view',
@@ -22,26 +23,28 @@ export class ScheduleViewComponent {
   private titleService = inject(Title);
   schedules: Schedule[] = [];
 
-  ngOnInit() {
+ async ngOnInit() {
     this.titleService.setTitle('Schedule');
-    this.loadSchedules();
-    this.router.events.subscribe((event) => {
+   await this.loadSchedules();
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/schedules') {
-        this.loadSchedules();
+       await  this.loadSchedules();
       }
     });
   }
-  loadSchedules() {
-    this.scheduleService.getAllSchedules().subscribe((data) => {
-      this.schedules = data; // or data.lines if it's nested
-      console.log(this.schedules);
-    });
+  async loadSchedules() {
+    try{
+        this.schedules=await firstValueFrom(this.scheduleService.getAllSchedules());
+    }
+    catch(err){
+        console.error(err);
+    }
   }
   deleteSchedule(id: number) {
     if (confirm('Are you sure you want to delete this schedule?')) {
       this.scheduleService.deleteSchedule(id).subscribe({
-        next: (response) => {
-          this.loadSchedules();
+        next: async (response) => {
+          await this.loadSchedules();
           console.log('Schedule deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -61,8 +64,8 @@ export class ScheduleViewComponent {
         departureTime: schedule.departureTime,
       }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadSchedules();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.loadSchedules();
       if (result) {
         console.log('Updated Schedule:', result);
       }

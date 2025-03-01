@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
 import { LineNameValidatorDirective } from '../../validators/line-name.validator';
+import { first, firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-line-create',
@@ -17,28 +18,25 @@ import { LineNameValidatorDirective } from '../../validators/line-name.validator
 export class LineCreateComponent {
   private router = inject(Router);
   private lineService = inject(LineService);
-  private stationService = inject(StationService);
   private titleService = inject(Title);
-  stations: Station[] = [];
   lineCreate: any = {};
 
   ngOnInit() {
     this.titleService.setTitle('Add line');
-    this.loadStations();
   }
-  addNewLine(newLineForm: NgForm) {
+  async addNewLine(newLineForm: NgForm) {
 
     if (newLineForm.valid) {
       if (this.lineCreate.isActive === undefined) {
         this.lineCreate.isActive = false;
       }
-      this.lineService.createLine(this.lineCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.cancel();
-        },
-      });
-      this.router.navigate(['/manager-dashboard/lines']);
+      try {
+      await firstValueFrom(this.lineService.createLine(this.lineCreate));
+      this.cancel()
+      }
+      catch (err) {
+        console.error(err);
+      }
     }
     else{
       Object.keys(newLineForm.controls).forEach(field => {
@@ -49,10 +47,5 @@ export class LineCreateComponent {
   }
   cancel() {
     this.router.navigate(['/manager-dashboard/lines']);
-  }
-  loadStations() {
-    this.stationService.getAllStations().subscribe((data) => {
-      this.stations = data; // or data.lines if it's nested
-    });
   }
 }

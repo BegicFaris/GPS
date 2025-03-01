@@ -4,11 +4,12 @@ import { Line } from '../../_models/line';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { DriverEditComponent} from '../driver-edit/driver-edit.component';
+import { DriverEditComponent } from '../driver-edit/driver-edit.component';
 import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { DriverService } from '../../_services/driver.service';
 import { Driver } from '../../_models/driver';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-driver-view',
@@ -25,26 +26,28 @@ export class DriverViewComponent {
 
   drivers: Driver[] = [];
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle('Drivers');
-    this.loadDrivers();
-    this.router.events.subscribe((event) => {
+    await this.loadDrivers();
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/drivers') {
-        this.loadDrivers();
+        await this.loadDrivers();
       }
     });
   }
-  loadDrivers() {
-    this.driverService.getAllDrivers().subscribe((data) => {
-      this.drivers = data; // or data.lines if it's nested
-      console.log(this.drivers);
-    });
+  async loadDrivers() {
+    try {
+     this.drivers = await firstValueFrom(this.driverService.getAllDrivers());
+    } 
+    catch (err) {
+      console.error(err);
+    }
   }
   deleteDriver(id: number) {
     if (confirm('Are you sure you want to delete this driver?')) {
       this.driverService.deleteDriver(id).subscribe({
-        next: (response) => {
-          this.loadDrivers();
+        next: async (response) => {
+          await this.loadDrivers();
           console.log('Driver deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -72,8 +75,8 @@ export class DriverViewComponent {
         workingHoursInAWeek: driver.workingHoursInAWeek,
       }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadDrivers();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.loadDrivers();
       if (result) {
         console.log('Updated Driver:', result);
       }

@@ -9,6 +9,7 @@ import { Bus } from '../../_models/bus';
 import { Driver } from '../../_models/driver';
 import { Shift } from '../../_models/shift';
 import { DateValidatorDirective } from '../../validators/date.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-shift-create',
@@ -38,15 +39,15 @@ export class ShiftCreateComponent {
     this.LoadDrivers();
   }
 
-  addNewShift(newShiftForm: NgForm) {
+  async addNewShift(newShiftForm: NgForm) {
     if (newShiftForm.valid && !this.isEndingTimeInvalid()) {
-      this.shiftService.createShift(this.shiftCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.router.navigate(['/manager-dashboard/shifts/details'],  { queryParams: response as Shift});
-        },
-      });
-      this.cancel();
+      try{
+        await firstValueFrom(this.shiftService.createShift(this.shiftCreate));
+        this.cancel();
+      }
+      catch(err){
+          console.error(err);
+      }
     }
     else {
       Object.keys(newShiftForm.controls).forEach(field => {

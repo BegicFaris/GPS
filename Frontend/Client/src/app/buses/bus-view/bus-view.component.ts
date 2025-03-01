@@ -25,15 +25,20 @@ export class BusViewComponent {
   async ngOnInit() {
     this.titleService.setTitle('buses');
     await this.loadBuses();
-    this.router.events.subscribe( async (event) => {
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/buses') {
         await this.loadBuses();
       }
     });
   }
   async loadBuses() {
-    this.buses=await firstValueFrom(this.busService.getAllBuses());
-  
+    try {
+      this.buses = await firstValueFrom(this.busService.getAllBuses());
+    }
+    catch (err) {
+      console.error(err);
+    }
+
     // this.busService.getAllBuses().subscribe((data) => {
     //   this.buses = data; // or data.buss if it's nested
     //   console.log(this.buses)

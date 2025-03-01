@@ -114,7 +114,12 @@ export class ScheduleComponent {
     this.listenToSearchFields();
   }
   async LoadStations() {
-    this.allStations = await firstValueFrom(this.stationService.getAllStations());
+    try{
+      this.allStations = await firstValueFrom(this.stationService.getAllStations());
+    }
+    catch(err){
+        console.error(err);
+    }
   }
   async setCurrentUserId(): Promise<boolean> {
     try {
@@ -130,9 +135,15 @@ export class ScheduleComponent {
     }
   }
   async LoadLines() {
-    this.allLines = await firstValueFrom(this.lineService.getAllLines());
-    this.displayLines = this.allLines;
-    this.searchLines = this.allLines;
+    try{
+
+      this.allLines = await firstValueFrom(this.lineService.getAllLines());
+      this.displayLines = this.allLines;
+      this.searchLines = this.allLines;
+    }
+    catch(err){
+        console.error(err);
+    }
   }
   async LoadFavoriteLines() {
     if (this.currentUserId != null) {
@@ -186,7 +197,12 @@ export class ScheduleComponent {
           userId: this.currentUserId,
           lineId: lineID
         };
-        await firstValueFrom(this.favoriteLineService.CreateFavoriteLine(favoriteLine));
+        try{
+          await firstValueFrom(this.favoriteLineService.CreateFavoriteLine(favoriteLine));
+        }
+        catch(err){
+            console.error(err);
+        }
         await this.LoadFavoriteLines();
         iconElement.classList.remove('bi-star');
         iconElement.classList.add('bi-star-fill');
@@ -195,7 +211,12 @@ export class ScheduleComponent {
     else {
       const favoriteLineId = this.favoriteLines.find(x => x.lineId === lineID)?.id;
       if (favoriteLineId) {
-        await firstValueFrom(this.favoriteLineService.DeleteFavoriteLine(favoriteLineId));
+        try{
+          await firstValueFrom(this.favoriteLineService.DeleteFavoriteLine(favoriteLineId));
+        }
+        catch(err){
+            console.error(err);
+        }
         await this.LoadFavoriteLines();
         iconElement.classList.remove('bi-star-fill');
         iconElement.classList.add('bi-star');

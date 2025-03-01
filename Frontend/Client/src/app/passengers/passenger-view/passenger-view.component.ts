@@ -11,6 +11,7 @@ import { DriverService } from '../../_services/driver.service';
 import { Driver } from '../../_models/driver';
 import { PassengerService } from '../../_services/passenger.service';
 import { Passenger } from '../../_models/passenger';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-passenger-view',
@@ -27,26 +28,29 @@ export class PassengerViewComponent {
 
   passengers: Passenger[] = [];
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle('Passengers');
-    this.loadPassengers();
-    this.router.events.subscribe((event) => {
+    await this.loadPassengers();
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/passengers') {
-        this.loadPassengers();
+        await this.loadPassengers();
       }
     });
   }
-  loadPassengers() {
-    this.passengerService.getAllPassengers().subscribe((data) => {
-      this.passengers = data; // or data.lines if it's nested
-      console.log(this.passengers);
-    });
+  async loadPassengers() {
+
+    try {
+      this.passengers = await firstValueFrom(this.passengerService.getAllPassengers());
+    }
+    catch (err) {
+      console.error(err);
+    }
   }
   deletePassenger(id: number) {
     if (confirm('Are you sure you want to delete this passenger?')) {
       this.passengerService.deletePassenger(id).subscribe({
-        next: (response) => {
-          this.loadPassengers();
+        next: async (response) => {
+          await this.loadPassengers();
           console.log('Passenger deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -71,8 +75,8 @@ export class PassengerViewComponent {
         discountId: passenger.discountID,
       }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadPassengers();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.loadPassengers();
       if (result) {
         console.log('Updated Passenger:', result);
       }

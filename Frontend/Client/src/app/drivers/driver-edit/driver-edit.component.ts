@@ -14,21 +14,22 @@ import { LettersNumbersValidatorDirective } from '../../validators/letters-numbe
 import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
 import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
 import { DateValidatorDirective } from '../../validators/date.validator';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-driver-edit',
   standalone: true,
-  imports: [FormsModule,LettersNumbersValidatorDirective,LettersOnlyValidatorDirective,LettersNumbersDashesValidatorDirective, DateValidatorDirective],
+  imports: [FormsModule, LettersNumbersValidatorDirective, LettersOnlyValidatorDirective, LettersNumbersDashesValidatorDirective, DateValidatorDirective],
   templateUrl: './driver-edit.component.html',
   styleUrl: './driver-edit.component.css'
 })
 export class DriverEditComponent {
   @ViewChild('updateDriverForm') updateDriverForm!: NgForm;
   emailExists: boolean = false;
-  
-  constructor(public dialogRef: MatDialogRef<DriverEditComponent>, @Inject(MAT_DIALOG_DATA) public driverUpdate: { id: number, firstName: string, lastName: string, email:string, birthDate: Date, address: string, hireDate:Date, license: string, driversLicenseNumber: string, workingHoursInAWeek: number  }) {}
 
-  
+  constructor(public dialogRef: MatDialogRef<DriverEditComponent>, @Inject(MAT_DIALOG_DATA) public driverUpdate: { id: number, firstName: string, lastName: string, email: string, birthDate: Date, address: string, hireDate: Date, license: string, driversLicenseNumber: string, workingHoursInAWeek: number }) { }
+
+
   private titleService = inject(Title);
   private driverService = inject(DriverService);
   maxDate: string = new Date().toISOString().split('T')[0];
@@ -37,17 +38,16 @@ export class DriverEditComponent {
     this.titleService.setTitle("Update driver");
   }
 
-  saveChanges() {
+  async saveChanges() {
     if (this.updateDriverForm.form.valid) {
-      this.driverService.updateDriver(this.driverUpdate).subscribe({
-        next: response => {
-          console.log('Driver updated successfully', response);
-          this.dialogRef.close(this.driverUpdate);
-        },
-        error: error => {
-          console.error('Error updating driver', error);
-        }
-      });
+
+      try {
+        await firstValueFrom(this.driverService.updateDriver(this.driverUpdate));
+        this.closeDialog();
+      }
+      catch (err) {
+        console.error(err);
+      }
     } else {
       console.log('Form is invalid. Please check the errors.');
     }

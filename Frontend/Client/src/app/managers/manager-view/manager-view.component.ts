@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { Manager } from '../../_models/manager';
 import { ManagerService } from '../../_services/manager.service';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-manager-view',
@@ -26,26 +27,29 @@ export class ManagerViewComponent {
   private managerService = inject(ManagerService)
   managers: Manager[] = [];
 
-  ngOnInit() {
+ async ngOnInit() {
     this.titleService.setTitle('Managers');
-    this.loadManagers();
-    this.router.events.subscribe((event) => {
+    await this.loadManagers();
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/managers') {
-        this.loadManagers();
+        await this.loadManagers();
       }
     });
   }
-  loadManagers() {
-    this.managerService.getAllManagers().subscribe((data) => {
-      this.managers = data; // or data.lines if it's nested
-      console.log(this.managers);
-    });
+ async loadManagers() {
+    try{
+      this.managers=await firstValueFrom(this.managerService.getAllManagers());
+    }
+    catch(err){
+        console.error(err);
+    }
+
   }
   deleteManager(id: number) {
     if (confirm('Are you sure you want to delete this manager?')) {
       this.managerService.deleteManager(id).subscribe({
-        next: (response) => {
-          this.loadManagers();
+        next: async (response) => {
+         await this.loadManagers();
           console.log('Manager deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -71,8 +75,8 @@ export class ManagerViewComponent {
         managerLevel: manager.managerLevel,
       }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadManagers();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.loadManagers();
       if (result) {
         console.log('Updated Manager:', result);
       }

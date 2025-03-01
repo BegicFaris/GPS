@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { DiscountEditComponent } from '../discount-edit/discount-edit.component';
 import { Title } from '@angular/platform-browser';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-discount-view',
@@ -21,26 +22,28 @@ export class DiscountViewComponent {
   private titleService = inject(Title);
   discounts: Discount[] = [];
 
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle('Discounts');
-    this.loadDiscounts();
-    this.router.events.subscribe((event) => {
+    await this.loadDiscounts();
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/discounts') {
-        this.loadDiscounts();
+        await this.loadDiscounts();
       }
     });
   }
-  loadDiscounts() {
-    this.discountService.getAllDiscounts().subscribe((data) => {
-      this.discounts = data; // or data.discounts if it's nested
-      console.log(this.discounts)
-    });
+  async loadDiscounts() {
+    try{
+    this.discounts = await firstValueFrom(this.discountService.getAllDiscounts());
+    }
+    catch(err){
+      console.error(err);
+    }
   }
   deleteDiscount(id: number) {
     if (confirm('Are you sure you want to delete this discount?')) {
       this.discountService.deleteDiscount(id).subscribe({
-        next: (response) => {
-          this.loadDiscounts();
+        next: async (response) => {
+          await this.loadDiscounts();
           console.log('Discount deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -60,8 +63,8 @@ export class DiscountViewComponent {
         discountValue: discount.discountValue,
       }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadDiscounts();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.loadDiscounts();
       if (result) {
         console.log('Updated discount:', result);
       }

@@ -11,6 +11,7 @@ import { ManagerService } from '../../_services/manager.service';
 import { CommonModule } from '@angular/common';
 import { StationService } from '../../_services/station.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-station-view',
@@ -24,29 +25,32 @@ export class StationViewComponent {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
-   private snackBar=inject(MatSnackBar);
+  private snackBar = inject(MatSnackBar);
   stations: Station[] = [];
 
-  ngOnInit() {
+ async  ngOnInit() {
     this.titleService.setTitle('Station');
-    this.loadStations();
-    this.router.events.subscribe((event) => {
+    await this.loadStations();
+    this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/stations') {
-        this.loadStations();
+        await this.loadStations();
       }
     });
   }
-  loadStations() {
-    this.stationService.getAllStations().subscribe((data) => {
-      this.stations = data; // or data.lines if it's nested
-      console.log(this.stations);
-    });
+  async loadStations() {
+    try {
+      this.stations = await firstValueFrom(this.stationService.getAllStations());
+    }
+    catch (err) {
+      console.error(err);
+    }
+
   }
   deleteStation(id: number) {
     if (confirm('Are you sure you want to delete this station?')) {
       this.stationService.deleteStation(id).subscribe({
-        next: (response) => {
-          this.loadStations();
+        next: async (response) => {
+          await this.loadStations();
           console.log('Station deleted successfully', response);
           this.cancel(); // Navigate back after successful deletion
         },
@@ -73,8 +77,8 @@ export class StationViewComponent {
         zoneId: station.zoneId,
       }, // Pass the current data to the dialog
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.loadStations();
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.loadStations();
       if (result) {
         console.log('Updated Station:', result);
       }

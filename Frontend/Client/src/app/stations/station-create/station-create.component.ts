@@ -10,19 +10,20 @@ import { ZoneService } from '../../_services/zone.service';
 import { Zone } from '../../_models/zone';
 import { LettersNumbersValidatorDirective } from '../../validators/letters-numbers.validator';
 import { GpsCodeValidatorDirective } from '../../validators/gps-code.validator';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
   selector: 'app-station-create',
   standalone: true,
-  imports: [FormsModule,LettersNumbersValidatorDirective,GpsCodeValidatorDirective, CommonModule, RouterLink],
+  imports: [FormsModule, LettersNumbersValidatorDirective, GpsCodeValidatorDirective, CommonModule, RouterLink],
   templateUrl: './station-create.component.html',
   styleUrl: './station-create.component.css',
 })
 export class StationCreateComponent {
   private stationService = inject(StationService);
   private router = inject(Router);
-  private zoneService= inject(ZoneService);
+  private zoneService = inject(ZoneService);
   private titleService = inject(Title);
   stations: Station[] = [];
   zones: Zone[] = [];
@@ -40,7 +41,7 @@ export class StationCreateComponent {
       gpsCode: ['', Validators.required],
     });
   }
-  ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle('Add station');
     this.loadExistingStations();
     this.loadExistingZones();
@@ -68,22 +69,21 @@ export class StationCreateComponent {
   }
 
   stationCreate: any = {};
-  addNewStation(newStationForm: NgForm) {
+  async addNewStation(newStationForm: NgForm) {
 
     if (newStationForm.valid && !this.stationExists) {
       if (this.stationCreate.isActive === undefined) {
         this.stationCreate.isActive = false;
       }
-      console.log(this.stationCreate);
-      this.stationService.createStation(this.stationCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.cancel();
-        },  
-      });
-      this.router.navigate(['/manager-dashboard/stations']);
+      try {
+        await firstValueFrom(this.stationService.createStation(this.stationCreate));
+        this.cancel();
+      }
+      catch (err) {
+        console.error(err);
+      }
     }
-    else{
+    else {
       Object.keys(newStationForm.controls).forEach(field => {
         const control = newStationForm.controls[field];
         control.markAsTouched({ onlySelf: true });
@@ -94,7 +94,7 @@ export class StationCreateComponent {
     this.router.navigate(['/manager-dashboard/stations']);
   }
 
- 
+
 
   checkStationExists() {
     if (this.stationCreate.name) {

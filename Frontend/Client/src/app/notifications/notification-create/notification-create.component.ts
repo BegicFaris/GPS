@@ -37,7 +37,7 @@ export class NotificationCreateComponent {
   notificationTypes: NotificationType[] = [];
   notificationCreate: any = {};
 
- async ngOnInit() {
+  async ngOnInit() {
     this.titleService.setTitle('Add notification');
     this.loadLines();
     this.loadNotificationTypes();
@@ -46,7 +46,7 @@ export class NotificationCreateComponent {
   async setManagerId() {
     const currentEmail = this.accountService.currentUser()?.email;
     console.log("Current email: " + currentEmail);
-  
+
     if (currentEmail) {
       try {
         const data = await firstValueFrom(this.appUserService.getMyAppUserByEmail(currentEmail));
@@ -54,23 +54,22 @@ export class NotificationCreateComponent {
       } catch (error) {
         console.error('Error fetching manager data:', error);
       }
-    } 
+    }
   }
-  addNewNotification(newNotificationForm: NgForm) {
+  async addNewNotification(newNotificationForm: NgForm) {
     if (newNotificationForm.valid) {
       if (this.notificationCreate.lineId == "")
         this.notificationCreate.lineId = null;
       this.notificationCreate.creationDate = new Date();
+      try {
+        await firstValueFrom(this.notificationService.createNotification(this.notificationCreate));
+        this.cancel();
+      }
+      catch (err) {
+        console.error(err);
+      }
 
-      console.log(this.notificationCreate);
-      this.notificationService.createNotification(this.notificationCreate).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.cancel();
-          window.location.reload(); 
-        },
-      });
-      this.router.navigate(['/manager-dashboard/notifications']);
+
     }
     else {
       console.log("Not valid");
@@ -84,79 +83,79 @@ export class NotificationCreateComponent {
     this.fileInput.nativeElement.click();
   }
 
- onFileSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
 
-  if (input.files && input.files[0]) {
-    const file = input.files[0];
-    const validImageTypes = ['image/jpeg', 'image/png'];
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const validImageTypes = ['image/jpeg', 'image/png'];
 
 
-    if (!validImageTypes.includes(file.type)) {
-      alert('Please upload a valid image file (JPEG, PNG, or GIF).');
-      this.clearFileInput(); 
-      return;
+      if (!validImageTypes.includes(file.type)) {
+        alert('Please upload a valid image file (JPEG, PNG, or GIF).');
+        this.clearFileInput();
+        return;
+      }
+
+
+      this.fileName = file.name;
+
+      // Create a FileReader to read the image file
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        // Ensure the base64 string is stored in notificationCreate.image
+        const base64Image = reader.result?.toString().split(',')[1]; // Extract base64 part
+
+        if (base64Image) {
+          this.notificationCreate.image = base64Image; // Assign base64 image to model
+        }
+
+        // Store the full base64 image for previewing (the complete data URL, including header)
+        this.imagePreview = reader.result as string; // Directly use the full result for preview
+        console.log(this.notificationCreate.image);
+      };
+
+      // Read the image file as base64
+      reader.readAsDataURL(file);
     }
-
-
-    this.fileName = file.name;
-
-    // Create a FileReader to read the image file
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      // Ensure the base64 string is stored in notificationCreate.image
-      const base64Image = reader.result?.toString().split(',')[1]; // Extract base64 part
-
-      if (base64Image) {
-        this.notificationCreate.image = base64Image; // Assign base64 image to model
-      }
-      
-      // Store the full base64 image for previewing (the complete data URL, including header)
-      this.imagePreview = reader.result as string; // Directly use the full result for preview
-      console.log(this.notificationCreate.image);
-    };
-
-    // Read the image file as base64
-    reader.readAsDataURL(file);
   }
-}
 
-onDragOver(event: DragEvent): void {
-  event.preventDefault(); // Necessary for drag events
-}
-
-// Handle the drop event to process the dropped file
-onDrop(event: DragEvent): void {
-  event.preventDefault(); // Prevent default behavior (Prevent opening the file)
-
-  const file = event.dataTransfer?.files[0]; // Get the first dropped file
-
-  if (file && file.type.startsWith('image/')) {
-    // Set the file name to the file input
-    this.clearFileInput();
-    this.fileName = file.name;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      // Set the imagePreview to the base64 result
-      this.imagePreview = reader.result?.toString() || '';
-
-      // Set notificationCreate.image with the base64 image part
-      const base64Image = reader.result?.toString().split(',')[1]; // Extract the base64 part
-      if (base64Image) {
-        this.notificationCreate.image = base64Image;
-      }
-    };
-    reader.readAsDataURL(file); // Read the file as base64
-  } else {
-    alert('Please drop a valid image file.');
+  onDragOver(event: DragEvent): void {
+    event.preventDefault(); // Necessary for drag events
   }
-}
+
+  // Handle the drop event to process the dropped file
+  onDrop(event: DragEvent): void {
+    event.preventDefault(); // Prevent default behavior (Prevent opening the file)
+
+    const file = event.dataTransfer?.files[0]; // Get the first dropped file
+
+    if (file && file.type.startsWith('image/')) {
+      // Set the file name to the file input
+      this.clearFileInput();
+      this.fileName = file.name;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Set the imagePreview to the base64 result
+        this.imagePreview = reader.result?.toString() || '';
+
+        // Set notificationCreate.image with the base64 image part
+        const base64Image = reader.result?.toString().split(',')[1]; // Extract the base64 part
+        if (base64Image) {
+          this.notificationCreate.image = base64Image;
+        }
+      };
+      reader.readAsDataURL(file); // Read the file as base64
+    } else {
+      alert('Please drop a valid image file.');
+    }
+  }
   clearFileInput(): void {
     this.fileInput.nativeElement.value = '';
     this.notificationCreate.image = null;
-    this.imagePreview = ''; 
+    this.imagePreview = '';
   }
 
 

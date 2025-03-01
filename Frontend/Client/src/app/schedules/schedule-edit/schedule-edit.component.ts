@@ -14,6 +14,7 @@ import { Zone } from '../../_models/zone';
 import { ScheduleService } from '../../_services/shcedule.service';
 import { Schedule } from '../../_models/schedule';
 import { Line } from '../../_models/line';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-schedule-edit',
@@ -56,18 +57,16 @@ export class ScheduleEditComponent {
     });
   }
 
-  saveChanges() {
+ async  saveChanges() {
     this.formSubmitted = true;
     if (this.updateScheduleForm.form.valid) {
-      this.scheduleService.updateSchedule(this.scheduleUpdate).subscribe({
-        next: response => {
-          console.log('Schedule updated successfully', response);
-          this.dialogRef.close(this.scheduleUpdate);
-        },
-        error: error => {
-          console.error('Error updating schedule', error);
-        }
-      });
+      try{
+        await firstValueFrom(this.scheduleService.updateSchedule(this.scheduleUpdate));
+        this.dialogRef.close(this.scheduleUpdate);
+      }
+      catch(err){
+          console.error(err);
+      }
     } else {
       console.log('Form is invalid. Please check the errors.');
     }
