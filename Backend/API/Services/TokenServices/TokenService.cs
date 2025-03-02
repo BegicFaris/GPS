@@ -44,9 +44,10 @@ namespace GPS.API.Services.TokenServices
                 throw new Exception("Cannot get tenant id from service");
             }
             var claims = new List<Claim>
-            { 
+            {
                 new(ClaimTypes.NameIdentifier, user.Email),
                 new Claim("TenantId", _currentTenantService.TenantId),
+                new Claim("Id", user.Id.ToString()),
                 new Claim(ClaimTypes.Role, role.ToString())
             };
 

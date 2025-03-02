@@ -82,5 +82,65 @@ namespace GPS.API.Controllers
             if (!success) return NotFound();
             return NoContent();
         }
+
+        [Authorize(Roles = nameof(UserRole.Driver))]
+        [HttpGet("driver-shift")]
+        public async Task<ActionResult<IEnumerable<ShiftDto>>> GetDriverShifts(
+           CancellationToken cancellationToken,
+           [FromQuery] int driverId,
+           [FromQuery] DateTime? fromDate = null,
+           [FromQuery] DateTime? toDate = null
+           )
+        {
+            var shifts = await _shiftService.GetDriverShiftsAsync(cancellationToken, driverId, fromDate, toDate);
+            return Ok(shifts);
+        }
+
+        [Authorize(Roles = nameof(UserRole.Driver))]
+        [HttpGet("current")]
+        public async Task<ActionResult<IEnumerable<ShiftDto>>> GetCurrentShifts([FromQuery] int driverId, CancellationToken cancellationToken)
+        {
+            var shifts = await _shiftService.GetCurrentShiftsAsync(driverId,cancellationToken);
+            return Ok(shifts);
+        }
+
+        [Authorize(Roles = nameof(UserRole.Driver))]
+        [HttpGet("upcoming")]
+        public async Task<ActionResult<IEnumerable<ShiftDto>>> GetUpcomingShifts([FromQuery] int driverId, CancellationToken cancellationToken)
+        {
+            var shifts = await _shiftService.GetUpcomingShiftsAsync(driverId, cancellationToken);
+            return Ok(shifts);
+        }
+
+        [Authorize(Roles = nameof(UserRole.Driver))]
+        [HttpGet("ended")]
+        public async Task<ActionResult<IEnumerable<ShiftDto>>> GetEndedShifts([FromQuery] int driverId, CancellationToken cancellationToken)
+        {
+            var shifts = await _shiftService.GetEndedShiftsAsync(driverId, cancellationToken);
+            return Ok(shifts);
+        }
+
+        [Authorize(Roles = nameof(UserRole.Driver))]
+        [HttpGet("details/{shiftId}")]
+        public async Task<ActionResult<ShiftDto>> GetShiftDetails(int shiftId, CancellationToken cancellationToken)
+        {
+            var shiftDetails = await _shiftService.GetShiftDetailsAsync(shiftId, cancellationToken);
+            if (shiftDetails == null)
+                return NotFound();
+
+            return Ok(shiftDetails);
+        }
+
+        [Authorize(Roles = nameof(UserRole.Driver))]
+        [HttpGet("{shiftId}/pdf")]
+        public async Task<IActionResult> GetShiftPdf(int shiftId, CancellationToken cancellationToken)
+        {
+            var pdfData = await _shiftService.GenerateShiftPdfAsync(shiftId, cancellationToken);
+            if (pdfData == null)
+                return NotFound();
+
+            return File(pdfData, "application/pdf", $"shift-report-{shiftId}.pdf");
+        }
+
     }
 }

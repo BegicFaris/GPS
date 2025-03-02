@@ -1,0 +1,73 @@
+<div class="container mx-auto p-4">
+    <!-- Back Button -->
+    <button (click)="goBack()" class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 mb-4">
+      <i class="fa fa-arrow-left mr-2"></i> Back
+    </button>
+  
+    <!-- Loading Indicator -->
+    <div *ngIf="loading" class="flex justify-center my-8">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="error" class="bg-red-100 text-red-700 p-4 rounded mb-4">
+      Error loading shift details. Please try again later.
+    </div>
+  
+    <!-- Shift Details -->
+    <div *ngIf="!loading && !error && shiftDetails">
+      <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-2xl font-bold">Shift Details</h1>
+          <button 
+            (click)="downloadPdf()" 
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center">
+            <i class="fas fa-file-pdf mr-2"></i> Download PDF
+          </button>
+        </div>
+  
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <p class="text-gray-600">Date:</p>
+            <p class="font-semibold">{{ shiftDetails.shift.shiftDate | date:'dd/MM/yyyy' }}</p>
+          </div>
+          <div>
+            <p class="text-gray-600">Time:</p>
+            <p class="font-semibold">{{ shiftDetails.shift.shiftStartingTime | slice:0:5 }} - {{ shiftDetails.shift.shiftEndingTime | slice:0:5 }}</p>
+          </div>
+          <div>
+            <p class="text-gray-600">Bus:</p>
+            <p class="font-semibold">{{ shiftDetails.shift.busNumber }}</p>
+          </div>
+          <div>
+            <p class="text-gray-600">Status:</p>
+            <span [class]="'px-2 py-1 rounded-full text-xs font-medium ' + getStatusClass(shiftDetails.shift.status)">
+              {{ shiftDetails.shift.status }}
+            </span>
+          </div>
+        </div>
+  
+        <h2 class="text-xl font-semibold mb-4">Shift Details</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white rounded-lg overflow-hidden">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="py-3 px-4 text-left">Line</th>
+                <th class="py-3 px-4 text-left">Start Time</th>
+                <th class="py-3 px-4 text-left">End Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detail of shiftDetails.details" class="border-b">
+                <td class="py-3 px-4">{{ detail.lineName }}</td>
+                <td class="py-3 px-4">{{ detail.startTime | slice:0:5 }}</td>
+                <td class="py-3 px-4">{{ detail.endTime | slice:0:5 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

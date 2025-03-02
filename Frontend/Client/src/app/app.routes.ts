@@ -151,6 +151,21 @@ export const routes: Routes = [
     loadComponent: () => import('./driver-dashboard/driver-dashboard.component').then(m => m.DriverDashboardComponent),
     canActivate: [RoleGuard],
     data: { role: 'Driver' },
+    children: [
+      {
+        path: 'shift-infos',
+        loadComponent: () => import('./driver-dashboard/shift-info/shift-info.component').then(m => m.ShiftInfoComponent)
+      },
+      {
+        path: 'shift-lists',
+        loadComponent: () => import('./driver-dashboard/shift-list/shift-list.component').then(m => m.ShiftListComponent)
+      },
+      {
+        path: 'shift-overviews/:id',
+        loadComponent: () => import('./driver-dashboard/shift-overview/shift-overview.component').then(m => m.ShiftOverviewComponent)
+      },
+
+     ]
   },
   {
     path: 'unauthorized',
