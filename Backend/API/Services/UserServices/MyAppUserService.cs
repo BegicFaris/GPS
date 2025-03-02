@@ -57,9 +57,9 @@ namespace GPS.API.Services.UserServices
             return user;
         }
 
-        public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken) =>
-            await _context.MyAppUsers
-                .AnyAsync(u => u.Email == email, cancellationToken);
+        public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken) {
+            return await _context.MyAppUsers.AnyAsync(m => m.Email == email && !m.IsDeleted, cancellationToken);
+        }
 
         public async Task<MyAppUser> CreateUserAsync(MyAppUser user, CancellationToken cancellationToken)
         {

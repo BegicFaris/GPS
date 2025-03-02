@@ -35,14 +35,15 @@
       <label class="form-label" for="email">Email:</label>
       <input class="form-control" id="email" name="email" [(ngModel)]="managerUpdate.email" #email="ngModel" required
         email type="email">
-      @if (formSubmitted && email.invalid) {
-      @if (email.errors?.['required']) {
-      <small>Email is required.</small>
-      }
-      @if (email.errors?.['email']) {
-      <small>Please enter a valid email address.</small>
-      }
-      }
+        @if (email.invalid && (email.dirty || email.touched)) {
+          <div class="text-danger">
+            @if (email.errors?.['required']) {Email is required.}
+            @if (email.errors?.['email']) {Invalid email format.}
+          </div>
+          }
+          @if (emailExists) {
+            <div class="text-danger">This email is already in use.</div>
+          }
     </div>
 
     <div class="mb-3">

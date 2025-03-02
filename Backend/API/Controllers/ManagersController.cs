@@ -99,5 +99,16 @@ namespace GPS.API.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("check-email")]
+        public async Task<IActionResult> ManagerCheckEmailExists([FromQuery] string email, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest("Email is required.");
+            }
+            bool exists = await _managerService.ManagerEmailExistsAsync(email, cancellationToken);
+            return Ok(new { exists });
+        }
     }
 }

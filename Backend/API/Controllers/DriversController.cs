@@ -108,5 +108,16 @@ namespace GPS.API.Controllers
                 return StatusCode(500, new { message = "An error occurred while deleting the driver", details = ex.Message });
             }
         }
+
+        [HttpGet("check-email")]
+        public async Task<IActionResult> DriverCheckEmailExists([FromQuery] string email, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest("Email is required.");
+            }
+            bool exists = await _driverService.DriverEmailExistsAsync(email, cancellationToken);
+            return Ok(new { exists });
+        }
     }
 }

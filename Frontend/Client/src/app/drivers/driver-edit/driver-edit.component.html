@@ -36,10 +36,9 @@
       </div>
       }
       @if (emailExists) {
-      <div class="text-danger">
-        This email is already in use. Please use a different email.
-      </div>
+        <div class="text-danger">This email is already in use.</div>
       }
+      
     </div>
 
     <div class="mb-3">
@@ -139,7 +138,7 @@
           }
     </div>
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="submit" class="btn btn-primary" [disabled]="updateDriverForm.form.invalid">Save Changes</button>
     <button type="button" class="btn btn-danger" (click)="closeDialog()">Cancel</button>
   </form>
 </div>

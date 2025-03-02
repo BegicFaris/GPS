@@ -50,4 +50,8 @@ export class DriverService {
       })
     );
   }
+
+  driverCheckEmailExists(email: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/check-email?email=${email}`);
+  }
 }
