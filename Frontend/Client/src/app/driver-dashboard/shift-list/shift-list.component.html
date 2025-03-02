@@ -1,0 +1,36 @@
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-lg overflow-hidden shadow">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="py-3 px-4 text-left">Date</th>
+          <th class="py-3 px-4 text-left">Time</th>
+          <th class="py-3 px-4 text-left">Bus</th>
+          <th class="py-3 px-4 text-left">Status</th>
+          <th class="py-3 px-4 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let shift of shifts" 
+            (click)="viewShiftDetails(shift.id)"
+            class="border-b hover:bg-gray-50 cursor-pointer">
+          <td class="py-3 px-4">{{ shift.shiftDate | date:'dd/MM/yyyy' }}</td>
+          <td class="py-3 px-4">{{ shift.shiftStartingTime | slice:0:5 }} - {{ shift.shiftEndingTime | slice:0:5 }}</td>
+          <td class="py-3 px-4">{{ shift.busNumber }}</td>
+          <td class="py-3 px-4">
+            <span [class]="'px-2 py-1 rounded-full text-xs font-medium ' + getStatusClass(shift.status)">
+              {{ shift.status }}
+            </span>
+          </td>
+          <td class="py-3 px-4">
+            <button 
+              (click)="downloadPdf(shift.id, $event)" 
+              class="text-blue-600 hover:text-blue-800 mr-2">
+              <i class="fas fa-file-pdf"></i> PDF
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  

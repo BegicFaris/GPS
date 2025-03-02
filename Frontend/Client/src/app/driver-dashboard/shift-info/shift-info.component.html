@@ -1,0 +1,73 @@
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-6">Driver Shift Dashboard</h1>
+  
+    <!-- Filter Form -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+      <h2 class="text-lg font-semibold mb-3">Filter Shifts</h2>
+      <form [formGroup]="filterForm" (ngSubmit)="applyFilter()" class="flex flex-wrap gap-4 items-end">
+        <div class="flex flex-col">
+          <label for="fromDate" class="text-sm mb-1">From Date</label>
+          <input 
+            type="date" 
+            id="fromDate" 
+            formControlName="fromDate" 
+            class="border rounded p-2">
+        </div>
+        <div class="flex flex-col">
+          <label for="toDate" class="text-sm mb-1">To Date</label>
+          <input 
+            type="date" 
+            id="toDate" 
+            formControlName="toDate" 
+            class="border rounded p-2">
+        </div>
+        <div class="flex gap-2">
+          <button 
+            type="submit" 
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Apply Filter
+          </button>
+          <button 
+            type="button" 
+            (click)="resetFilter()" 
+            class="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+            Reset
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Loading Indicator -->
+    <div *ngIf="loading" class="flex justify-center my-8">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+    </div>
+  
+    <!-- Current Shifts -->
+    <div *ngIf="!loading" class="mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-green-600">Current Shifts</h2>
+      <div *ngIf="currentShifts.length === 0" class="text-gray-500">No current shifts</div>
+      <div *ngIf="currentShifts.length > 0">
+        <app-shift-list [shifts]="currentShifts"></app-shift-list>
+      </div>
+    </div>
+  
+    <!-- Upcoming Shifts -->
+    <div *ngIf="!loading" class="mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-blue-600">Upcoming Shifts</h2>
+      <div *ngIf="upcomingShifts.length === 0" class="text-gray-500">No upcoming shifts</div>
+      <div *ngIf="upcomingShifts.length > 0">
+        <app-shift-list [shifts]="upcomingShifts"></app-shift-list>
+      </div>
+    </div>
+  
+    <!-- Ended Shifts -->
+    <div *ngIf="!loading" class="mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-gray-600">Ended Shifts</h2>
+      <div *ngIf="endedShifts.length === 0" class="text-gray-500">No ended shifts</div>
+      <div *ngIf="endedShifts.length > 0">
+        <app-shift-list [shifts]="endedShifts"></app-shift-list>
+      </div>
+    </div>
+  </div>
+  
+  

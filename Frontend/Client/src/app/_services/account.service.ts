@@ -76,6 +76,11 @@ export class AccountService {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user).role :null;
   }
+
+  getUserId(): string | null{
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user).id :null;
+  }
   getUserEmail(): string{
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user).email :null;

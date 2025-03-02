@@ -185,7 +185,8 @@ namespace GPS.API.Controllers
                 {
                     Email = user.Email,
                     Token = token,
-                    Role = role
+                    Role = role,
+                    Id = user.Id
                 };
             }
             catch (Exception ex)
