@@ -1,4 +1,4 @@
-import { Component, inject, Inject, ViewChild } from '@angular/core';
+import { Component, inject, Inject, NgZone, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineService } from '../../_services/line.service';
@@ -15,6 +15,7 @@ import { LettersOnlyValidatorDirective } from '../../validators/only-letters.val
 import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
 import { DateValidatorDirective } from '../../validators/date.validator';
 import { firstValueFrom } from 'rxjs';
+import { MyAppUserService } from '../../_services/my-app-user.service';
 
 @Component({
   selector: 'app-driver-edit',
@@ -26,21 +27,48 @@ import { firstValueFrom } from 'rxjs';
 export class DriverEditComponent {
   @ViewChild('updateDriverForm') updateDriverForm!: NgForm;
   emailExists: boolean = false;
+  originalEmail: any;
 
-  constructor(public dialogRef: MatDialogRef<DriverEditComponent>, @Inject(MAT_DIALOG_DATA) public driverUpdate: { id: number, firstName: string, lastName: string, email: string, birthDate: Date, address: string, hireDate: Date, license: string, driversLicenseNumber: string, workingHoursInAWeek: number }) { }
+  constructor(
+    public dialogRef: MatDialogRef<DriverEditComponent>, 
+    private ngZone: NgZone,
+    @Inject(MAT_DIALOG_DATA) public driverUpdate: 
+    { id: number, 
+      firstName: string, 
+      lastName: string, 
+      email: string, 
+      birthDate: Date, 
+      address: string, 
+      hireDate: Date, 
+      license: string, 
+      driversLicenseNumber: string, 
+      workingHoursInAWeek: number }
+    
+    ) { }
 
 
   private titleService = inject(Title);
   private driverService = inject(DriverService);
+  private myAppUserService = inject(MyAppUserService);
   maxDate: string = new Date().toISOString().split('T')[0];
+
 
   ngOnInit(): void {
     this.titleService.setTitle("Update driver");
+    this.originalEmail = this.driverUpdate.email; 
   }
 
   async saveChanges() {
     if (this.updateDriverForm.form.valid) {
-
+      if (this.driverUpdate.email !== this.originalEmail) {
+        const emailCheck = await firstValueFrom(this.myAppUserService.checkEmailExists(this.driverUpdate.email));
+        if (emailCheck.exists) {
+          this.emailExists = true;
+          return; 
+        }
+      }
+  
+      this.emailExists = false;
       try {
         await firstValueFrom(this.driverService.updateDriver(this.driverUpdate));
         this.closeDialog();
@@ -52,6 +80,7 @@ export class DriverEditComponent {
       console.log('Form is invalid. Please check the errors.');
     }
   }
+
   closeDialog() {
     this.dialogRef.close();
   }

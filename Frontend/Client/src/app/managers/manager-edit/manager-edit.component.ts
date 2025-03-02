@@ -1,4 +1,4 @@
-import { Component, inject, Inject, ViewChild } from '@angular/core';
+import { Component, inject, Inject, NgZone, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LineService } from '../../_services/line.service';
@@ -12,6 +12,7 @@ import { Department } from '../../_models/department';
 import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
 import { DateValidatorDirective } from '../../validators/date.validator';
 import { firstValueFrom } from 'rxjs';
+import { MyAppUserService } from '../../_services/my-app-user.service';
 
 @Component({
   selector: 'app-manager-edit',
@@ -23,12 +24,16 @@ import { firstValueFrom } from 'rxjs';
 export class ManagerEditComponent {
   @ViewChild('updateManagerForm') updateManagerForm!: NgForm;
   formSubmitted = false;
+  emailExists: boolean = false;
+  originalEmail: any;
+
   
-  constructor(public dialogRef: MatDialogRef<ManagerEditComponent>, @Inject(MAT_DIALOG_DATA) public managerUpdate: { id: number, firstName: string, lastName: string, email:string, birthDate: Date, address: string, hireDate:Date, department: string, managerLevel:string }) {}
+  constructor(public dialogRef: MatDialogRef<ManagerEditComponent>,private ngZone: NgZone, @Inject(MAT_DIALOG_DATA) public managerUpdate: { id: number, firstName: string, lastName: string, email:string, birthDate: Date, address: string, hireDate:Date, department: string, managerLevel:string }) {}
 
   
   private titleService = inject(Title);
   private managerService = inject(ManagerService);
+   private myAppUserService = inject(MyAppUserService);
   stations: Station[] = [];
   maxDate: string = new Date().toISOString().split('T')[0];
 
@@ -48,11 +53,21 @@ export class ManagerEditComponent {
 
   ngOnInit(): void {
     this.titleService.setTitle("Update manager");
+    this.originalEmail = this.managerUpdate.email; // Store the original email
   }
 
   async saveChanges() {
     this.formSubmitted = true;
     if (this.updateManagerForm.form.valid) {
+      if (this.managerUpdate.email !== this.originalEmail) {
+        const emailCheck = await firstValueFrom(this.myAppUserService.checkEmailExists(this.managerUpdate.email));
+        if (emailCheck.exists) {
+          this.emailExists = true;
+          return; // Stop form submission if email already exists
+        }
+      }
+
+      this.emailExists = false;
       try{
       await firstValueFrom(this.managerService.updateManager(this.managerUpdate));
       this.dialogRef.close(this.managerUpdate);

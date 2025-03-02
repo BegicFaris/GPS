@@ -6,6 +6,7 @@ using GPS.API.Dtos.UserDtos;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using GPS.API.Dtos.TicketDtos;
+using GPS.API.Services.DriverServices;
 
 namespace GPS.API.Controllers
 {

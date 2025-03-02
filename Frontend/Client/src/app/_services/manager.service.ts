@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Manager } from '../_models/manager';
-import { catchError } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -49,5 +49,9 @@ export class ManagerService {
         return (error);
       })
     );
+  }
+
+  managerCheckEmailExists(email: string): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/check-email?email=${email}`);
   }
 }

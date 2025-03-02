@@ -32,3 +32,65 @@
     align-items: center;    /* Aligns items vertically if needed */
     width: 100%;            /* Ensures the container takes full width */
   }
+/* Enhanced styling for the custom-snackbar */
+::ng-deep .custom-snackbar {
+  /* Increase specificity and use !important for critical styles */
+  &.mat-snack-bar-container {
+    border-radius: 8px !important;
+    min-width: 320px !important;
+    max-width: 500px !important;
+    padding: 16px !important;
+    margin: 16px !important;
+    
+    background: linear-gradient(135deg, #f44336, #e57373) !important;
+    color: white !important;
+    
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2) !important;
+    
+    border-left: 5px solid #d32f2f !important;
+    
+    font-weight: 500 !important;
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    
+    animation: snackbar-slide-in 0.3s ease-out !important;
+  }
+
+  /* Style the content and action button */
+  .mat-simple-snackbar {
+    font-family: inherit;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .mat-simple-snackbar-action {
+    color: white !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    opacity: 0.9 !important;
+
+    &:hover {
+      opacity: 1 !important;
+      text-decoration: underline !important;
+    }
+  }
+}
+
+/* Add slide-in animation */
+@keyframes snackbar-slide-in {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Add a subtle hover effect */
+::ng-deep .custom-snackbar:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+}
+ 

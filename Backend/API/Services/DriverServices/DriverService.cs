@@ -45,5 +45,9 @@ namespace GPS.API.Services.DriverServices
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+        public async Task<bool> DriverEmailExistsAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Drivers.AnyAsync(m => m.Email == email && !m.IsDeleted, cancellationToken);
+        }
     }
 }

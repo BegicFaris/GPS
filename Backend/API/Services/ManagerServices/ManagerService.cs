@@ -47,5 +47,9 @@ namespace GPS.API.Services.ManagerServices
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+        public async Task<bool> ManagerEmailExistsAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Managers.AnyAsync(m => m.Email == email && !m.IsDeleted, cancellationToken);
+        }
     }
 }
