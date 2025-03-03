@@ -12,6 +12,7 @@ import { ManagerService } from '../../_services/manager.service';
 import { LettersOnlyValidatorDirective } from '../../validators/only-letters.validator';
 import { DateValidatorDirective } from '../../validators/date.validator';
 import { firstValueFrom } from 'rxjs';
+import { MyAppUserService } from '../../_services/my-app-user.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ import { firstValueFrom } from 'rxjs';
 export class ManagerCreateComponent {
     @ViewChild('fileInput') fileInput!: ElementRef;
   private managerService = inject(ManagerService);
+  private myAppUserService = inject(MyAppUserService);
   private router = inject(Router);
   private accountService= inject(AccountService);
   private titleService = inject(Title);
@@ -148,9 +150,11 @@ export class ManagerCreateComponent {
     }, 200);
   }
 
-  checkEmailExists() {
+  checkEmailExists(): void {
     if (this.managerCreate.email) {
-      this.emailExists = this.managers.some(manager => manager.email === this.managerCreate.email);
+      this.myAppUserService.checkEmailExists(this.managerCreate.email).subscribe(response => {
+        this.emailExists = response.exists;
+      });
     }
   }
 }

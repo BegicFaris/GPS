@@ -190,6 +190,7 @@
               name="hireDate"
               [(ngModel)]="managerCreate.hireDate"
               #hireDate="ngModel"
+              [max]="maxDate"
               appValidDate
               required
               placeholder="Hire Date"
@@ -237,7 +238,7 @@
       </div>
     
       <div class="form-group text-center">
-        <button class="btn btn-primary me-2" type="submit">
+        <button  class="btn btn-primary me-2" type="submit">
           Register
         </button>
         <button class="btn btn-danger me-2" type="button" [routerLink]="'/manager-dashboard/managers'">

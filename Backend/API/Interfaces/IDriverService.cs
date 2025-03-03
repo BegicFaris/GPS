@@ -10,5 +10,6 @@ namespace GPS.API.Interfaces
         Task<Driver> CreateDriverAsync(Driver driver, CancellationToken cancellationToken);
         Task<Driver> UpdateDriverAsync(Driver driver, CancellationToken cancellationToken);
         Task<bool> DeleteDriverAsync(int id, CancellationToken cancellationToken);
+        Task<bool> DriverEmailExistsAsync(string email, CancellationToken cancellationToken);
     }
 }

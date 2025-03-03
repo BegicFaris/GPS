@@ -9,5 +9,6 @@ namespace GPS.API.Interfaces
         Task<Manager> CreateManagerAsync(Manager manager, CancellationToken cancellationToken );
         Task<Manager> UpdateManagerAsync(Manager manager, CancellationToken cancellationToken );
         Task<bool> DeleteManagerAsync(int id, CancellationToken cancellationToken );
+        Task<bool> ManagerEmailExistsAsync(string email, CancellationToken cancellationToken);
     }
 }

@@ -15,6 +15,7 @@ import { Notification } from '../_models/notification';
 import { NotificationService } from '../_services/notification.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface GroupedNotifications {
   type: string;
@@ -60,7 +61,8 @@ export class NavComponent implements OnInit {
   constructor(
     public themeService: ThemeService,
     private translateService: TranslateService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private snackBar: MatSnackBar 
   ) { }
 
   async ngOnInit(){
@@ -186,6 +188,13 @@ export class NavComponent implements OnInit {
         console.error('Login error:', error);
         this.loginError = error.message;
         this.isLoading = false;
+
+        this.snackBar.open('⚠️ Invalid email or password. Please try again.', 'Dismiss', {
+          duration: 4000, // Keep it visible for 4 seconds
+          panelClass: ['custom-snackbar'], // Apply custom styling
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       },
     });
   }

@@ -12,6 +12,7 @@ import { LettersOnlyValidatorDirective } from '../../validators/only-letters.val
 import { DateValidatorDirective } from '../../validators/date.validator';
 import { LettersNumbersDashesValidatorDirective } from '../../validators/letters-numbers-dashes.validator';
 import { firstValueFrom } from 'rxjs';
+import { MyAppUserService } from '../../_services/my-app-user.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class DriverCreateComponent {
 
 
   private driverService = inject(DriverService);
+  private myAppUserService = inject(MyAppUserService);
   private router = inject(Router);
   private accountService = inject(AccountService);
   private titleService = inject(Title);
@@ -153,9 +155,11 @@ export class DriverCreateComponent {
     }, 200);
   }
 
-  checkEmailExists() {
+  checkEmailExists(): void {
     if (this.driverCreate.email) {
-      this.emailExists = this.drivers.some(driver => driver.email === this.driverCreate.email);
+      this.myAppUserService.checkEmailExists(this.driverCreate.email).subscribe(response => {
+        this.emailExists = response.exists;
+      });
     }
   }
 }

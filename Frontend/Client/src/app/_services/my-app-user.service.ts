@@ -27,9 +27,6 @@ export class MyAppUserService {
     return this.http.put<UserProfile>(`${this.baseUrl}/profile/${id}`, profile);
     }
     checkEmailExists(email: string): Observable<{ exists: boolean }> {
-      return this.http.get<{ exists: boolean }>(`${this.baseUrl}/check-email`, {
-        params: { email }
-      });
+      return this.http.get<{ exists: boolean }>(`${this.baseUrl}/check-email?email=${email}`);
     }
-  
 }

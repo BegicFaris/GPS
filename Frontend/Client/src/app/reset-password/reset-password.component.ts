@@ -142,5 +142,9 @@ export class ResetPasswordComponent {
     this.confirmPasswordError = '';
     return true;
   }
+
+  cancel() {
+    this.router.navigate(["/home"]);
+  }
 }
 
