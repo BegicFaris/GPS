@@ -31,6 +31,7 @@
             type="email"
             class="form-control"
             name="email"
+            (blur)="checkEmailExists()"
             [(ngModel)]="model.email"
             #email="ngModel"
             required
@@ -48,6 +49,11 @@
               }
             </div>
           }
+          @if (emailExists) {
+            <div class="text-danger">
+              This email is already in use. Please use a different email.
+            </div>
+          }
         </div>
   
         <div class="mb-3 form-floating">
@@ -55,6 +61,7 @@
             type="date"
             class="form-control"
             name="birthDate"
+            [max]="maxDate"
             [(ngModel)]="model.birthDate"
             #birthDate="ngModel"
             required
@@ -177,13 +184,12 @@
       (success)="handleSuccess($event)"
       (reset)="handleReset()"
       (expire)="handleExpire()"
-      (load)="handleLoad()"
       >
     </ngx-recaptcha2>
     </div>
   
     <div class="form-group text-center mb-1">
-      <button class="btn btn-success me-2" type="submit" [disabled]="!registerForm.form.valid || !captchaResponse">
+      <button class="btn btn-success me-2" type="submit" [disabled]="!registerForm.form.valid || !captchaResponse || emailExists">
         Register
       </button>
       <button class="btn btn-default me-2" type="button" [routerLink]="'/home'">

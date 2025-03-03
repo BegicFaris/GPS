@@ -20,27 +20,39 @@ export const routes: Routes = [
   },
   {
     path: 'news',
-    loadComponent: () => import('./news/news.component').then(m => m.NewsComponent)
+    loadComponent: () => import('./news/news.component').then(m => m.NewsComponent),
+    canActivate: [RoleGuard],
+    data: { role: 'Any' }
   },
   {
     path: 'schedule',
-    loadComponent: () => import('./schedule/schedule.component').then(m => m.ScheduleComponent)
+    loadComponent: () => import('./schedule/schedule.component').then(m => m.ScheduleComponent),
+    canActivate: [RoleGuard],
+    data: { role: 'Any' }
   },
   {
     path: 'gallery',
-    loadComponent: () => import('./gallery/gallery.component').then(m => m.GalleryComponent)
+    loadComponent: () => import('./gallery/gallery.component').then(m => m.GalleryComponent),
+    canActivate: [RoleGuard],
+    data: { role: 'Any' }
   },
   {
     path: 'buy-ticket',
-    loadComponent: () => import('./buy-ticket/buy-ticket.component').then(m => m.BuyTicketComponent)
+    loadComponent: () => import('./buy-ticket/buy-ticket.component').then(m => m.BuyTicketComponent),
+    canActivate: [RoleGuard],
+    data: { role: 'Any' }
   },
   {
     path: 'about-us',
-    loadComponent: () => import('./about-us/about-us.component').then(m => m.AboutUsComponent)
+    loadComponent: () => import('./about-us/about-us.component').then(m => m.AboutUsComponent),
+    canActivate: [RoleGuard],
+    data: { role: 'Any' }
   },
   {
     path: 'profile',
-    loadComponent: () => import('./user-profile/user-profile.component').then(m => m.UserProfileComponent)
+    loadComponent: () => import('./user-profile/user-profile.component').then(m => m.UserProfileComponent),
+    canActivate: [RoleGuard],
+    data: { role: 'Any' }
   },
   {
     path: 'register',

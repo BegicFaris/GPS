@@ -1,7 +1,7 @@
 
 import { Component, inject, OnInit } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { AccountService } from './_services/account.service';
 import { NavComponent } from './nav/nav.component';
 import { AuthInterceptor } from './_services/auth-interceptor.service';
@@ -38,7 +38,13 @@ export class AppComponent implements OnInit{
     this.translate.use('en');
   }
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService,private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0);
+      }
+    });
+  }
  
  
 

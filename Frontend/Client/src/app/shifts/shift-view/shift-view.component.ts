@@ -8,6 +8,7 @@ import { ShiftEditComponent } from '../shift-edit/shift-edit.component';
 import { FormsModule } from '@angular/forms';
 import { ShiftDetailService } from '../../_services/shift-detail.service';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-shift-view',
@@ -21,7 +22,8 @@ export class ShiftViewComponent {
   private shiftDetailService = inject(ShiftDetailService);
   private router = inject(Router);
   private titleService = inject(Title);
-  private dialog = inject(MatDialog)
+  private dialog = inject(MatDialog);
+  private snackBar= inject(MatSnackBar);
   shifts: Shift[] = [];
 
 
@@ -48,7 +50,11 @@ export class ShiftViewComponent {
       this.shiftService.deleteShift(id).subscribe({
         next: async (response) => {
           await this.loadShifts();
-          console.log('Shift deleted successfully', response);
+          this.snackBar.open('Shift deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel();
         },
         error: error => {
@@ -73,6 +79,12 @@ export class ShiftViewComponent {
     });
     dialogRef.afterClosed().subscribe(async () => {
       await this.loadShifts();
+      this.snackBar.open('Shift updated sucessfully', 'Ok', {
+        duration: 4000, // Keep it visible for 4 seconds
+        verticalPosition: 'top', // Show at the top
+        horizontalPosition: 'center' // Centered horizontally
+      });
+      
     });
   }
   cancel() {

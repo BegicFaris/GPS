@@ -85,7 +85,7 @@ namespace GPS.API.Controllers
             return Ok(updatedUser);
         }
 
-        [Authorize]
+      
         [HttpGet("check-email")]
         public async Task<IActionResult> CheckEmail([FromQuery] string email, CancellationToken cancellationToken)
         {

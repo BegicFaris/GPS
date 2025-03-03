@@ -36,7 +36,6 @@ export class StationEditComponent {
 
   ngOnInit(): void {
     this.titleService.setTitle("Update station");
-    console.log(this.stationUpdate)
     this.loadExistingZones();
   }
   loadExistingZones() {

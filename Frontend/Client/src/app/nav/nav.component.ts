@@ -158,12 +158,10 @@ export class NavComponent implements OnInit {
   verifyTwoFactorCode(code: string) {
     this.accountService.verifyCode(this.model.email, code).subscribe({
       next: (response) => {
-        console.log('2FA verification successful:', response);
         this.twoFactorCode = '';
         this.performLogin();
       },
       error: (error) => {
-        console.error('Error verifying 2FA code:', error);
         this.loginError = 'Invalid 2FA code. Please try again.';
         this.invalidCode = true;
         this.twoFactorCode = '';

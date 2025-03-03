@@ -12,6 +12,7 @@ import { Driver } from '../../_models/driver';
 import { PassengerService } from '../../_services/passenger.service';
 import { Passenger } from '../../_models/passenger';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-passenger-view',
@@ -25,6 +26,7 @@ export class PassengerViewComponent {
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
   private passengerService = inject(PassengerService);
+  private snackBar= inject(MatSnackBar);
 
   passengers: Passenger[] = [];
 
@@ -51,7 +53,11 @@ export class PassengerViewComponent {
       this.passengerService.deletePassenger(id).subscribe({
         next: async (response) => {
           await this.loadPassengers();
-          console.log('Passenger deleted successfully', response);
+          this.snackBar.open('Passenger deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -78,7 +84,11 @@ export class PassengerViewComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       await this.loadPassengers();
       if (result) {
-        console.log('Updated Passenger:', result);
+        this.snackBar.open('Passenger updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
   }

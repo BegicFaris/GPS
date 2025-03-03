@@ -568,3 +568,14 @@ h2{
   background-color: #0056b3; /* Slightly darker blue */
   transform: scale(1.05); /* Slight zoom-in on hover */
 }
+
+
+.styled-hr {
+  border: none;
+  height: 8px; /* Adjust thickness */
+  width: 80%; /* Adjust length */
+  background: linear-gradient(to right, #5f77ff, #230d85); /* Nice gradient */
+  margin: 20px auto; /* Center it */
+  border-radius: 50px; /* Makes it pill-shaped */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}

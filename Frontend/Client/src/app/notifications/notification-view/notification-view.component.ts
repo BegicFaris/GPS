@@ -7,6 +7,7 @@ import { NotificationEditComponent } from '../notification-edit/notification-edi
 import { Title } from '@angular/platform-browser';
 import { lastValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-notification-view',
@@ -20,6 +21,7 @@ export class NotificationViewComponent {
   private router = inject(Router);
   private titleService = inject(Title);
   private dialog = inject(MatDialog)
+  private snackBar= inject(MatSnackBar);
   notifications: Notification[] = [];
 
   sortColumn: string = '';
@@ -52,7 +54,11 @@ export class NotificationViewComponent {
       this.notificationService.deleteNotification(id).subscribe({
         next: async response => {
           await this.loadNotifications();
-          console.log('Notification deleted successfully', response);
+          this.snackBar.open('Notification deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel();
         },
         error: error => {
@@ -80,7 +86,11 @@ export class NotificationViewComponent {
     dialogRef.afterClosed().subscribe(async result => {
       await this.loadNotifications();
       if (result) {
-        console.log('Updated Notification:', result);
+        this.snackBar.open('Notification updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
 

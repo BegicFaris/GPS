@@ -27,7 +27,7 @@
 
     <div class="mb-3">
       <label class="form-label" for="email">Email:</label>
-      <input class="form-control" id="email" name="email" [(ngModel)]="driverUpdate.email" #email="ngModel" required
+      <input class="form-control" id="email" name="email"[(ngModel)]="driverUpdate.email" #email="ngModel" required
         email type="email">
       @if (email.invalid && (email.dirty || email.touched)) {
       <div class="text-danger">

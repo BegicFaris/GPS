@@ -46,7 +46,6 @@ export class PassengerEditComponent {
     this.discountService.getAllDiscounts().subscribe((data) => {
       this.discounts = data // or data.lines if it's nested
     });
-    console.log(this.discounts);
   }
   async saveChanges() {
     try {

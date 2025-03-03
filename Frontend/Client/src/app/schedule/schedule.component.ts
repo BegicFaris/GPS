@@ -219,7 +219,6 @@ export class ScheduleComponent {
         iconElement.classList.add('bi-star');
       }
     }
-    console.log(this.favoriteLines);
   }
   isFavorite(lineId: number): boolean {
     return this.favoriteLines.some(favoriteLine => favoriteLine.lineId === lineId);
@@ -230,8 +229,6 @@ export class ScheduleComponent {
   }
   onFavoritesToggleChange(event: any): void {
     const isChecked = event.target.checked; // Whether the toggle is checked (true) or unchecked (false)
-    console.log('Favorites Only:', isChecked);
-    console.log(this.favoriteLines);
 
     if (isChecked) {
 

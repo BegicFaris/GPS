@@ -144,7 +144,6 @@ export class SuccessDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { message: string }) {}
   ngOnInit() {
     this.loadLastTicket();
-    console
   }
 
  
@@ -155,7 +154,6 @@ export class SuccessDialogComponent implements OnInit {
             next: (tickets: Ticket[]) => {
               if (tickets.length > 0) {
                 const lastTicket = tickets[tickets.length - 1];
-                console.log(lastTicket.qrCode);
                 this.qrCodeImage = this.decodeQRCode(lastTicket.qrCode);
               }
             },

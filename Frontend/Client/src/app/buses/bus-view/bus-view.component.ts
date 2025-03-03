@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BusEditComponent } from '../bus-edit/bus-edit.component';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-bus-view',
@@ -20,10 +21,12 @@ export class BusViewComponent {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
+  private snackBar= inject(MatSnackBar);
+
   buses: Bus[] = [];
 
   async ngOnInit() {
-    this.titleService.setTitle('buses');
+    this.titleService.setTitle('Buses');
     await this.loadBuses();
     this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd && event.url === '/buses') {
@@ -49,7 +52,11 @@ export class BusViewComponent {
       this.busService.deleteBus(id).subscribe({
         next: async (response) => {
           await this.loadBuses();
-          console.log('Bus deleted successfully', response);
+          this.snackBar.open('Bus deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -74,7 +81,11 @@ export class BusViewComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       await this.loadBuses();
       if (result) {
-        console.log('Updated bus:', result);
+        this.snackBar.open('Bus updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
   }

@@ -8,6 +8,7 @@ import { ScheduleService } from '../../_services/shcedule.service';
 import { Schedule } from '../../_models/schedule';
 import { ScheduleEditComponent } from '../schedule-edit/schedule-edit.component';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-schedule-view',
@@ -21,6 +22,7 @@ export class ScheduleViewComponent {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
+  private snackBar= inject(MatSnackBar);
   schedules: Schedule[] = [];
 
  async ngOnInit() {
@@ -45,7 +47,11 @@ export class ScheduleViewComponent {
       this.scheduleService.deleteSchedule(id).subscribe({
         next: async (response) => {
           await this.loadSchedules();
-          console.log('Schedule deleted successfully', response);
+          this.snackBar.open('Schedule deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -67,7 +73,11 @@ export class ScheduleViewComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       await this.loadSchedules();
       if (result) {
-        console.log('Updated Schedule:', result);
+        this.snackBar.open('Schedule updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
   }

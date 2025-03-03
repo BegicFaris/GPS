@@ -49,13 +49,11 @@ export class RouteDetailsComponent implements OnInit {
     this.line = params;
 
     await this.loadRoutes(this.line.id);
-    console.log(this.existingRoutes);
     this.loadFormGroup();
   }
   async loadRoutes(lineId: number): Promise<void> {
     try {
       this.existingRoutes = await firstValueFrom(this.routeService.getAllRoutesByLineId(lineId));
-      console.log('Routes loaded:', this.existingRoutes);
     } catch (error) {
       console.error('Failed to load routes:', error);
     }
@@ -84,7 +82,6 @@ export class RouteDetailsComponent implements OnInit {
       ]),
       isEditMode: new FormControl(false),
     }));
-    console.log(this.routesForms);
     this.routeCount++;
     this.populateArray();
   }
@@ -110,14 +107,12 @@ export class RouteDetailsComponent implements OnInit {
       this.populateArray();
 
       this.routesForms.push(routesDetails);
-      console.log(routesDetails);
     } else {
       Object.keys(this.routesForms[index].controls).forEach(field => {
         const control = this.routesForms[index].get(field);
         control?.markAsTouched({ onlySelf: true });
       });
     }
-    console.log(this.routesForms);
   }
 
   deleteRoute(index: number) {
@@ -138,7 +133,7 @@ export class RouteDetailsComponent implements OnInit {
   async finishAddingRoutes() {
     if (this.isValidForm()) {
       if (this.isValidOrder()) {
-        console.log("Len: " + this.existingRoutes.length);
+
         if (this.existingRoutes.length != undefined || this.existingRoutes.length==0)
           await firstValueFrom(this.routeService.deleteAllRoutesByLineIdAsync(this.line.id));
         const newRoutes = this.mapFormGroupsToRoutes();

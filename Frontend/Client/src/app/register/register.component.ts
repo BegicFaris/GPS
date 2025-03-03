@@ -9,6 +9,7 @@ import { PasswordStrengthIndicatorComponent } from './password-strenght-indicato
 import { NgxCaptchaModule, ReCaptcha2Component } from 'ngx-captcha';
 import { LettersOnlyValidatorDirective } from '../validators/only-letters.validator';
 import { DateValidatorDirective } from '../validators/date.validator';
+import { MyAppUserService } from '../_services/my-app-user.service';
 
 class UserComponent {
   password: string = '';
@@ -47,6 +48,7 @@ export class RegisterComponent implements OnInit {
 
 
   private accountService = inject(AccountService);
+  private myAppUserService = inject(MyAppUserService);
 
   cancelRegister = output<boolean>();
   registerForm: FormGroup;
@@ -76,6 +78,7 @@ export class RegisterComponent implements OnInit {
   maxDate: string = new Date().toISOString().split('T')[0];
 
   siteKey: string = '6LfSlaEqAAAAACLF8vRUOkumCmiEBrQrkAG6fQLb';
+  emailExists: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
@@ -89,6 +92,9 @@ export class RegisterComponent implements OnInit {
   }
   ngOnInit(): void {
     this.titleService.setTitle('Register');
+    if(this.accountService.currentUser()){
+      this.router.navigate(['/unauthorized']);
+    }
   
   }
 
@@ -184,16 +190,23 @@ export class RegisterComponent implements OnInit {
     this.captchaResponse = captchaResponse;
   }
 
-  handleLoad(): void {
-    console.log('reCAPTCHA loaded');
-  }
 
   handleExpire(): void {
     this.captchaResponse = null;
-    console.log('reCAPTCHA expired');
   }
   handleReset(): void {
     this.captchaResponse = null;
-    console.log('reCAPTCHA reset');
+  }
+
+  checkEmailExists(): void {
+    console.log(this.emailExists);
+    const email = this.model.email;
+    console.log(email)
+    if (email) {
+      this.myAppUserService.checkEmailExists(email).subscribe(response => {
+        this.emailExists = response.exists;
+        console.log(this.emailExists);
+      });
+    }
   }
 }

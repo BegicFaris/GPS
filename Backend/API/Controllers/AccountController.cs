@@ -156,11 +156,11 @@ namespace GPS.API.Controllers
             {
                 var user = await myAppUserService.GetUserByEmailAsync(dto.Email, cancellationToken);
                 if (user == null)
-                    return Unauthorized("Invalid email or password");
+                    return BadRequest("Invalid email or password");
 
                 if (user.PasswordSalt == null || user.PasswordHash==null)
                 {
-                    return Unauthorized("Invalid email or password");
+                    return BadRequest("Invalid email or password");
                 }
 
                 using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -169,7 +169,7 @@ namespace GPS.API.Controllers
                 {            
                     if (computedHash[i] != user.PasswordHash[i])
                     {
-                        return Unauthorized("Invalid email or password");
+                        return BadRequest("Invalid email or password");
                     }
                 }
                 string role = user switch

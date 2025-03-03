@@ -42,8 +42,8 @@ namespace GPS.API.Validators.DriverValidators
                 .LessThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now)).WithMessage("Birth date cannot be in the future.");
 
             RuleFor(x => x.RegistrationDate)
-             .Must(date => date == null || (date.Value.Year >= 2000 && date.Value <= DateTime.Today))
-             .WithMessage("Registration date must be from the year 2000 or later and cannot be in the future.");
+                .Must(date => date == null || (date.Value.Year >= 2000 && date.Value.Date <= DateTime.Today))
+                .WithMessage("Registration date must be from the year 2000 or later and cannot be in the future.");
 
             RuleFor(x => x.Address)
                 .NotEmpty().WithMessage("Address cannot be empty.");

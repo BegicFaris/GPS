@@ -8,8 +8,7 @@
         <!-- Profile Picture Section -->
         <div class="me-4 text-center">
           <img [src]="profileImageUrl || 'default-profile-image.jpg'" alt="Profile Picture" class="rounded-circle mb-3"
-            style="width: 150px; height: 150px; object-fit: cover;" (error)="handleImageError($event)"
-            (load)="handleImageLoad($event)">
+            style="width: 150px; height: 150px; object-fit: cover;" (error)="handleImageError($event)">
           <div>
             <label for="profile-image-input" class="btn btn-primary btn-sm">
               Change Profile Picture

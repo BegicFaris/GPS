@@ -86,7 +86,6 @@ export class PaymentComponent implements OnInit{
       email: this.email
     }).subscribe(
       ticket => {
-        console.log('Ticket created:', ticket);
         this.isProcessing=false;
         // Show success dialog
         const dialogRef = this.dialog.open(SuccessDialogComponent, {

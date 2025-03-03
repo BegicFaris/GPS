@@ -49,9 +49,13 @@ export class StationViewComponent {
   deleteStation(id: number) {
     if (confirm('Are you sure you want to delete this station?')) {
       this.stationService.deleteStation(id).subscribe({
-        next: async (response) => {
+        next: async () => {
           await this.loadStations();
-          console.log('Station deleted successfully', response);
+          this.snackBar.open('Station deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -75,12 +79,16 @@ export class StationViewComponent {
         location: station.location,
         gpsCode: station.gpsCode,
         zoneId: station.zoneId,
-      }, // Pass the current data to the dialog
+      }, 
     });
     dialogRef.afterClosed().subscribe(async (result) => {
       await this.loadStations();
       if (result) {
-        console.log('Updated Station:', result);
+        this.snackBar.open('Station updated sucessfully', 'Ok', {
+          duration: 4000,
+          verticalPosition: 'top', 
+          horizontalPosition: 'center' 
+        });
       }
     });
   }

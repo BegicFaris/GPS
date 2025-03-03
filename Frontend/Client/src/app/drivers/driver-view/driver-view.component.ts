@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { DriverService } from '../../_services/driver.service';
 import { Driver } from '../../_models/driver';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-driver-view',
@@ -23,6 +24,7 @@ export class DriverViewComponent {
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
   private driverService = inject(DriverService);
+  private snackBar= inject(MatSnackBar);
 
   drivers: Driver[] = [];
 
@@ -48,7 +50,11 @@ export class DriverViewComponent {
       this.driverService.deleteDriver(id).subscribe({
         next: async (response) => {
           await this.loadDrivers();
-          console.log('Driver deleted successfully', response);
+          this.snackBar.open('Driver deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -78,7 +84,11 @@ export class DriverViewComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       await this.loadDrivers();
       if (result) {
-        console.log('Updated Driver:', result);
+        this.snackBar.open('Driver updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
   }

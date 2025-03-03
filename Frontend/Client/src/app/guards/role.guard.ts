@@ -6,18 +6,26 @@ import { AccountService } from '../_services/account.service';
   providedIn: 'root',
 })
 export class RoleGuard implements CanActivate {
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(private accountService: AccountService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const user = this.accountService.currentUser(); // Fetch the logged-in user's details
     const requiredRole = route.data['role']; // Role required for this route
+    if (user != null) {
+      if(requiredRole==="Any")
+        return true;
 
-    if (user?.role === requiredRole) {
-      return true; // Allow access
+      if (user?.role === requiredRole) {
+        return true; // Allow access
+      }
+
+      // Redirect to an unauthorized page or homepage if the role doesn't match
+      this.router.navigate(['/unauthorized']);
+      return false;
     }
-
-    // Redirect to an unauthorized page or homepage if the role doesn't match
-    this.router.navigate(['/unauthorized']);
-    return false;
+    else{
+      this.router.navigate(['/unauthorized']);
+      return false;
+    }
   }
 }

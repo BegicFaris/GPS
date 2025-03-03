@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DiscountEditComponent } from '../discount-edit/discount-edit.component';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-discount-view',
@@ -20,6 +21,7 @@ export class DiscountViewComponent {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
+  private snackBar= inject(MatSnackBar);
   discounts: Discount[] = [];
 
   async ngOnInit() {
@@ -42,9 +44,13 @@ export class DiscountViewComponent {
   deleteDiscount(id: number) {
     if (confirm('Are you sure you want to delete this discount?')) {
       this.discountService.deleteDiscount(id).subscribe({
-        next: async (response) => {
+        next: async () => {
           await this.loadDiscounts();
-          console.log('Discount deleted successfully', response);
+          this.snackBar.open('Discount deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -66,7 +72,11 @@ export class DiscountViewComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       await this.loadDiscounts();
       if (result) {
-        console.log('Updated discount:', result);
+        this.snackBar.open('Discount updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
   }

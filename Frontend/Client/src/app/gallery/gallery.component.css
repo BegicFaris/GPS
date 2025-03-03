@@ -1,7 +1,8 @@
 /* Container for the entire gallery */
 .gallery-container {
   text-align: center;
-  padding: 20px;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
   background-color: var(--background-color);
   font-family: Arial, sans-serif;
 }

@@ -12,9 +12,7 @@ export class PasswordResetService {
   constructor(private http: HttpClient) {}
 
   sendResetCode(email: string): Observable<any> {
-
-     const emailObject = { email }; // Transform email into a JSON object
-    console.log("Email in service: ", emailObject);
+     const emailObject = { email }; 
     return this.http.post(`${this.apiUrl}/send-code`, emailObject);
   }
 

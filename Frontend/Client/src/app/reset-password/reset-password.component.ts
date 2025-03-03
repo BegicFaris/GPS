@@ -41,7 +41,6 @@ export class ResetPasswordComponent {
     if (!this.validateEmail()) {
       return;
     }
-    console.log("Email"+  this.email);
     this.passwordResetService.sendResetCode(this.email).subscribe(
       () => {
         this.codeSent = true;
@@ -76,11 +75,9 @@ export class ResetPasswordComponent {
     }
     this.passwordResetService.resetPassword(this.email, this.verificationCode, this.newPassword).subscribe(
       () => {
-        console.log('Password reset successfully');
         this.router.navigate(['/home']);
       },
       (error: any) => {
-        console.error('Error resetting password', error);
         this.passwordError = 'Error resetting password. Please try again.';
       }
     );
@@ -101,7 +98,6 @@ export class ResetPasswordComponent {
 
   onPasswordFocus(): void {
     this.showPasswordStrength = true;
-    console.log(this.showPasswordStrength);
   }
 
   onPasswordBlur(): void {

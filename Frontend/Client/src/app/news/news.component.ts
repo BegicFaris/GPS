@@ -34,6 +34,7 @@ export class NewsComponent implements OnInit{
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadNotifications();
+    window.scrollTo(0, 0);
   }
 
   formatDate(date: string): string {

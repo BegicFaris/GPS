@@ -11,6 +11,7 @@ import { Manager } from '../../_models/manager';
 import { ManagerService } from '../../_services/manager.service';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-manager-view',
@@ -24,7 +25,8 @@ export class ManagerViewComponent {
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
-  private managerService = inject(ManagerService)
+  private managerService = inject(ManagerService);
+  private snackBar= inject(MatSnackBar);
   managers: Manager[] = [];
 
  async ngOnInit() {
@@ -50,7 +52,11 @@ export class ManagerViewComponent {
       this.managerService.deleteManager(id).subscribe({
         next: async (response) => {
          await this.loadManagers();
-          console.log('Manager deleted successfully', response);
+         this.snackBar.open('Manager deleted sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -78,7 +84,11 @@ export class ManagerViewComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       await this.loadManagers();
       if (result) {
-        console.log('Updated Manager:', result);
+        this.snackBar.open('Manager updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
   }

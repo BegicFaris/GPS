@@ -31,7 +31,7 @@ export class DiscountEditComponent {
     try{
 
       await firstValueFrom(this.discountService.updateDiscount(this.discountUpdate));
-      this.dialogRef.close();
+      this.dialogRef.close(this.discountUpdate);
     }
     catch(err){
       console.error(err);

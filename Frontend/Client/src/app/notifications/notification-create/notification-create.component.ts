@@ -45,8 +45,6 @@ export class NotificationCreateComponent {
   }
   async setManagerId() {
     const currentEmail = this.accountService.currentUser()?.email;
-    console.log("Current email: " + currentEmail);
-
     if (currentEmail) {
       try {
         const data = await firstValueFrom(this.appUserService.getMyAppUserByEmail(currentEmail));
@@ -113,7 +111,6 @@ export class NotificationCreateComponent {
 
         // Store the full base64 image for previewing (the complete data URL, including header)
         this.imagePreview = reader.result as string; // Directly use the full result for preview
-        console.log(this.notificationCreate.image);
       };
 
       // Read the image file as base64

@@ -123,8 +123,6 @@ export class UserProfileComponent implements OnInit {
       this.userService.getMyAppUserByEmail(email).subscribe({
         next: (user) => {
           this.userProfile = user;
-          console.log(user);
-          console.log(this.userProfile);
           this.userType = this.getUserType(user);
           this.originalEmail = user.email;
           this.updateForm();
@@ -140,24 +138,15 @@ export class UserProfileComponent implements OnInit {
   async loadUserTickets(): Promise<void> {
     const email = this.accountService.getUserEmail();
     if (email) {
-       const data = await firstValueFrom(this.ticketService.getUserTicketsPaginated(email,this.pageNumber,this.pageSize));
-       this.tickets=data.tickets;
-       this.totalPages = data.totalPages;
-       this.hasTickets = true;
-        return;
-      // try {
-      //   const data = await this.ticketService
-      //     .getUserTicketsPaginated(email, this.pageNumber, this.pageSize)
-      //     .toPromise();
-      //   if (data) {
-      //     this.tickets = data.tickets;
-      //     this.totalPages = data.totalPages;
-      //     this.hasTickets = true;
-      //     await this.generatePagination();
-      //   }
-      // } catch (error) {
-      //   console.error('Error loading tickets:', error);
-      // }
+      try{
+        const data = await firstValueFrom(this.ticketService.getUserTicketsPaginated(email,this.pageNumber,this.pageSize));
+        this.tickets=data.tickets;
+        this.totalPages = data.totalPages;
+        this.hasTickets = true;
+      }
+      catch(err){
+        console.error(err);
+      }
     }
   }
 
@@ -213,9 +202,6 @@ export class UserProfileComponent implements OnInit {
     event.target.src = 'default-profile-image.jpg'; // Set a default image
   }
 
-  handleImageLoad(event: any) {
-    console.log('Image loaded successfully:', event);
-  }
   // Helper method to convert ArrayBuffer to base64
   arrayBufferToBase64(buffer: ArrayBuffer): string {
     let binary = '';
@@ -256,7 +242,11 @@ export class UserProfileComponent implements OnInit {
         if (this.userType === 'Passenger') {
           this.passengerService.updatePassenger(updatedUser).subscribe({
             next: () => {
-              console.log('Profile updated successfully');
+              this.snackBar.open('Profile updated succesfully.', 'Ok', {
+                duration: 4000, // Keep it visible for 4 seconds
+                verticalPosition: 'top', // Show at the top
+                horizontalPosition: 'center' // Centered horizontally
+              });
               const userData = localStorage.getItem('user');
               if (userData) {
                 const userObject = JSON.parse(userData);

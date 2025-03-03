@@ -8,6 +8,7 @@ import { LineEditComponent } from '../line-edit/line-edit.component';
 import { Station } from '../../_models/station';
 import { Title } from '@angular/platform-browser';
 import { firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-line-view',
@@ -22,6 +23,8 @@ export class LineViewComponent {
   private dialog = inject(MatDialog);
   private titleService = inject(Title);
   lines: Line[] = [];
+  private snackBar= inject(MatSnackBar);
+
 
   async ngOnInit() {
     await this.titleService.setTitle('Lines');
@@ -45,7 +48,11 @@ export class LineViewComponent {
       this.lineService.deleteLine(id).subscribe({
         next: async (response) => {
           await this.loadLines();
-          console.log('Line deleted successfully', response);
+          this.snackBar.open('Line deleted sucessfully', 'Ok', {
+            duration: 4000, // Keep it visible for 4 seconds
+            verticalPosition: 'top', // Show at the top
+            horizontalPosition: 'center' // Centered horizontally
+          });
           this.cancel(); // Navigate back after successful deletion
         },
         error: (error) => {
@@ -70,7 +77,11 @@ export class LineViewComponent {
     dialogRef.afterClosed().subscribe(async (result) => {
       await  this.loadLines();
       if (result) {
-        console.log('Updated Line:', result);
+        this.snackBar.open('Line updated sucessfully', 'Ok', {
+          duration: 4000, // Keep it visible for 4 seconds
+          verticalPosition: 'top', // Show at the top
+          horizontalPosition: 'center' // Centered horizontally
+        });
       }
     });
   }

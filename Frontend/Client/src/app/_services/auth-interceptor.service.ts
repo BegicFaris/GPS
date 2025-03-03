@@ -28,7 +28,6 @@ export class AuthInterceptor implements HttpInterceptor {
       });
       return next.handle(authRequest);
     } else {
-      console.log('Request url:' + request.url);
       {
         const baseUrl = this.getBaseUrl(this.url);
 

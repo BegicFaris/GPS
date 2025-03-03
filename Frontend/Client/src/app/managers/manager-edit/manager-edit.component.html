@@ -1,12 +1,11 @@
 <div class="container mt-2">
-  <h5 class="modal-title">Update bus data</h5>
+  <h5 class="modal-title">Update manager data</h5>
   <form #updateManagerForm="ngForm" (ngSubmit)="saveChanges()">
 
     <div class="mb-3">
       <label class="form-label" for="firstName">First Name:</label>
       <input class="form-control" id="firstName" name="firstName" [(ngModel)]="managerUpdate.firstName"
         #firstName="ngModel" required lettersOnly type="text">
-      <label>First Name</label>
       @if (firstName.invalid && (firstName.dirty || firstName.touched)) {
       @if (firstName.errors?.['required']) {
       <div class="text-danger">First Name is required.</div>

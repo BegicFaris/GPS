@@ -83,3 +83,7 @@
   filter: invert(var(--accordion-arrow-invert));
 }
 
+.modal-content{
+  background-color: var(--nav-background);
+}
+

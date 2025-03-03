@@ -28,51 +28,53 @@ interface Tour {
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit{
-buyATicket() {
-  this.router.navigate(['/buy-ticket']);
-
-}
-private titleService = inject(Title);
-private stationService = inject(StationService);
-private lineService = inject(LineService);
-private router = inject(Router)
+export class HomeComponent implements OnInit {
+  buyATicket() {
+    if (this.accountService.currentUser())
+      this.router.navigate(['/buy-ticket']);
+    else
+      this.router.navigate(['/register']);
+  }
+  private titleService = inject(Title);
+  private stationService = inject(StationService);
+  private lineService = inject(LineService);
+  private router = inject(Router)
 
   accountService = inject(AccountService);
 
   stations: Station[] = [];
   lines: Line[] = [];
 
-  selectedStationId: number | null=null;
+  selectedStationId: number | null = null;
   selectedStation: Station | undefined;
 
   http = inject(HttpClient);
   registerMode = false;
   users: any;
 
- async watchSelectedStation(): Promise<void> {
+  async watchSelectedStation(): Promise<void> {
     // Check if `selectedStationId` exists
     if (this.selectedStationId) {
-      this.selectedStation=await firstValueFrom(this.stationService.getStation(this.selectedStationId));
+      this.selectedStation = await firstValueFrom(this.stationService.getStation(this.selectedStationId));
 
 
 
 
-      if(this.selectedStation){
+      if (this.selectedStation) {
         this.loadLines();
       }
-    }}
-
-    loadLines(){
-        if(this.selectedStation)
-        {
-          this.lineService.getAllLinesByStationId(this.selectedStation?.id).subscribe(
-            (data)=>{
-              this.lines=data;
-            }
-          );
-        }
     }
+  }
+
+  loadLines() {
+    if (this.selectedStation) {
+      this.lineService.getAllLinesByStationId(this.selectedStation?.id).subscribe(
+        (data) => {
+          this.lines = data;
+        }
+      );
+    }
+  }
 
   registerToggle() {
     this.registerMode = !this.registerMode;
@@ -102,7 +104,7 @@ private router = inject(Router)
       image: "medjugorje.jpg"
     }
   ];
- 
+
   learnMore(tourId: number): void {
     console.log(`Learn more about tour ${tourId}`);
     // Implement navigation or modal opening logic here
@@ -112,7 +114,7 @@ private router = inject(Router)
   private enlargedImage: HTMLImageElement | null = null;
   private globalStyleElement: HTMLStyleElement | null = null;
 
-  constructor(private renderer: Renderer2, private el: ElementRef) {}
+  constructor(private renderer: Renderer2, private el: ElementRef) { }
 
   ngOnInit() {
     this.titleService.setTitle("Home");
@@ -132,10 +134,9 @@ private router = inject(Router)
     }
   }
   loadStations() {
-    this.stationService.getAllStations().subscribe((data)=>
-      {
-        this.stations=data;
-      });   
+    this.stationService.getAllStations().subscribe((data) => {
+      this.stations = data;
+    });
   }
 
   showEnlargedImage(event: Event) {
@@ -144,7 +145,7 @@ private router = inject(Router)
       this.enlargedImage.src = clickedImage.src;
       this.enlargedImage.alt = clickedImage.alt;
       this.renderer.addClass(this.imageOverlay, 'active');
-      this.addGlobalStyle(); 
+      this.addGlobalStyle();
     }
   }
 
@@ -176,7 +177,7 @@ private router = inject(Router)
       this.renderer.removeClass(document.body, 'overlay-active');
     }
   }
-  
+
 
 }
 

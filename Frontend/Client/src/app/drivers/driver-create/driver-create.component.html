@@ -1,6 +1,6 @@
 <div class="container">
   <form #registerDriverForm="ngForm" (ngSubmit)="addNewDriver(registerDriverForm)">
-    <h2 class="text-center text-primary">Add new driver</h2>
+    <h2 class="text-center text-primary">Register new driver</h2>
     <hr>
     <div class="row">
       <div class="col-md-6">
@@ -131,7 +131,7 @@
           }
         </div>
         <div class="mb-3 form-floating">
-          <input type="date" class="form-control" name="hireDate" [(ngModel)]="driverCreate.hireDate"
+          <input type="date" class="form-control" name="hireDate" [max]="maxDate" [(ngModel)]="driverCreate.hireDate"
             #hireDate="ngModel" required appValidDate placeholder="Hire Date" />
           <label>Hire Date</label>
           @if (hireDate.invalid && (hireDate.dirty || hireDate.touched)) {
