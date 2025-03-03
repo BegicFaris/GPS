@@ -3,6 +3,7 @@ using GPS.API.Data.DbContexts;
 using GPS.API.Data.Models;
 using GPS.API.Interfaces;
 using GPS.API.Services.LineServices;
+using GPS.API.Services.NotificationServices;
 using GPS.API.Validators.LineValidators;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -18,6 +19,7 @@ namespace API.Tests.ServiceTests
     {
         private readonly ApplicationDbContext _context;
         private readonly LineService _service;
+        private readonly Mock<ICurrentTenantService> _mockCurrentTenantService;
         private readonly LineValidator _validator;
 
         public LineServiceTests()
@@ -26,7 +28,10 @@ namespace API.Tests.ServiceTests
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Unique DB per test
                 .Options;
 
-            _context = new ApplicationDbContext(options, Mock.Of<ICurrentTenantService>());
+            _mockCurrentTenantService = new Mock<ICurrentTenantService>();
+            _mockCurrentTenantService.Setup(t => t.TenantId).Returns("tenant1");
+
+            _context = new ApplicationDbContext(options, _mockCurrentTenantService.Object);
             _service = new LineService(_context);
             _validator = new LineValidator();
         }
