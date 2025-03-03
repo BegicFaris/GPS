@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { Line } from '../../_models/line';
 import { __param } from 'tslib';
 import { LineService } from '../../_services/line.service';
-import { catchError, firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, forkJoin, map, Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 interface LineWithStationCount extends Line {
@@ -42,19 +42,17 @@ export class RouteViewComponent {
   }
   async loadLines() {
     try {
-      // Fetch all lines first
+
       const data = await firstValueFrom(this.lineService.getAllLines());
-      this.lines = data; // Assuming data contains the lines
+      this.lines = data; 
   
-      const stationCountPromises = this.lines.map(line =>
-        firstValueFrom(this.routeService.getStationCountByLineId(line.id)).then(response => ({
-          ...line, // Copy all properties from the original line
-          stationCount: response.count // Add station count property
-        }))
+      const stationCountObservables = this.lines.map(line =>
+        this.routeService.getStationCountByLineId(line.id).pipe(
+          map(response => ({ ...line, stationCount: response.count }))
+        )
       );
-      this.linesWithStationCount = await Promise.all(stationCountPromises);
   
-      console.log(this.linesWithStationCount); // Now contains the new objects with stationCount
+      this.linesWithStationCount = await firstValueFrom(forkJoin(stationCountObservables));
     } catch (error) {
       console.error('Error loading lines:', error);
     }
