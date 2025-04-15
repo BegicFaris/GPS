@@ -46,8 +46,6 @@ namespace GPS.API.Middleware
                 {
                     context.Response.StatusCode = StatusCodes.Status403Forbidden;
                     await context.Response.WriteAsync("Tenant ID mismatch between URL and request.");
-                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    await context.Response.WriteAsync("Tenant ID mismatch between URL and request.");
                     return;
                 }
                 await currentTenantService.SetTenant(tenantIdFromUrl, cancellationToken);

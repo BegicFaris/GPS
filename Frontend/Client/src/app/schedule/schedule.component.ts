@@ -47,6 +47,7 @@ export class ScheduleComponent {
   filteredStations$: Observable<Station[]>;
 
 
+  favoriteOnly:boolean=false;
   selectedLine: Line | null = null;
   allLines: Line[] = [];
   searchLines: Line[] = [];
@@ -229,7 +230,7 @@ export class ScheduleComponent {
   }
   onFavoritesToggleChange(event: any): void {
     const isChecked = event.target.checked; // Whether the toggle is checked (true) or unchecked (false)
-
+    this.favoriteOnly=!this.favoriteOnly;
     if (isChecked) {
 
       this.favoriteLineArray = [];
@@ -292,7 +293,14 @@ export class ScheduleComponent {
   }
   async searchLinesByNameAndStation(lineName: string | null, stationName: string | null): Promise<Line[]> {
     this.searchLines = await firstValueFrom(this.lineService.getAllLines(lineName, stationName));
-    this.displayLines = this.searchLines;
+    if(this.favoriteOnly){
+      this.displayLines = this.favoriteLineArray.filter(favLine =>
+        this.searchLines.some(searchLine => searchLine.id === favLine.id)
+      );
+    }
+    else{
+      this.displayLines=this.searchLines;
+    }
     return this.displayLines;
   }
 
