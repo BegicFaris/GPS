@@ -18,6 +18,7 @@ namespace GPS.API.Middleware
             var cancellationToken = context.RequestAborted;
 
             var path = context.Request.Path.Value;
+            // testni dio, samo za swagger, trebalo bi izbrisati
             if (!string.IsNullOrEmpty(path) && path.StartsWith("/api"))
             {
                 if (path.StartsWith("/api/AAGetTokenTest/GetToken"))
