@@ -19,6 +19,10 @@ Prije pokretanja aplikacije potrebno je instalirati:
 - [Angular CLI](https://angular.io/cli)
 - SQL Server (lokalni ili mrežni)
 
+## Promjena imena klonranog foldera
+
+1. Potrebno je promijeniti ime kloniranog foldera u npr. GPS kako bi radilo (specijalni karakteri koje dodaje Azure mogu praviti problem pa da se ništa ne prikazuje na backendu)
+
 ## 🔧 Backend – Pokretanje API servera
 
 1. Instalacija paketa
