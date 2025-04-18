@@ -37,10 +37,8 @@ dotnet restore
 dotnet ef database update --context ApplicationDbContext
 ```
 
-3. Pokretanje backend API-ja
-```bash
-dotnet run --project Backend
-```
+3. Pokretanje backend API-ja  
+Pokrenite projekat pritiskom dugmeta u navigacijskom meniju 
 
 ## 💻 Frontend – Pokretanje Angular klijenta
 
