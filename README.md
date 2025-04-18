@@ -1,20 +1,82 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Gradski Prevozni Sistem (GPS)
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Ovo je web aplikacija razvijena pomoću **.NET Core Web API** za backend i **Angular** za frontend.  
+Aplikacija služi za upravljanje gradskim bus sistemom, omogućavajući korisnicima pregled linija, stanica, vožnji i kupovinu karata.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## ⚙️ Tehnologije
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+- .NET 8+ Web API
+- Angular 15+
+- SQL Server (localdb)
+- Entity Framework Core
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## 📦 Preduvjeti
+
+Prije pokretanja aplikacije potrebno je instalirati:
+
+- [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
+- [Node.js 18+](https://nodejs.org/)
+- [Angular CLI](https://angular.io/cli)
+- SQL Server (lokalni ili mrežni)
+
+## 🔧 Backend – Pokretanje API servera
+
+1. Instalacija paketa
+```bash
+cd Backend
+cd API
+dotnet restore
+```
+
+2. Postavljanje baze podataka
+```bash
+dotnet ef database update --context ApplicationDbContext
+```
+
+3. Pokretanje backend API-ja
+```bash
+dotnet run --project Backend
+```
+
+## 💻 Frontend – Pokretanje Angular klijenta
+
+1. Instalacija zavisnosti
+```bash
+cd Frontend
+cd Client
+npm install
+```
+
+2. Pokretanje Angular aplikacije
+```bash
+npm start
+```
+
+3. Instalacija drugog frontenda
+```bash
+cd Frontend2
+cd Client
+npm install
+```
+
+## 🔐 Test login podaci
+
+| Uloga | Email | Lozinka |
+|-------|-------|---------|
+| Vozač | 2@gmail.com | 123 |
+| Menadžer |8@gmail.com  | 123 |
+| Putnik | 14@gmail.com | 123 |
+
+## 📎 Napomene
+
+- Ako koristite Visual Studio, postavite Backend projekt kao Startup Project
+- Ako koristite VS Code, pokrenite API i Angular zasebno iz terminala
+- Verzije koje se koriste:
+  - .NET SDK: 8.0
+  - Node.js: 18.x
+  - Angular CLI: 15.x
+
+## 📄 Autori
+Nedim Jugo, Faris Begić, Adi Gosto  
+Godina studija: 3  
+Predmet: Razvoj softvera 1

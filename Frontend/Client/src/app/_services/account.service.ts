@@ -82,7 +82,7 @@ export class AccountService {
   }
   getUserEmail(): string{
     const user = localStorage.getItem('user');
-    return user ? JSON.parse(user).email :null;
+    return user ? JSON.parse(user).email : '';
   }
 
   register(model: any){
