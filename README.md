@@ -37,10 +37,18 @@ dotnet restore
 dotnet ef database update --context ApplicationDbContext
 ```
 
-3. Pokretanje backend API-ja  
+3. Seeder podaci
+Prilikom postavljanja baze podataka automatski se generišu unutar OnModelCreating() metode u ApplicationDbContextu. 
+
+4. Pokretanje backend API-ja  
 Pokrenite projekat pritiskom dugmeta u navigacijskom meniju 
 
 ## 💻 Frontend – Pokretanje Angular klijenta
+Napomena:
+Frontend predstavlja glavni projekat (primarna Angular aplikacija).
+
+Frontend2 je testna instanca koja se koristi za testiranje multitenancy funkcionalnosti.
+Frontend2 nije neophodan za rad same aplikacije.  
 
 1. Instalacija zavisnosti
 ```bash
