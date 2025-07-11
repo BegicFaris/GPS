@@ -33,8 +33,11 @@ build/
 package-lock.json
 yarn.lock
 
-# Angular specific environment files
-src/environments/environment*.ts
+# Configuration files
+**/appsettings*.json
+!**/appsettings*.example.json
+!**/appsettings*.template.json
+
 
 # Log files
 npm-debug.log*

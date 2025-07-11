@@ -10,6 +10,7 @@ import { NgxCaptchaModule, ReCaptcha2Component } from 'ngx-captcha';
 import { LettersOnlyValidatorDirective } from '../validators/only-letters.validator';
 import { DateValidatorDirective } from '../validators/date.validator';
 import { MyAppUserService } from '../_services/my-app-user.service';
+import { environment } from '../../environments/environment.example';
 
 class UserComponent {
   password: string = '';
@@ -77,7 +78,7 @@ export class RegisterComponent implements OnInit {
   captchaResponse: string | null = null;
   maxDate: string = new Date().toISOString().split('T')[0];
 
-  siteKey: string = '6LfSlaEqAAAAACLF8vRUOkumCmiEBrQrkAG6fQLb';
+  siteKey: string = environment.recaptchaSiteKey;
   emailExists: boolean = false;
 
   constructor(private fb: FormBuilder) {

@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<RootNamespace>GPS.API</RootNamespace>
+    <UserSecretsId>be087fcb-b62e-4a8b-a568-f431571d53d0</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

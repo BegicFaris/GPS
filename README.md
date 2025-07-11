@@ -47,8 +47,6 @@ Pokrenite projekat pritiskom dugmeta u navigacijskom meniju
 Napomena:
 Frontend predstavlja glavni projekat (primarna Angular aplikacija).
 
-Frontend2 je testna instanca koja se koristi za testiranje multitenancy funkcionalnosti.
-Frontend2 nije neophodan za rad same aplikacije.  
 
 1. Instalacija zavisnosti
 ```bash
@@ -60,13 +58,6 @@ npm install
 2. Pokretanje Angular aplikacije
 ```bash
 npm start
-```
-
-3. Instalacija drugog frontenda
-```bash
-cd Frontend2
-cd Client
-npm install
 ```
 
 ## 🔐 Test login podaci

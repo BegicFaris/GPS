@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { loadStripe, Stripe, StripeCardElement } from '@stripe/stripe-js';
+import { environment } from '../../environments/environment.example';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class StripeService {
 
     async loadStripe() {
       if (!this.stripe) {
-        this.stripe = await loadStripe('pk_test_51Qb5FvEKQfVedogdaMc6uhVFk7DpZVk2AoZK2bFAvRZZJttUC1u1U9kpVQFJPNTEJUxULR7n2wIZDtaqmzBieqwq00kQ64alRn');
+         this.stripe = await loadStripe(environment.stripePublishableKey);
       }
       return this.stripe;
     }
