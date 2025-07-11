@@ -86,7 +86,7 @@ Copy `Backend/API/appsettings.example.json` to `Backend/API/appsettings.json` an
 - **Stripe SecretKey**: Go to [Stripe Dashboard](https://dashboard.stripe.com/apikeys), register an account if needed, and get your secret key. Replace `"your_stripe_secret_key"`.
 
 ### 2. Frontend (`environment.ts`)
-Copy `Frontend/Client/src/environments/environment.example.ts` to `Frontend/Client/src/environments/environment.ts` and fill in:
+Open  `Frontend/Client/src/environments/environment.example.ts` and fill in the following values:
 - **recaptchaSiteKey**: From the [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin) (use the “site key”).
 - **stripePublishableKey**: From your [Stripe Dashboard](https://dashboard.stripe.com/apikeys) (look for the “publishable key”).
 
