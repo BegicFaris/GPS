@@ -1,83 +1,126 @@
-# Gradski Prevozni Sistem (GPS)
+# GPS (Gradski Prevozni Sistem)
 
-Ovo je web aplikacija razvijena pomoću **.NET Core Web API** za backend i **Angular** za frontend.  
-Aplikacija služi za upravljanje gradskim bus sistemom, omogućavajući korisnicima pregled linija, stanica, vožnji i kupovinu karata.
+A full-stack web application for managing and using a city bus system, developed with .NET Core Web API (backend) and Angular (frontend). Users can view bus lines, stations, rides, and purchase tickets.
 
-## ⚙️ Tehnologije
+---
 
+## 📑 Table of Contents
+- [Project Overview](#project-overview)
+- [Technologies](#technologies)
+- [Prerequisites](#prerequisites)
+- [Backend – Running the API Server](#backend--running-the-api-server)
+- [Frontend – Running the Angular Client](#frontend--running-the-angular-client)
+- [How to Set Up Secret Keys](#-how-to-set-up-secret-keys)
+- [Test Login Credentials](#-test-login-credentials)
+- [Notes](#notes)
+- [Project Background](#project-background)
+- [Authors](#authors)
+
+---
+
+## Project Overview
+This application was developed as part of the mandatory curriculum for the course Software Development I (Razvoj Softvera I).
+
+---
+
+## ⚙️ Technologies
 - .NET 8+ Web API
 - Angular 15+
-- SQL Server (localdb)
+- SQL Server
 - Entity Framework Core
 
-## 📦 Preduvjeti
+---
 
-Prije pokretanja aplikacije potrebno je instalirati:
-
+## 📦 Prerequisites
+Make sure the following tools are installed:
 - [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
 - [Node.js 18+](https://nodejs.org/)
-- [Angular CLI](https://angular.io/cli)
-- SQL Server (lokalni ili mrežni)
+- [Angular CLI 15+](https://angular.io/cli)
+- SQL Server
 
-## Promjena imena klonranog foldera
+---
 
-1. Potrebno je promijeniti ime kloniranog foldera u npr. GPS kako bi radilo (specijalni karakteri koje dodaje Azure mogu praviti problem pa da se ništa ne prikazuje na backendu)
+## 🔧 Backend – Running the API Server
+1. **Restore dependencies**
+   ```bash
+   cd Backend
+   cd API
+   dotnet restore
+   ```
+2. **Set up the database**
+   ```bash
+   dotnet ef database update --context ApplicationDbContext
+   ```
+3. **Seed data**
+   - Automatically generated in `ApplicationDbContext.OnModelCreating()`.
+4. **Start the server**
+   - Run via Visual Studio or:
+   ```bash
+   dotnet run
+   ```
 
-## 🔧 Backend – Pokretanje API servera
+---
 
-1. Instalacija paketa
-```bash
-cd Backend
-cd API
-dotnet restore
-```
+## 💻 Frontend – Running the Angular Client
+1. **Install dependencies**
+   ```bash
+   cd Frontend
+   cd Client
+   npm install
+   ```
+2. **Start the app**
+   ```bash
+   npm start
+   ```
 
-2. Postavljanje baze podataka
-```bash
-dotnet ef database update --context ApplicationDbContext
-```
+---
 
-3. Seeder podaci
-Prilikom postavljanja baze podataka automatski se generišu unutar OnModelCreating() metode u ApplicationDbContextu. 
+## 🔑 How to Set Up Secret Keys
+Before running the app, you need to create your own configuration files with real secret keys. Here’s how to get each required key:
 
-4. Pokretanje backend API-ja  
-Pokrenite projekat pritiskom dugmeta u navigacijskom meniju 
+### 1. Backend (`appsettings.json`)
+Copy `Backend/API/appsettings.example.json` to `Backend/API/appsettings.json` and fill in the following:
+- **TokenKey**: Generate a long, random string (at least 32 characters). Use an online password generator or run `openssl rand -base64 32` in a terminal.
+- **ReCaptcha SecretKey**: Go to [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin), register your site, and get the secret key. Replace `"YOUR_RECAPTCHA_SECRET_KEY"`.
+- **Email Configuration**: Use SMTP credentials from your email provider (e.g., Gmail, Outlook, or a transactional email service like SendGrid). Fill in `SmtpServer`, `SmtpPort`, `SmtpUsername`, and `SmtpPassword`.
+- **Stripe SecretKey**: Go to [Stripe Dashboard](https://dashboard.stripe.com/apikeys), register an account if needed, and get your secret key. Replace `"your_stripe_secret_key"`.
 
-## 💻 Frontend – Pokretanje Angular klijenta
-Napomena:
-Frontend predstavlja glavni projekat (primarna Angular aplikacija).
+### 2. Frontend (`environment.ts`)
+Copy `Frontend/Client/src/environments/environment.example.ts` to `Frontend/Client/src/environments/environment.ts` and fill in:
+- **recaptchaSiteKey**: From the [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin) (use the “site key”).
+- **stripePublishableKey**: From your [Stripe Dashboard](https://dashboard.stripe.com/apikeys) (look for the “publishable key”).
 
+> **Never commit your real secret keys to version control!**  
+> Use the example files as templates and keep your real keys private.
 
-1. Instalacija zavisnosti
-```bash
-cd Frontend
-cd Client
-npm install
-```
+---
 
-2. Pokretanje Angular aplikacije
-```bash
-npm start
-```
+## 🔐 Test Login Credentials
+| Role     | Email        | Password |
+|----------|-------------|----------|
+| Driver   | 2@gmail.com | 123      |
+| Manager  | 8@gmail.com | 123      |
+| Passenger|14@gmail.com | 123      |
 
-## 🔐 Test login podaci
+---
 
-| Uloga | Email | Lozinka |
-|-------|-------|---------|
-| Vozač | 2@gmail.com | 123 |
-| Menadžer |8@gmail.com  | 123 |
-| Putnik | 14@gmail.com | 123 |
+## Notes
+- In Visual Studio, set the Backend project as the Startup Project.
+- In VS Code, run the backend and frontend in two separate terminals.
 
-## 📎 Napomene
+---
 
-- Ako koristite Visual Studio, postavite Backend projekt kao Startup Project
-- Ako koristite VS Code, pokrenite API i Angular zasebno iz terminala
-- Verzije koje se koriste:
-  - .NET SDK: 8.0
-  - Node.js: 18.x
-  - Angular CLI: 15.x
+## 📚 Project Background
+This project was created as a required seminar assignment for the course Software Development I (Razvoj Softvera I), and it has been officially accepted.
 
-## 📄 Autori
-Nedim Jugo, Faris Begić, Adi Gosto  
-Godina studija: 3  
-Predmet: Razvoj softvera 1
+---
+
+## 📄 Authors
+- Faris Begić
+- Adi Gosto
+- Nedim Jugo
+
+3rd Year Students  
+Faculty of Information Technologies  
+"Džemal Bijedić" University of Mostar  
+Course: Software Development I
